@@ -1,0 +1,178 @@
+{
+  "title": "Colemak-dhm Keyboard",
+  "author": "Ryan Byon (ryan.h.byon@gmail.com)",
+  "rules": [
+    {
+      "description": "Remap Apple keyboard to use Colemak-dhm layout.",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": { "key_code": "q", "modifiers": { "optional": [ "left_shift", "left_command", "left_control", "left_alt", "right_shift", "right_command", "right_control", "right_alt", "caps_lock" ] } },
+          "to": [{ "key_code": "q" }],
+          "conditions": [{ "type": "device_if", "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }] }, { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US", "language": "en" }] }]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "w", "modifiers": { "optional": [ "left_shift", "left_command", "left_control", "left_alt", "right_shift", "right_command", "right_control", "right_alt", "caps_lock" ] } },
+          "to": [{ "key_code": "w" }],
+          "conditions": [{ "type": "device_if", "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }] }, { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US", "language": "en" }] }]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "e", "modifiers": { "optional": [ "left_shift", "left_command", "left_control", "left_alt", "right_shift", "right_command", "right_control", "right_alt", "caps_lock" ] } },
+          "to": [{ "key_code": "f" }],
+          "conditions": [{ "type": "device_if", "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }] }, { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US", "language": "en" }] }]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "r", "modifiers": { "optional": [ "left_shift", "left_command", "left_control", "left_alt", "right_shift", "right_command", "right_control", "right_alt", "caps_lock" ] } },
+          "to": [{ "key_code": "p" }],
+          "conditions": [{ "type": "device_if", "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }] }, { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US", "language": "en" }] }]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "t", "modifiers": { "optional": [ "left_shift", "left_command", "left_control", "left_alt", "right_shift", "right_command", "right_control", "right_alt", "caps_lock" ] } },
+          "to": [{ "key_code": "b" }],
+          "conditions": [{ "type": "device_if", "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }] }, { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US", "language": "en" }] }]
+        },
+
+        {
+          "type": "basic",
+          "from": { "key_code": "y", "modifiers": { "optional": [ "left_shift", "left_command", "left_control", "left_alt", "right_shift", "right_command", "right_control", "right_alt", "caps_lock" ] } },
+          "to": [{ "key_code": "j" }],
+          "conditions": [{ "type": "device_if", "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }] }, { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US", "language": "en" }] }]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "u", "modifiers": { "optional": [ "left_shift", "left_command", "left_control", "left_alt", "right_shift", "right_command", "right_control", "right_alt", "caps_lock" ] } },
+          "to": [{ "key_code": "l" }],
+          "conditions": [{ "type": "device_if", "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }] }, { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US", "language": "en" }] }]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "i", "modifiers": { "optional": [ "left_shift", "left_command", "left_control", "left_alt", "right_shift", "right_command", "right_control", "right_alt", "caps_lock" ] } },
+          "to": [{ "key_code": "u" }],
+          "conditions": [{ "type": "device_if", "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }] }, { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US", "language": "en" }] }]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "o", "modifiers": { "optional": [ "left_shift", "left_command", "left_control", "left_alt", "right_shift", "right_command", "right_control", "right_alt", "caps_lock" ] } },
+          "to": [{ "key_code": "y" }],
+          "conditions": [{ "type": "device_if", "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }] }, { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US", "language": "en" }] }]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "p", "modifiers": { "optional": [ "left_shift", "left_command", "left_control", "left_alt", "right_shift", "right_command", "right_control", "right_alt", "caps_lock" ] } },
+          "to": [{ "key_code": "semicolon" }],
+          "conditions": [{ "type": "device_if", "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }] }, { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US", "language": "en" }] }]
+        },
+
+        {
+          "type": "basic",
+          "from": { "key_code": "a", "modifiers": { "optional": [ "left_shift", "left_command", "left_control", "left_alt", "right_shift", "right_command", "right_control", "right_alt", "caps_lock" ] } },
+          "to": [{ "key_code": "a" }],
+          "conditions": [{ "type": "device_if", "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }] }, { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US", "language": "en" }] }]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "s", "modifiers": { "optional": [ "left_shift", "left_command", "left_control", "left_alt", "right_shift", "right_command", "right_control", "right_alt", "caps_lock" ] } },
+          "to": [{ "key_code": "r" }],
+          "conditions": [{ "type": "device_if", "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }] }, { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US", "language": "en" }] }]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "d", "modifiers": { "optional": [ "left_shift", "left_command", "left_control", "left_alt", "right_shift", "right_command", "right_control", "right_alt", "caps_lock" ] } },
+          "to": [{ "key_code": "s" }],
+          "conditions": [{ "type": "device_if", "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }] }, { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US", "language": "en" }] }]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "f", "modifiers": { "optional": [ "left_shift", "left_command", "left_control", "left_alt", "right_shift", "right_command", "right_control", "right_alt", "caps_lock" ] } },
+          "to": [{ "key_code": "t" }],
+          "conditions": [{ "type": "device_if", "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }] }, { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US", "language": "en" }] }]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "g", "modifiers": { "optional": [ "left_shift", "left_command", "left_control", "left_alt", "right_shift", "right_command", "right_control", "right_alt", "caps_lock" ] } },
+          "to": [{ "key_code": "g" }],
+          "conditions": [{ "type": "device_if", "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }] }, { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US", "language": "en" }] }]
+        },
+
+        {
+          "type": "basic",
+          "from": { "key_code": "h", "modifiers": { "optional": [ "left_shift", "left_command", "left_control", "left_alt", "right_shift", "right_command", "right_control", "right_alt", "caps_lock" ] } },
+          "to": [{ "key_code": "m" }],
+          "conditions": [{ "type": "device_if", "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }] }, { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US", "language": "en" }] }]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "j", "modifiers": { "optional": [ "left_shift", "left_command", "left_control", "left_alt", "right_shift", "right_command", "right_control", "right_alt", "caps_lock" ] } },
+          "to": [{ "key_code": "n" }],
+          "conditions": [{ "type": "device_if", "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }] }, { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US", "language": "en" }] }]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "k", "modifiers": { "optional": [ "left_shift", "left_command", "left_control", "left_alt", "right_shift", "right_command", "right_control", "right_alt", "caps_lock" ] } },
+          "to": [{ "key_code": "e" }],
+          "conditions": [{ "type": "device_if", "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }] }, { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US", "language": "en" }] }]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "l", "modifiers": { "optional": [ "left_shift", "left_command", "left_control", "left_alt", "right_shift", "right_command", "right_control", "right_alt", "caps_lock" ] } },
+          "to": [{ "key_code": "i" }],
+          "conditions": [{ "type": "device_if", "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }] }, { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US", "language": "en" }] }]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "semicolon", "modifiers": { "optional": [ "left_shift", "left_command", "left_control", "left_alt", "right_shift", "right_command", "right_control", "right_alt", "caps_lock" ] } },
+          "to": [{ "key_code": "o" }],
+          "conditions": [{ "type": "device_if", "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }] }, { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US", "language": "en" }] }]
+        },
+
+        {
+          "type": "basic",
+          "from": { "key_code": "z", "modifiers": { "optional": [ "left_shift", "left_command", "left_control", "left_alt", "right_shift", "right_command", "right_control", "right_alt", "caps_lock" ] } },
+          "to": [{ "key_code": "z" }],
+          "conditions": [{ "type": "device_if", "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }] }, { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US", "language": "en" }] }]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "x", "modifiers": { "optional": [ "left_shift", "left_command", "left_control", "left_alt", "right_shift", "right_command", "right_control", "right_alt", "caps_lock" ] } },
+          "to": [{ "key_code": "x" }],
+          "conditions": [{ "type": "device_if", "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }] }, { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US", "language": "en" }] }]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "c", "modifiers": { "optional": [ "left_shift", "left_command", "left_control", "left_alt", "right_shift", "right_command", "right_control", "right_alt", "caps_lock" ] } },
+          "to": [{ "key_code": "c" }],
+          "conditions": [{ "type": "device_if", "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }] }, { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US", "language": "en" }] }]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "v", "modifiers": { "optional": [ "left_shift", "left_command", "left_control", "left_alt", "right_shift", "right_command", "right_control", "right_alt", "caps_lock" ] } },
+          "to": [{ "key_code": "d" }],
+          "conditions": [{ "type": "device_if", "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }] }, { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US", "language": "en" }] }]
+        },
+
+        {
+          "type": "basic",
+          "from": { "key_code": "b", "modifiers": { "optional": [ "left_shift", "left_command", "left_control", "left_alt", "right_shift", "right_command", "right_control", "right_alt", "caps_lock" ] } },
+          "to": [{ "key_code": "v" }],
+          "conditions": [{ "type": "device_if", "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }] }, { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US", "language": "en" }] }]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "n", "modifiers": { "optional": [ "left_shift", "left_command", "left_control", "left_alt", "right_shift", "right_command", "right_control", "right_alt", "caps_lock" ] } },
+          "to": [{ "key_code": "k" }],
+          "conditions": [{ "type": "device_if", "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }] }, { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US", "language": "en" }] }]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "m", "modifiers": { "optional": [ "left_shift", "left_command", "left_control", "left_alt", "right_shift", "right_command", "right_control", "right_alt", "caps_lock" ] } },
+          "to": [{ "key_code": "h" }],
+          "conditions": [{ "type": "device_if", "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }] }, { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US", "language": "en" }] }]
+        }
+      ]
+    }
+  ]
+}

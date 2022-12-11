@@ -1,0 +1,59 @@
+[user]
+  email = ryan.h.byon@gmail.com
+  name = Ryan Byon
+
+[pager]
+  branch = false
+
+[init]
+  defaultBranch = main
+
+[core]
+  pager = delta
+  excludesfile = ~/.config/git/ignore
+
+[interactive]
+  diffFilter = delta --color-only
+
+[add.interactive]
+  useBuiltin = false # required for git 2.37.0
+
+[delta]
+  navigate = true  # use n and N to move between diff sections
+  light = false # set to true if light background terminal
+
+[merge]
+	; conflictstyle = diff3
+  tool = nvimdiff
+
+[diff]
+  colorMoved = default
+
+[branch "master"]
+  ; mergeOptions = --squash
+
+[branch "main"]
+  ; mergeOptions = --squash
+
+[help]
+  autocorrect = 100
+
+[pull]
+  ; rebase = true
+
+[alias]
+  # general
+  br = branch
+  co = checkout
+  df = diff
+  st = status
+  sw = switch
+  # commit
+  cm = commit
+  reword = commit --amend
+  oops = commit --amend --no-edit
+  uncommit = reset --soft HEAD~1
+  # logs
+  lg = log --graph --oneline --decorate
+  last = log -1 HEAD
+  five = log -5

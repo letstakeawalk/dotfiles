@@ -1,0 +1,58 @@
+tools
+
+# INSTALLED & CONFIGURED
+asdf: version manager
+bat: (cat alt)
+btm (bottom): (top alt)
+delta (git-delta): git pager
+dog: DNS lookup utility (dig alt)
+dust: dist space (du alt)
+entr: run command when files change
+exa: (ls alt)
+fd : (find alt)
+fuck: command correction
+glow: markdown renderer
+http (httpie): (curl alt)
+mosh: (ssh alt)
+pandoc: document format converter
+rg (ripgrep): (grep alt) 
+watchman: watch files and take action
+vidir
+z (zoxide): (cd alt)
+
+zstd: compress
+xz: compress or decompress
+
+# Package Managers
+npm: node package manager
+yarn: node package manager
+pdm: python package manager
+pipenv: python package manager
+luarocks
+
+# FILE PROCERROSR
+jq: json processor
+yq: yaml processor
+htmlq: html processor
+xsv: CSV tool
+
+# TODO: CONFIGURE
+
+# TODO
+chezmoi: dotfile manager
+yabai: tiling window manager
+skhd: keyboard shortcut manager
+amethyst
+gpg: encryption
+age: encryption
+plocate: (locate alt)
+vidir
+direnv: env var depending on pwd
+duf: disk space util (df alt)
+sd: find & replace (sed alt)
+pgcli: psql alt
+miller: awk, sed, cut, join, and sort
+hexyl: dump hex
+
+
+https://jvns.ca/blog/2022/04/12/a-list-of-new-ish--command-line-tools/

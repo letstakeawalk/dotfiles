@@ -1,0 +1,5 @@
+#command
+k  forw-line
+K  forw-line-force
+h  back-line
+H  help

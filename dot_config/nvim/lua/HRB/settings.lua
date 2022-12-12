@@ -99,13 +99,21 @@ if vim.fn.has("unnamedplus") == 1 then
 end
 
 -- chezmoi auto apply
--- autocmd BufWritePost ~/.local/share/chezmoi/* ! chezmoi apply --source-path "%"
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
 	group = vim.api.nvim_create_augroup("ChezmoiChange", {}),
 	pattern = { vim.env.XDG_DATA_HOME .. "/chezmoi/*" },
 	callback = function()
 		vim.cmd([[! chezmoi apply --source-path "%"]])
 		-- test
+	end,
+})
+
+-- chezmoi respective filetype
+vim.api.nvim_create_autocmd({ "BufEnter" }, {
+	group = vim.api.nvim_create_augroup("ChezmoiZshrc", {}),
+	pattern = "dot_zshrc",
+	callback = function()
+		vim.opt.filetype = "zsh"
 	end,
 })
 

@@ -41,6 +41,7 @@ null_ls.setup({
 		-- formatting
 		null_ls.builtins.formatting.prettier,
 		null_ls.builtins.formatting.stylua,
+		null_ls.builtins.formatting.taplo,
 		-- null_ls.builtins.formatting.rustywind,
 
 		-- python
@@ -69,7 +70,6 @@ null_ls.setup({
 		-- terrafmt
 		-- dprint
 		-- rustfmt
-		-- taplo
 	},
 	-- diagnostics_format = "#{m} [#{c}]",
 	diagnostics_format = "#{m}",

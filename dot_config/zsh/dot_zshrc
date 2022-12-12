@@ -179,8 +179,9 @@ alias ll='exa -lhg --git --time-style long-iso --group-directories-first'
 
 
 #### edit config files #######
+alias conf="chezmoi edit"
 alias confzsh="nvim $CHEZMOI_SOURCE/dot_config/zsh/dot_zshrc"
-alias confnvim="cd $CHEZMOI_SOURCE/dot_config/nvim && chezmoi edit $CONFIG/nvim"
+alias confnvim="cd $CHEZMOI_SOURCE/dot_config/nvim && nvim"
 # alias confnvim="cd $CONFIG/nvim && nvim"
 alias confqmk="chezmoi edit $CONFIG/qmk_firmware"
 # alias confp10k='nvim ~/.p10k.zsh'

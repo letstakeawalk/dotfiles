@@ -49,18 +49,14 @@ return require("packer").startup(function(use)
 	-- use { 'nvim-telescope/telescope-ui-select.nvim' } -- dressing.nvim
 
 	-- UI enhancement
-	use({ "arcticicestudio/nord-vim" }) -- theme -- use { 'shaunsingh/nord.nvim' } -- theme -- TODO: compare with ^ and configure
+	use({ "arcticicestudio/nord-vim" }) -- theme
+	-- use { 'shaunsingh/nord.nvim' } -- theme
 	use({ "kyazdani42/nvim-web-devicons" }) -- dev icons
 	use({ "nvim-lualine/lualine.nvim", requires = "kyazdani42/nvim-web-devicons" }) -- statusline
 	use({ "akinsho/bufferline.nvim", requires = "kyazdani42/nvim-web-devicons" }) -- tabline
 	use({ "lukas-reineke/indent-blankline.nvim", requires = "nvim-treesitter/nvim-treesitter" }) -- indentation guide
 	use({ "lewis6991/gitsigns.nvim" }) -- git decoration in gutter
-	use({
-		"j-hui/fidget.nvim",
-		config = function()
-			require("fidget").setup({})
-		end,
-	}) -- lsp progress
+	use({ "j-hui/fidget.nvim" }) -- lsp progress
 	use({ "glepnir/dashboard-nvim" }) -- dashboard -- start up page
 	use({ "folke/zen-mode.nvim" }) -- focus: distraction free coding
 	use({ "folke/twilight.nvim" }) -- focus: dims inactive portion of code
@@ -70,8 +66,8 @@ return require("packer").startup(function(use)
 	-- use { 'nanozuki/tabby.nvim' } -- tabline
 
 	-- General (lua)
-	-- use { 'ThePrimeagen/refactoring.nvim', requires = 'nvim-treesitter/nvim-treesitter' } -- refactoring library TODO: config and research
-	-- use { 'ThePrimeagen/harpoon', requires ='nvim-lua/plenary' } -- magic -- TODO
+	use({ "ThePrimeagen/refactoring.nvim", requires = "nvim-treesitter/nvim-treesitter" }) -- refactoring library
+	use({ "ThePrimeagen/harpoon", requires = "nvim-lua/plenary.nvim" }) -- magic
 	-- use { 'ThePrimeagen/vim-be-good' }
 	use({ "nvim-neorg/neorg", requires = "nvim-lua/plenary.nvim" }) -- org-mode
 	use({ "folke/trouble.nvim", requires = "kyazdani42/nvim-web-devicons" }) -- list of troubles
@@ -101,6 +97,7 @@ return require("packer").startup(function(use)
 	-- use { 'TimUntersberger/neogit' } -- magit
 
 	-- General (vim)
+	use({ "mbbill/undotree" }) -- undotree
 	use({ "junegunn/vim-easy-align" }) -- alignment plugin
 	use({ "junegunn/gv.vim" }) -- git commit browser
 	use({ "tpope/vim-abolish" }) -- easily search, substitute, abbr multiple variants of a word

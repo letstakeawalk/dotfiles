@@ -16,7 +16,7 @@ vim.g.rooter_patterns = {
 	-- go
 	"go.mod",
 	-- lua
-	"init.lua",
+	-- "init.lua",
 	".luarc.json",
 	".luarc.jsonc",
 	".luacheckrc",

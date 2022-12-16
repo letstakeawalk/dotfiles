@@ -16,6 +16,7 @@ wk.register({
 	f = "Telescope Files",
 	p = "Telescope Live Grep",
 	d = { name = "Diagnostic" },
+  S = { name = "Source/Reload" },
 	r = {
 		name = "Refactor",
 		a = "Code Action",

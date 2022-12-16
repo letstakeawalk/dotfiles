@@ -36,9 +36,14 @@ map("n", "<C-q><C-q>", ":Bclose<cr>", opts("Close buffer")) -- delete current bu
 map("n", "<C-q><C-q><C-q>", ":Bclose<cr>:q", opts("Close buffer and pane")) -- delete current buffer (closes current buffer)
 -- etc
 map("n", "'", "`") -- better mark navigation
-map("n", "<leader>s", "<cmd>so %<cr>", opts("Source buffer"))
-map("n", "<leader>sk", "<cmd>so ~/.config/nvim/lua/HRB/keymaps.lua<cr>", opts("Source buffer"))
+map("n", "<leader>Ss", "<cmd>so %<cr>", opts("Source buffer"))
+map("n", "<leader>Sk", "<cmd>so ~/.config/nvim/lua/HRB/keymaps.lua<cr>", opts("Source keymap"))
 map("s", "<BS>", "<BS>i") -- delete selection and stay in INSERT
+map("n", "J", "mzJ`z", opts("Join lines")) -- join lines while preserving cursor pos
+map("x", "p", '"_dP') -- "greatest remap ever" by theprimeage
+map("n", "Q", "<nop>") -- disable
+map("n", "<leader>s", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>", opts("Substitude word under cursor")) -- substitute word under cursor
+map("n", "<leader>xX", "<cmd>!chmod +x %<cr>", { silent = true, desc = "chmod +x" })
 -- disable warning
 map("n", "<C-w><C-w>", function()
 	vim.api.nvim_notify("Use <C-s> instead", 3, {})

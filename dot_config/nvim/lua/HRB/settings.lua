@@ -18,8 +18,8 @@ opt.relativenumber = true -- number relatively
 opt.showcmd = true -- display incomplete commands
 opt.cmdheight = 3 -- height of the command line
 opt.pumheight = 10 -- height of popup menu
-opt.colorcolumn = "90" -- Column hightlight at textwidth
-opt.textwidth = 99 -- textwidth
+opt.colorcolumn = "88" -- Column hightlight at textwidth
+opt.textwidth = 88 -- textwidth
 opt.showtabline = 1 -- display tab-line only if there are at least two tabs
 opt.laststatus = 3 -- always show statusline
 opt.showmode = false -- do not display vim-mode on message
@@ -39,10 +39,13 @@ opt.hidden = true -- hide buffers when abandoned instead of unload
 opt.magic = true -- For regular expressions turn magic on
 opt.signcolumn = "yes" -- Always show the signcolumn, otherwise it would shift the text each time diagnostics appear/become resolved
 opt.undofile = true -- persistent undo
-opt.swapfile = true -- swap file
+opt.swapfile = false -- swap file
+opt.backup = false -- backup
 opt.shortmess:append({ c = true })
 opt.history = 2000 -- num history to cache
 opt.timeoutlen = 300 -- used to be 500
+opt.updatetime = 50 -- for CursorHold aucmd 
+opt.scrolloff = 8 -- no line to keep above/below the cursor
 -- opt.completeopt    = { 'menu', 'menuone', 'noselect', 'preview' } -- nvim-cmp handles. no need here?
 
 -- fold
@@ -79,7 +82,7 @@ local tabsize_four = function()
 end
 vim.api.nvim_create_autocmd({ "FileType" }, {
 	group = vim.api.nvim_create_augroup("TabsizeFour", {}),
-	pattern = { "python", "css", "vim" },
+	pattern = { "python", "rust", "c", "cpp"},
 	callback = tabsize_four,
 })
 
@@ -102,9 +105,10 @@ end
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
 	group = vim.api.nvim_create_augroup("ChezmoiChange", {}),
 	pattern = { vim.env.XDG_DATA_HOME .. "/chezmoi/*" },
-	callback = function()
-		vim.cmd([[! chezmoi apply --source-path "%"]])
-		-- test
+	callback = function(args)
+		if args.file:match("COMMIT_EDITMSG") == nil then
+			vim.cmd([[!chezmoi apply --source-path "%"]])
+		end
 	end,
 })
 

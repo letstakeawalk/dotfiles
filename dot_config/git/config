@@ -23,23 +23,20 @@
   light = false # set to true if light background terminal
 
 [merge]
-	; conflictstyle = diff3
   tool = nvimdiff
+	conflictstyle = diff3
+  prompt = false
 
 [diff]
   colorMoved = default
-
-[branch "master"]
-  ; mergeOptions = --squash
-
-[branch "main"]
-  ; mergeOptions = --squash
 
 [help]
   autocorrect = 100
 
 [pull]
-  ; rebase = true
+  ; rebase = true   # rebase
+  ; rebase = false  # merge
+  ; ff = only       # fast-forward only
 
 [alias]
   # general

@@ -1,19 +1,18 @@
-# PATH
-export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/X11/bin
-export PATH=/Library/TeX/texbin:$PATH # texlive & mactex
-export PATH=~/.config/bin:$PATH # custom binaries
-export PATH=/opt/homebrew/bin:/opt/homebrew/sbin:$PATH # should be last line
-
 # Environment Variables
 export CONFIG="$HOME/.config"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"
-export ZSH="$CONFIG/oh-my-zsh"
-export ZDOTDIR="$CONFIG/zsh"
 export WORKSPACE="$HOME/Workspace"
 export DEV="$WORKSPACE/Development"
+
+# PATH
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/X11/bin
+export PATH=/Library/TeX/texbin:$PATH # texlive & mactex
+export PATH="$CONFIG"/bin:$PATH # custom binaries
+export PATH="$XDG_DATA_HOME"/cargo/bin:$PATH # rust
+export PATH=/opt/homebrew/bin:/opt/homebrew/sbin:$PATH # should be last line
 
 # Configurations
 export ASDF_CONFIG_FILE="$CONFIG/runcom/asdfrc"
@@ -36,7 +35,10 @@ export RIPGREP_CONFIG_PATH="$CONFIG/rg/ripgreprc"
 export STARSHIP_CONFIG="$CONFIG/runcom/starship.toml"
 export _ZO_DATA_DIR="$XDG_DATA_HOME/zoxide"
 export GITLINT_CONFIG="$XDG_CONFIG_HOME/runcom/gitlintrc"
-
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+export ZSH="$CONFIG/oh-my-zsh"
+export ZDOTDIR="$CONFIG/zsh"
 
 ###############################################################################
 ############## ZSH CONFIG #####################################################
@@ -202,6 +204,7 @@ alias glast='git log -5'
 alias glog='git log --graph --oneline --decorate'
 alias gre='git restore'
 alias gst='git status'
+alias gsw='git switch'
 
 #### Python ##################
 alias python3=python3.11

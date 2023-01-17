@@ -1,10 +1,45 @@
 -- https://github.com/glepnir/dashboard-nvim
 -- TODO config this
+local db = require("dashboard")
 
+-- type can be nil,table or function(must be return table in function)
+-- if not config will use default banner
+db.custom_header = {
+	"",
+	"",
+	"",
+	"",
+	"███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗",
+	"████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║",
+	"██╔██╗ ██║ █████╗  ██║   ██║ ██║   ██║ ██║ ██╔████╔██║",
+	"██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║",
+	"██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║",
+	"╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝",
+	"",
+	"",
+	"",
+}
 
--- local db = require('dashboard')
--- db.custom_header  -- type can be nil,table or function(must be return table in function)
---                   -- if not config will use default banner
+db.custom_center = {
+	{
+		icon = "  ",
+		desc = "New File            ",
+		action = "DashboardNewFile",
+	},
+	{
+		icon = "  ",
+		desc = "Find File           ",
+		action = "Telescope find_files",
+		-- shortcut = "<Space>f",
+	},
+	{
+		icon = "  ",
+		desc = "Live Grep           ",
+		action = "Telescope live_grep",
+		-- shortcut = "<Space>p",
+	},
+}
+-- db.custom_header
 -- db.custom_center  -- table type and in this table you can set icon,desc,shortcut,action keywords. desc must be exist and type is string
 --                   -- icon type is nil or string
 --                   -- icon_hl table type { fg ,bg} see `:h vim.api.nvim_set_hl` opts
@@ -39,3 +74,23 @@
 
 -- DashboardNewFile  -- if you like use `enew` to create file,Please use this command,it's wrap enew and restore the statsuline and tabline
 -- SessionSave,SessionLoad
+
+-- apple = {
+-- 	"                     ,c.         ",
+-- 	"                  ,xNMM.         ",
+-- 	"                .OMMMMo          ",
+-- 	"                OMMM0,           ",
+-- 	"      .;lMMMo:;.loolloddool;.    ",
+-- 	"    cKMMMMMMMMMMMMMMMMMMMMMMM0:. ",
+-- 	"  .KMMMMMMMMMMMMMMMMMMMMMMMMWd.  ",
+-- 	"  XMMMMMMMMMMMMMMMMMMMMMMMMX;    ",
+-- 	" ;MMMMMMMMMMMMMMMMMMMMMMMMM:     ",
+-- 	" :MMMMMMMMMMMMMMMMMMMMMMMMM:     ",
+-- 	" .MMMMMMMMMMMMMMMMMMMMMMMMMX.    ",
+-- 	"  kMMMMMMMMMMMMMMMMMMMMMMMMMWd.  ",
+-- 	"  .XMMMMMMMMMMMMMMMMMMMMMMMMMMk, ",
+-- 	"   .XMMMMMMMMMMMMMMMMMMMMMMMMk.  ",
+-- 	"     kMMMMMMMMMMMMMMMMMMMMMd.    ",
+-- 	"      :MMMMMMMMMXXMMMMMMMk.      ",
+-- 	"        .cooc,.    .,coo:.       ",
+-- }

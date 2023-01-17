@@ -34,7 +34,7 @@ null_ls.setup({
 		null_ls.builtins.diagnostics.eslint, -- js, ts
 		null_ls.builtins.diagnostics.gitlint, -- git commit msg
 		null_ls.builtins.diagnostics.hadolint, -- docker
-		null_ls.builtins.diagnostics.write_good, -- english
+		-- null_ls.builtins.diagnostics.write_good, -- english
 		-- null_ls.builtins.diagnostics.markdownlint, -- markdown
 
 		-- formatting

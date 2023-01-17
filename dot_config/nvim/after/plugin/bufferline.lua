@@ -96,4 +96,3 @@ require("bufferline").setup {
 -- bufferline.config.derive_colors
 -- https://github.com/akinsho/bufferline.nvim/issues/617
 -- https://github.com/ratheesh/dot-nvim/blob/main/nvim/nvim/lua/plugins/bufferline.lua
-

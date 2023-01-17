@@ -57,12 +57,13 @@ return require("packer").startup(function(use)
 	use({ "lukas-reineke/indent-blankline.nvim", requires = "nvim-treesitter/nvim-treesitter" }) -- indentation guide
 	use({ "lewis6991/gitsigns.nvim" }) -- git decoration in gutter
 	use({ "j-hui/fidget.nvim" }) -- lsp progress
-	use({ "glepnir/dashboard-nvim" }) -- dashboard -- start up page
+	-- use({ "glepnir/dashboard-nvim" }) -- dashboard -- start up page
 	use({ "folke/zen-mode.nvim" }) -- focus: distraction free coding
 	use({ "folke/twilight.nvim" }) -- focus: dims inactive portion of code
 	use({ "kevinhwang91/nvim-ufo", requires = "kevinhwang91/promise-async" }) -- pretty fold block
 	use({ "stevearc/dressing.nvim" }) -- vim.ui.[input,select] interface
-	-- use { 'SmiteshP/nvim-navic', requires = 'neovim/nvim-lspconfig' } -- code context in winbar using lsp
+	use({ "RRethy/vim-illuminate" }) -- highlight word under cursor using lsp,ts or regex
+  use({ "SmiteshP/nvim-navic", requires = "neovim/nvim-lspconfig" }) -- code context in winbar using lsp
 	-- use { 'nanozuki/tabby.nvim' } -- tabline
 
 	-- General (lua)
@@ -82,6 +83,7 @@ return require("packer").startup(function(use)
 	use({ "numToStr/Comment.nvim", requires = "JoosepAlviste/nvim-ts-context-commentstring" }) -- smart commenting
 	use({ "karb94/neoscroll.nvim" }) -- smooth scrolling
 	use({ "max397574/better-escape.nvim" }) -- better escape mappings
+  use({ "kazhala/close-buffers.nvim" }) -- preserve window layout with bdelete/bwipeout
 	-- TODO: checkout below
 	-- use { 'aserowy/tmux.nvim' } -- tmux integration (tmuxinator alt) -- PRIORITY:
 	-- use { 'famiu/bufdelete.nvim' } -- delete buffer while preserving window layout
@@ -92,7 +94,6 @@ return require("packer").startup(function(use)
 	-- use { 'echasnovski/mini.align' } -- easy align, justify, merge delim
 	-- use { 'echasnovski/mini.trailspace' } -- remove trailing whitespaces
 	-- use { 'simrat39/symbols-outline.nvim' } -- lsp symbol treeview
-	-- use { 'RRethy/vim-illuminate' } -- highlight word under cursor using lsp,ts or regex
 	-- use { 'AckslD/nvim-neoclip.lua', requires = 'nvim-telescope/telescope.nvim' } -- clipboard mngr
 	-- use { 'TimUntersberger/neogit' } -- magit
 

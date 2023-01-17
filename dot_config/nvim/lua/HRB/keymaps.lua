@@ -14,7 +14,7 @@ map("n", ">", ">l")
 map("v", "<", "<gv")
 map("v", ">", ">gv")
 -- cursor navigation
-map("n", "<CR>", "<Down>A") -- start editing next line
+-- map("n", "<CR>", "<Down>A") -- start editing next line
 map({ "i", "n", "c" }, "<A-Right>", "<C-Right>") -- move cursor one word to the left  -- ^[f
 map({ "i", "n", "c" }, "<A-Left>", "<C-Left>") -- move cursor one word to the left -- ^[b
 map("c", "<C-a>", "<Home>") -- move cursor to BOL
@@ -30,19 +30,20 @@ map("n", "<PageDown>", ":bprev<cr>")
 map("n", "<C-t>", "<C-^>") -- toggle between two files
 -- buffer management
 map("n", "<C-s>", ":w<cr>", opts("Write buffer")) -- save current buffer
-map("n", "<C-q>", ":q<cr>", opts("Quit buffer")) -- quit current buffer
-map("n", "<C-q><C-a>", ":bufdo bd<cr>", opts("Close all buffers")) -- delete all buffers
-map("n", "<C-q><C-q>", ":Bclose<cr>", opts("Close buffer")) -- delete current buffer (maintains pane layout)
-map("n", "<C-q><C-q><C-q>", ":Bclose<cr>:q", opts("Close buffer and pane")) -- delete current buffer (closes current buffer)
+-- map("n", "<C-q>", ":q<cr>", opts("Quit buffer")) -- quit current buffer
+-- map("n", "<C-q><C-a>", ":bufdo bd<cr>", opts("Close all buffers")) -- delete all buffers
+-- map("n", "<C-q><C-q>", ":Bclose<cr>", opts("Close buffer")) -- delete current buffer (maintains pane layout)
+-- map("n", "<C-q><C-q><C-q>", ":Bclose<cr>:q", opts("Close buffer and pane")) -- delete current buffer (closes current buffer)
 -- etc
 map("n", "'", "`") -- better mark navigation
-map("n", "<leader>Ss", "<cmd>so %<cr>", opts("Source buffer"))
-map("n", "<leader>Sk", "<cmd>so ~/.config/nvim/lua/HRB/keymaps.lua<cr>", opts("Source keymap"))
+map("n", "<leader>ss", "<cmd>so %<cr>", opts("Source buffer"))
+map("n", "<leader>sk", "<cmd>so ~/.config/nvim/lua/HRB/keymaps.lua<cr>", opts("Source keymap"))
 map("s", "<BS>", "<BS>i") -- delete selection and stay in INSERT
 map("n", "J", "mzJ`z", opts("Join lines")) -- join lines while preserving cursor pos
 map("x", "p", '"_dP') -- "greatest remap ever" by theprimeage
 map("n", "Q", "<nop>") -- disable
-map("n", "<leader>s", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>", opts("Substitude word under cursor")) -- substitute word under cursor
+map("n", "q:", "<nop>") -- disable
+map("n", "<leader>S", ":%s/<C-r><C-w>/<C-r><C-w>/gI<Left><Left><Left>", opts("Substitude word under cursor")) -- substitute word under cursor
 map("n", "<leader>xX", "<cmd>!chmod +x %<cr>", { silent = true, desc = "chmod +x" })
 -- disable warning
 map("n", "<C-w><C-w>", function()

@@ -1,6 +1,6 @@
 -- https://github.com/neovim/nvim-lspconfig
 local lsp_config = require("lspconfig")
--- local navic = require("nvim-navic")
+local navic = require("nvim-navic")
 
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local getOpts = function(desc)
@@ -15,30 +15,22 @@ vim.keymap.set("n", "<leader>rf", vim.lsp.buf.format, getOpts("Format File"))
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
-local on_attach = function(_, bufnr)
+local on_attach = function(client, bufnr)
 	-- Mappings.
 	-- See `:help vim.lsp.*` for documentation on any of the below functions
 	local bufopts = function(desc)
 		return { noremap = true, silent = true, buffer = bufnr, desc = desc }
 	end
-	-- original
-	-- vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, getBufOpts("Jump to Declaration"))
-	-- vim.keymap.set('n', 'gd', vim.lsp.buf.definition, getBufOpts("Jump to Definition"))
-	-- vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, getBufOpts("Jump to Implementation"))
-	-- vim.keymap.set('n', 'gr', vim.lsp.buf.references, getBufOpts("Jump to References"))
 	vim.keymap.set("n", "H", vim.lsp.buf.signature_help, bufopts("Display Signature Help"))
 	vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts("Display Hover Info"))
 	vim.keymap.set("n", "T", vim.lsp.buf.type_definition, bufopts("Display Type Definition"))
 	vim.keymap.set("n", "<leader>ra", vim.lsp.buf.code_action, bufopts("Code Action"))
 	vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, bufopts("Rename"))
-	-- idk what below commands do
-	-- vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-	-- vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
-	-- vim.keymap.set('n', '<space>wl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, bufopts)
-	-- nvim-navic
-	-- if client.server_capabilities.documentSymbolProvider then
-	--   navic.attach(client, bufnr)
-	-- end
+
+  -- nvim-navic
+	if client.server_capabilities.documentSymbolProvider then
+		navic.attach(client, bufnr)
+	end
 end
 
 -- cmp-nvim-lsp
@@ -49,7 +41,7 @@ capabilities.textDocument.foldingRange = {
 	lineFoldingOnly = true,
 }
 
-local lsp_flags = {
+local flags = {
 	-- This is the default in Nvim 0.7+
 	debounce_text_changes = 150,
 }
@@ -59,27 +51,21 @@ local lsp_flags = {
 local servers = {
 	-- rust
 	rust_analyzer = {
-		settings = {
-			["rust-analyzer"] = {
-				imports = {
-					granularity = {
-						group = "module",
-					},
-					prefix = "self",
-				},
-				cargo = {
-					buildScripts = {
-						enable = true,
-					},
-				},
-				procMacro = {
-					enable = true,
-				},
-				checkOnSave = {
-					command = "clippy",
-				},
-			},
-		},
+		--  handlers = {
+		-- ["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
+		-- 	-- filter Hints
+		-- 	-- https://github.com/neovim/nvim-lspconfig/issues/726#issuecomment-1075539112
+		-- 	-- https://github.com/neovim/neovim/issues/17757#issuecomment-1073266618
+		-- 	local filtered_diags = {}
+		-- 	for _, diag in pairs(result.diagnostics) do
+		-- 		if diag.severity ~= vim.lsp.protocol.DiagnosticSeverity.Hint then
+		-- 			table.insert(filtered_diags, diag)
+		-- 		end
+		-- 	end
+		-- 	result.diagnostics = filtered_diags
+		-- 	vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx, config)
+		-- end,
+		--  }
 	},
 
 	-- python
@@ -184,7 +170,7 @@ local servers = {
 for server, config in pairs(servers) do
 	config.on_attach = on_attach
 	config.capabilities = capabilities
-	config.flags = lsp_flags
+	config.flags = flags
 	lsp_config[server].setup(config)
 end
 

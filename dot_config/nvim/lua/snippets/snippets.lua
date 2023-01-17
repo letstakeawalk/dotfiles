@@ -42,3 +42,13 @@ ls.add_snippets("lua", {
 	),
 	s("ppr", fmt("vim.pretty_print({})", i(1))),
 })
+
+-- markdown
+-- TODO
+-- - toggle task. prepend task if not. <leader>mx
+-- - convert to task. <leader>mt
+-- - convert to ul. <leader>mu
+-- - convert to ol. <leader>mo
+ls.add_snippets("markdown", {
+	s("-[]", t("- [ ] ")),
+})

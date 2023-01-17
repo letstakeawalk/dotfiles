@@ -39,4 +39,4 @@ local load_snippets = function()
 	end
 end
 load_snippets()
-vim.keymap.set("n", "<leader>SS", load_snippets, { desc = "Reload snippets" })
+vim.keymap.set("n", "<leader>sp", load_snippets, { desc = "Reload snippets" })

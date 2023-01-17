@@ -1,1 +1,1 @@
-vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle, {desc="UndoTree Toggle"})
+vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle, { desc = "UndoTree Toggle" })

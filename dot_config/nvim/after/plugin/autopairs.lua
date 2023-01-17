@@ -1,4 +1,3 @@
--- jiangmiao/auto-pairs
 vim.g.AutoPairsFlyMode = 1 -- default 0
 vim.g.AutoPairsShortcutFastWrap = "<C-p>" -- default <A-e>
 vim.g.AutoPairsShortcutJump = "<C-n>" -- default <A-n>

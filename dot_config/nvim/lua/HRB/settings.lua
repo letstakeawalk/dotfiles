@@ -72,6 +72,7 @@ opt.tabstop = 2 -- tabsize = 2 whitespaces
 
 -- abbrs
 vim.cmd.iabbr("NOne", "None")
+vim.cmd.iabbr("STring", "String")
 
 -- auto commands -- CHECK TJ's vid to make sure below is right
 local tabsize_four = function()

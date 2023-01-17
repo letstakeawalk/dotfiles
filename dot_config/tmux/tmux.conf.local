@@ -357,6 +357,7 @@ tmux_conf_copy_to_os_clipboard=false
 # -- user customizations -------------------------------------------------------
 # this is the place to override or undo settings
 set-option -sa terminal-overrides ',alacritty:RGB'  # enable truecolor for alacritty
+# set -g default-terminal "alacritty"  # alacritty italic
 
 # window navigation
 bind-key -r 'C-j' previous-window

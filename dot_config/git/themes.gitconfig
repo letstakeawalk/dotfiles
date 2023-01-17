@@ -1,0 +1,12 @@
+[delta "lesser-panda"]
+  navigate = true  # use n and N to move between diff sections
+  light = false # set to true if light background terminal
+  line-numbers = true
+  line-numbers-minus-style = "red"
+  line-numbers-plus-style = "green"
+  line-numbers-zero-style = "#4C566A"
+  plus-style = "green"
+  plus-emph-style = "#2E3440 bold green"
+  minus-style = "red"
+  minus-emph-style = "#2E3440 bold red"
+  syntax-theme = Nord

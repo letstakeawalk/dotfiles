@@ -16,7 +16,7 @@ $hg_branch\
 $docker_context\
 $character"""
 
-right_format="""
+right_format = """
 $package\
 $c\
 $cmake\
@@ -151,7 +151,7 @@ format = '[$symbol$branch ]($style)'
 
 [git_status]
 format = '([\[$all_status$ahead_behind\] ]($style))'
-style='bold yellow'
+style = 'bold yellow'
 
 [golang]
 symbol = " "
@@ -280,3 +280,10 @@ format = '\[[$symbol($version)]($style)\]'
 
 [zig]
 format = '\[[$symbol($version)]($style)\]'
+
+# [custom.taskwarrior]
+# command = 'task status=pending count'
+# symbol = " "
+# format ='$symbol'
+# format = '\[[$symbol $output]($style)\]'
+# style = 'blue'

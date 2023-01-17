@@ -1,5 +1,4 @@
 # Environment Variables
-export CONFIG="$HOME/.config"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
@@ -10,35 +9,37 @@ export DEV="$WORKSPACE/Development"
 # PATH
 export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/X11/bin
 export PATH=/Library/TeX/texbin:$PATH # texlive & mactex
-export PATH="$CONFIG"/bin:$PATH # custom binaries
+export PATH="$XDG_CONFIG_HOME"/bin:$PATH # custom binaries
 export PATH="$XDG_DATA_HOME"/cargo/bin:$PATH # rust
 export PATH=/opt/homebrew/bin:/opt/homebrew/sbin:$PATH # should be last line
 
 # Configurations
-export ASDF_CONFIG_FILE="$CONFIG/runcom/asdfrc"
+export ASDF_CONFIG_FILE="$XDG_CONFIG_HOME/runcom/asdfrc"
 export ASDF_DATA_DIR="$XDG_DATA_HOME/asdf"
 export ASDF_DIR="$XDG_DATA_HOME/asdf"
-export CHEAT_CONFIG_PATH="$CONFIG/cheat/conf.yml"
+export CHEAT_CONFIG_PATH="$XDG_CONFIG_HOME/cheat/conf.yml"
 export CHEAT_USE_FZF=true
 export CHEZMOI_SOURCE="$XDG_DATA_HOME/chezmoi"
-export CHTSH_HOME="$CONFIG/cht.sh"
-export LESS="-R --lesskey-src=$CONFIG/runcom/lesskey"
-export NPM_CONFIG_USERCONFIG="$CONFIG/runcom/npmrc"
+export CHTSH_HOME="$XDG_CONFIG_HOME/cht.sh"
+export LESS="-R --lesskey-src=$XDG_CONFIG_HOME/runcom/lesskey"
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/runcom/npmrc"
+export NPM_CONFIG_GLOBALCONFIG="$XDG_CONFIG_HOME/runcom/npmrc"
 export PAGER=less
-export PSQLRC="$CONFIG/runcom/psqlrc"
+export PSQLRC="$XDG_CONFIG_HOME/runcom/psqlrc"
 export PSQL_HISTORY="$XDG_DATA_HOME/psql_history"
-export PYLINTRC="$CONFIG/runcom/pylintrc"
-export PYTHONSTARTUP="$CONFIG/python/pythonrc"
-export REDISCLI_RCFILE="$CONFIG/runcom/redisclirc"
+export PYLINTRC="$XDG_CONFIG_HOME/runcom/pylintrc"
+export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
+export REDISCLI_RCFILE="$XDG_CONFIG_HOME/runcom/redisclirc"
 export REDISCLI_HISTFILE="$XDG_DATA_HOME/rediscli_history"
-export RIPGREP_CONFIG_PATH="$CONFIG/rg/ripgreprc"
-export STARSHIP_CONFIG="$CONFIG/runcom/starship.toml"
+export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/rg/ripgreprc"
+export STARSHIP_CONFIG="$XDG_CONFIG_HOME/runcom/starship.toml"
 export _ZO_DATA_DIR="$XDG_DATA_HOME/zoxide"
 export GITLINT_CONFIG="$XDG_CONFIG_HOME/runcom/gitlintrc"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
-export ZSH="$CONFIG/oh-my-zsh"
-export ZDOTDIR="$CONFIG/zsh"
+export ZSH="$XDG_CONFIG_HOME/oh-my-zsh"
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+export CC=gcc-12
 
 ###############################################################################
 ############## ZSH CONFIG #####################################################
@@ -93,6 +94,7 @@ plugins=(
   zsh-completions
   zsh-syntax-highlighting
   zsh-vim-mode
+  # zsh-vi-mode
 )
 
 # homebrew's completion. !important: need to be sourced before omz
@@ -124,9 +126,8 @@ fi
 ###############################################################################
 ############## ZSH Plugin Config ##############################################
 ###############################################################################
-# zsh-vim-mode {{
-bindkey -v
-bindkey -rpM viins '^[^['   # <Esc><Esc> will switch to NORMAL mode instantly.
+
+# vi mode
 bindkey 'kh' vi-cmd-mode    # `kh` will swtich to NORMAL mode instantly.
 bindkey -M   vicmd  k    vi-down-line-or-history
 bindkey -M   vicmd  h    vi-up-line-or-history
@@ -136,17 +137,22 @@ bindkey -M   visual k    vi-down-line-or-history
 bindkey -M   visual h    vi-up-line-or-history
 bindkey -M   visual j    vi-backward-char
 bindkey -M   visual l    vi-forward-char
-MODE_CURSOR_VIINS="#d8dee8 blinking bar"
-MODE_CURSOR_REPLACE="$MODE_CURSOR_VIINS underline"
-MODE_CURSOR_VICMD="#d8dee8 steady block"
-MODE_CURSOR_VISUAL="$MODE_CURSOR_VICMD steady bar"
+
+# zsh-vim-mode {{
+# bindkey -v
+# bindkey -rpM viins '^[^['   # <Esc><Esc> will switch to NORMAL mode instantly.
+MODE_CURSOR_VIINS="bar"
+MODE_CURSOR_REPLACE="underline"
+# MODE_CURSOR_VIINS="#d8dee8 blinking bar"
+# MODE_CURSOR_VICMD="#d8dee8 steady block"
+# MODE_CURSOR_VISUAL="$MODE_CURSOR_VICMD steady bar"
 
 
 ###############################################################################
 ############## Packages #######################################################
 ###############################################################################
 # fzf
-# export FZF_DEFAULT_COMMAND="$CONFIG/rg"
+# export FZF_DEFAULT_COMMAND="$XDG_CONFIG_HOME/rg"
 
 # ripgrep
 # alias rg="RIPGREP_CONFIG_PATH=$RIPGREP_CONFIG_PATH rg"
@@ -165,10 +171,11 @@ alias mkdir='mkdir -pv' # mkdir: create parent directories
 alias rm='rm -v'        # rm verbosely
 
 #### Alternatives ############
+alias arst=asdf
 alias find=fd
 alias grep=rg
 alias top=bot
-alias cat=bat
+# alias cat=bat
 alias du=dust
 alias cd=z
 # alias ssh=mosh
@@ -184,8 +191,8 @@ alias ll='exa -lhg --git --time-style long-iso --group-directories-first'
 alias conf="chezmoi edit"
 alias confzsh="nvim $CHEZMOI_SOURCE/dot_config/zsh/dot_zshrc"
 alias confnvim="cd $CHEZMOI_SOURCE/dot_config/nvim && nvim"
-# alias confnvim="cd $CONFIG/nvim && nvim"
-alias confqmk="chezmoi edit $CONFIG/qmk_firmware"
+alias confqmk="chezmoi edit $CHEZMOI_SOURCE/qmk_firmware"
+alias confala="nvim $CHEZMOI_SOURCE/dot_config/alacritty/alacritty.yml"
 # alias confp10k='nvim ~/.p10k.zsh'
 
 # alias tw='timew'    # timewarrior
@@ -258,17 +265,18 @@ function clicolors() {
     c=''
 }
 
+# zsh hook
 # always show ls when chpwd
 function chpwd() {
-    emulate -L zsh
-    ls
+    # emulate -L zsh
+    exa --group-directories-first 
 }
 
 # display list of files upon cd (zoxide)
-function z () {
-        __zoxide_z "$@"
-        exa --group-directories-first
-}
+# function z () {
+#         __zoxide_z "$@"
+#         exa --group-directories-first
+# }
 
 
 

@@ -31,15 +31,15 @@ window:
   # must be non-zero for this to take effect. The number of columns must be at
   # least `2`, while using a value of `0` for columns and lines will fall back
   # to the window manager's recommended size
-  dimensions:
-   columns: 100
-   lines: 85
+  # dimensions:
+  #  columns: 100
+  #  lines: 85
 
   # Window position (changes require restart)
   #
   # Specified in number of pixels.
   # If the position is not set, the window manager will handle the placement.
-  #position:
+  # position:
   #  x: 0
   #  y: 0
 
@@ -48,11 +48,12 @@ window:
   # Blank space added around the window in pixels. This padding is scaled
   # by DPI and the specified value is always added at both opposing sides.
   padding:
-   x: 0
-   y: 5
+    x: 3
+  #   y: 10
 
   # Spread additional padding evenly around the terminal content.
-  dynamic_padding: false
+  # dynamic_padding: false
+  dynamic_padding: true
 
   # Window decorations
   #
@@ -83,7 +84,7 @@ window:
   startup_mode: Maximized
 
   # Window title
-  #title: Alacritty
+  # title: Alacritty
 
   # Allow terminal applications to change Alacritty's window title.
   #dynamic_title: true
@@ -121,45 +122,47 @@ font:
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas
     family: "FiraCode Nerd Font"
+    # family: "SF Mono Powerline"
 
     # The `style` can be specified to pick a specific face.
     style: Regular
 
   # Bold font face
-  #bold:
+  bold:
     # Font family
     #
     # If the bold family is not specified, it will fall back to the
     # value specified for the normal font.
-    #family: monospace
+    # family: "FiraCode Nerd Font"
 
     # The `style` can be specified to pick a specific face.
-    #style: Bold
+    style: Bold
 
   # Italic font face
-  #italic:
+  italic:
     # Font family
     #
     # If the italic family is not specified, it will fall back to the
     # value specified for the normal font.
-    #family: monospace
+    # family: "FiraCode Nerd Font"
+    # family: "SF Mono Powerline"
 
     # The `style` can be specified to pick a specific face.
-    #style: Italic
+    style: Regular Italic
 
   # Bold italic font face
-  #bold_italic:
+  bold_italic:
     # Font family
     #
     # If the bold italic family is not specified, it will fall back to the
     # value specified for the normal font.
-    #family: monospace
+    # family: "FiraCode Nerd Font"
 
     # The `style` can be specified to pick a specific face.
-    #style: Bold Italic
+    style: Bold Italic
 
   # Point size
-  size: 13.0
+  size: 12.5
 
   # Offset is the extra space around each character. `offset.y` can be thought
   # of as modifying the line spacing, and `offset.x` as modifying the letter
@@ -190,8 +193,8 @@ colors:
   # Default colors
   #primary:
   primary:
-    background: '#2e3440'
-    foreground: '#d8dee9'
+    background: "#2e3440"
+    foreground: "#d8dee9"
 
     # Bright and dim foreground colors
     #
@@ -199,7 +202,7 @@ colors:
     # present. If the bright foreground color is not set, or
     # `draw_bold_text_with_bright_colors` is `false`, the normal foreground
     # color will be used.
-    dim_foreground: '#a5abb6'
+    dim_foreground: "#a5abb6"
     #bright_foreground: '#eaeaea'
 
   # Cursor colors
@@ -209,8 +212,8 @@ colors:
   # Allowed values are CellForeground/CellBackground, which reference the
   # affected cell, or hexadecimal colors like #ff00ff.
   cursor:
-    text: '#2e3440'
-    cursor: '#d8dee9'
+    text: "#2e3440"
+    cursor: "#d8dee9"
     # text: CellBackground
     # cursor: CellForeground
 
@@ -224,8 +227,8 @@ colors:
   #  text: CellBackground
   #  cursor: CellForeground
   vi_mode_cursor:
-    text: '#2e3440'
-    cursor: '#d8dee9'
+    text: "#2e3440"
+    cursor: "#d8dee9"
 
   # Search colors
   #
@@ -235,7 +238,7 @@ colors:
     # affected cell, or hexadecimal colors like #ff00ff.
     matches:
       foreground: CellBackground
-      background: '#88c0d0'
+      background: "#88c0d0"
     #focused_match:
     #  foreground: '#ffffff'
     #  background: '#000000'
@@ -274,8 +277,8 @@ colors:
   # hyperlink URI preview, etc.
   #
   footer_bar:
-    background: '#434c5e'
-    foreground: '#d8dee9'
+    background: "#434c5e"
+    foreground: "#d8dee9"
 
   # Selection colors
   #
@@ -285,45 +288,45 @@ colors:
   # affected cell, or hexadecimal colors like #ff00ff.
   selection:
     text: CellForeground
-    background: '#4c566a'
+    background: "#4c566a"
     # text: CellBackground
     # background: CellForeground
 
   # Normal colors
   normal:
-    black: '#3b4252'
-    red: '#bf616a'
-    green: '#a3be8c'
-    yellow: '#d08770'
-    blue: '#81a1c1'
-    magenta: '#b48ead'
-    cyan: '#88c0d0'
-    white: '#e5e9f0'
+    black: "#3b4252"
+    red: "#bf616a"
+    green: "#a3be8c"
+    yellow: "#d08770"
+    blue: "#81a1c1"
+    magenta: "#b48ead"
+    cyan: "#88c0d0"
+    white: "#e5e9f0"
 
   # Bright colors
   bright:
-    black: '#4c566a'
-    red: '#bf616a'
-    green: '#a3be8c'
-    yellow: '#ebcb8b'
-    blue: '#81a1c1'
-    magenta: '#b48ead'
-    cyan: '#8fbcbb'
-    white: '#eceff4'
+    black: "#4c566a"
+    red: "#bf616a"
+    green: "#a3be8c"
+    yellow: "#ebcb8b"
+    blue: "#81a1c1"
+    magenta: "#b48ead"
+    cyan: "#8fbcbb"
+    white: "#eceff4"
 
   # Dim colors
   #
   # If the dim colors are not set, they will be calculated automatically based
   # on the `normal` colors.
   dim:
-    black: '#373e4d'
-    red: '#94545d'
-    green: '#809575'
-    yellow: '#b29e75'
-    blue: '#68809a'
-    magenta: '#8c738c'
-    cyan: '#6d96a5'
-    white: '#aeb3bb'
+    black: "#373e4d"
+    red: "#94545d"
+    green: "#809575"
+    yellow: "#b29e75"
+    blue: "#68809a"
+    magenta: "#8c738c"
+    cyan: "#6d96a5"
+    white: "#aeb3bb"
 
   # Indexed Colors
   #
@@ -391,7 +394,7 @@ colors:
   # When set to `true`, selected text will be copied to the primary clipboard.
   #save_to_clipboard: false
 
-#cursor:
+cursor:
   # Cursor style
   #style:
     # Cursor shape
@@ -400,7 +403,7 @@ colors:
     #   - ▇ Block
     #   - _ Underline
     #   - | Beam
-    #shape: Block
+    # shape: Block
 
     # Cursor blinking state
     #
@@ -409,7 +412,7 @@ colors:
     #   - Off: Disable blinking by default
     #   - On: Enable blinking by default
     #   - Always: Force the cursor to always blink
-    #blinking: Off
+    # blinking: Never
 
   # Vi mode cursor style
   #
@@ -417,7 +420,7 @@ colors:
   # the style of the active value of the normal cursor.
   #
   # See `cursor.style` for available options.
-  #vi_mode_style: None
+  vi_mode_style: Block
 
   # Cursor blinking interval in milliseconds.
   #blink_interval: 750
@@ -425,7 +428,7 @@ colors:
   # Time after which cursor stops blinking, in seconds.
   #
   # Specifying '0' will disable timeout for blinking.
-  #blink_timeout: 5
+  # blink_timeout: 0
 
   # If this is `true`, the cursor will be rendered as a hollow box when the
   # window is not focused.
@@ -459,7 +462,7 @@ colors:
 #working_directory: None
 
 # Send ESC (\x1b) before characters when alt is pressed.
-#alt_send_esc: true
+# alt_send_esc: true
 
 # Offer IPC using `alacritty msg` (unix only)
 #ipc_socket: true
@@ -480,9 +483,10 @@ colors:
 #
 # Terminal hints can be used to find text or hyperlink in the visible part of
 # the terminal and pipe it to other applications.
-#hints:
+hints:
   # Keys used for the hint labels.
   #alphabet: "jfkdls;ahgurieowpq"
+  alphabet: "ntesiroamglpufyw;q"
 
   # List with all available hints
   #
@@ -513,7 +517,7 @@ colors:
   #       Select the hint's text.
   #   - MoveViModeCursor
   #       Move the vi mode cursor to the beginning of the hint.
-  #enabled:
+  # enabled:
   # - regex: "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)\
   #           [^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`]+"
   #   hyperlinks: true
@@ -767,7 +771,7 @@ colors:
 #
 # If the same trigger is assigned to multiple actions, all of them are executed
 # in the order they were defined in.
-#key_bindings:
+key_bindings:
   #- { key: Paste,                                       action: Paste          }
   #- { key: Copy,                                        action: Copy           }
   #- { key: L,         mods: Control,                    action: ClearLogNotice }
@@ -801,10 +805,10 @@ colors:
   #- { key: V,      mods: Alt,           mode: Vi|~Search, action: ToggleSemanticSelection }
   #- { key: Return,                      mode: Vi|~Search, action: Open                    }
   #- { key: Z,                           mode: Vi|~Search, action: CenterAroundViCursor    }
-  #- { key: K,                           mode: Vi|~Search, action: Up                      }
-  #- { key: J,                           mode: Vi|~Search, action: Down                    }
-  #- { key: H,                           mode: Vi|~Search, action: Left                    }
-  #- { key: L,                           mode: Vi|~Search, action: Right                   }
+  - { key: H, mode: Vi|~Search, action: Up }
+  - { key: K, mode: Vi|~Search, action: Down }
+  - { key: J, mode: Vi|~Search, action: Left }
+  - { key: L, mode: Vi|~Search, action: Right }
   #- { key: Up,                          mode: Vi|~Search, action: Up                      }
   #- { key: Down,                        mode: Vi|~Search, action: Down                    }
   #- { key: Left,                        mode: Vi|~Search, action: Left                    }
@@ -858,6 +862,9 @@ colors:
   #- { key: Return,   mods: Alt,           action: ToggleFullscreen }
 
   # (macOS only)
+  - { key: S, mods: Command|Control|Shift, action: Hide }
+  - { key: Back, mods: Alt, chars: "\x17" }
+  - { key: Back, mods: Command, chars: "\x15" }
   #- { key: K,              mods: Command, mode: ~Vi|~Search, chars: "\x0c"                 }
   #- { key: K,              mods: Command, mode: ~Vi|~Search, action: ClearHistory          }
   #- { key: Key0,           mods: Command,                    action: ResetFontSize         }
@@ -879,6 +886,33 @@ colors:
   #- { key: F,              mods: Command, mode: ~Search,     action: SearchForward         }
   #- { key: B,              mods: Command, mode: ~Search,     action: SearchBackward        }
 
+  # (custom)
+  - { key: A, mods: Alt, chars: "\x1ba" }
+  - { key: B, mods: Alt, chars: "\x1bb" }
+  - { key: C, mods: Alt, chars: "\x1bc" }
+  - { key: D, mods: Alt, chars: "\x1bd" }
+  - { key: E, mods: Alt, chars: "\x1be" }
+  - { key: F, mods: Alt, chars: "\x1bf" }
+  - { key: G, mods: Alt, chars: "\x1bg" }
+  - { key: H, mods: Alt, chars: "\x1bh" }
+  - { key: I, mods: Alt, chars: "\x1bi" }
+  - { key: J, mods: Alt, chars: "\x1bj" }
+  - { key: K, mods: Alt, chars: "\x1bk" }
+  - { key: L, mods: Alt, chars: "\x1bl" }
+  - { key: M, mods: Alt, chars: "\x1bm" }
+  - { key: N, mods: Alt, chars: "\x1bn" }
+  - { key: O, mods: Alt, chars: "\x1bo" }
+  - { key: P, mods: Alt, chars: "\x1bp" }
+  - { key: Q, mods: Alt, chars: "\x1bq" }
+  - { key: R, mods: Alt, chars: "\x1br" }
+  - { key: S, mods: Alt, chars: "\x1bs" }
+  - { key: T, mods: Alt, chars: "\x1bt" }
+  - { key: U, mods: Alt, chars: "\x1bu" }
+  - { key: V, mods: Alt, chars: "\x1bv" }
+  - { key: W, mods: Alt, chars: "\x1bw" }
+  - { key: X, mods: Alt, chars: "\x1bx" }
+  - { key: Y, mods: Alt, chars: "\x1by" }
+  - { key: Z, mods: Alt, chars: "\x1bz" }
 #debug:
   # Display the time it takes to redraw each frame.
   #render_timer: false

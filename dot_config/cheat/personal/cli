@@ -1,9 +1,8 @@
-tools
-
 # INSTALLED & CONFIGURED
 asdf: version manager
 bat: (cat alt)
 btm (bottom): (top alt)
+chezmoi: dotfile manager
 delta (git-delta): git pager
 dog: DNS lookup utility (dig alt)
 dust: dist space (du alt)
@@ -13,11 +12,13 @@ fd : (find alt)
 fuck: command correction
 glow: markdown renderer
 http (httpie): (curl alt)
+hyperfine: benchmarking
 mosh: (ssh alt)
 pandoc: document format converter
 rg (ripgrep): (grep alt) 
-watchman: watch files and take action
+sd: find & replace (sed alt)
 vidir
+watchman: watch files and take action
 z (zoxide): (cd alt)
 
 zstd: compress
@@ -36,20 +37,17 @@ yq: yaml processor
 htmlq: html processor
 xsv: CSV tool
 
-# TODO: CONFIGURE
-
-# TODO
-chezmoi: dotfile manager
+# Not needed
 yabai: tiling window manager
 skhd: keyboard shortcut manager
 amethyst
+
+# TODO
 gpg: encryption
 age: encryption
 plocate: (locate alt)
-vidir
 direnv: env var depending on pwd
 duf: disk space util (df alt)
-sd: find & replace (sed alt)
 pgcli: psql alt
 miller: awk, sed, cut, join, and sort
 hexyl: dump hex

@@ -1,2 +1,3 @@
 LICENSE
-.config/nvim/plugin/packer_compiled.lua
+.config/nvim/lazy-lock.json
+**/*/.luarc.json

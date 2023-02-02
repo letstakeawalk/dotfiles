@@ -44,7 +44,7 @@ opt.backup = false -- backup
 opt.shortmess:append({ c = true })
 opt.history = 2000 -- num history to cache
 opt.timeoutlen = 300 -- used to be 500
-opt.updatetime = 50 -- for CursorHold aucmd 
+opt.updatetime = 50 -- for CursorHold aucmd
 opt.scrolloff = 8 -- no line to keep above/below the cursor
 -- opt.completeopt    = { 'menu', 'menuone', 'noselect', 'preview' } -- nvim-cmp handles. no need here?
 
@@ -83,7 +83,7 @@ local tabsize_four = function()
 end
 vim.api.nvim_create_autocmd({ "FileType" }, {
 	group = vim.api.nvim_create_augroup("TabsizeFour", {}),
-	pattern = { "python", "rust", "c", "cpp"},
+	pattern = { "python", "rust", "c", "cpp" },
 	callback = tabsize_four,
 })
 
@@ -102,23 +102,11 @@ if vim.fn.has("unnamedplus") == 1 then
 	opt.clipboard:append({ "unnamedplus" })
 end
 
--- chezmoi auto apply
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-	group = vim.api.nvim_create_augroup("ChezmoiChange", {}),
-	pattern = { vim.env.XDG_DATA_HOME .. "/chezmoi/*" },
+	group = vim.api.nvim_create_augroup("ChezmoiAdd", {}),
+	pattern = { vim.env.XDG_CONFIG_HOME .. "/nvim/**/*.lua" },
 	callback = function(args)
-		if args.file:match("COMMIT_EDITMSG") == nil then
-			vim.cmd([[!chezmoi apply --source-path "%"]])
-		end
-	end,
-})
-
--- chezmoi respective filetype
-vim.api.nvim_create_autocmd({ "BufEnter" }, {
-	group = vim.api.nvim_create_augroup("ChezmoiZshrc", {}),
-	pattern = "dot_zshrc",
-	callback = function()
-		vim.opt.filetype = "zsh"
+		vim.cmd([[!chezmoi add "%"]])
 	end,
 })
 
@@ -127,25 +115,6 @@ if vim.fn.has("termguicolors") == 1 then
 	opt.termguicolors = true
 end
 opt.background = "dark"
-cmd.colorscheme("nord")
-vim.g.nord_cursor_line_number_background = 1
-vim.g.nord_uniform_diff_background = 1
-vim.g.nord_bold = 1
-vim.g.nord_italic = 1
-vim.g.nord_italic_comments = 1
-vim.g.nord_underline = 1
--- hi CursorlineNr guibg=#3B4252
-
-local nord = require("HRB.nord")
-vim.api.nvim_set_hl(0, "Italic", { italic = true })
-vim.api.nvim_set_hl(0, "Comment", { italic = true, default = true })
-vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" })
-vim.api.nvim_set_hl(0, "FloatTitle", { fg = nord.c09 })
-vim.api.nvim_set_hl(0, "FloatBorder", { fg = nord.c03_br })
-vim.api.nvim_set_hl(0, "TabLine", { fg = nord.c04, bg = nord.c01, sp = nord.c11 })
-vim.api.nvim_set_hl(0, "TabLineSel", { fg = nord.c04, bg = nord.c11, sp = nord.c11 })
-vim.api.nvim_set_hl(0, "TabLineFill", { fg = nord.c04, bg = nord.c01, sp = nord.c11 })
-vim.api.nvim_set_hl(0, "Folded", { fg = nord.c03, bg = nord.c01, bold = false })
 
 -- TODO: LessInitFunc :h less
 -- TODO: comment continuation -> discontinue on empty comment

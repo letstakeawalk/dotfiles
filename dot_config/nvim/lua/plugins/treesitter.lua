@@ -1,6 +1,5 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
-	lazy = false,
 	dependencies = {
 		"nvim-treesitter/nvim-treesitter-context", -- code context winbar
 		"nvim-treesitter/nvim-treesitter-textobjects", -- treesitter module
@@ -9,44 +8,23 @@ return {
 		"RRethy/nvim-treesitter-endwise", -- endwise lua, ruby, etc
 		"windwp/nvim-ts-autotag", -- auto closes tags for html, react, etc
 	},
+	event = "BufReadPost",
 	build = function()
 		require("nvim-treesitter.install").update({ with_sync = true })
 	end,
 	config = function()
+    -- TODO: incremental selection???
 		require("nvim-treesitter.configs").setup({
-			-- One of "all", "maintained" (parsers with maintainers), or a list of languages
-			ensure_installed = {
-				"bash",
-				"c",
-				"c_sharp",
-				"cmake",
-				"comment",
-				"cpp",
-				"css",
-				"dockerfile",
-				"gitattributes",
-				"gitcommit",
-				"gitignore",
-				"go",
-				"html",
-				"java",
-				"javascript",
-				"json",
-				"jsonc",
-				"latex",
-				"lua",
-				"markdown",
-				"markdown_inline",
-				"norg",
-				"python",
-				"ruby",
-				"rust",
-				"sql",
-				"typescript",
-				"vim",
-				"yaml",
-				-- "kotlin",
-			},
+      -- One of "all", "maintained" (parsers with maintainers), or a list of languages
+      -- stylua: ignore
+      ensure_installed = {
+        "bash", "c", "cpp", "c_sharp", "cmake", "css", "dockerfile", 
+        "gitattributes", "gitcommit", "gitignore", "git_rebase", "go", 
+        "html", "java", "javascript", "json", "jsonc", "kotlin",
+        "latex", "lua", "markdown", "markdown_inline", "norg", "python",
+        "ron", -- rust object notation "ruby", "rust", "sql", "toml",
+        "typescript", "vim", "yaml", "help", "jq", "make", "regex", "scss", "vue",
+      },
 
 			-- Install languages synchronously (only applied to `ensure_installed`)
 			sync_install = false,
@@ -88,7 +66,8 @@ return {
 						["il"] = "@loop.inner",
 						["aP"] = "@parameter.outer",
 						["iP"] = "@parameter.inner",
-						-- ["cm"] = "@comment.outer",
+						["cm"] = "@comment.outer",
+						-- @block.outer inner
 					},
 				},
 				move = {
@@ -127,8 +106,8 @@ return {
 				},
 				swap = {
 					enable = true,
-					swap_next = { ["<leader>rs"] = "@parameter.inner" },
-					swap_previous = { ["<leader>rS"] = "@parameter.inner" },
+					swap_next = { ["<leader>rk"] = "@parameter.inner" },
+					swap_previous = { ["<leader>rh"] = "@parameter.inner" },
 				},
 			},
 
@@ -165,17 +144,18 @@ return {
 
 		-- vim.opt.foldmethod     = 'expr'
 		-- vim.opt.foldexpr       = 'nvim_treesitter#foldexpr()'
+		-- vim.opt.foldenable     = false
 		---WORKAROUND TODO: make this work only for markdown
-		-- vim.api.nvim_create_autocmd({ "BufEnter", "BufAdd", "BufNew", "BufNewFile", "BufWinEnter" }, {
-		-- 	group = vim.api.nvim_create_augroup("TS_FOLD_WORKAROUND", {}),
-		-- 	pattern = "*.md",
-		-- 	callback = function()
-		-- 		vim.opt.foldmethod = "expr"
-		-- 		vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-		-- 		vim.opt.foldenable = true
-		-- 		-- vim.opt.foldenable = false
-		-- 	end,
-		-- })
+		vim.api.nvim_create_autocmd({ "FileType" }, {
+			group = vim.api.nvim_create_augroup("TS_FOLD_WORKAROUND", {}),
+			pattern = "markdown",
+			callback = function()
+				vim.opt.foldmethod = "expr"
+				vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+				vim.opt.foldenable = true
+				-- vim.opt.foldenable = false
+			end,
+		})
 		---ENDWORKAROUND
 	end,
 }

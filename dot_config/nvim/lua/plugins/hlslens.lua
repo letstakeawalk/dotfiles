@@ -4,7 +4,7 @@ return {
 	event = "VeryLazy",
 	config = function()
 		-- https://github.com/kevinhwang91/nvim-hlslens
-		require("hlslens").setup()
+		require("hlslens").setup({ calm_down = true })
 
 		local opts = function(desc)
 			return { noremap = true, silent = true, desc = desc }

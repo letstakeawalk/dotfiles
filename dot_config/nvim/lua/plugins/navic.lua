@@ -69,7 +69,7 @@ return {
 		})
 
 		--
-		local nord = require("HRB.nord")
+		local nord = require("utils").nord
 		-- vim.api.nvim_set_hl(0, "WinBar",                  { default = true, bg = nord.c01 })
 		vim.api.nvim_set_hl(0, "NavicIconsFile", { default = true, fg = nord.c04_dk01 })
 		vim.api.nvim_set_hl(0, "NavicIconsModule", { default = true, fg = nord.c04_dk01 })

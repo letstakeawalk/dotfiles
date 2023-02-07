@@ -1,13 +1,13 @@
 return {
 	"nvim-lualine/lualine.nvim",
-	lazy = false,
+  event = "VeryLazy",
 	config = function()
 		local function location()
 			return ":%l/%L :%-2v"
 		end
 
 		local lualine = require("lualine")
-		local nord = require("HRB.nord")
+		local nord = require("utils").nord
 		local nord_theme = require("lualine.themes.nord")
 		nord_theme.normal.a.bg = nord.c09
 		nord_theme.normal.b.bg = nord.c03

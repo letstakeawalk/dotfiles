@@ -1,29 +1,39 @@
 return {
 	"neovim/nvim-lspconfig",
 	dependencies = {
+		"folke/neodev.nvim",
 		-- "kevinhwang91/nvim-ufo",
 	},
-	lazy = false,
-	-- enabled = false,
+	event = "BufReadPre",
 	config = function()
-		-- https://github.com/neovim/nvim-lspconfig
+		require("neodev").setup() -- important to setup before lspconfig
 		local lsp_config = require("lspconfig")
 
-		-- See `:help vim.diagnostic.*` for documentation on any of the below functions
-		local getOpts = function(desc)
-			return { noremap = true, silent = true, desc = desc }
+		local function diagnostic_goto(next, severity)
+			local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
+			severity = severity and vim.diagnostic.severity[severity] or nil
+			return function()
+				go({ severity = severity })
+			end
 		end
 
-		vim.keymap.set("n", "E", vim.diagnostic.open_float, getOpts("Open Float"))
-		vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, getOpts("Goto previous diagnostic"))
-		vim.keymap.set("n", "]d", vim.diagnostic.goto_next, getOpts("Goto next diagnostic"))
-		vim.keymap.set("n", "<leader>rf", vim.lsp.buf.format, getOpts("Format File"))
+    -- See `:help vim.diagnostic.*` for documentation on any of the below functions
+    -- stylua: ignore start
+    vim.keymap.set("n", "E", vim.diagnostic.open_float, { desc = "Open Float" })
+    vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Goto previous diagnostic" })
+    vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Goto next diagnostic" })
+    vim.keymap.set("n", "]e", diagnostic_goto(true, "ERROR"), { desc = "Goto next error" })
+    vim.keymap.set("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Goto previous error" })
+    vim.keymap.set("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Goto next warning" })
+    vim.keymap.set("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Goto previous warning" })
+    vim.keymap.set("n", "<leader>rf", function() vim.lsp.buf.format({ async = true }) end, { desc = "Format File" })
+    vim.keymap.set("n", "<leader>dq", vim.diagnostic.setloclist, { desc = "Add diagnostics to location list" })
+    vim.keymap.set("n", "<leader>de", vim.diagnostic.enable, { silent = true, desc = "Show diagnostic" })
+    vim.keymap.set("n", "<leader>dd", vim.diagnostic.disable, { silent = true, desc = "Hide diagnostic" })
 		-- vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)  -- ??
+		-- stylua: ignore end
 
-		-- Use an on_attach function to only map the following keys
-		-- after the language server attaches to the current buffer
-		local on_attach = function(client, bufnr)
-			-- Mappings.
+		local on_attach = function(_, bufnr)
 			-- See `:help vim.lsp.*` for documentation on any of the below functions
 			local bufopts = function(desc)
 				return { noremap = true, silent = true, buffer = bufnr, desc = desc }
@@ -31,7 +41,7 @@ return {
 			vim.keymap.set("n", "H", vim.lsp.buf.signature_help, bufopts("Display Signature Help"))
 			vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts("Display Hover Info"))
 			vim.keymap.set("n", "T", vim.lsp.buf.type_definition, bufopts("Display Type Definition"))
-			vim.keymap.set("n", "<leader>ra", vim.lsp.buf.code_action, bufopts("Code Action"))
+			vim.keymap.set({ "n", "v" }, "<leader>ra", vim.lsp.buf.code_action, bufopts("Code Action"))
 			vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, bufopts("Rename"))
 		end
 
@@ -63,24 +73,17 @@ return {
 							autoSearchPaths = true,
 							useLibraryCodeForTypes = true,
 							diagnosticMode = "workspace",
-							-- custom value
 							typeCheckingMode = "off", -- let mypy handle type checking
 							diagnosticSeverityOverrides = {
-								-- https://github.com/microsoft/pyright/blob/main/docs/configuration.md
-								-- "error," "warning," "information," "true," "false," or "none"
-								reportUndefinedVariable = "none",
+								reportUndefinedVariable = "none", -- "error," "warning," "information," "true," "false," or "none"
 							},
 						},
 					},
-					pyright = {
-						disableOrganizeImports = true,
-					},
+					pyright = { disableOrganizeImports = true },
 				},
 				handlers = {
 					["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
-						-- filter Hints
-						-- https://github.com/neovim/nvim-lspconfig/issues/726#issuecomment-1075539112
-						-- https://github.com/neovim/neovim/issues/17757#issuecomment-1073266618
+						-- filter out Hint diagnostics
 						local filtered_diags = {}
 						for _, diag in pairs(result.diagnostics) do
 							if diag.severity ~= vim.lsp.protocol.DiagnosticSeverity.Hint then
@@ -90,25 +93,23 @@ return {
 						result.diagnostics = filtered_diags
 						vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx, config)
 					end,
-					-- disable diagnostics for pyright type checker; let null-ls(mypy) handle them.
-					-- ['textDocument/publishDiagnostics'] = function(...) end
 				},
 			},
 
 			-- typescript
 			tsserver = {
 				commands = {
-					OrganizeImports = {
-						function()
-							local params = {
-								command = "_typescript.organizeImports",
-								arguments = { vim.api.nvim_buf_get_name(0) },
-								title = "",
-							}
-							vim.lsp.buf.execute_command(params)
-						end,
-						description = "Organize Imports",
-					},
+					-- OrganizeImports = {
+					-- 	function()
+					-- 		local params = {
+					-- 			command = "_typescript.organizeImports",
+					-- 			arguments = { vim.api.nvim_buf_get_name(0) },
+					-- 			title = "",
+					-- 		}
+					-- 		vim.lsp.buf.execute_command(params)
+					-- 	end,
+					-- 	description = "Organize Imports",
+					-- },
 				},
 			},
 
@@ -118,9 +119,7 @@ return {
 				settings = {
 					Lua = {
 						runtime = {
-							-- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
 							version = "LuaJIT",
-							-- path = runtime_path, -- Setup your lua path
 						},
 						diagnostics = {
 							globals = { "vim" }, -- Get the language server to recognize the `vim` global
@@ -153,6 +152,7 @@ return {
 		--------------------------------------------------------------------------------
 		-- https://github.com/neovim/nvim-lspconfig/wiki/UI-customization#borders
 		local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
+		---@diagnostic disable-next-line: duplicate-set-field
 		function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
 			opts = opts or {}
 			opts.border = opts.border or "rounded"
@@ -190,3 +190,8 @@ return {
 		-- vim.lsp.set_log_level("debug") -- set this then run :LspInfo
 	end,
 }
+
+-- TODO:
+-- https://github.com/aca/emmet-ls
+-- https://github.com/charliermarsh/ruff-lsp/
+-- https://github.com/sqlfluff/sqlfluff

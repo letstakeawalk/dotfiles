@@ -1,6 +1,10 @@
 return {
-	"kazhala/close-buffers.nvim",
-  keys = "<C-q>",
+	"kazhala/close-buffers.nvim", -- preserve window layout with bdelete/bwipeout
+  cmd = "BDelete",
+	keys = {
+		{ "<leader>qo", "<cmd>BWipeout other<cr>", desc = "Close other buffers" },
+		{ "<leader>qt", "<cmd>BWipeout this<cr>", desc = "Close this buffer" },
+	},
 	config = function()
 		local cb = require("close_buffers")
 		cb.setup({
@@ -11,8 +15,8 @@ return {
 			next_buffer_cmd = nil, -- Custom function to retrieve the next buffer when preserving window layout
 		})
 
-		vim.keymap.set("n", "<C-q>", "<cmd>q<cr>", { desc = "Quit buffer" })
-		vim.keymap.set("n", "<C-q><C-a>", "<cmd>BDelete other<cr>", { desc = "Close other buffers" })
-		vim.keymap.set("n", "<C-q><C-q>", "<cmd>BDelete this<cr>", { desc = "Close this buffer" })
 	end,
-} -- preserve window layout with bdelete/bwipeout
+}
+
+-- similar projects
+-- use { 'famiu/bufdelete.nvim' } -- delete buffer while preserving window layout

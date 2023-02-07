@@ -1,6 +1,6 @@
 return {
 	"RRethy/vim-illuminate", -- highlight word under cursor using lsp,ts or regex
-	event = "VeryLazy",
+	event = "BufReadPost",
 	config = function()
 		-- default configuration
 		require("illuminate").configure({
@@ -8,7 +8,7 @@ return {
 			providers = {
 				"lsp",
 				"treesitter",
-				"regex",
+				-- "regex",
 			},
 			-- delay: delay in milliseconds
 			delay = 500,
@@ -50,7 +50,7 @@ return {
 			min_count_to_highlight = 2,
 		})
 
-		local nord = require("HRB.nord")
+		local nord = require("utils").nord
 		vim.api.nvim_set_hl(0, "IlluminatedWordText", { bg = nord.c02 })
 		vim.api.nvim_set_hl(0, "IlluminatedWordRead", { bg = nord.c02 })
 		vim.api.nvim_set_hl(0, "IlluminatedWordWrite", { bg = nord.c02 })

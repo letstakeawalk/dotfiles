@@ -1,8 +1,8 @@
 return {
 	"akinsho/bufferline.nvim",
-	lazy = false,
+  event = "VeryLazy",
 	config = function()
-		local nord = require("HRB.nord")
+		local nord = require("utils").nord
 
 		local c = {
 			background = nord.c00_dk0,
@@ -27,7 +27,7 @@ return {
 			duplicate = { bg = c.tab_bg },
 			-- active tab
 			buffer_selected = { bg = c.tab_sel_bg, italic = false }, -- active tab
-			indicator_selected = { sp = "red" }, -- does not work for some reason
+			indicator_selected = { fg = c.indicator}, -- does not work for some reason
 			separator_selected = { bg = c.tab_sel_bg, fg = c.background },
 			diagnostic_selected = { bg = c.tab_sel_bg },
 			hint_selected = { bg = c.tab_sel_bg, italic = false },
@@ -57,7 +57,7 @@ return {
 				diagnostics = "nvim_lsp",
 				show_buffer_close_icons = true,
 				show_close_icon = false,
-				separator_style = "slant",
+				separator_style = "thick",
 				-- indicator = { style = 'underline' },
 				offsets = {
 					{
@@ -68,6 +68,7 @@ return {
 					},
 				},
 			},
+			highlights = highlight,
 			-- regular separator config
 			-- https://github.com/ratheesh/dot-nvim/blob/main/nvim/nvim/lua/plugins/bufferline.lua
 			-- highlights = {
@@ -92,7 +93,6 @@ return {
 			--   error_selected = { italic = false },
 			-- }
 			-- slant separator config
-			highlights = highlight,
 		})
 
 		-- TODO: groups

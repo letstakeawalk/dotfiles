@@ -15,7 +15,7 @@ return {
 		"L3MON4D3/LuaSnip",
 		"saadparwaiz1/cmp_luasnip",
 	},
-	event = {"InsertEnter", "CmdlineEnter"},
+	event = { "InsertEnter", "CmdlineEnter" },
 	config = function()
 		local cmp = require("cmp")
 		local luasnip = require("luasnip")
@@ -101,12 +101,29 @@ return {
 				{ name = "luasnip" },
 				{ name = "nvim_lua" },
 				{ name = "buffer" },
+				{ name = "neorg" },
 			}),
 		})
 
 		-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
 		cmp.setup.cmdline(":", {
 			mapping = {
+				["<C-k>"] = {
+					c = function() -- select next suggestion
+						if not cmp.visible() then
+							cmp.complete()
+						end
+						cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+					end,
+				},
+				["<C-h>"] = {
+					c = function() -- select prev suggestion
+						if not cmp.visible() then
+							cmp.complete()
+						end
+						cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+					end,
+				},
 				["<C-n>"] = {
 					c = function() -- select next suggestion
 						if not cmp.visible() then
@@ -153,7 +170,6 @@ return {
 				{ name = "path" },
 			}, {
 				{ name = "cmdline" },
-				{ name = "neorg" },
 			}),
 		})
 
@@ -181,5 +197,8 @@ return {
 
 		vim.api.nvim_set_hl(0, "CmpItemKindClass", { fg = "#C586C0" })
 		vim.api.nvim_set_hl(0, "CmpItemKindModule", { fg = "#C586C0" })
+
+		-- TODO: notable sources
+		-- https://github.com/jcha0713/cmp-tw2css
 	end,
 }

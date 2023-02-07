@@ -1,83 +1,58 @@
 return {
-	"jose-elias-alvarez/null-ls.nvim", -- injectable language server
-	dependencies = { "neovim/nvim-lspconfig" },
-	event = "BufReadPre",
-	config = function()
-		-- https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
-		local null_ls = require("null-ls")
-		local util = require("lspconfig/util")
-		-- local methods = require("null-ls.methods")
-		-- local helpers = require("null-ls.helpers")
-		--
-		-- local function ruff_fix()
-		-- 	return helpers.make_builtin({
-		-- 		name = "ruff",
-		-- 		meta = {
-		-- 			url = "https://github.com/charliermarsh/ruff/",
-		-- 			description = "An extremely fast Python linter, written in Rust.",
-		-- 		},
-		-- 		method = methods.internal.FORMATTING,
-		-- 		filetypes = { "python" },
-		-- 		generator_opts = {
-		-- 			command = "ruff",
-		-- 			args = { "--fix", "-e", "-n", "--stdin-filename", "$FILENAME", "-" },
-		-- 			to_stdin = true,
-		-- 		},
-		-- 		factory = helpers.formatter_factory,
-		-- 	})
-		-- end
+  "jose-elias-alvarez/null-ls.nvim", -- injectable language server
+  dependencies = { "neovim/nvim-lspconfig" },
+  event = "BufReadPre",
+  config = function()
+    -- https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
+    local null_ls = require("null-ls")
 
-		null_ls.setup({
-			debug = false,
-			root_dir = util.root_pattern(".git", "pyproject.toml", "Pipfile"),
-			sources = {
-				-- code action
-				null_ls.builtins.code_actions.eslint, -- js, ts
-				-- null_ls.builtins.code_actions.gitsigns, -- gitsign.nvim
+    null_ls.setup({
+      debug = false,
+      sources = {
+        -- ts / ts
+        null_ls.builtins.formatting.prettierd, -- js,ts,css,html,json,yaml,md,etc
+        null_ls.builtins.formatting.rustywind, -- tailwindcss
 
-				-- diagnostics
-				null_ls.builtins.diagnostics.eslint, -- js, ts
-				null_ls.builtins.diagnostics.gitlint, -- git commit msg
-				null_ls.builtins.diagnostics.hadolint, -- docker
-				-- null_ls.builtins.diagnostics.write_good, -- english
-				-- null_ls.builtins.diagnostics.markdownlint, -- markdown
+        -- python
+        null_ls.builtins.diagnostics.mypy, -- type checker
+        null_ls.builtins.diagnostics.pylint, -- linter
+        null_ls.builtins.diagnostics.ruff, --
+        null_ls.builtins.formatting.ruff, --
+        null_ls.builtins.formatting.isort, -- formatter: imports
+        null_ls.builtins.formatting.black.with({ command = "blackd-client", args = {} }), -- formatter: style
+        -- null_ls.builtins.diagnostics.pydocstyle, -- linter: doc
+        -- null_ls.builtins.diagnostics.bandit,  -- check back later for PR
 
-				-- formatting
-				null_ls.builtins.formatting.prettier, -- etc
-				null_ls.builtins.formatting.stylua, -- lua
-				null_ls.builtins.formatting.taplo, -- toml
-				null_ls.builtins.formatting.rustfmt, -- rust
-				-- null_ls.builtins.formatting.rustywind,
+        -- lua
+        null_ls.builtins.diagnostics.selene,
+        null_ls.builtins.formatting.stylua,
 
-				-- python
-				-- ruff_fix(),
-				null_ls.builtins.diagnostics.ruff, -- linter
-				null_ls.builtins.diagnostics.mypy, -- type checker
-				null_ls.builtins.diagnostics.pylint, -- linter
-				null_ls.builtins.formatting.black, -- formatter: style
-				null_ls.builtins.formatting.isort, -- formatter: import statment
-				-- null_ls.builtins.diagnostics.bandit,  -- check back later for PR
+        -- etc
+        null_ls.builtins.diagnostics.gitlint, -- gitcommit
+        null_ls.builtins.diagnostics.hadolint, -- docker
+        null_ls.builtins.diagnostics.sqlfluff, -- sql
+        null_ls.builtins.formatting.jq, -- json
+        null_ls.builtins.code_actions.gitsigns, -- gitsign.nvim
+        null_ls.builtins.diagnostics.shellcheck, -- bash
+        null_ls.builtins.formatting.shfmt, -- bash
+        -- null_ls.builtins.code_actions.refactoring -- thePrimeagen
+        -- null_ls.builtins.diagnostics.write_good, -- english
+        -- null_ls.builtins.diagnostics.markdownlint, -- markdown
+        -- null_ls.builtins.diagnostics.commitlint, -- gitcommit
+        -- null_ls.builtins.code_actions.cspell,
+        -- null_ls.builtins.diagnostics.cspell,
 
-				-- sql
-				-- null_ls.builtins.formatting.sqlformat, -- TODO need python 3.9
-				-- null_ls.builtins.diagnostics.sqlfluff.with({
-				-- 	extra_args = { "--dialect", "ansi" }, -- postgres
-				-- }),
-				-- null_ls.builtins.formatting.sqlfluff.with({
-				-- 	extra_args = { "--dialect", "ansi" }, -- "postgres"
-				-- }),
+        -- ruby
+        -- null_ls.builtins.diagnostics.rubocop,
+        -- null_ls.builtins.formatting.rubocop,
 
-				-- ruby
-				-- null_ls.builtins.diagnostics.rubocop,
-				-- null_ls.builtins.formatting.rubocop,
-
-				-- future checkout
-				-- terrafmt
-				-- dprint
-			},
-			-- diagnostics_format = "#{m} [#{c}]",
-			diagnostics_format = "#{m}",
-			-- diagnostics_format = "#{m} [#{c}] (#{s})",
-		})
-	end,
+        -- future checkout
+        -- terrafmt
+        -- dprint
+      },
+      -- diagnostics_format = "#{m} [#{c}]",
+      diagnostics_format = "#{m}",
+      -- diagnostics_format = "#{m} [#{c}] (#{s})",
+    })
+  end,
 }

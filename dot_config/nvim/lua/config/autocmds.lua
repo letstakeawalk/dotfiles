@@ -45,10 +45,11 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
 	end,
 })
 
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "gitcommit", "markdown" },
-	callback = function()
-		vim.opt_local.wrap = true
-		vim.opt_local.spell = true
-	end,
-})
+-- -- set spell on txt, md, tex, gitcommit ft
+-- vim.api.nvim_create_autocmd("FileType", {
+-- 	pattern = { "gitcommit", "markdown" },
+-- 	callback = function()
+-- 		vim.opt_local.wrap = true
+-- 		vim.opt_local.spell = true
+-- 	end,
+-- })

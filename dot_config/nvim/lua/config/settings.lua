@@ -3,7 +3,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.g.python3_host_prog = "/opt/homebrew/bin/python3.11"
 
-vim.cmd.syntax("on")
+-- vim.cmd.syntax("on") -- ???
 local opt = vim.opt
 opt.backspace = { "indent", "eol", "start" } -- Intuitive backspacing in insert mode
 opt.backup = false -- backup
@@ -80,4 +80,3 @@ vim.cmd.iabbr("STring", "String")
 
 -- TODO: LessInitFunc :h less
 -- TODO: comment continuation -> discontinue on empty comment
--- TODO: autocmd widh autogroup -> set spell on txt, md, tex, gitcommit ft

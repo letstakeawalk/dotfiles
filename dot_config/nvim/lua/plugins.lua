@@ -1,31 +1,24 @@
 return {
-	"nvim-lua/plenary.nvim",
+  "nvim-lua/plenary.nvim",
 
-	-- ui
-	{ "kyazdani42/nvim-web-devicons", lazy = true },
+  -- ui
+  { "kyazdani42/nvim-web-devicons", lazy = true },
 
-	-- General
-	{ "tpope/vim-abolish", event = "VeryLazy" }, -- easily search, substitute, abbr multiple variants of a word
-	{ "tpope/vim-repeat", event = "VeryLazy" }, -- enable repeating supported plugin maps with `.`
-	{ "wellle/targets.vim", event = "VeryLazy" }, -- various textobjects
+  -- General
+  { "tpope/vim-abolish", event = "VeryLazy" }, -- easily search, substitute, abbr multiple variants of a word
+  { "tpope/vim-repeat", event = "VeryLazy" }, -- enable repeating supported plugin maps with `.`
+  { "wellle/targets.vim", event = "VeryLazy" }, -- various textobjects
 
-	-- TODO:
-	-- https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
-	-- https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
-	-- https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
-	-- mason
-	-- nui
-	-- https://github.com/folke/noice.nvim
-	-- https://github.com/cshuaimin/ssr.nvim
-	-- https://github.com/nvim-pack/nvim-spectre
+  -- TODO:
+  -- https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
+  -- https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
+  -- https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
+  -- mason
+  -- nui
+  -- https://github.com/folke/noice.nvim
+  -- https://github.com/cshuaimin/ssr.nvim
+  -- https://github.com/nvim-pack/nvim-spectre
 }
-
--- "███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗",
--- "████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║",
--- "██╔██╗ ██║ █████╗  ██║   ██║ ██║   ██║ ██║ ██╔████╔██║",
--- "██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║",
--- "██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║",
--- "╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝",
 
 -- TODO
 -- use { "mfussenegger/nvim-dap" } -- NOTE: Debug -> https://github.com/mfussenegger/nvim-dap

@@ -44,7 +44,7 @@ map("s", "<BS>", "<BS>i") -- delete selection and stay in INSERT
 map("n", "J", "mzJ`z", { desc = "Join lines" }) -- join lines while preserving cursor pos
 map("x", "p", '"_dP') -- "greatest remap ever" by theprimeage
 map("i", "<C-f>", "<Del>") -- delete char
-map("n", "<leader>S", ":%s/<C-r><C-w>/<C-r><C-w>/gI<Left><Left><Left>", { desc = "Substitude word under cursor" }) -- substitute word under cursor
+-- map("n", "<leader>S", ":%s/<C-r><C-w>/<C-r><C-w>/gI<Left><Left><Left>", { desc = "Substitude word under cursor" }) -- substitute word under cursor
 map("n", "<leader>xX", "<cmd>!chmod +x %<cr>", { silent = true, desc = "chmod +x" })
 
 --- Colemak-dhm --------------------------------
@@ -75,9 +75,9 @@ map("v", "<A-h>", ":m '<-2<CR>gv=gv")
 
 --- Functions ------------------------------------
 -- remove whitespace
--- TODO redo with nvim_win_get_cursor(0)
-vim.cmd([[
-  nnoremap <leader>rw :let _save_pos=getpos(".") <Bar>
+-- stylua: ignore
+map("n", "<leader>rw", [[
+:let _save_pos=getpos(".") <Bar>
       \ :let _s=@/ <Bar>
       \ :%s/\s\+$//e <Bar>
       \ :let @/=_s <Bar>
@@ -88,20 +88,20 @@ vim.cmd([[
 ]])
 
 -- unimpaired
-local function paste_blank_line(line)
+local function add_blank_line(line)
   vim.api.nvim_buf_set_lines(0, line, line, true, { "" })
 end
 
-local function paste_blank_line_above()
-  paste_blank_line(vim.fn.line(".") - 1)
+local function add_blank_line_above()
+  add_blank_line(vim.fn.line(".") - 1)
 end
 
-local function paste_blank_line_below()
-  paste_blank_line(vim.fn.line("."))
+local function add_blank_line_below()
+  add_blank_line(vim.fn.line("."))
 end
 
-map("n", "]<Space>", paste_blank_line_below)
-map("n", "[<Space>", paste_blank_line_above)
+map("n", "]<Space>", add_blank_line_below, { desc = "Add line below" })
+map("n", "[<Space>", add_blank_line_above, { desc = "Add line above" })
 
 -- python 3.10+ syntax
 local function future_typing()

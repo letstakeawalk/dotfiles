@@ -5,6 +5,8 @@ return {
 		local alpha = require("alpha")
 
 		-- TODO: add button menus
+    -- File explorer SPC e
+    -- Search File SPC f
 
 		local function header_hl_today()
 			local wday = os.date("*t").wday
@@ -100,3 +102,12 @@ return {
 
 -- reference
 -- https://github.com/AllanChain/custom-chad/blob/main/plugins/alpha.lua
+
+
+-- "███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗",
+-- "████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║",
+-- "██╔██╗ ██║ █████╗  ██║   ██║ ██║   ██║ ██║ ██╔████╔██║",
+-- "██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║",
+-- "██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║",
+-- "╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝",
+

@@ -66,7 +66,7 @@ return {
 						["il"] = "@loop.inner",
 						["aP"] = "@parameter.outer",
 						["iP"] = "@parameter.inner",
-						["cm"] = "@comment.outer",
+						["am"] = "@comment.outer",
 						-- @block.outer inner
 					},
 				},

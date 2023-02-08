@@ -1,7 +1,7 @@
 return {
   "jose-elias-alvarez/null-ls.nvim", -- injectable language server
   dependencies = { "neovim/nvim-lspconfig" },
-  event = "BufReadPre",
+  event = { "BufReadPre", "BufNewFile" },
   config = function()
     -- https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
     local null_ls = require("null-ls")
@@ -50,9 +50,11 @@ return {
         -- terrafmt
         -- dprint
       },
-      -- diagnostics_format = "#{m} [#{c}]",
-      diagnostics_format = "#{m}",
-      -- diagnostics_format = "#{m} [#{c}] (#{s})",
+      diagnostics_format = "#{m}", -- #{<m,c,s>}
+      border = "double",
     })
+
+    vim.keymap.set("n", "<leader>in", "<cmd>NullLsInfo<cr>", { desc = "Null-ls Info" })
+    vim.api.nvim_set_hl(0, "NullLsInfoBorder", { link = "FloatBorder" })
   end,
 }

@@ -4,12 +4,12 @@ return {
     dependencies = "williamboman/mason-lspconfig.nvim",
     cmd = "Mason",
     keys = {
-      { "<leader>M", "<cmd>Mason<cr>", desc = "Mason" },
+      { "<leader>im", "<cmd>Mason<cr>", desc = "Mason" },
     },
     config = function()
       require("mason").setup({
         ui = {
-          border = "rounded",
+          border = "double",
           icons = {
             package_installed = "✓",
             package_pending = "",
@@ -41,24 +41,31 @@ return {
         end
       end
 
-          -- See `:help vim.diagnostic.*` for documentation on any of the below functions
-          -- stylua: ignore start
-          vim.keymap.set("n", "E", vim.diagnostic.open_float, { desc = "Open Float" })
-          vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Goto previous diagnostic" })
-          vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Goto next diagnostic" })
-          vim.keymap.set("n", "]e", diagnostic_goto(true, "ERROR"), { desc = "Goto next error" })
-          vim.keymap.set("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Goto previous error" })
-          vim.keymap.set("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Goto next warning" })
-          vim.keymap.set("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Goto previous warning" })
-          vim.keymap.set("n", "<leader>rf", function() vim.lsp.buf.format({ async = true }) end, { desc = "Format File" })
-          vim.keymap.set("n", "<leader>dq", vim.diagnostic.setloclist, { desc = "Add diagnostics to location list" })
-          vim.keymap.set("n", "<leader>de", vim.diagnostic.enable, { silent = true, desc = "Show diagnostic" })
-          vim.keymap.set("n", "<leader>dd", vim.diagnostic.disable, { silent = true, desc = "Hide diagnostic" })
+      local function toggle_diagnostic()
+        local disabled = vim.diagnostic.is_disabled()
+        if disabled then
+          vim.diagnostic.enable()
+        else
+          vim.diagnostic.disable()
+        end
+      end
+
+      -- See `:help vim.diagnostic.*` for documentation on any of the below functions
+      -- stylua: ignore start
+      vim.keymap.set("n", "E", vim.diagnostic.open_float, { desc = "Open Float" })
+      vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Goto previous diagnostic" })
+      vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Goto next diagnostic" })
+      vim.keymap.set("n", "]e", diagnostic_goto(true, "ERROR"), { desc = "Goto next error" })
+      vim.keymap.set("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Goto previous error" })
+      vim.keymap.set("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Goto next warning" })
+      vim.keymap.set("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Goto previous warning" })
+      vim.keymap.set("n", "<leader>rf", function() vim.lsp.buf.format({ async = true }) end, { desc = "Format File" })
+      -- vim.keymap.set("n", "<leader>dq", vim.diagnostic.setloclist, { desc = "Add diagnostics to location list" })
+      vim.keymap.set("n", "<leader>dd", toggle_diagnostic, { silent = true, desc = "Diagnostic Toggle" })
       -- vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)  -- ??
       -- stylua: ignore end
 
       local on_attach = function(_, bufnr)
-        -- See `:help vim.lsp.*` for documentation on any of the below functions
         local bufopts = function(desc)
           return { noremap = true, silent = true, buffer = bufnr, desc = desc }
         end
@@ -77,10 +84,7 @@ return {
         lineFoldingOnly = true,
       }
 
-      local flags = {
-        -- This is the default in Nvim 0.7+
-        debounce_text_changes = 150,
-      }
+      local flags = { debounce_text_changes = 150 } -- This is the default in Nvim 0.7+
 
       -- Use a loop to conveniently call 'setup' on multiple servers and
       -- map buffer local keybindings when the language server attaches
@@ -179,9 +183,12 @@ return {
         lsp_config[server].setup(config)
       end
 
+      vim.keymap.set("n", "<leader>il", "<cmd>LspInfo<cr>", { desc = "Lsp Info" })
       --------------------------------------------------------------------------------
       -- UI customization ------------------------------------------------------------
       --------------------------------------------------------------------------------
+      require("lspconfig.ui.windows").default_options.border = "double"
+      vim.api.nvim_set_hl(0, "LspInfoBorder", {link = "FloatBorder"})
       -- https://github.com/neovim/nvim-lspconfig/wiki/UI-customization#borders
       local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
       ---@diagnostic disable-next-line: duplicate-set-field

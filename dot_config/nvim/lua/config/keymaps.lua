@@ -15,7 +15,7 @@ map({ "i", "n", "c" }, "<A-Left>", "<C-Left>") -- move cursor one word to the le
 map("c", "<C-a>", "<Home>") -- move cursor to BOL
 map("c", "<C-e>", "<End>") -- move cursor to EOL
 map({ "i", "c" }, "<A-BS>", "<C-w>") -- delete word
-map("n", "ge", "gi") -- go to last INSERT pos and insert
+map("n", "ge", "gi", { desc = "Last edited position" }) -- go to last INSERT pos and insert
 map("n", "G", "Gzz") -- jump to eof center cursor
 -- buffers and tabs navigation
 map("n", "<Home>", ":tabnext<cr>")
@@ -42,10 +42,11 @@ map("n", "<leader>ss", "<cmd>so %<cr>", { desc = "Source buffer" })
 map("n", "<leader>sk", "<cmd>so ~/.config/nvim/lua/HRB/keymaps.lua<cr>", { desc = "Source keymap" })
 map("s", "<BS>", "<BS>i") -- delete selection and stay in INSERT
 map("n", "J", "mzJ`z", { desc = "Join lines" }) -- join lines while preserving cursor pos
-map("x", "p", '"_dP') -- "greatest remap ever" by theprimeage
+map("x", "p", '"_dP') -- "greatest remap ever" by theprimeage (keep copied text in register w/o overriding)
 map("i", "<C-f>", "<Del>") -- delete char
 -- map("n", "<leader>S", ":%s/<C-r><C-w>/<C-r><C-w>/gI<Left><Left><Left>", { desc = "Substitude word under cursor" }) -- substitute word under cursor
 map("n", "<leader>xX", "<cmd>!chmod +x %<cr>", { silent = true, desc = "chmod +x" })
+map("n", "<leader>rz", "<cmd>s!\\(https://\\)\\?\\(www.\\)\\?github.com/\\(.*\\)!\\3", { desc = "Clean gh url" }) -- remove github prefix
 
 --- Colemak-dhm --------------------------------
 -- navigate cursor
@@ -72,6 +73,8 @@ map("i", "<A-k>", "<Esc>:m .+1<CR>==gi")
 map("i", "<A-h>", "<Esc>:m .-2<CR>==gi")
 map("v", "<A-k>", ":m '>+1<CR>gv=gv")
 map("v", "<A-h>", ":m '<-2<CR>gv=gv")
+
+map("n", "<leader>dm", "<cmd>message<cr>", { desc = "Messages" })
 
 --- Functions ------------------------------------
 -- remove whitespace

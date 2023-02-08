@@ -26,6 +26,7 @@ opt.history = 2000 -- num history to cache
 opt.iskeyword:append({ "-" }) -- treat dash separated words as a word text object
 opt.laststatus = 3 -- always show statusline
 opt.lazyredraw = true -- do not redraw screen in the middle of a macro. Makes them complete faster
+opt.linebreak = true -- wrap text by words rather than char
 opt.magic = true -- For regular expressions turn magic on
 opt.mouse = { v = true, n = true } -- enable mouse
 opt.number = true -- show line numbers

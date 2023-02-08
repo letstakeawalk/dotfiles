@@ -17,7 +17,7 @@ require("lazy").setup("plugins", {
 		lazy = true,
 	},
 	ui = {
-		border = "rounded",
+		border = "double",
 	},
 	install = {
 		colorscheme = { "nord", "habamax" },
@@ -38,6 +38,6 @@ require("lazy").setup("plugins", {
 	},
 })
 
-vim.api.nvim_set_keymap("n", "<leader>L", "<cmd>Lazy<cr>", { desc = "Lazy" })
+vim.api.nvim_set_keymap("n", "<leader>iz", "<cmd>Lazy<cr>", { desc = "Lazy" })
 
 vim.api.nvim_set_hl(0, "LazyButtonActive", { link = "LazyH1" })

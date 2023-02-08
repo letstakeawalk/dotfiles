@@ -4,49 +4,49 @@ return {
 	config = function()
 		local nord = require("utils").nord
 
-		local c = {
-			background = nord.c00_dk0,
+		local hl = {
+			fill = nord.c00_dk0,
 			tab_bg = nord.c00_dk1,
 			tab_sel_bg = nord.c00,
-			indicator = nord.c11,
+			indicator = nord.c09,
 		}
 
 		local highlight = {
-			fill = { bg = c.background }, -- background
-			offset_separator = { bg = c.background }, -- offset separator
+			fill = { bg = hl.fill }, -- background
+			offset_separator = { bg = hl.fill }, -- offset separator
 			-- inactive tab
-			background = { bg = c.tab_bg },
-			separator = { bg = c.tab_bg, fg = c.background }, -- inactive tab separator
-			close_button = { bg = c.tab_bg },
-			diagnostic = { bg = c.tab_bg },
-			hint = { bg = c.tab_bg },
-			info = { bg = c.tab_bg },
-			warning = { bg = c.tab_bg },
-			error = { bg = c.tab_bg },
-			modified = { bg = c.tab_bg },
-			duplicate = { bg = c.tab_bg },
+			background = { bg = hl.tab_bg },
+			separator = { bg = hl.tab_bg, fg = hl.fill }, -- inactive tab separator
+			close_button = { bg = hl.tab_bg },
+			diagnostic = { bg = hl.tab_bg },
+			hint = { bg = hl.tab_bg },
+			info = { bg = hl.tab_bg },
+			warning = { bg = hl.tab_bg },
+			error = { bg = hl.tab_bg },
+			modified = { bg = hl.tab_bg },
+			duplicate = { bg = hl.tab_bg },
 			-- active tab
-			buffer_selected = { bg = c.tab_sel_bg, italic = false }, -- active tab
-			indicator_selected = { fg = c.indicator}, -- does not work for some reason
-			separator_selected = { bg = c.tab_sel_bg, fg = c.background },
-			diagnostic_selected = { bg = c.tab_sel_bg },
-			hint_selected = { bg = c.tab_sel_bg, italic = false },
-			info_selected = { bg = c.tab_sel_bg, italic = false },
-			warning_selected = { bg = c.tab_sel_bg, italic = false },
-			error_selected = { bg = c.tab_sel_bg, italic = false },
-			modified_selected = { bg = c.tab_sel_bg },
-			duplicate_selected = { bg = c.tab_sel_bg },
+			buffer_selected = { bg = hl.tab_sel_bg, italic = false }, -- active tab
+			indicator_selected = { fg = hl.indicator}, -- does not work for some reason
+			separator_selected = { bg = hl.tab_sel_bg, fg = hl.fill },
+			diagnostic_selected = { bg = hl.tab_sel_bg },
+			hint_selected = { bg = hl.tab_sel_bg, italic = false },
+			info_selected = { bg = hl.tab_sel_bg, italic = false },
+			warning_selected = { bg = hl.tab_sel_bg, italic = false },
+			error_selected = { bg = hl.tab_sel_bg, italic = false },
+			modified_selected = { bg = hl.tab_sel_bg },
+			duplicate_selected = { bg = hl.tab_sel_bg },
 			-- active tab visible
-			buffer_visible = { bg = c.tab_sel_bg }, -- active visible tab
-			separator_visible = { bg = c.tab_sel_bg, fg = c.background }, -- active visible tab separator
-			close_button_visible = { bg = c.tab_sel_bg },
-			diagnostic_visible = { bg = c.tab_sel_bg },
-			hint_visible = { bg = c.tab_sel_bg },
-			info_visible = { bg = c.tab_sel_bg },
-			warning_visible = { bg = c.tab_sel_bg },
-			error_visible = { bg = c.tab_sel_bg },
-			modified_visible = { bg = c.tab_sel_bg },
-			duplicate_visible = { bg = c.tab_sel_bg },
+			buffer_visible = { bg = hl.tab_sel_bg }, -- active visible tab
+			separator_visible = { bg = hl.tab_sel_bg, fg = hl.fill }, -- active visible tab separator
+			close_button_visible = { bg = hl.tab_sel_bg },
+			diagnostic_visible = { bg = hl.tab_sel_bg },
+			hint_visible = { bg = hl.tab_sel_bg },
+			info_visible = { bg = hl.tab_sel_bg },
+			warning_visible = { bg = hl.tab_sel_bg },
+			error_visible = { bg = hl.tab_sel_bg },
+			modified_visible = { bg = hl.tab_sel_bg },
+			duplicate_visible = { bg = hl.tab_sel_bg },
 
 			-- diag
 		}

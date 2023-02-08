@@ -2,7 +2,7 @@ return {
   "nvim-lua/plenary.nvim",
 
   -- ui
-  { "kyazdani42/nvim-web-devicons", lazy = true },
+  { "nvim-tree/nvim-web-devicons", lazy = true },
 
   -- General
   { "tpope/vim-abolish", event = "VeryLazy" }, -- easily search, substitute, abbr multiple variants of a word

@@ -13,6 +13,7 @@ return {
 		require("nvim-treesitter.install").update({ with_sync = true })
 	end,
 	config = function()
+    -- TODO: learn treesitter queries (https://tree-sitter.github.io/tree-sitter/using-parsers#pattern-matching-with-queries)
     -- TODO: incremental selection???
 		require("nvim-treesitter.configs").setup({
       -- One of "all", "maintained" (parsers with maintainers), or a list of languages
@@ -64,8 +65,8 @@ return {
 						["io"] = "@conditional.inner",
 						["al"] = "@loop.outer",
 						["il"] = "@loop.inner",
-						["aP"] = "@parameter.outer",
-						["iP"] = "@parameter.inner",
+						["ar"] = "@parameter.outer",
+						["ir"] = "@parameter.inner",
 						["am"] = "@comment.outer",
 						-- @block.outer inner
 					},
@@ -74,32 +75,24 @@ return {
 					enable = true,
 					set_jumps = true,
 					goto_next_start = {
-						["]m"] = "@function.outer",
-						["]f"] = "@function.outer",
 						[")("] = "@function.outer",
 						["]["] = "@class.outer",
-						[")p"] = "@parameter.inner",
-						[")c"] = "@conditional.inner",
+						[")r"] = "@parameter.inner",
+						[")o"] = "@conditional.inner",
 						[")l"] = "@loop.inner",
 					},
 					goto_next_end = {
-						["]M"] = "@function.outer",
-						["]F"] = "@function.outer",
 						["))"] = "@function.outer",
 						["]]"] = "@class.outer",
 					},
 					goto_previous_start = {
-						["[m"] = "@function.outer",
-						["[f"] = "@function.outer",
 						["(("] = "@function.outer",
 						["[["] = "@class.outer",
-						["(p"] = "@parameter.inner",
-						["(c"] = "@conditional.inner",
+						["(r"] = "@parameter.inner",
+						["(o"] = "@conditional.inner",
 						["(l"] = "@loop.inner",
 					},
 					goto_previous_end = {
-						["[M"] = "@function.outer",
-						["[F"] = "@function.outer",
 						["()"] = "@function.outer",
 						["[]"] = "@class.outer",
 					},

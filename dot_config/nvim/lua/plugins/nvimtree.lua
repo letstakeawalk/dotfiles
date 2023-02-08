@@ -1,6 +1,6 @@
 return {
-  "kyazdani42/nvim-tree.lua",
-  dependencies = "kyazdani42/nvim-web-devicons",
+  "nvim-tree/nvim-tree.lua",
+  dependencies = "nvim-tree/nvim-web-devicons",
   keys = { { "<leader>e", "<cmd>NvimTreeFindFileToggle<cr>", desc = "NvimTree" } },
   config = function()
     -- following options are the default

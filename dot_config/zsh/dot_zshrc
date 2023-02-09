@@ -38,6 +38,7 @@ export _ZO_DATA_DIR="$XDG_DATA_HOME/zoxide"
 export GITLINT_CONFIG="$XDG_CONFIG_HOME/runcom/gitlintrc"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+export TEALDEER_CONFIG_DIR="$XDG_CONFIG_HOME/tealdeer"
 export ZSH="$XDG_CONFIG_HOME/oh-my-zsh"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export CC=gcc-12

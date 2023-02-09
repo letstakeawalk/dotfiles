@@ -1,0 +1,67 @@
+# git
+
+> git cheatsheet
+
+- Commit convention:
+`<type>[(scope)][!]: <description>`
+
+`[ body ]`
+
+`[ footer ]`
+
+`- type: fix, feat, refactor, docs, revert, build, chore, ci, style, perf, and test`
+`- footer: BREAKING CHANGES: <description> (with '!' after type/scope)`
+
+- Stash local changes in a temporary area w/o committing
+
+- Squash multiple commits into a single commit
+
+- Rebase branch
+`git rebase {{new_base_branch}}`
+`git rebase --onto {{new}} {{old}} {{current}}`
+
+/* i.e. o---o---o---o  main */
+/*               \ */
+/*                o---o---o---o  on featureA */
+/*                 */
+/*          git rebase main */
+/*                 */
+/*     o---o---o---o  main */
+/*                  \ */
+/*                   o---o---o---o  featureA */
+/**/
+/* git rebase --onto <newbase> <oldbase> <currentbase> */
+/**/
+/* i.e. o---o---o---o---o  main */
+/*              \ */
+/*               o---o---o---o---o  featureA */
+/*                    \ */
+/*                     o---o---o  on featureB */
+/**/
+/*   git rebase --onto main featureA featureB */
+/**/
+/*                      o---o---o  featureB */
+/*                     / */
+/*    o---o---o---o---o  main */
+/*             \ */
+/*              o---o---o---o---o  featureA */
+
+- Revert back to older commit (Uncommit)
+`git reset --soft HEAD~1                          # staged changes`
+`git reset --hard HEAD~1                          # unstaged changes`
+`git fetch origin && git reset --hard origin/main # changes lost`
+
+- Bisect -- find the bad commit.
+`git bisect {{start | reset}}                  # start / stop bisect`
+`git bisect {{good | bad | skip}}              # mark commit`
+`git bisect log                            # bisect log`
+`git bisect replay {{file}}                    #`
+`git bisect run {{my_script}} [args,]          # run script that can tell good/bad`
+
+- Remote
+`git remote [-v]                             # list remotes`
+`git remote add {{name}} {{url}}                     # add a remote`
+`git remote rename {{old_name}} {{new_name}}         # rename remote`
+`git remote rm {{name}}                          # remove remote`
+`git remote show {{name}}                        # inspect remote`
+

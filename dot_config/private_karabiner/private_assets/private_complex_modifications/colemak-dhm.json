@@ -3,6 +3,32 @@
   "author": "Ryan Byon (ryan.h.byon@gmail.com)",
   "rules": [
     {
+      "description": "Hyper Key using <RightCommand>",
+      "manipulators": [
+        {
+          "description": "<Hyper> key using <R-Command>",
+          "type": "basic",
+          "from": { "key_code": "right_command" },
+          "parameters": { "basic.to_if_held_down_threshold_milliseconds": 60 },
+          "to": { "key_code": "right_command", "modifiers": ["right_control", "right_alt", "right_shift"] },
+          "conditions": [{
+            "type": "device_if",
+            "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }]
+          }]
+        },
+        {
+          "description": "Change Input Source using <R-Alt>",
+          "type": "basic",
+          "from": { "key_code": "right_alt" },
+          "to": { "apple_vendor_top_case_key_code": "keyboard_fn" },
+          "conditions": [{
+            "type": "device_if",
+            "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }]
+          }]
+        }
+      ]
+    },
+    {
       "description": "Better Coding Layer using <CapsLock>",
       "manipulators": [
         {
@@ -12,24 +38,6 @@
           "parameters": { "basic.to_if_held_down_threshold_milliseconds": 10 },
           "to_if_held_down": [{ "set_variable": { "name": "coding", "value": 1 } }],
           "to_after_key_up": [{ "set_variable": { "name": "coding", "value": 0 } }],
-          "conditions": [{
-            "type": "device_if",
-            "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }]
-          }]
-        },
-        {
-          "type": "basic",
-          "from": { "key_code": "right_command", "modifiers": { "optional": ["caps_lock"] } },
-          "to": { "key_code": "caps_lock" },
-          "conditions": [{
-            "type": "device_if",
-            "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }]
-          }]
-        },
-        {
-          "type": "basic",
-          "from": { "key_code": "right_alt", "modifiers": { "optional": ["caps_lock"] } },
-          "to": { "key_code": "caps_lock" },
           "conditions": [{
             "type": "device_if",
             "identifiers": [{ "is_keyboard": true, "product_id": 835, "vendor_id": 1452 }]
@@ -417,7 +425,8 @@
         },
         {
           "type": "basic",
-          "from": { "key_code": "f", "modifiers": { "optional": ["left_shift", "caps_lock"] } },
+          "from": { "key_code": "f", "modifiers": { "optional": ["caps_lock"] } },
+          "to": { "key_code": "left_command", "modifiers": ["left_control", "left_alt", "left_shift"] },
           "conditions": [{ "type": "variable_if", "name": "navigation", "value": 1 }]
         },
         {

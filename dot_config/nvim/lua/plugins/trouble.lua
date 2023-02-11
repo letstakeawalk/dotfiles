@@ -1,7 +1,7 @@
 return {
-	"folke/trouble.nvim",
-	dependencies = "nvim-tree/nvim-web-devicons",
-	cmd = { "Trouble" },
+    "folke/trouble.nvim",
+    dependencies = "nvim-tree/nvim-web-devicons",
+    cmd = { "Trouble" },
   --stylua: ignore
   config = function()
     require("trouble").setup({

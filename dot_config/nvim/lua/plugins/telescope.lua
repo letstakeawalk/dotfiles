@@ -1,15 +1,15 @@
 return {
-  "nvim-telescope/telescope.nvim",
-  dependencies = {
-    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" }, -- use fzf
-    "nvim-telescope/telescope-symbols.nvim", -- symbol picker
-    "nvim-telescope/telescope-file-browser.nvim", -- file browser
-    -- "smartpde/telescope-recent-files", -- recent files
-    "tsakirist/telescope-lazy.nvim", -- lazy.nvim
-    "ahmedkhalf/project.nvim", -- project.nvim
-  },
-  cmd = { "Telescope" },
-  init = function()
+    "nvim-telescope/telescope.nvim",
+    dependencies = {
+        { "nvim-telescope/telescope-fzf-native.nvim", build = "make" }, -- use fzf
+        "nvim-telescope/telescope-symbols.nvim", -- symbol picker
+        "nvim-telescope/telescope-file-browser.nvim", -- file browser
+        -- "smartpde/telescope-recent-files", -- recent files
+        "tsakirist/telescope-lazy.nvim", -- lazy.nvim
+        "ahmedkhalf/project.nvim", -- project.nvim
+    },
+    cmd = { "Telescope" },
+    init = function()
     -- keymaps
     -- stylua: ignore start
     vim.keymap.set("n", "<leader>b",  "<cmd>Telescope buffers<cr>",       { desc = "Telescope buffers" })
@@ -46,86 +46,86 @@ return {
     vim.keymap.set("n", "<leader>tp", "<cmd>Telescope projects<cr>",     { desc = "Projects" })
     vim.keymap.set("n", "<leader>ta", "<cmd>Telescope aerial<cr>",       { desc = "Aerial" })
     vim.keymap.set("n", "<leader>tf", "<cmd>Telescope file_browser<cr>", { desc = "File Browser" })
-    -- stylua: ignore end
-  end,
-  config = function()
-    local telescope = require("telescope")
-    local actions = require("telescope.actions")
+        -- stylua: ignore end
+    end,
+    config = function()
+        local telescope = require("telescope")
+        local actions = require("telescope.actions")
 
-    telescope.setup({
-      defaults = {
-        layout_strategy = "center", -- horizontal, center, vertical
-        layout_config = {
-          width = 80,
-          height = 0.25,
-        },
-        borderchars = {
-          prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
-          results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
-          preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-        },
-        results_title = false,
-        sorting_strategy = "ascending",
-        prompt_prefix = "   ", -- ' 🔭🔎 ',
-        selection_caret = "  ",
-        multi_icon = "  ",
-        entry_prefix = "   ",
-        mappings = {
-          i = {
-            ["<ESC>"] = actions.close,
-            ["<C-h>"] = "which_key",
-          },
-          n = {
-            ["k"] = actions.move_selection_next,
-            ["h"] = actions.move_selection_previous,
-          },
-        },
-      },
-      pickers = {},
-      extensions = {
-        file_browser = {
-          hijack_netrw = true,
-        },
-        lazy = {
-          mappings = {
-            open_in_browser = "<C-o>",
-            open_in_file_browser = "<C-z>",
-            open_in_find_files = "<C-f>",
-            open_in_live_grep = "<C-p>",
-            open_plugins_picker = "<C-g>", -- Works only after having called first another action
-            open_lazy_root_find_files = "<C-r>f",
-            open_lazy_root_live_grep = "<C-r>g",
-          },
-        },
-      },
-    })
-    telescope.load_extension("fzf")
-    telescope.load_extension("file_browser")
-    -- telescope.load_extension("recent_files")
-    telescope.load_extension("lazy")
-    telescope.load_extension("projects")
-    telescope.load_extension("aerial")
-    -- telescope.load_extension("neorg")
+        telescope.setup({
+            defaults = {
+                layout_strategy = "center", -- horizontal, center, vertical
+                layout_config = {
+                    width = 80,
+                    height = 0.25,
+                },
+                borderchars = {
+                    prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
+                    results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
+                    preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+                },
+                results_title = false,
+                sorting_strategy = "ascending",
+                prompt_prefix = "   ", -- ' 🔭🔎 ',
+                selection_caret = "  ",
+                multi_icon = "  ",
+                entry_prefix = "   ",
+                mappings = {
+                    i = {
+                        ["<ESC>"] = actions.close,
+                        ["<C-h>"] = "which_key",
+                    },
+                    n = {
+                        ["k"] = actions.move_selection_next,
+                        ["h"] = actions.move_selection_previous,
+                    },
+                },
+            },
+            pickers = {},
+            extensions = {
+                file_browser = {
+                    hijack_netrw = true,
+                },
+                lazy = {
+                    mappings = {
+                        open_in_browser = "<C-o>",
+                        open_in_file_browser = "<C-z>",
+                        open_in_find_files = "<C-f>",
+                        open_in_live_grep = "<C-p>",
+                        open_plugins_picker = "<C-g>", -- Works only after having called first another action
+                        open_lazy_root_find_files = "<C-r>f",
+                        open_lazy_root_live_grep = "<C-r>g",
+                    },
+                },
+            },
+        })
+        telescope.load_extension("fzf")
+        telescope.load_extension("file_browser")
+        -- telescope.load_extension("recent_files")
+        telescope.load_extension("lazy")
+        telescope.load_extension("projects")
+        telescope.load_extension("aerial")
+        -- telescope.load_extension("neorg")
 
-    -- highlight
-    local nord = require("utils").nord
-    vim.api.nvim_set_hl(0, "TelescopeTitle", { link = "FloatTitle" })
-    vim.api.nvim_set_hl(0, "TelescopeBorder", { link = "FloatBorder" })
-    vim.api.nvim_set_hl(0, "TelescopePromptPrefix", { link = "TelescopeTitle" })
-    vim.api.nvim_set_hl(0, "TelescopeMatching", { fg = nord.c04, bold = true })
-    vim.api.nvim_set_hl(0, "TelescopeResultsNormal", { fg = nord.c04_dk0 })
+        -- highlight
+        local nord = require("utils").nord
+        vim.api.nvim_set_hl(0, "TelescopeTitle", { link = "FloatTitle" })
+        vim.api.nvim_set_hl(0, "TelescopeBorder", { link = "FloatBorder" })
+        vim.api.nvim_set_hl(0, "TelescopePromptPrefix", { link = "TelescopeTitle" })
+        vim.api.nvim_set_hl(0, "TelescopeMatching", { fg = nord.c04, bold = true })
+        vim.api.nvim_set_hl(0, "TelescopeResultsNormal", { fg = nord.c04_dk0 })
 
-    -- list of extensions
-    -- nvim-telescope/telescope-dap.nvim
-    -- nvim-telescope/telescope-frecency.nvim, -- frecency alg
-    -- nvim-telescope/telescope-live-grep-args.nvim
-    -- kkharji/sqlite.lua, -- req by telescope-frecency.nvim
-    -- nvim-telescope/telescope-github.nvim
-    -- sudormrfbin/cheatsheet.nvim
-    -- danielpieper/telescope-tmuxinator.nvim
-    -- nvim-neorg/neorg-telescope
+        -- list of extensions
+        -- nvim-telescope/telescope-dap.nvim
+        -- nvim-telescope/telescope-frecency.nvim, -- frecency alg
+        -- nvim-telescope/telescope-live-grep-args.nvim
+        -- kkharji/sqlite.lua, -- req by telescope-frecency.nvim
+        -- nvim-telescope/telescope-github.nvim
+        -- sudormrfbin/cheatsheet.nvim
+        -- danielpieper/telescope-tmuxinator.nvim
+        -- nvim-neorg/neorg-telescope
 
-    -- barrett-ruth/telescope-http.nvim
-    -- chip/telescope-software-licenses.nvim
-  end,
+        -- barrett-ruth/telescope-http.nvim
+        -- chip/telescope-software-licenses.nvim
+    end,
 }

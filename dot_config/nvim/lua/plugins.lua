@@ -1,21 +1,21 @@
 return {
-  "nvim-lua/plenary.nvim",
+    "nvim-lua/plenary.nvim",
 
-  -- ui
-  { "nvim-tree/nvim-web-devicons", lazy = true },
+    -- ui
+    { "nvim-tree/nvim-web-devicons", lazy = true },
 
-  -- General
-  { "tpope/vim-abolish", event = "VeryLazy" }, -- easily search, substitute, abbr multiple variants of a word
-  { "tpope/vim-repeat", event = "VeryLazy" }, -- enable repeating supported plugin maps with `.`
+    -- General
+    { "tpope/vim-abolish", event = "VeryLazy" }, -- easily search, substitute, abbr multiple variants of a word
+    { "tpope/vim-repeat", event = "VeryLazy" }, -- enable repeating supported plugin maps with `.`
 
-  -- TODO:
-  -- https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
-  -- https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
-  -- https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
-  -- mason
-  -- nui
-  -- https://github.com/folke/noice.nvim
-  -- https://github.com/nvim-pack/nvim-spectre
+    -- TODO:
+    -- https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
+    -- https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
+    -- https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
+    -- mason
+    -- nui
+    -- https://github.com/folke/noice.nvim
+    -- https://github.com/nvim-pack/nvim-spectre
 }
 
 -- NOTE: check these out

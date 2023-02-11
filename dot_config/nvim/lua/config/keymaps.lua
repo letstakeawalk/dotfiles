@@ -39,7 +39,9 @@ map("i", ";", ";<c-g>u")
 -- etc
 map("n", "'", "`") -- better mark navigation
 map("n", "<leader>ss", "<cmd>so %<cr>", { desc = "Source buffer" })
-map("n", "<leader>sk", function() require(vim.fn.stdpath("config") .. "/lua/config/keymaps.lua") end, { desc = "Source keymap" })
+map("n", "<leader>sk", function()
+    require(vim.fn.stdpath("config") .. "/lua/config/keymaps.lua")
+end, { desc = "Source keymap" })
 map("s", "<BS>", "<BS>i") -- delete selection and stay in INSERT
 map("n", "J", "mzJ`z", { desc = "Join lines" }) -- join lines while preserving cursor pos
 map("x", "p", '"_dP') -- "greatest remap ever" by theprimeage (keep copied text in register w/o overriding)
@@ -103,15 +105,15 @@ map("n", "<leader>rw", [[
 
 -- unimpaired
 local function add_blank_line(line)
-  vim.api.nvim_buf_set_lines(0, line, line, true, { "" })
+    vim.api.nvim_buf_set_lines(0, line, line, true, { "" })
 end
 
 local function add_blank_line_above()
-  add_blank_line(vim.fn.line(".") - 1)
+    add_blank_line(vim.fn.line(".") - 1)
 end
 
 local function add_blank_line_below()
-  add_blank_line(vim.fn.line("."))
+    add_blank_line(vim.fn.line("."))
 end
 
 map("n", "]<Space>", add_blank_line_below, { desc = "Add line below" })
@@ -119,12 +121,12 @@ map("n", "[<Space>", add_blank_line_above, { desc = "Add line above" })
 
 -- python 3.10+ syntax
 local function future_typing()
-  vim.cmd([[%s!from typing import Optional!!ge]])
-  -- vim.cmd([[%s!\(\?<=from typing import \)Optional,\? \?!!e]])
-  -- vim.cmd([[%s!(from typing import) Optional,+ +(\w+)*!(\1) (\2)!ge]])
-  vim.cmd([[%s!Optional\[\(\w*\)\]!\1 | None!ge]])
-  vim.cmd([[%s!List\[List\[\(\w*\)\]\]!list\[list\[\1\]\]!ge]])
-  vim.cmd([[%s!List\[\(\w*\)\]!list\[\1\]!ge]])
+    vim.cmd([[%s!from typing import Optional!!ge]])
+    -- vim.cmd([[%s!\(\?<=from typing import \)Optional,\? \?!!e]])
+    -- vim.cmd([[%s!(from typing import) Optional,+ +(\w+)*!(\1) (\2)!ge]])
+    vim.cmd([[%s!Optional\[\(\w*\)\]!\1 | None!ge]])
+    vim.cmd([[%s!List\[List\[\(\w*\)\]\]!list\[list\[\1\]\]!ge]])
+    vim.cmd([[%s!List\[\(\w*\)\]!list\[\1\]!ge]])
 end
 
 vim.api.nvim_create_user_command("PyFutureTyping", future_typing, {})

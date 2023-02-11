@@ -22,24 +22,24 @@ local conds_expand = require("luasnip.extras.conditions.expand")
 -- print("snippets loaded")
 ls.cleanup()
 ls.add_snippets("all", {
-	-- Current date & time. MM/DD/YY - HH:MM
-	s("currtime", p(os.date, "%Y/%m/%d - %H:%M")),
-	s("currdate", p(os.date, "%Y/%m/%d")),
+    -- Current date & time. MM/DD/YY - HH:MM
+    s("currtime", p(os.date, "%Y/%m/%d - %H:%M")),
+    s("currdate", p(os.date, "%Y/%m/%d")),
 })
 
 -- lua
 ls.add_snippets("lua", {
-	s(
-		"req",
-		fmt([[local {} = require "{}"]], {
-			f(function(args)
-				local parts = vim.split(args[1][1], ".", { plain = true, trimempty = true })
-				return parts[#parts] or ""
-			end, { 1 }),
-			i(1),
-		})
-	),
-	s("ppr", fmt("vim.pretty_print({})", i(1))),
+    s(
+        "req",
+        fmt([[local {} = require "{}"]], {
+            f(function(args)
+                local parts = vim.split(args[1][1], ".", { plain = true, trimempty = true })
+                return parts[#parts] or ""
+            end, { 1 }),
+            i(1),
+        })
+    ),
+    s("ppr", fmt("vim.pretty_print({})", i(1))),
 })
 
 -- markdown
@@ -49,5 +49,5 @@ ls.add_snippets("lua", {
 -- - convert to ul. <leader>mu
 -- - convert to ol. <leader>mo
 ls.add_snippets("markdown", {
-	s("-[]", t("- [ ] ")),
+    s("-[]", t("- [ ] ")),
 })

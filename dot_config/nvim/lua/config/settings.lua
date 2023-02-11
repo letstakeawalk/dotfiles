@@ -7,7 +7,7 @@ vim.g.python3_host_prog = "/opt/homebrew/bin/python3.11"
 local opt = vim.opt
 opt.backspace = { "indent", "eol", "start" } -- Intuitive backspacing in insert mode
 opt.backup = false -- backup
-opt.clipboard= "unnamedplus"  -- sync w/ system clipboard
+opt.clipboard = "unnamedplus" -- sync w/ system clipboard
 opt.cmdheight = 3 -- height of the command line
 opt.colorcolumn = "88" -- Column hightlight at textwidth
 opt.completeopt = { "menu", "menuone", "noselect", "preview" } -- nvim-cmp handles. no need here?
@@ -19,7 +19,7 @@ opt.encoding = "utf-8" -- encoding
 opt.fileencoding = "utf-8" -- encoding
 opt.fileformats = { "unix", "mac", "dos" } -- Use Unix as the standard file type
 opt.formatoptions = "crqnlj" -- default tcqj  :help fo-table
-opt.grepformat= "%f:%l:%c:%m" --  (default "%f:%l:%m,%f:%l%m,%f  %l%m")
+opt.grepformat = "%f:%l:%c:%m" --  (default "%f:%l:%m,%f:%l%m,%f  %l%m")
 opt.grepprg = "rg --vimgrep"
 opt.hidden = true -- hide buffers when abandoned instead of unload
 opt.history = 2000 -- num history to cache
@@ -36,7 +36,7 @@ opt.pumheight = 10 -- height of popup menu
 opt.relativenumber = true -- number relatively
 opt.ruler = true -- display current line
 opt.scrolloff = 8 -- num of line to keep above/below the of the cursor
-opt.shortmess:append({ c = true, W = true, I = true, C= true }) -- short messages
+opt.shortmess:append({ c = true, W = true, I = true, C = true }) -- short messages
 opt.showcmd = true -- display incomplete commands
 opt.showmode = false -- do not display vim-mode on message
 opt.showtabline = 1 -- display tab-line only if there are at least two tabs
@@ -77,7 +77,6 @@ opt.tabstop = 2 -- tabsize = 2 whitespaces
 -- abbrs
 vim.cmd.iabbr("NOne", "None")
 vim.cmd.iabbr("STring", "String")
-
 
 -- TODO: LessInitFunc :h less
 -- TODO: comment continuation -> discontinue on empty comment

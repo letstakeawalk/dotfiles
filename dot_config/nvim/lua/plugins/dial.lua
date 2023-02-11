@@ -1,5 +1,5 @@
 return {
-  "monaqa/dial.nvim",
+    "monaqa/dial.nvim",
   -- stylua: ignore
   keys = {
     { "<C-a>", function() return require("dial.map").inc_normal() end, expr = true, desc= "Increment"},

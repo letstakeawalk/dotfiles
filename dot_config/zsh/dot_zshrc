@@ -11,7 +11,7 @@ export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/X1
 export PATH=/Library/TeX/texbin:$PATH # texlive & mactex
 export PATH="$XDG_CONFIG_HOME"/bin:$PATH # custom binaries
 export PATH="$XDG_DATA_HOME"/cargo/bin:$PATH # rust
-export PATH="/opt/homebrew/opt/llvm/bin:$PATH" # llvm lldb
+export PATH="$XDG_DATA_HOME"/nvim/mason/bin:$PATH # lsp, linters, formatters
 export PATH=/opt/homebrew/bin:/opt/homebrew/sbin:$PATH # should be last line
 
 # Configurations
@@ -21,10 +21,9 @@ export ASDF_DIR="$XDG_DATA_HOME/asdf"
 export CHEAT_CONFIG_PATH="$XDG_CONFIG_HOME/cheat/conf.yml"
 export CHEAT_USE_FZF=true
 export CHEZMOI_SOURCE="$XDG_DATA_HOME/chezmoi"
-export CHTSH_HOME="$XDG_CONFIG_HOME/cht.sh"
+export CHTSH_HOME="$XDG_CONFIG_HOME/bin/cht.sh"
 export LESS="-R --lesskey-src=$XDG_CONFIG_HOME/runcom/lesskey"
-export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/runcom/npmrc"
-export NPM_CONFIG_GLOBALCONFIG="$XDG_CONFIG_HOME/runcom/npmrc"
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 export PAGER=less
 export PSQLRC="$XDG_CONFIG_HOME/runcom/psqlrc"
 export PSQL_HISTORY="$XDG_DATA_HOME/psql_history"
@@ -46,16 +45,6 @@ export CC=gcc-12
 ###############################################################################
 ############## ZSH CONFIG #####################################################
 ###############################################################################
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-# if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-#   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-# fi
-
-# ZSH theme
-# ZSH_THEME="powerlevel10k/powerlevel10k"
-
 # Path to completion cache file.
 ZSH_CACHE_DIR="$ZSH/cache"
 ZSH_COMPDUMP="$ZSH_CACHE_DIR/.zcompdump"
@@ -67,7 +56,7 @@ DISABLE_AUTO_TITLE="true"
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line if pasting URLs and other text is messed up.
-DISABLE_MAGIC_FUNCTIONS=true
+# DISABLE_MAGIC_FUNCTIONS=true
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -167,7 +156,12 @@ source "/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
 export FZF_CTRL_T_OPTS="
   --preview 'bat -n --color=always {}'
   --bind 'ctrl-/:change-preview-window(down|hidden|)'"
-export FZF_DEFAULT_COMMAND='fd --type file --hidden'
+export FZF_CTRL_R_OPTS="
+  --layout=reverse"
+export FZF_DEFAULT_COMMAND="fd --type file --hidden --follow --exclude .git"
+export FZF_DEFAULT_OPTS="
+  --color='fg:#98A2B5,bg+:#434C5E,gutter:-1,pointer:red'
+  --pointer=' '" 
 # ripgrep
 # alias rg="RIPGREP_CONFIG_PATH=$RIPGREP_CONFIG_PATH rg"
 
@@ -179,11 +173,11 @@ export FZF_DEFAULT_COMMAND='fd --type file --hidden'
 #### General #################
 alias c=clear           # clear screen
 alias f=open            # open in MacOS finder
-alias dirs='dirs -v'    # disp stack w/ index
-alias jobs='jobs -l'    # list jobs with process id
+# alias dirs='dirs -v'    # disp stack w/ index
+# alias jobs='jobs -l'    # list jobs with process id
 alias mkdir='mkdir -pv' # mkdir: create parent directories
-alias rm='rm -v'        # rm verbosely
 alias so="source $XDG_CONFIG_HOME/zsh/.zshrc"
+alias brewdeps='brew leaves | xargs brew deps --formula --for-each | sed "s/^.*:/$(tput setaf 4)&$(tput sgr0)/"'
 
 #### Alternatives ############
 alias arst=asdf
@@ -202,20 +196,27 @@ alias la='exa -lhga --git --time-style long-iso --group-directories-first'
 alias ll='exa -lhg --git --time-style long-iso --group-directories-first'
 
 #### fzf
-alias fdf="fd --type f --hidden | fzf-tmux -p --preview='bat --color=always -n {1}' --preview-window=right,70% | xargs nvim"
-alias tldrf='tldr --list | fzf --preview "tldr {1}" --preview-window=right,70% | xargs tldr'
+alias fdf='fd --type f --hidden | fzf-tmux -p --preview="bat --color=always -n {1}" --preview-window=right,70% | xargs nvim'
+alias tldrf='tldr --list | fzf --preview "tldr --color always {1}" --preview-window=right,70% | xargs tldr'
+# alias chtf="cheat -l | tail -n +2 | fzf --preview 'cheat {1}'"
+# alias chtf="cheat -l | tail -n +2 | sd -f m '$(\w*)\s*/[^/]*\s*(\w*)' '$1  $3'| fzf "
+# alist test="sd -f m '^(\w+)\s*(?:[^/]*/)*\s*(\w*)$' ''"
 
 #### edit config files #######
 alias conf="cd $XDG_CONFIG_HOME"
+alias data="cd $XDG_DATA_HOME"
+alias state="cd $XDG_STATE_HOME"
+alias cache="cd $XDG_CACHE_HOME"
 alias confzsh="nvim $XDG_CONFIG_HOME/zsh/.zshrc && chezmoi add $XDG_CONFIG_HOME/zsh/.zshrc && source $XDG_CONFIG_HOME/zsh/.zshrc"
 alias confnvim="cd $XDG_CONFIG_HOME/nvim && nvim"
-alias confala="nvim $XDG_CONFIG_HOME/alacritty/alacritty.yml && chezmoi add $XDG_CONFIG_HOME/alacritty.yml"
-# alias confp10k='nvim ~/.p10k.zsh'
-
-# alias tw='timew'    # timewarrior
-# alias tasksync='~/.task/todoist-taskwarrior/venv/bin/titwsync sync' # taskwarrior
+alias confala="nvim $XDG_CONFIG_HOME/alacritty/alacritty.yml && chezmoi add $XDG_CONFIG_HOME/alacritty/alacritty.yml"
+# alias confzsh="chezmoi edit $CHEZMOI_SOURCE/dot_config/zsh/dot_zshrc && source $XDG_CONFIG_HOME/zsh/.zshrc"
+# alias confnvim="cd $CHEZMOI_SOURCE/dot_config/nvim && chezmoi edit $XDG_CONFIG_HOME/nvim/init.lua"
+# alias confala="chezmoi $CHEZMOI_SOURCE/dot_config/alacritty/alacritty.yml"
+alias chez="cd $CHEZMOI_SOURCE/dot_config"
 
 #### Git #####################
+alias gg='lazygit'
 alias ga='git add'
 alias gbr='git branch'
 alias gcm='git commit'
@@ -228,8 +229,8 @@ alias glast='git log -5'
 alias glog='git log --graph --oneline --decorate'
 alias gre='git restore'
 alias gst='git status'
-alias gsw='git switch'
-alias gswf='git branch --sort=-committerdate | fzf --header "Checkout recent branch" --preview "git diff --color=always {1}" | xargs git switch'
+alias gswi='git switch'
+alias gsw='git branch --sort=-committerdate | fzf --header "Checkout recent branch" --preview "git diff --color=always {1}" | xargs git switch'
 
 #### Python ##################
 alias python3=python3.11
@@ -258,6 +259,9 @@ alias diff='nvim -d'
 alias mux=tmuxinator
 alias ws='tmuxinator start workspace'
 alias dev='tmuxinator start dev'
+
+#### Etc ######################
+alias cht='cht.sh'
 
 #### Personal #################
 if [ -f "$ZDOTDIR/private.zshrc" ]; then
@@ -290,33 +294,6 @@ function chpwd() {
     exa --group-directories-first 
 }
 
-# display list of files upon cd (zoxide)
-# function z () {
-#         __zoxide_z "$@"
-#         exa --group-directories-first
-# }
-
-
-
 ###############################################################################
 ############## Experimental ###################################################
 ###############################################################################
-
-# # test function
-# function _test00() {
-#   echo $1
-#   echo $2
-# }
-#
-# local _test_var0=69420
-# _test_var1='This variable can be refereneced from shell as $_test_var1'
-# _test_var2="_test_var0 is $_test_var0"
-#
-# function _test01() {
-#   echo _test_var0
-#   echo "$_test_var0"
-#   echo _test_var1
-#   echo "$_test_var1"
-#   echo _test_var2
-#   echo "$_test_var2"
-# }

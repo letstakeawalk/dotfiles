@@ -15,14 +15,14 @@
 # environment variables. Some entries may override variables
 # set by alacritty itself.
 # env:
-  # TERM variable
-  #
-  # This value is used to set the `$TERM` environment variable for
-  # each instance of Alacritty. If it is not present, alacritty will
-  # check the local terminfo database and use `alacritty` if it is
-  # available, otherwise `xterm-256color` is used.
-  # TERM: alacritty
-  # TERM: xterm-256color
+# TERM variable
+#
+# This value is used to set the `$TERM` environment variable for
+# each instance of Alacritty. If it is not present, alacritty will
+# check the local terminfo database and use `alacritty` if it is
+# available, otherwise `xterm-256color` is used.
+# TERM: alacritty
+# TERM: xterm-256color
 
 window:
   # Window dimensions (changes require restart)
@@ -91,10 +91,10 @@ window:
 
   # Window class (Linux/BSD only):
   #class:
-    # Application instance name
-    #instance: Alacritty
-    # General application class
-    #general: Alacritty
+  # Application instance name
+  #instance: Alacritty
+  # General application class
+  #general: Alacritty
 
   # Decorations theme variant (Linux/BSD only)
   #
@@ -104,12 +104,12 @@ window:
   #decorations_theme_variant: None
 
 #scrolling:
-  # Maximum number of lines in the scrollback buffer.
-  # Specifying '0' will disable scrolling.
-  #history: 10000
+# Maximum number of lines in the scrollback buffer.
+# Specifying '0' will disable scrolling.
+#history: 10000
 
-  # Scrolling distance multiplier.
-  #multiplier: 3
+# Scrolling distance multiplier.
+#multiplier: 3
 
 # Font configuration
 font:
@@ -174,7 +174,7 @@ font:
   # Glyph offset determines the locations of the glyphs within their cells with
   # the default being at the bottom. Increasing `x` moves the glyph to the
   # right, increasing `y` moves the glyph upward.
-  #glyph_offset:
+  # glyph_offset:
   #  x: 0
   #  y: 0
 
@@ -245,21 +245,21 @@ colors:
 
   # Keyboard hints
   #hints:
-    # First character in the hint label
-    #
-    # Allowed values are CellForeground/CellBackground, which reference the
-    # affected cell, or hexadecimal colors like #ff00ff.
-    #start:
-    #  foreground: '#1d1f21'
-    #  background: '#e9ff5e'
+  # First character in the hint label
+  #
+  # Allowed values are CellForeground/CellBackground, which reference the
+  # affected cell, or hexadecimal colors like #ff00ff.
+  #start:
+  #  foreground: '#1d1f21'
+  #  background: '#e9ff5e'
 
-    # All characters after the first one in the hint label
-    #
-    # Allowed values are CellForeground/CellBackground, which reference the
-    # affected cell, or hexadecimal colors like #ff00ff.
-    #end:
-    #  foreground: '#e9ff5e'
-    #  background: '#1d1f21'
+  # All characters after the first one in the hint label
+  #
+  # Allowed values are CellForeground/CellBackground, which reference the
+  # affected cell, or hexadecimal colors like #ff00ff.
+  #end:
+  #  foreground: '#e9ff5e'
+  #  background: '#1d1f21'
 
   # Line indicator
   #
@@ -349,70 +349,70 @@ colors:
 #
 # The bell is rung every time the BEL control character is received.
 #bell:
-  # Visual Bell Animation
-  #
-  # Animation effect for flashing the screen when the visual bell is rung.
-  #
-  # Values for `animation`:
-  #   - Ease
-  #   - EaseOut
-  #   - EaseOutSine
-  #   - EaseOutQuad
-  #   - EaseOutCubic
-  #   - EaseOutQuart
-  #   - EaseOutQuint
-  #   - EaseOutExpo
-  #   - EaseOutCirc
-  #   - Linear
-  #animation: EaseOutExpo
+# Visual Bell Animation
+#
+# Animation effect for flashing the screen when the visual bell is rung.
+#
+# Values for `animation`:
+#   - Ease
+#   - EaseOut
+#   - EaseOutSine
+#   - EaseOutQuad
+#   - EaseOutCubic
+#   - EaseOutQuart
+#   - EaseOutQuint
+#   - EaseOutExpo
+#   - EaseOutCirc
+#   - Linear
+#animation: EaseOutExpo
 
-  # Duration of the visual bell flash in milliseconds. A `duration` of `0` will
-  # disable the visual bell animation.
-  #duration: 0
+# Duration of the visual bell flash in milliseconds. A `duration` of `0` will
+# disable the visual bell animation.
+#duration: 0
 
-  # Visual bell animation color.
-  #color: '#ffffff'
+# Visual bell animation color.
+#color: '#ffffff'
 
-  # Bell Command
-  #
-  # This program is executed whenever the bell is rung.
-  #
-  # When set to `command: None`, no command will be executed.
-  #
-  # Example:
-  #   command:
-  #     program: notify-send
-  #     args: ["Hello, World!"]
-  #
-  #command: None
+# Bell Command
+#
+# This program is executed whenever the bell is rung.
+#
+# When set to `command: None`, no command will be executed.
+#
+# Example:
+#   command:
+#     program: notify-send
+#     args: ["Hello, World!"]
+#
+#command: None
 
 #selection:
-  # This string contains all characters that are used as separators for
-  # "semantic words" in Alacritty.
-  #semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
+# This string contains all characters that are used as separators for
+# "semantic words" in Alacritty.
+#semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
 
-  # When set to `true`, selected text will be copied to the primary clipboard.
-  #save_to_clipboard: false
+# When set to `true`, selected text will be copied to the primary clipboard.
+#save_to_clipboard: false
 
 cursor:
   # Cursor style
   #style:
-    # Cursor shape
-    #
-    # Values for `shape`:
-    #   - ▇ Block
-    #   - _ Underline
-    #   - | Beam
-    # shape: Block
+  # Cursor shape
+  #
+  # Values for `shape`:
+  #   - ▇ Block
+  #   - _ Underline
+  #   - | Beam
+  # shape: Block
 
-    # Cursor blinking state
-    #
-    # Values for `blinking`:
-    #   - Never: Prevent the cursor from ever blinking
-    #   - Off: Disable blinking by default
-    #   - On: Enable blinking by default
-    #   - Always: Force the cursor to always blink
-    # blinking: Never
+  # Cursor blinking state
+  #
+  # Values for `blinking`:
+  #   - Never: Prevent the cursor from ever blinking
+  #   - Off: Disable blinking by default
+  #   - On: Enable blinking by default
+  #   - Always: Force the cursor to always blink
+  # blinking: Never
 
   # Vi mode cursor style
   #
@@ -462,22 +462,22 @@ cursor:
 #working_directory: None
 
 # Send ESC (\x1b) before characters when alt is pressed.
-# alt_send_esc: true
+alt_send_esc: true
 
 # Offer IPC using `alacritty msg` (unix only)
-#ipc_socket: true
+ipc_socket: true
 
-#mouse:
-  # Click settings
-  #
-  # The `double_click` and `triple_click` settings control the time
-  # alacritty should wait for accepting multiple clicks as one double
-  # or triple click.
-  #double_click: { threshold: 300 }
-  #triple_click: { threshold: 300 }
+# mouse:
+# Click settings
+#
+# The `double_click` and `triple_click` settings control the time
+# alacritty should wait for accepting multiple clicks as one double
+# or triple click.
+#double_click: { threshold: 300 }
+#triple_click: { threshold: 300 }
 
   # If this is `true`, the cursor is temporarily hidden when typing.
-  #hide_when_typing: false
+  # hide_when_typing: true
 
 # Hints
 #
@@ -884,62 +884,62 @@ key_bindings:
   #- { key: B,              mods: Command, mode: ~Search,     action: SearchBackward        }
 
   # Custom keymaps
-  - { key: S,    mods: Command|Control|Shift, action: Hide }   # window management
-  - { key: Back, mods: Alt,                   chars: "\x17" }  # delete by word
-  - { key: Back, mods: Command,               chars: "\x15" }  # delete whole sentence
-  - { key: H,    mods: Alt,                   chars: "\x1bh" } # send mod + h (for nvim)
-  - { key: K,    mods: Alt,                   chars: "\x1bk" } # send mod + k (for nvim)
-  # - { key: A,    mods: Alt,                   chars: "\x1ba" }
-  # - { key: B,    mods: Alt,                   chars: "\x1bb" }
-  # - { key: C,    mods: Alt,                   chars: "\x1bc" }
-  # - { key: D,    mods: Alt,                   chars: "\x1bd" }
-  # - { key: E,    mods: Alt,                   chars: "\x1be" }
-  # - { key: F,    mods: Alt,                   chars: "\x1bf" }
-  # - { key: G,    mods: Alt,                   chars: "\x1bg" }
-  # - { key: I,    mods: Alt,                   chars: "\x1bi" }
-  # - { key: J,    mods: Alt,                   chars: "\x1bj" }
-  # - { key: L,    mods: Alt,                   chars: "\x1bl" }
-  # - { key: M,    mods: Alt,                   chars: "\x1bm" }
-  # - { key: N,    mods: Alt,                   chars: "\x1bn" }
-  # - { key: O,    mods: Alt,                   chars: "\x1bo" }
-  # - { key: P,    mods: Alt,                   chars: "\x1bp" }
-  # - { key: Q,    mods: Alt,                   chars: "\x1bq" }
-  # - { key: R,    mods: Alt,                   chars: "\x1br" }
-  # - { key: S,    mods: Alt,                   chars: "\x1bs" }
-  # - { key: T,    mods: Alt,                   chars: "\x1bt" }
-  # - { key: U,    mods: Alt,                   chars: "\x1bu" }
-  # - { key: V,    mods: Alt,                   chars: "\x1bv" }
-  # - { key: W,    mods: Alt,                   chars: "\x1bw" }
-  # - { key: X,    mods: Alt,                   chars: "\x1bx" }
-  # - { key: Y,    mods: Alt,                   chars: "\x1by" }
-  # - { key: Z,    mods: Alt,                   chars: "\x1bz" }
+  - { key: S,    mods: Command|Control|Alt|Shift, action: Hide }   # window management
+  - { key: Back, mods: Alt,     chars: "\x17" }  # delete by word
+  - { key: Back, mods: Command, chars: "\x15" }  # delete whole sentence
+  - { key: H,    mods: Alt,     chars: "\x1bh" } # send mod + h (for nvim)
+  - { key: K,    mods: Alt,     chars: "\x1bk" } # send mod + k (for nvim)
+  - { key: A,    mods: Alt,     chars: "\x1ba" }
+  - { key: B,    mods: Alt,     chars: "\x1bb" }
+  - { key: C,    mods: Alt,     chars: "\x1bc" }
+  - { key: D,    mods: Alt,     chars: "\x1bd" }
+  - { key: E,    mods: Alt,     chars: "\x1be" }
+  - { key: F,    mods: Alt,     chars: "\x1bf" }
+  - { key: G,    mods: Alt,     chars: "\x1bg" }
+  - { key: I,    mods: Alt,     chars: "\x1bi" }
+  - { key: J,    mods: Alt,     chars: "\x1bj" }
+  - { key: L,    mods: Alt,     chars: "\x1bl" }
+  - { key: M,    mods: Alt,     chars: "\x1bm" }
+  - { key: N,    mods: Alt,     chars: "\x1bn" }
+  - { key: O,    mods: Alt,     chars: "\x1bo" }
+  - { key: P,    mods: Alt,     chars: "\x1bp" }
+  - { key: Q,    mods: Alt,     chars: "\x1bq" }
+  - { key: R,    mods: Alt,     chars: "\x1br" }
+  - { key: S,    mods: Alt,     chars: "\x1bs" }
+  - { key: T,    mods: Alt,     chars: "\x1bt" }
+  - { key: U,    mods: Alt,     chars: "\x1bu" }
+  - { key: V,    mods: Alt,     chars: "\x1bv" }
+  - { key: W,    mods: Alt,     chars: "\x1bw" }
+  - { key: X,    mods: Alt,     chars: "\x1bx" }
+  - { key: Y,    mods: Alt,     chars: "\x1by" }
+  - { key: Z,    mods: Alt,     chars: "\x1bz" }
 
 #debug:
-  # Display the time it takes to redraw each frame.
-  #render_timer: false
+# Display the time it takes to redraw each frame.
+#render_timer: false
 
-  # Keep the log file after quitting Alacritty.
-  #persistent_logging: false
+# Keep the log file after quitting Alacritty.
+#persistent_logging: false
 
-  # Log level
-  #
-  # Values for `log_level`:
-  #   - Off
-  #   - Error
-  #   - Warn
-  #   - Info
-  #   - Debug
-  #   - Trace
-  #log_level: Warn
+# Log level
+#
+# Values for `log_level`:
+#   - Off
+#   - Error
+#   - Warn
+#   - Info
+#   - Debug
+#   - Trace
+#log_level: Warn
 
-  # Renderer override.
-  #   - glsl3
-  #   - gles2
-  #   - gles2_pure
-  #renderer: None
+# Renderer override.
+#   - glsl3
+#   - gles2
+#   - gles2_pure
+#renderer: None
 
-  # Print all received window events.
-  #print_events: false
+# Print all received window events.
+#print_events: false
 
-  # Highlight window damage information.
-  #highlight_damage: false
+# Highlight window damage information.
+#highlight_damage: false

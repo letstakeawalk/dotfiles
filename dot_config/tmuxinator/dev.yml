@@ -47,7 +47,5 @@ root: ~/Workspace/Development/
 
 windows:
   - editor:
-      layout: main-horizontal
       panes:
-        - null
         - null

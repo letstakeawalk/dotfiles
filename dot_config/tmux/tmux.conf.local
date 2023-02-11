@@ -96,7 +96,7 @@ tmux_conf_theme_colour_17="#e4e4e4"   # white
 #tmux_conf_theme_colour_16="colour1"
 #tmux_conf_theme_colour_17="colour15"
 # # --- custom theme --------------------------------------------------------------
-# nord theme
+# nord theme # TODO: rename `tmux_conf_theme_nord` to `nord`
 tmux_conf_theme_nord_00="#2e3440"    # polar night
 tmux_conf_theme_nord_01="#3b4252"    # polar night (black)
 tmux_conf_theme_nord_02="#434c5e"    # polar night
@@ -359,11 +359,15 @@ tmux_conf_copy_to_os_clipboard=false
 set-option -sa terminal-overrides ',alacritty:RGB'  # enable truecolor for alacritty
 # set -g default-terminal "alacritty"  # alacritty italic
 
+# popup windows
+bind 'n' popup -h 90% -w 80% -E -b rounded -S fg='#5E81AC'
+bind 'N' popup -h 90% -w 80% -E -b rounded -S fg='#5E81AC' 'tmux new -As popup'
+
 # window navigation
-bind-key -r 'C-j' previous-window
-bind-key -r 'C-l' next-window
-bind _ split-window -v   # split current window vertically
-bind - split-window -h   # split current window horizontally
+bind -r 'C-j' previous-window
+bind -r 'C-l' next-window
+bind _ split-window -v -p 25 # split current window vertically
+bind - split-window -h       # split current window horizontally
 
 # pane navigation
 bind -r h select-pane -U  # move up
@@ -377,42 +381,33 @@ bind < swap-pane -U       # swap current pane with the previous one
 # See: https://github.com/christoomey/vim-tmux-navigator
 is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
     | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
-bind-key -n 'C-h' if-shell "$is_vim" 'send-keys C-h'  'select-pane -U' # <C-h> -> up
-bind-key -n 'C-k' if-shell "$is_vim" 'send-keys C-k'  'select-pane -D' # <C-k> -> down
-bind-key -n 'C-j' if-shell "$is_vim" 'send-keys C-j'  'select-pane -L' # <C-j> -> left
-bind-key -n 'C-l' if-shell "$is_vim" 'send-keys C-l'  'select-pane -R' # <C-l> -> right
+bind -n 'C-h' if-shell "$is_vim" 'send-keys C-h'  'select-pane -U' # <C-h> -> up
+bind -n 'C-k' if-shell "$is_vim" 'send-keys C-k'  'select-pane -D' # <C-k> -> down
+bind -n 'C-j' if-shell "$is_vim" 'send-keys C-j'  'select-pane -L' # <C-j> -> left
+bind -n 'C-l' if-shell "$is_vim" 'send-keys C-l'  'select-pane -R' # <C-l> -> right
 tmux_version='$(tmux -V | sed -En "s/^tmux ([0-9]+(.[0-9]+)?).*/\1/p")'
 if-shell -b '[ "$(echo "$tmux_version < 3.0" | bc)" = 1 ]' \
-    "bind-key -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\'  'select-pane -l'"
+    "bind -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\'  'select-pane -l'"
 if-shell -b '[ "$(echo "$tmux_version >= 3.0" | bc)" = 1 ]' \
-    "bind-key -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\\\'  'select-pane -l'"
+    "bind -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\\\'  'select-pane -l'"
 
 
+# colemak-dhm & vi navigation
 # copy mode navigation
-bind-key -T copy-mode-vi 'C-h' select-pane -U
-bind-key -T copy-mode-vi 'C-k' select-pane -D
-bind-key -T copy-mode-vi 'C-j' select-pane -L
-bind-key -T copy-mode-vi 'C-l' select-pane -R
-bind-key -T copy-mode-vi 'C-\' select-pane -l
-bind-key -T copy-mode-vi h     send-keys   Up
-bind-key -T copy-mode-vi k     send-keys   Down
-bind-key -T copy-mode-vi j     send-keys   Left
-bind-key -T copy-mode-vi l     send-keys   Right
-
-# choose mode nav ???
+bind -T copy-mode-vi 'C-h' select-pane -U
+bind -T copy-mode-vi 'C-k' select-pane -D
+bind -T copy-mode-vi 'C-j' select-pane -L
+bind -T copy-mode-vi 'C-l' select-pane -R
+bind -T copy-mode-vi 'C-\' select-pane -l
+bind -T copy-mode-vi h     send-keys   Up
+bind -T copy-mode-vi k     send-keys   Down
+bind -T copy-mode-vi j     send-keys   Left
+bind -T copy-mode-vi l     send-keys   Right
 # choose-tree, choose-buffer, choose-client, etc
-bind-key -T root  h if -F "#{==:#{pane_mode},tree-mode}" "send k" "send h"
-bind-key -T root  k if -F "#{==:#{pane_mode},tree-mode}" "send j" "send k"
-bind-key -T root  j if -F "#{==:#{pane_mode},tree-mode}" "send h" "send j"
-bind-key -T root  l if -F "#{==:#{pane_mode},tree-mode}" "send l" "send l"
-# bind-key -T choose-mode-vi h     send-keys   Up
-# bind-key -T choose-mode-vi k     send-keys   Down
-# bind-key -T choose-mode-vi j     send-keys   Left
-# bind-key -T choose-mode-vi l     send-keys   Right
-# bind-key -n  h     send-keys   Up
-# bind-key -n  k     send-keys   Down
-# bind-key -n  j     send-keys   Left
-# bind-key -n  l     send-keys   Right
+bind -T root  h if -F "#{==:#{pane_mode},tree-mode}" "send k" "send h"
+bind -T root  k if -F "#{==:#{pane_mode},tree-mode}" "send j" "send k"
+bind -T root  j if -F "#{==:#{pane_mode},tree-mode}" "send h" "send j"
+bind -T root  l if -F "#{==:#{pane_mode},tree-mode}" "send l" "send l"
 
 # pane resizing
 bind -r J resize-pane -L 2
@@ -446,7 +441,7 @@ unbind C-a
 
 # set main pane size
 set -g other-pane-width 40%
-set -g other-pane-height 25
+set -g other-pane-height 25%
 
 # use 256 colors
 # set-option default-terminal "tmux-256color"
@@ -456,7 +451,7 @@ set -g other-pane-height 25
 setw -g automatic-rename off
 
 # -- tpm -----------------------------------------------------------------------
-set-environment -g TMUX_PLUGIN_MANAGER_PATH "~/.config/tmux/pluginsy"
+set-environment -g TMUX_PLUGIN_MANAGER_PATH "~/.config/tmux/plugins"
 # while I don't use tpm myself, many people requested official support so here
 # is a seamless integration that automatically installs plugins in parallel
 

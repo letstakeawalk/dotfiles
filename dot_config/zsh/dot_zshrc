@@ -177,7 +177,8 @@ alias f=open            # open in MacOS finder
 # alias jobs='jobs -l'    # list jobs with process id
 alias mkdir='mkdir -pv' # mkdir: create parent directories
 alias so="source $XDG_CONFIG_HOME/zsh/.zshrc"
-alias brewdeps='brew leaves | xargs brew deps --formula --for-each | sed "s/^.*:/$(tput setaf 4)&$(tput sgr0)/"'
+alias brewleaves='brew leaves | xargs brew deps --formula --for-each | sed "s/^.*:/$(tput setaf 4)&$(tput sgr0)/"'
+alias brewdeps='brew list -1 --formula | xargs brew deps --formula --for-each | sed "s/^.*:/$(tput setaf 4)&$(tput sgr0)/"'
 
 #### Alternatives ############
 alias arst=asdf

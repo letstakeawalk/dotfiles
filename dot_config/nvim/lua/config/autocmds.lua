@@ -11,7 +11,6 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
         set_tabstop(4)
     end,
 })
-
 vim.api.nvim_create_autocmd({ "FileType" }, {
     group = vim.api.nvim_create_augroup("TabSizeTwo", {}),
     pattern = { "markdown" },
@@ -72,6 +71,35 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
         vim.cmd([[!chezmoi add "%"]])
     end,
 })
+-- -- auto apply config files to $XDG_CONFIG_HOME
+-- vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+--     group = vim.api.nvim_create_augroup("Chezmoi", {}),
+--     pattern = { vim.env.CHEZMOI_SOURCE .. "/*" },
+--     callback = function(args)
+--         print("CHEZMOI AUTOCMD RUNNING")
+--         vim.pretty_print(args)
+--         -- if args.file:match("COMMIT_EDITMSG") == nil then
+--         --     vim.cmd([[!chezmoi apply --source-path "%"]])
+--         -- end
+--         -- local apply = function()
+--         --     vim.cmd([[!chezmoi apply --source-path "%"]])
+--         -- end
+--         -- local success, _ = pcall(apply)
+--         -- if success then
+--         --     print("Sourced")
+--         -- else
+--         --     print("Chezmoi ERROR")
+--         -- end
+--     end,
+-- })
+-- -- chezmoi respective filetype
+-- vim.api.nvim_create_autocmd({ "BufEnter" }, {
+--     group = vim.api.nvim_create_augroup("Chezmoi", {}),
+--     pattern = "dot_zshrc",
+--     callback = function()
+--         vim.opt.filetype = "zsh"
+--     end,
+-- })
 
 -- -- set spell on txt, md, tex, gitcommit ft
 -- vim.api.nvim_create_autocmd("FileType", {

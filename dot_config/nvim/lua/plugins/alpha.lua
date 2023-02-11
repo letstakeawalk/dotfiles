@@ -51,47 +51,47 @@ return {
 				position = "center",
 			},
 		}
-
-		local function shortcuts()
-			local keybind_opts = { silent = true, noremap = true }
-			vim.api.nvim_create_autocmd({ "User" }, {
-				pattern = { "AlphaReady" },
-				callback = function(_)
-					vim.api.nvim_buf_set_keymap(0, "n", "n", "<cmd>enew<cr>", keybind_opts)
-					vim.api.nvim_buf_set_keymap(0, "n", "p", "<cmd>Telescope projects<CR>", keybind_opts)
-					vim.api.nvim_buf_set_keymap(0, "n", "t", "<cmd>TodoTelescope<CR>", keybind_opts)
-					vim.api.nvim_buf_set_keymap(0, "n", "s", "<cmd>e $MYVIMRC<CR>", keybind_opts)
-				end,
-			})
-			return {
-				{
-					type = "text",
-					val = {
-						" New File [n]     Project [p]     Todo [t]     Settings [s]",
-					},
-					opts = {
-						position = "center",
-						hl = {
-							{ "Function", 1, 19 },
-							{ "Keyword", 19, 36 },
-							{ "String", 36, 56 },
-							{ "Number", 56, 80 },
-							-- { "Constant", 64, 80 },
-						},
-					},
-				},
-			}
-		end
-
-		local section_shortcuts = { type = "group", val = shortcuts }
+		--
+		-- local function shortcuts()
+		-- 	local keybind_opts = { silent = true, noremap = true }
+		-- 	vim.api.nvim_create_autocmd({ "User" }, {
+		-- 		pattern = { "AlphaReady" },
+		-- 		callback = function(_)
+		-- 			vim.api.nvim_buf_set_keymap(0, "n", "n", "<cmd>enew<cr>", keybind_opts)
+		-- 			vim.api.nvim_buf_set_keymap(0, "n", "p", "<cmd>Telescope projects<CR>", keybind_opts)
+		-- 			vim.api.nvim_buf_set_keymap(0, "n", "t", "<cmd>TodoTelescope<CR>", keybind_opts)
+		-- 			vim.api.nvim_buf_set_keymap(0, "n", "s", "<cmd>e $MYVIMRC<CR>", keybind_opts)
+		-- 		end,
+		-- 	})
+		-- 	return {
+		-- 		{
+		-- 			type = "text",
+		-- 			val = {
+		-- 				" New File [n]     Project [p]     Todo [t]     Settings [s]",
+		-- 			},
+		-- 			opts = {
+		-- 				position = "center",
+		-- 				hl = {
+		-- 					{ "Function", 1, 19 },
+		-- 					{ "Keyword", 19, 36 },
+		-- 					{ "String", 36, 56 },
+		-- 					{ "Number", 56, 80 },
+		-- 					-- { "Constant", 64, 80 },
+		-- 				},
+		-- 			},
+		-- 		},
+		-- 	}
+		-- end
+		--
+		-- local section_shortcuts = { type = "group", val = shortcuts() }
 
 		local config = {
 			layout = {
 				{ type = "padding", val = 8 },
 				section_header,
 				{ type = "padding", val = 2 },
-				section_shortcuts,
-				{ type = "padding", val = 1 },
+				-- section_shortcuts,
+				-- { type = "padding", val = 1 },
 				section_info,
 			},
 		}

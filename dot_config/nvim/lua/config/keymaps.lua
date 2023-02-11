@@ -5,24 +5,24 @@ local map = vim.keymap.set
 map("i", "<C-d>", "<Esc>")
 map("c", "<C-d>", "<Esc>")
 -- better indenting
-map("n", "<", "<h")
-map("n", ">", ">l")
+map("n", "<", "<h", { desc = "Indent -1 level" })
+map("n", ">", ">l", { desc = "Indent +1 level" })
 map("v", "<", "<gv")
 map("v", ">", ">gv")
 -- cursor navigation
-map({ "i", "n", "c" }, "<A-Right>", "<C-Right>") -- move cursor one word to the left  -- ^[f
-map({ "i", "n", "c" }, "<A-Left>", "<C-Left>") -- move cursor one word to the left -- ^[b
+map({ "i", "n", "c" }, "<A-Right>", "<C-Right>", { desc = "Next word" }) -- ^[f
+map({ "i", "n", "c" }, "<A-Left>", "<C-Left>", { desc = "Prev word" }) -- ^[b
 map("c", "<C-a>", "<Home>") -- move cursor to BOL
 map("c", "<C-e>", "<End>") -- move cursor to EOL
 map({ "i", "c" }, "<A-BS>", "<C-w>") -- delete word
 map("n", "ge", "gi", { desc = "Last edited position" }) -- go to last INSERT pos and insert
-map("n", "G", "Gzz") -- jump to eof center cursor
+map("n", "G", "Gzz", { desc = "Goto last line" }) -- jump to eof center cursor
 -- buffers and tabs navigation
-map("n", "<Home>", ":tabnext<cr>")
-map("n", "<End>", ":tabprev<cr>")
-map("n", "<PageUp>", ":bnext<cr>")
-map("n", "<PageDown>", ":bprev<cr>")
-map("n", "<C-t>", "<C-^>") -- toggle between two files
+map("n", "<Home>", ":tabnext<cr>", { desc = "Prev tab" })
+map("n", "<End>", ":tabprev<cr>", { desc = "Next tab" })
+map("n", "<PageUp>", ":bnext<cr>", { desc = "Next buffer" })
+map("n", "<PageDown>", ":bprev<cr>", { desc = "Prev buffer" })
+map("n", "<C-t>", "<C-^>", { desc = "Edit prev edited file" })
 -- buffer management
 map("n", "<C-s>", ":w<cr>", { desc = "Write buffer" }) -- save current buffer
 map("n", "<C-q>", "<cmd>q<cr>", { desc = "Quit buffer" })
@@ -39,14 +39,19 @@ map("i", ";", ";<c-g>u")
 -- etc
 map("n", "'", "`") -- better mark navigation
 map("n", "<leader>ss", "<cmd>so %<cr>", { desc = "Source buffer" })
-map("n", "<leader>sk", "<cmd>so ~/.config/nvim/lua/HRB/keymaps.lua<cr>", { desc = "Source keymap" })
+map("n", "<leader>sk", function() require(vim.fn.stdpath("config") .. "/lua/config/keymaps.lua") end, { desc = "Source keymap" })
 map("s", "<BS>", "<BS>i") -- delete selection and stay in INSERT
 map("n", "J", "mzJ`z", { desc = "Join lines" }) -- join lines while preserving cursor pos
 map("x", "p", '"_dP') -- "greatest remap ever" by theprimeage (keep copied text in register w/o overriding)
 map("i", "<C-f>", "<Del>") -- delete char
 -- map("n", "<leader>S", ":%s/<C-r><C-w>/<C-r><C-w>/gI<Left><Left><Left>", { desc = "Substitude word under cursor" }) -- substitute word under cursor
 map("n", "<leader>xX", "<cmd>!chmod +x %<cr>", { silent = true, desc = "chmod +x" })
-map("n", "<leader>rz", "<cmd>s!\\(https://\\)\\?\\(www.\\)\\?github.com/\\(.*\\)!\\3", { desc = "Clean gh url" }) -- remove github prefix
+map("n", "<leader>rz", "<cmd>s!\\(https://\\)\\?\\(www.\\)\\?github.com/\\(.*\\)!\\3<cr>", { desc = "Clean gh url" }) -- remove github prefix
+map("n", "gcy", "yygcc")
+-- TODO: refer to comment.nvim and treesitter / use <C-_> instead
+-- map("i", "<C-x>", "<esc>gcci<tab>")
+-- map("i", "<C-l>", "<esc>gcccc", { desc = "Toggle comment" })
+-- map({ "n", "x" }, "<leader>rC", "<cmd>s!\\<.!\\u&!g<cr>", { desc = "Caplitalize words" })
 
 --- Colemak-dhm --------------------------------
 -- navigate cursor
@@ -67,6 +72,12 @@ map("n", "<c-w>K", "<c-w>J", { desc = "Move pane to down" })
 map("n", "<c-w>H", "<c-w>K", { desc = "Move pane to up" })
 map("n", "<c-w>J", "<c-w>H", { desc = "Move pane to left" })
 -- move lines up/down using Alt + <kh>
+map("n", "<A-down>", ":m .+1<CR>==")
+map("n", "<A-up>", ":m .-2<CR>==")
+map("i", "<A-down>", "<Esc>:m .+1<CR>==gi")
+map("i", "<A-up>", "<Esc>:m .-2<CR>==gi")
+map("v", "<A-down>", ":m '>+1<CR>gv=gv")
+map("v", "<A-up>", ":m '<-2<CR>gv=gv")
 map("n", "<A-k>", ":m .+1<CR>==")
 map("n", "<A-h>", ":m .-2<CR>==")
 map("i", "<A-k>", "<Esc>:m .+1<CR>==gi")

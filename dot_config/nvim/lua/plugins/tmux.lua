@@ -4,15 +4,21 @@
 
 return {
   {
-    "christoomey/vim-tmux-navigator",
-    lazy = false,
+    "aserowy/tmux.nvim",
+    -- stylua: ignore
+    keys = {
+      { "<C-j>", function() require("tmux").move_left() end, mode = { "n", "i" }, desc = "Nav Left" },
+      { "<C-l>", function() require("tmux").move_right() end, mode = { "n", "i" }, desc = "Nav Right" },
+      { "<C-k>", function() require("tmux").move_bottom() end, mode = { "n", "i" }, desc = "Nav Down" },
+      { "<C-h>", function() require("tmux").move_top() end, mode = { "n", "i" }, desc = "Nav Up" },
+    },
     config = function()
-      vim.g.tmux_navigator_no_mappings = 1
-      vim.keymap.set("n", "<C-j>", "<cmd>TmuxNavigateLeft<cr>")
-      vim.keymap.set("n", "<C-l>", "<cmd>TmuxNavigateRight<cr>")
-      vim.keymap.set("n", "<C-k>", "<cmd>TmuxNavigateDown<cr>")
-      vim.keymap.set("n", "<C-h>", "<cmd>TmuxNavigateUp<cr>")
-      vim.keymap.set("n", "<C-\\>", "<cmd>TmuxNavigatePrevious<cr>")
+      local tmux = require("tmux")
+      tmux.setup({
+        copy_sync = { enabled = false },
+        navigation = { enable_default_keybindings = false },
+        resize = { enable_default_keybindings = false },
+      })
     end,
   },
   {
@@ -28,10 +34,10 @@ return {
       vim.keymap.set(
         "n",
         "<leader>cc",
-        "<cmd>VtrFlushCommand<cr><cmd>VtrSendCommandToRunner!<cr>",
+        "<cmd>VtrFlushCommand<cr><cmd>VtrSendCommandToRunner<cr>",
         { desc = "Send command to runner" }
       )
-      vim.keymap.set("n", "<leader>cr", "<cmd>VtrSendCommandToRunner!<cr>", { desc = "(Re)Send command to runner" })
+      vim.keymap.set("n", "<leader>cr", "<cmd>VtrSendCommandToRunner<cr>", { desc = "(Re)Send command to runner" })
       vim.keymap.set("n", "<leader>cs", "<cmd>VtrSendFile!<cr>", { desc = "Run file" })
       vim.keymap.set("n", "<leader>cf", "<cmd>VtrFlushCommand<cr>", { desc = "Flush commands" })
       vim.keymap.set("n", "<leader>co", "<cmd>VtrOpenRunner<cr>", { desc = "Open runner" })

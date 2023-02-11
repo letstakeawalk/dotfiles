@@ -1,6 +1,6 @@
 -- general config
 vim.g.mapleader = " "
-vim.g.maplocalleader = " "
+vim.g.maplocalleader = ","
 vim.g.python3_host_prog = "/opt/homebrew/bin/python3.11"
 
 -- vim.cmd.syntax("on") -- ???

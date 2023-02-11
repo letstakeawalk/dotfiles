@@ -50,8 +50,8 @@ return {
         end
       end
 
-      -- See `:help vim.diagnostic.*` for documentation on any of the below functions
       -- stylua: ignore start
+      vim.keymap.set("n", "<leader>il", "<cmd>LspInfo<cr>", { desc = "Lsp Info" })
       vim.keymap.set("n", "E", vim.diagnostic.open_float, { desc = "Open Float" })
       vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Goto previous diagnostic" })
       vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Goto next diagnostic" })
@@ -60,9 +60,8 @@ return {
       vim.keymap.set("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Goto next warning" })
       vim.keymap.set("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Goto previous warning" })
       vim.keymap.set("n", "<leader>rf", function() vim.lsp.buf.format({ async = true }) end, { desc = "Format File" })
-      -- vim.keymap.set("n", "<leader>dq", vim.diagnostic.setloclist, { desc = "Add diagnostics to location list" })
       vim.keymap.set("n", "<leader>dd", toggle_diagnostic, { silent = true, desc = "Diagnostic Toggle" })
-      -- vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)  -- ??
+      -- vim.keymap.set("n", "<leader>dq", vim.diagnostic.setloclist, { desc = "Add diagnostics to location list" })
       -- stylua: ignore end
 
       local on_attach = function(_, bufnr)
@@ -74,6 +73,27 @@ return {
         vim.keymap.set("n", "T", vim.lsp.buf.type_definition, bufopts("Display Type Definition"))
         vim.keymap.set({ "n", "v" }, "<leader>ra", vim.lsp.buf.code_action, bufopts("Code Action"))
         vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, bufopts("Rename"))
+
+        -- highlight symbol under cursor
+        -- if client.server_capabilities.documentHighlightProvider then
+        --   vim.api.nvim_create_augroup("lsp_document_highlight", {
+        --     clear = false,
+        --   })
+        --   vim.api.nvim_clear_autocmds({
+        --     buffer = bufnr,
+        --     group = "lsp_document_highlight",
+        --   })
+        --   vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+        --     group = "lsp_document_highlight",
+        --     buffer = bufnr,
+        --     callback = vim.lsp.buf.document_highlight,
+        --   })
+        --   vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+        --     group = "lsp_document_highlight",
+        --     buffer = bufnr,
+        --     callback = vim.lsp.buf.clear_references,
+        --   })
+        -- end
       end
 
       -- cmp-nvim-lsp
@@ -176,6 +196,7 @@ return {
         bashls = {},
         emmet_ls = {},
       }
+
       for server, config in pairs(servers) do
         config.on_attach = on_attach
         config.capabilities = capabilities
@@ -183,12 +204,11 @@ return {
         lsp_config[server].setup(config)
       end
 
-      vim.keymap.set("n", "<leader>il", "<cmd>LspInfo<cr>", { desc = "Lsp Info" })
       --------------------------------------------------------------------------------
       -- UI customization ------------------------------------------------------------
       --------------------------------------------------------------------------------
       require("lspconfig.ui.windows").default_options.border = "double"
-      vim.api.nvim_set_hl(0, "LspInfoBorder", {link = "FloatBorder"})
+      vim.api.nvim_set_hl(0, "LspInfoBorder", { link = "FloatBorder" })
       -- https://github.com/neovim/nvim-lspconfig/wiki/UI-customization#borders
       local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
       ---@diagnostic disable-next-line: duplicate-set-field
@@ -208,13 +228,9 @@ return {
       -- display the source of diagnostic
       vim.diagnostic.config({
         virtual_text = false,
-        -- virtual_text = {
-        --   severity = vim.diagnostic.severity.ERROR,
-        --   source = false, -- Or "if_many"
-        -- },
-        -- float = {
-        --   source = "always", -- Or "if_many"
-        -- },
+        float = {
+          source = "always", -- Or "if_many"
+        },
       })
 
       -- auto diagnostic hover window
@@ -224,6 +240,12 @@ return {
       --     vim.diagnostic.open_float(nil, { focus = false })
       --   end,
       -- })
+
+      -- highlight symbol under cursor
+      -- local nord = require("utils").nord
+      -- vim.api.nvim_set_hl(0, "LspReferenceText", { bg = nord.c02 })
+      -- vim.api.nvim_set_hl(0, "LspReferenceRead", { bg = nord.c02 })
+      -- vim.api.nvim_set_hl(0, "LspReferenceWrite", { bg = nord.c02 })
 
       --------------------------------------------------------------------------------
       -- DEBUG

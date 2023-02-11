@@ -14,6 +14,7 @@ return {
 
       -- All the patterns used to detect root dir, when **"pattern"** is in
       -- detection_methods
+      -- stylua: ignore 
       patterns = {
         ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json",
         -- python
@@ -26,6 +27,8 @@ return {
         "go.mod",
         -- lua
         "init.lua", "selene.toml", "selene.yml",
+        -- custom
+        ".proj.root", ".project.root",
       },
 
       -- Table of lsp clients to ignore by name

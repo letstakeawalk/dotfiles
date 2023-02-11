@@ -4,6 +4,7 @@ return {
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" }, -- use fzf
     "nvim-telescope/telescope-symbols.nvim", -- symbol picker
     "nvim-telescope/telescope-file-browser.nvim", -- file browser
+    -- "smartpde/telescope-recent-files", -- recent files
     "tsakirist/telescope-lazy.nvim", -- lazy.nvim
     "ahmedkhalf/project.nvim", -- project.nvim
   },
@@ -11,36 +12,40 @@ return {
   init = function()
     -- keymaps
     -- stylua: ignore start
-    vim.keymap.set("n", "<leader>f",  "<cmd>Telescope find_files<cr>",           { desc = "Telescope Files" })
-    vim.keymap.set("n", "<leader>p",  "<cmd>Telescope live_grep<cr>",            { desc = "Telescope Live Grep" })
-    vim.keymap.set("n", "<leader>b",  "<cmd>Telescope buffers<cr>",              { desc = "Telescope buffers" })
-    vim.keymap.set("n", "<leader>tc", "<cmd>Telescope commands<cr>",             { desc = "Commands" })
-    vim.keymap.set("n", "<leader>tf", "<cmd>Telescope file_browser<cr>",         { desc = "File Browser" })
-    vim.keymap.set("n", "<leader>th", "<cmd>Telescope help_tags<cr>",            { desc = "Help" })
-    vim.keymap.set("n", "<leader>tH", "<cmd>Telescope highlights<cr>",           { desc = "Highlight" })
-    vim.keymap.set("n", "<leader>tk", "<cmd>Telescope keymaps<cr>",              { desc = "Keymaps" })
-    vim.keymap.set("n", "<leader>tm", "<cmd>Telescope marks<cr>",                { desc = "Marks" })
-    vim.keymap.set("n", "<leader>tq", "<cmd>Telescope quickfix<cr>",             { desc = "Quickfix" })
-    vim.keymap.set("n", "<leader>tA", "<cmd>Telescope autocommands<cr>",         { desc = "Autocmd" })
-    vim.keymap.set("n", "<leader>ts", "<cmd>Telescope spell_suggest<cr>",        { desc = "Spell suggest" })
-    vim.keymap.set("n", "<leader>tS", "<cmd>Telescope symbols<cr>",              { desc = "Symbols" })
-    vim.keymap.set("i", "<C-space>",  "<cmd>Telescope symbols<cr>",              { desc = "Symbols" })
-    vim.keymap.set("n", "<leader>tr", "<cmd>Telescope resume<cr>",               { desc = "Resume" })
+    vim.keymap.set("n", "<leader>b",  "<cmd>Telescope buffers<cr>",       { desc = "Telescope buffers" })
+    vim.keymap.set("n", "<leader>f",  "<cmd>Telescope find_files<cr>",    { desc = "Telescope Files" })
+    vim.keymap.set("n", "<leader>p",  "<cmd>Telescope live_grep<cr>",     { desc = "Telescope Live Grep" })
+    vim.keymap.set("n", "<leader>tA", "<cmd>Telescope autocommands<cr>",  { desc = "Autocmd" })
+    vim.keymap.set("n", "<leader>tb", "<cmd>Telescope builtin<cr>",       { desc = "Builtin Pickers" })
+    vim.keymap.set("n", "<leader>tc", "<cmd>Telescope commands<cr>",      { desc = "Commands" })
+    vim.keymap.set("n", "<leader>th", "<cmd>Telescope help_tags<cr>",     { desc = "Help" })
+    vim.keymap.set("n", "<leader>tH", "<cmd>Telescope highlights<cr>",    { desc = "Highlight" })
+    vim.keymap.set("n", "<leader>tk", "<cmd>Telescope keymaps<cr>",       { desc = "Keymaps" })
+    vim.keymap.set("n", "<leader>tm", "<cmd>Telescope marks<cr>",         { desc = "Marks" })
+    vim.keymap.set("n", "<leader>tM", "<cmd>Telescope man_pages<cr>",     { desc = "Man Pages" })
+    vim.keymap.set("n", "<leader>to", "<cmd>Telescope oldfiles<cr>",      { desc = "Old Files" })
+    vim.keymap.set("n", "<leader>tq", "<cmd>Telescope quickfix<cr>",      { desc = "Quickfix" })
+    vim.keymap.set("n", "<leader>tr", "<cmd>Telescope resume<cr>",        { desc = "Resume" })
+    vim.keymap.set("n", "<leader>ts", "<cmd>Telescope spell_suggest<cr>", { desc = "Spell suggest" })
+    vim.keymap.set("n", "<leader>tS", "<cmd>Telescope symbols<cr>",       { desc = "Symbols" })
+    vim.keymap.set("n", "<leader>tt", "<cmd>Telescope treesitter<cr>",    { desc = "Treesitter" })
+    vim.keymap.set("i", "<C-space>",  "<cmd>Telescope symbols<cr>",       { desc = "Symbols" })
     -- lsp pickers
-    vim.keymap.set("n", "gr",         "<cmd>Telescope lsp_references<cr>",       { desc = "LSP References" })
-    vim.keymap.set("n", "gi",         "<cmd>Telescope lsp_implementations<cr>",  { desc = "LSP Implementations" })
-    vim.keymap.set("n", "gd",         "<cmd>Telescope lsp_definitions<cr>",      { desc = "LSP Definitions" })
-    vim.keymap.set("n", "gt",         "<cmd>Telescope lsp_type_definitions<cr>", { desc = "LSP TypeDefinitions" })
+    vim.keymap.set("n", "gr", "<cmd>Telescope lsp_references<cr>",       { desc = "LSP References" })
+    vim.keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<cr>",  { desc = "LSP Implementations" })
+    vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<cr>",      { desc = "LSP Definitions" })
+    vim.keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<cr>", { desc = "LSP TypeDefinitions" })
     -- git pickers
-    vim.keymap.set("n", "<leader>gb", "<cmd>Telescope git_branches<cr>",         { desc = "Git Branches" })
-    vim.keymap.set("n", "<leader>gc", "<cmd>Telescope git_commits<cr>",          { desc = "Git Commits" })
-    vim.keymap.set("n", "<leader>gC", "<cmd>Telescope git_bcommits<cr>",         { desc = "Git Buf Commits" })
-    vim.keymap.set("n", "<leader>gs", "<cmd>Telescope git_status<cr>",           { desc = "Git Status" })
-    vim.keymap.set("n", "<leader>gS", "<cmd>Telescope git_stash<cr>",            { desc = "Git Stash" })
+    vim.keymap.set("n", "<leader>gb", "<cmd>Telescope git_branches<cr>", { desc = "Git Branches" })
+    vim.keymap.set("n", "<leader>gc", "<cmd>Telescope git_commits<cr>",  { desc = "Git Commits" })
+    vim.keymap.set("n", "<leader>gC", "<cmd>Telescope git_bcommits<cr>", { desc = "Git Buf Commits" })
+    vim.keymap.set("n", "<leader>gs", "<cmd>Telescope git_status<cr>",   { desc = "Git Status" })
+    vim.keymap.set("n", "<leader>gS", "<cmd>Telescope git_stash<cr>",    { desc = "Git Stash" })
     -- extensions
-    vim.keymap.set("n", "<leader>tz", "<cmd>Telescope lazy<cr>",                 { desc = "Lazy" })
-    vim.keymap.set("n", "<leader>tp", "<cmd>Telescope projects<cr>",             { desc = "Projects" })
-    vim.keymap.set("n", "<leader>ta", "<cmd>Telescope aerial<cr>",               { desc = "Aerial" })
+    vim.keymap.set("n", "<leader>tz", "<cmd>Telescope lazy<cr>",         { desc = "Lazy" })
+    vim.keymap.set("n", "<leader>tp", "<cmd>Telescope projects<cr>",     { desc = "Projects" })
+    vim.keymap.set("n", "<leader>ta", "<cmd>Telescope aerial<cr>",       { desc = "Aerial" })
+    vim.keymap.set("n", "<leader>tf", "<cmd>Telescope file_browser<cr>", { desc = "File Browser" })
     -- stylua: ignore end
   end,
   config = function()
@@ -96,6 +101,7 @@ return {
     })
     telescope.load_extension("fzf")
     telescope.load_extension("file_browser")
+    -- telescope.load_extension("recent_files")
     telescope.load_extension("lazy")
     telescope.load_extension("projects")
     telescope.load_extension("aerial")

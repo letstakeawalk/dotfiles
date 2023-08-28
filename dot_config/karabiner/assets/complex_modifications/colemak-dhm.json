@@ -115,6 +115,12 @@
           "to": { "key_code": "delete_forward" },
           "conditions": [ { "type": "variable_if", "name": "coding", "value": 1 } ]
         },
+        {
+          "type": "basic",
+          "from": { "key_code": "backslash" },
+          "to": { "key_code": "backslash", "modifiers": ["left_control"] },
+          "conditions": [ { "type": "variable_if", "name": "coding", "value": 1 } ]
+        },
 
         {
           "type": "basic",

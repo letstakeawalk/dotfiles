@@ -2,3 +2,5 @@ std = "lua51+vim"
 
 [lints]
 multiple_statements = "allow"
+unused_variable = "allow" # let lualsp handle it
+shadowing = "allow"

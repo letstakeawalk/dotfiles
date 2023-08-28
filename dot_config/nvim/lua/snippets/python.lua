@@ -1,3 +1,4 @@
+---@diagnostic disable: unused-local
 local ls = require("luasnip")
 local types = require("luasnip.util.types")
 local s = ls.snippet -- s(<trigger>, <nodes>)
@@ -20,9 +21,9 @@ local n = require("luasnip.extras").nonempty
 local conds = require("luasnip.extras.conditions")
 local conds_expand = require("luasnip.extras.conditions.expand")
 
--- print("python snips loaded")
+-- TODO: https://github.com/L3MON4D3/LuaSnip/wiki/Cool-Snippets#python
 
-ls.add_snippets("python", {
+local python = {
     -- class
     s(
         "cla",
@@ -96,7 +97,7 @@ class {}:
     ),
     -- for-loop in range
     s(
-        "fore",
+        "forr",
         fmt(
             [[for i, {} in range({}):
     {}{}]],
@@ -126,7 +127,9 @@ SP: O({})
             "# type: ignore",
         })
     ),
-})
+}
+
+return python
 
 -------------------------------------------------------------------------------
 -- TEST AREA ------------------------------------------------------------------
@@ -134,44 +137,44 @@ SP: O({})
 
 -- https://github.com/L3MON4D3/LuaSnip/wiki/Cool-Snippets#python---function-definition-with-dynamic-virtual-text
 -- Allows to keep adding arguments via choice nodes.
-local function py_init()
-    return sn(
-        nil,
-        c(1, {
-            t(""),
-            sn(1, {
-                t(", "),
-                i(1),
-                d(2, py_init),
-            }),
-        })
-    )
-end
-
-local function initialize(args)
-    local nodes = {}
-    local arg = args[1][1]
-    vim.pretty_print(arg)
-    if #arg == 0 then
-        table.insert(nodes, t({ "", "\tpass" }))
-    else
-        for e in string.gmatch(a, " ?([^,]*) ?") do
-            if #e > 0 then
-                local token = vim.split(e, ":")
-                local param = token[1]
-                local type = token[2] and ":" .. token[2] or ""
-                table.insert(nodes, t({ "", "\tself." }))
-                table.insert(nodes, i(nil, param))
-                -- table.insert(nodes, r(count, tostring(count), i(nil, param)))
-                table.insert(nodes, t(type))
-                table.insert(nodes, t(" = "))
-                table.insert(nodes, t(param))
-            end
-        end
-    end
-    return sn(nil, nodes)
-end
-
+-- local function py_init()
+--     return sn(
+--         nil,
+--         c(1, {
+--             t(""),
+--             sn(1, {
+--                 t(", "),
+--                 i(1),
+--                 d(2, py_init),
+--             }),
+--         })
+--     )
+-- end
+--
+-- local function initialize(args)
+--     local nodes = {}
+--     local arg = args[1][1]
+--     vim.pretty_print(arg)
+--     if #arg == 0 then
+--         table.insert(nodes, t({ "", "\tpass" }))
+--     else
+--         for e in string.gmatch(a, " ?([^,]*) ?") do
+--             if #e > 0 then
+--                 local token = vim.split(e, ":")
+--                 local param = token[1]
+--                 local type = token[2] and ":" .. token[2] or ""
+--                 table.insert(nodes, t({ "", "\tself." }))
+--                 table.insert(nodes, i(nil, param))
+--                 -- table.insert(nodes, r(count, tostring(count), i(nil, param)))
+--                 table.insert(nodes, t(type))
+--                 table.insert(nodes, t(" = "))
+--                 table.insert(nodes, t(param))
+--             end
+--         end
+--     end
+--     return sn(nil, nodes)
+-- end
+--
 -- ls.add_snippets("all", {
 -- 	s(
 -- 		"cinit",

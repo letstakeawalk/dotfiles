@@ -11,24 +11,27 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup("plugins", {
+require("lazy").setup({
+    -- path to lazy specs
+    { import = "plugins" },
+    { import = "plugins.coding" }, -- coding essentials
+    { import = "plugins.language_servers" }, -- language servers
+    -- { import = "plugins.debug" }, -- debuging tool
+    { import = "plugins.ui" }, -- ui
+    { import = "plugins.ui-enhancers" }, -- ui enhancers
+    { import = "plugins.utils" }, -- utility plugins
+}, {
     -- lazy config
-    defaults = {
-        lazy = true,
-    },
+    defaults = { lazy = true },
     dev = {
         -- directory where you store your local plugin projects
-        path = "~/Workspace/Development/projects/opensrc",
+        path = "~/Workspace/dev/opensrc",
         ---@type string[] plugins that match these patterns will use your local versions instead of being fetched from GitHub
         patterns = {}, -- For example {"folke"}
         fallback = false, -- Fallback to git when local plugin doesn't exist
     },
-    ui = {
-        border = "double",
-    },
-    install = {
-        colorscheme = { "nord", "habamax" },
-    },
+    ui = { border = "double" },
+    install = { colorscheme = { "nord", "habamax" } },
     performance = {
         rtp = {
             disabled_plugins = {
@@ -43,8 +46,8 @@ require("lazy").setup("plugins", {
             },
         },
     },
+    change_detection = { notify = false },
 })
 
 vim.api.nvim_set_keymap("n", "<leader>iz", "<cmd>Lazy<cr>", { desc = "Lazy" })
-
 vim.api.nvim_set_hl(0, "LazyButtonActive", { link = "LazyH1" })

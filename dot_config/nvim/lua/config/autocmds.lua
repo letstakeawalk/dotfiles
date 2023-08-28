@@ -1,52 +1,42 @@
--- set tab size to 4
+local augroup = function(name) return vim.api.nvim_create_augroup("HRB_" .. name, { clear = true }) end
+-- Tab configuration
 local function set_tabstop(size)
     vim.opt_local.tabstop = size
     vim.opt_local.softtabstop = size
     vim.opt_local.shiftwidth = size
 end
-vim.api.nvim_create_autocmd({ "FileType" }, {
-    group = vim.api.nvim_create_augroup("TabSizeFour", {}),
-    pattern = { "python", "rust", "c", "cpp", "lua" },
-    callback = function()
-        set_tabstop(4)
-    end,
+vim.api.nvim_create_autocmd("FileType", {
+    group = augroup("TabTwo"),
+    -- pattern = { "typescript", "javascript", "css", "html", "svelte" },
+    pattern = { "css", "html" },
+    callback = function() set_tabstop(2) end,
 })
-vim.api.nvim_create_autocmd({ "FileType" }, {
-    group = vim.api.nvim_create_augroup("TabSizeTwo", {}),
-    pattern = { "markdown" },
-    callback = function()
-        set_tabstop(2)
-    end,
+
+-- format options
+vim.api.nvim_create_autocmd("BufEnter", {
+    group = augroup("FormatOptions"),
+    callback = function() vim.bo.formatoptions = "cqnlj" end,
 })
 
 -- resize splits if window got resized
-vim.api.nvim_create_autocmd({ "VimResized" }, {
-    callback = function()
-        vim.cmd("tabdo wincmd =")
-    end,
-})
-
--- set formatoptions
-vim.api.nvim_create_autocmd({ "FileType" }, {
-    group = vim.api.nvim_create_augroup("FormatOptions", {}),
-    pattern = { "lua", "gitcommit" },
-    callback = function()
-        vim.opt_local.formatoptions = "crqnlj" -- :help fo-table
-    end,
+vim.api.nvim_create_autocmd("VimResized", {
+    group = augroup("ResizeSplits"),
+    callback = function() vim.cmd("tabdo wincmd =") end,
 })
 
 -- wrap text
-vim.api.nvim_create_autocmd({ "FileType" }, {
-    group = vim.api.nvim_create_augroup("TextWrap", {}),
-    pattern = { "markdown", "gitcommit" },
-    callback = function()
-        vim.opt_local.wrap = true
-    end,
-})
+-- vim.api.nvim_create_autocmd("FileType", {
+--     group = augroup("Wrap"),
+--     pattern = { "markdown" },
+--     callback = function() vim.opt_local.wrap = true end,
+-- })
 
--- close some filetypes with <q>
+-- close some filetypes with `q`
 vim.api.nvim_create_autocmd("FileType", {
+    group = augroup("CloseQ"),
     pattern = {
+        "git",
+        "fugitive",
         "qf",
         "help",
         "man",
@@ -63,35 +53,59 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
--- auto add config files to chezmoi
-vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-    group = vim.api.nvim_create_augroup("Chezmoi", {}),
-    pattern = { vim.env.XDG_CONFIG_HOME .. "/**/*" },
-    callback = function()
-        vim.cmd([[!chezmoi add "%"]])
+-- open some filetypes on vertical split
+vim.api.nvim_create_autocmd("FileType", {
+    group = augroup("VertSplit"),
+    pattern = { "help", "fugitive", "git" },
+    callback = function() vim.cmd.wincmd("L") end,
+})
+
+-- Auto create dir when saving a file, in case some intermediate directory does not exist
+vim.api.nvim_create_autocmd("BufWritePre", {
+    group = augroup("AutoCreateDir"),
+    callback = function(event)
+        if event.match:match("^%w%w+://") then
+            return
+        end
+        local file = vim.loop.fs_realpath(event.match) or event.match
+        vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
     end,
 })
--- -- auto apply config files to $XDG_CONFIG_HOME
--- vim.api.nvim_create_autocmd({ "BufWritePost" }, {
---     group = vim.api.nvim_create_augroup("Chezmoi", {}),
---     pattern = { vim.env.CHEZMOI_SOURCE .. "/*" },
---     callback = function(args)
---         print("CHEZMOI AUTOCMD RUNNING")
---         vim.pretty_print(args)
---         -- if args.file:match("COMMIT_EDITMSG") == nil then
---         --     vim.cmd([[!chezmoi apply --source-path "%"]])
---         -- end
---         -- local apply = function()
---         --     vim.cmd([[!chezmoi apply --source-path "%"]])
---         -- end
---         -- local success, _ = pcall(apply)
---         -- if success then
---         --     print("Sourced")
---         -- else
---         --     print("Chezmoi ERROR")
---         -- end
---     end,
--- })
+
+-- auto add config files to chezmoi source
+vim.api.nvim_create_autocmd("BufWritePost", {
+    group = augroup("ChezmoiAdd"),
+    pattern = { vim.env.XDG_CONFIG_HOME .. "/**/*" },
+    ---@param ev { file: string, match: string }
+    callback = function(ev)
+        local result = vim.fn.system({ "chezmoi", "add", ev.match })
+        if vim.v.shell_error == 0 then
+            vim.notify("Chezmoi added: " .. ev.file)
+        else
+            vim.notify("Chezmoi add failed: " .. result)
+        end
+    end,
+})
+
+-- auto apply config files to target path
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+    group = augroup("ChezmoiApply"),
+    pattern = { vim.env.CHEZMOI_SOURCE .. "/**/*" },
+    ---@param ev { file: string, match: string }
+    callback = function(ev)
+        if ev.file:match("COMMIT_EDITMSG") then
+            print("Commit message, not applying")
+            return
+        end
+        local result = vim.fn.system({ "chezmoi", "apply", "--source-path", ev.match })
+        if vim.v.shell_error == 0 then
+            vim.notify("Chezmoi applied: " .. ev.file)
+        else
+            vim.notify("Chezmoi apply failed: " .. result)
+        end
+    end,
+})
+
 -- -- chezmoi respective filetype
 -- vim.api.nvim_create_autocmd({ "BufEnter" }, {
 --     group = vim.api.nvim_create_augroup("Chezmoi", {}),
@@ -99,15 +113,6 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
 --     callback = function()
 --         vim.opt.filetype = "zsh"
 --     end,
--- })
-
--- -- set spell on txt, md, tex, gitcommit ft
--- vim.api.nvim_create_autocmd("FileType", {
--- 	pattern = { "gitcommit", "markdown" },
--- 	callback = function()
--- 		vim.opt_local.wrap = true
--- 		vim.opt_local.spell = true
--- 	end,
 -- })
 
 -- TODO: dynamic help pane location

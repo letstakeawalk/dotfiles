@@ -1,3 +1,8 @@
 LICENSE
-.config/nvim/lazy-lock.json
-.config/bin/*
+.DS_Store
+pycache/
+mypy_cache/
+node_modules/
+
+# neovim
+lazy-lock.json

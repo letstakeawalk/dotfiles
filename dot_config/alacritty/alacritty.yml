@@ -121,11 +121,11 @@ font:
     #   - (macOS) Menlo
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas
-    family: "FiraCode Nerd Font"
-    # family: "SF Mono Powerline"
+    family: FiraCode Nerd Font
 
     # The `style` can be specified to pick a specific face.
-    style: Regular
+    # style: Regular
+    style: Retina
 
   # Bold font face
   bold:
@@ -144,11 +144,12 @@ font:
     #
     # If the italic family is not specified, it will fall back to the
     # value specified for the normal font.
+    family: SF Mono
     # family: "FiraCode Nerd Font"
-    # family: "SF Mono Powerline"
 
     # The `style` can be specified to pick a specific face.
-    style: Regular Italic
+    # style: Regular Italic
+    style: Medium Italic
 
   # Bold italic font face
   bold_italic:
@@ -157,6 +158,7 @@ font:
     # If the bold italic family is not specified, it will fall back to the
     # value specified for the normal font.
     # family: "FiraCode Nerd Font"
+    # family: SF Mono Powerline
 
     # The `style` can be specified to pick a specific face.
     style: Bold Italic
@@ -394,7 +396,7 @@ colors:
 # When set to `true`, selected text will be copied to the primary clipboard.
 #save_to_clipboard: false
 
-cursor:
+# cursor:
   # Cursor style
   #style:
   # Cursor shape
@@ -420,7 +422,7 @@ cursor:
   # the style of the active value of the normal cursor.
   #
   # See `cursor.style` for available options.
-  vi_mode_style: Block
+  # vi_mode_style: Block
 
   # Cursor blinking interval in milliseconds.
   #blink_interval: 750
@@ -462,7 +464,7 @@ cursor:
 #working_directory: None
 
 # Send ESC (\x1b) before characters when alt is pressed.
-alt_send_esc: true
+# alt_send_esc: true
 
 # Offer IPC using `alacritty msg` (unix only)
 ipc_socket: true
@@ -884,35 +886,42 @@ key_bindings:
   #- { key: B,              mods: Command, mode: ~Search,     action: SearchBackward        }
 
   # Custom keymaps
-  - { key: S,    mods: Command|Control|Alt|Shift, action: Hide }   # window management
-  - { key: Back, mods: Alt,     chars: "\x17" }  # delete by word
-  - { key: Back, mods: Command, chars: "\x15" }  # delete whole sentence
-  - { key: H,    mods: Alt,     chars: "\x1bh" } # send mod + h (for nvim)
-  - { key: K,    mods: Alt,     chars: "\x1bk" } # send mod + k (for nvim)
-  - { key: A,    mods: Alt,     chars: "\x1ba" }
-  - { key: B,    mods: Alt,     chars: "\x1bb" }
-  - { key: C,    mods: Alt,     chars: "\x1bc" }
-  - { key: D,    mods: Alt,     chars: "\x1bd" }
-  - { key: E,    mods: Alt,     chars: "\x1be" }
-  - { key: F,    mods: Alt,     chars: "\x1bf" }
-  - { key: G,    mods: Alt,     chars: "\x1bg" }
-  - { key: I,    mods: Alt,     chars: "\x1bi" }
-  - { key: J,    mods: Alt,     chars: "\x1bj" }
-  - { key: L,    mods: Alt,     chars: "\x1bl" }
-  - { key: M,    mods: Alt,     chars: "\x1bm" }
-  - { key: N,    mods: Alt,     chars: "\x1bn" }
-  - { key: O,    mods: Alt,     chars: "\x1bo" }
-  - { key: P,    mods: Alt,     chars: "\x1bp" }
-  - { key: Q,    mods: Alt,     chars: "\x1bq" }
-  - { key: R,    mods: Alt,     chars: "\x1br" }
-  - { key: S,    mods: Alt,     chars: "\x1bs" }
-  - { key: T,    mods: Alt,     chars: "\x1bt" }
-  - { key: U,    mods: Alt,     chars: "\x1bu" }
-  - { key: V,    mods: Alt,     chars: "\x1bv" }
-  - { key: W,    mods: Alt,     chars: "\x1bw" }
-  - { key: X,    mods: Alt,     chars: "\x1bx" }
-  - { key: Y,    mods: Alt,     chars: "\x1by" }
-  - { key: Z,    mods: Alt,     chars: "\x1bz" }
+  - { key: S,      mods: Command|Control|Alt|Shift, action: Hide }   # window management
+  - { key: Back,   mods: Command,                   chars: "\x15" }  # delete whole sentence
+  - { key: Back,   mods: Alt,                       chars: "\x17" }  # delete by word
+  # - { key: Left,   mods: Alt,                       chars: "\x1bb" } # one word left
+  # - { key: Right,  mods: Alt,                       chars: "\x1bf" } # one word right
+  - { key: H,      mods: Alt,                       chars: "\x1bh" } # send mod + h (for nvim)
+  - { key: K,      mods: Alt,                       chars: "\x1bk" } # send mod + k (for nvim)
+  - { key: A,      mods: Alt,                       chars: "\x1ba" }
+  - { key: B,      mods: Alt,                       chars: "\x1bb" }
+  - { key: C,      mods: Alt,                       chars: "\x1bc" }
+  - { key: D,      mods: Alt,                       chars: "\x1bd" }
+  - { key: E,      mods: Alt,                       chars: "\x1be" }
+  - { key: F,      mods: Alt,                       chars: "\x1bf" }
+  - { key: G,      mods: Alt,                       chars: "\x1bg" }
+  - { key: I,      mods: Alt,                       chars: "\x1bi" }
+  - { key: J,      mods: Alt,                       chars: "\x1bj" }
+  - { key: L,      mods: Alt,                       chars: "\x1bl" }
+  - { key: M,      mods: Alt,                       chars: "\x1bm" }
+  - { key: N,      mods: Alt,                       chars: "\x1bn" }
+  - { key: O,      mods: Alt,                       chars: "\x1bo" }
+  - { key: P,      mods: Alt,                       chars: "\x1bp" }
+  - { key: Q,      mods: Alt,                       chars: "\x1bq" }
+  - { key: R,      mods: Alt,                       chars: "\x1br" }
+  - { key: S,      mods: Alt,                       chars: "\x1bs" }
+  - { key: T,      mods: Alt,                       chars: "\x1bt" }
+  - { key: U,      mods: Alt,                       chars: "\x1bu" }
+  - { key: V,      mods: Alt,                       chars: "\x1bv" }
+  - { key: W,      mods: Alt,                       chars: "\x1bw" }
+  - { key: X,      mods: Alt,                       chars: "\x1bx" }
+  - { key: Y,      mods: Alt,                       chars: "\x1by" }
+  - { key: Z,      mods: Alt,                       chars: "\x1bz" }
+  - { key: Space,  mods: Alt,                       chars: " " }
+  - { key: Return, mods: Shift,                     chars: "\x1b[13;2u" }
+  - { key: Return, mods: Control,                   chars: "\x1b[13;5u" }
+  - { key: Left,   mods: Command,                   chars: "\x1bOH", mode: AppCursor } # Home
+  - { key: Right,  mods: Command,                   chars: "\x1bOF", mode: AppCursor } # End 
 
 #debug:
 # Display the time it takes to redraw each frame.

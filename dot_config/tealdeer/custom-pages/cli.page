@@ -32,7 +32,8 @@
 `zstd                    Compress or decompress`
 
 - Package Managers
-`asdf                    Version manager`
+`rtx:                    Polyglot runtime manager (asdf alt)`
+`asdf                    Polyglot runitme manager`
 `npm                     Node package manager`
 `yarn                    Node package manager`
 `pip                     Python package manager`
@@ -56,3 +57,6 @@
 `miller:                 awk, sed, cut, join, and sort`
 `hexyl:                  hex viewer`
 
+- Cargo binaries
+`wiki-tui                Wikipedia tui`
+`porsmo                  Pomodoro`

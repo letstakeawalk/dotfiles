@@ -1,5 +1,18 @@
-# general
+# system and temp files
 .DS_Store
 
-# vim
-.*.swap
+# editor specific files
+*.swap
+
+# sensitive data
+.env
+.env.*
+!.env.example
+
+# build artifacts
+debug/
+target/
+build/
+dist/
+package/
+node_modules/

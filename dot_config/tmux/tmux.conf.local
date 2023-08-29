@@ -5,6 +5,15 @@
 #         Copyright 2012— Gregory Pakosz (@gpakosz).
 
 
+# -- session creation ----------------------------------------------------------
+
+# prompt for session name when creating a new session, possible values are:
+#   - true
+#   - false (default)
+#   - disabled (do not modify new-session bindings)
+tmux_conf_new_session_prompt=false
+
+
 # -- windows & pane creation ---------------------------------------------------
 
 # new window retains current path, possible values are:
@@ -12,6 +21,12 @@
 #   - false (default)
 #   - disabled (do not modify new-window bindings)
 tmux_conf_new_window_retain_current_path=false
+
+# new window tries to reconnect ssh sessions, possible values are:
+#   - true
+#   - false (default)
+#   - disabled (do not modify new-window bindings)
+tmux_conf_new_window_reconnect_ssh=false
 
 # new pane retains current path, possible values are:
 #   - true (default)
@@ -24,12 +39,6 @@ tmux_conf_new_pane_retain_current_path=true
 #   - false (default)
 #   - disabled (do not modify split-window bindings)
 tmux_conf_new_pane_reconnect_ssh=false
-
-# prompt for session name when creating a new session, possible values are:
-#   - true
-#   - false (default)
-#   - disabled (do not modify new-session bindings)
-tmux_conf_new_session_prompt=false
 
 
 # -- display -------------------------------------------------------------------
@@ -95,8 +104,8 @@ tmux_conf_theme_colour_17="#e4e4e4"   # white
 #tmux_conf_theme_colour_15="colour0"
 #tmux_conf_theme_colour_16="colour1"
 #tmux_conf_theme_colour_17="colour15"
+
 # # --- custom theme --------------------------------------------------------------
-# nord theme # TODO: rename `nord` to `nord`
 nord_00="#2e3440"    # polar night
 nord_01="#3b4252"    # polar night (black)
 nord_02="#434c5e"    # polar night
@@ -229,7 +238,7 @@ tmux_conf_theme_window_status_last_attr="none"
 # tmux_conf_theme_left_separator_sub='' # '\uE0B1'   #   you only need fonts patched with
 # tmux_conf_theme_right_separator_main='' # '\uE0B2' #   Powerline symbols or the standalone
 # tmux_conf_theme_right_separator_sub='' # '\uE0B3'  #   PowerlineSymbols.otf font, see README.md
-tmux_conf_theme_left_separator_main='' # '\uE0B0'  # /!\ you don't need to install Powerline
+tmux_conf_theme_left_separator_main=''
 tmux_conf_theme_left_separator_sub=''
 tmux_conf_theme_right_separator_main=''
 tmux_conf_theme_right_separator_sub=''
@@ -359,28 +368,27 @@ tmux_conf_theme_clock_style="24"
 # on Linux, this requires xsel, xclip or wl-copy
 tmux_conf_copy_to_os_clipboard=false
 
+
 # -- user customizations -------------------------------------------------------
 # this is the place to override or undo settings
 set-option -sa terminal-overrides ',alacritty:RGB'  # enable truecolor for alacritty
-# set -g default-terminal "alacritty"  # alacritty italic
 
 # window navigation
-bind -r j previous-window
-bind -r l next-window
 bind Space last-window
+bind -r -T root Home previous-window
+bind -r -T root End  next-window
 bind _ split-window -v -p 20 # split current window vertically
 bind - split-window -h       # split current window horizontally
 
 # pane navigation
-# bind -r h select-pane -U  # move up
-# bind -r k select-pane -D  # move down
-# bind -r j select-pane -L  # move left
-# bind -r l select-pane -R  # move right
+bind -r h select-pane -U  # move up
+bind -r k select-pane -D  # move down
+bind -r j select-pane -L  # move left
+bind -r l select-pane -R  # move right
 bind > swap-pane -D       # swap current pane with the next one
 bind < swap-pane -U       # swap current pane with the previous one
 
-# Smart pane switching with awareness of Vim splits.
-# See: https://github.com/christoomey/vim-tmux-navigator
+# Smart pane switching with awareness of Vim splits. Ref: https://github.com/christoomey/vim-tmux-navigator
 is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
     | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
 bind -n 'C-h' if-shell "$is_vim" { send-keys C-h }  { select-pane -U } # <C-h> -> up
@@ -393,14 +401,12 @@ if-shell -b '[ "$(echo "$tmux_version < 3.0" | bc)" = 1 ]' \
 if-shell -b '[ "$(echo "$tmux_version >= 3.0" | bc)" = 1 ]' \
     "bind -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\\\'  'select-pane -l'"
 
-# popup windows
-bind n popup -h 90% -w 90% -E -b rounded -S fg='#5E81AC' # temparary popup
-# detach if current session is popup, forward the key if in nvim, do nothing otherwise
-bind -n 'C-\' if-shell "test $(tmux display-message -p '#{session_name}') = 'popup'" { detach-client -s popup } { if-shell "$is_vim" { send-keys 'C-\' } }
-# toggle popup session
-# bind -n 'C-\' if-shell "test $(tmux display-message -p '#{session_name}') = 'popup'" "detach-client -s popup" "display-popup -h 90% -w 80% -E -b rounded -S fg='#5E81AC' 'tmux new -As popup'"
+# pane resizing
+bind -r H resize-pane -U 2
+bind -r K resize-pane -D 2
+bind -r J resize-pane -L 2
+bind -r L resize-pane -R 2
 
-# colemak-dhm & vi navigation
 # copy mode navigation
 bind -T copy-mode-vi 'C-h' select-pane -U
 bind -T copy-mode-vi 'C-k' select-pane -D
@@ -411,17 +417,19 @@ bind -T copy-mode-vi h     send-keys   Up
 bind -T copy-mode-vi k     send-keys   Down
 bind -T copy-mode-vi j     send-keys   Left
 bind -T copy-mode-vi l     send-keys   Right
+
 # choose-tree, choose-buffer, choose-client, etc
 bind -T root  h if -F "#{==:#{pane_mode},tree-mode}" "send k" "send h"
 bind -T root  k if -F "#{==:#{pane_mode},tree-mode}" "send j" "send k"
 bind -T root  j if -F "#{==:#{pane_mode},tree-mode}" "send h" "send j"
 bind -T root  l if -F "#{==:#{pane_mode},tree-mode}" "send l" "send l"
 
-# pane resizing
-bind -r J resize-pane -L 2
-bind -r K resize-pane -D 2
-bind -r H resize-pane -U 2
-bind -r L resize-pane -R 2
+# popup windows
+bind n popup -h 90% -w 90% -E -b rounded -S fg='#5E81AC' # temparary popup
+# detach if current session is popup, forward the key if in nvim, do nothing otherwise
+bind -n 'C-\' if-shell "test $(tmux display-message -p '#{session_name}') = 'popup'" { detach-client -s popup } { if-shell "$is_vim" { send-keys 'C-\' } }
+# toggle popup session
+# bind -n 'C-\' if-shell "test $(tmux display-message -p '#{session_name}') = 'popup'" "detach-client -s popup" "display-popup -h 90% -w 80% -E -b rounded -S fg='#5E81AC' 'tmux new -As popup'"
 
 # increase history size
 #set -g history-limit 10000
@@ -442,7 +450,7 @@ unbind C-a
 # bind C-a send-prefix
 
 # if you don't want Oh my tmux! to alter a binding, use #!important
-# bind v new-window -c #{pane_current_path} #!important
+# bind c new-window -c '#{pane_current_path}' #!important
 
 # move status line to top
 #set -g status-position top
@@ -456,10 +464,10 @@ set -g other-pane-height 25%
 # set-option default-terminal "xterm-256color"
 
 # disable automatic rename
-setw -g automatic-rename off
+setw -g automatic-rename on
 
 # -- tpm -----------------------------------------------------------------------
-set-environment -g TMUX_PLUGIN_MANAGER_PATH "~/.local/share/tmux/plugins"
+
 # while I don't use tpm myself, many people requested official support so here
 # is a seamless integration that automatically installs plugins in parallel
 
@@ -481,7 +489,7 @@ tmux_conf_update_plugins_on_reload=false
 # plugins are enabled
 #   - true (default)
 #   - false
-tmux_conf_uninstall_plugins_on_reload=false
+tmux_conf_uninstall_plugins_on_reload=true
 
 # /!\ the tpm bindings differ slightly from upstream:
 #   - installing plugins: <prefix> + I

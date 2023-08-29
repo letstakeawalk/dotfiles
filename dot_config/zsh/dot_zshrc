@@ -191,7 +191,7 @@ alias l='exa -lhg --git --time-style long-iso --group-directories-first'
 alias ll='exa -lhg --git --time-style long-iso --group-directories-first'
 alias la='exa -lhga --git --time-style long-iso --group-directories-first'
 
-#### fzf
+#### fzf #####################
 alias nvimf='fd --type file --hidden | fzf --preview "bat --color=always -n {1}" --preview-window=right,60% | xargs nvim'
 alias jqf='fd --type file "json$" | fzf --preview "bat --color=always -n {1}" --preview-window=right,60% | xargs cat | jq "."'
 alias tldrf='tldr --list | fzf --preview "tldr --color always {1}" --preview-window=right,70% | xargs tldr'
@@ -199,7 +199,7 @@ alias openf='fd --type directory --max-depth 3 | fzf | xargs open'
 # alias chtf="cheat -l | tail -n +2 | fzf --preview 'cheat {1}'"
 # alias chtf="cheat -l | tail -n +2 | sd -f m '$(\w*)\s*/[^/]*\s*(\w*)' '$1  $3'| fzf "
 
-#### quick edit #######
+#### quick edit ##############
 alias conf="z $XDG_CONFIG_HOME"
 alias data="z $XDG_DATA_HOME"
 alias state="z $XDG_STATE_HOME"
@@ -207,6 +207,7 @@ alias cache="z $XDG_CACHE_HOME"
 alias confnvim="z $CHEZMOI_SOURCE/dot_config/nvim && nvim"
 alias confzsh="z $CHEZMOI_SOURCE/dot_config && nvim zsh/dot_zshrc && source $XDG_CONFIG_HOME/zsh/.zshrc"
 alias confala="z $CHEZMOI_SOURCE/dot_config && nvim alacritty/alacritty.yml"
+alias confchez="z $CHEZMOI_SOURCE/dot_config && nvim"
 alias chez=chezmoi
 alias note="z $WORKSPACE/notes && vim"
 alias notes=note
@@ -217,6 +218,7 @@ alias notes=note
 #### Homebrew ################
 alias brewleaves='brew leaves | xargs brew deps --formula --for-each | sed "s/^.*:/$(tput setaf 4)&$(tput sgr0)/"'
 alias brewdeps='brew list -1 --formula | xargs brew deps --formula --for-each | sed "s/^.*:/$(tput setaf 4)&$(tput sgr0)/"'
+alias brewlist='brew info --json=v2 --installed | jq -r ".formulae[]|select(any(.installed[]; .installed_on_request)).full_name"'
 
 #### Git #####################
 alias gg='lazygit'

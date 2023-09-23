@@ -3,6 +3,7 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"
+export XDG_RUNTIME_DIR="$HOME/.cache"
 export WORKSPACE="$HOME/Workspace"
 export OBSIDIAN="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes"
 
@@ -24,6 +25,7 @@ export CHEAT_CONFIG_PATH="$XDG_CONFIG_HOME/cheat/conf.yml"
 export CHEAT_USE_FZF=true
 export CHEZMOI_SOURCE="$XDG_DATA_HOME/chezmoi"
 export CHTSH_HOME="$XDG_CONFIG_HOME/bin/cht.sh"
+export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 export LESS="-R --lesskey-src=$XDG_CONFIG_HOME/less/lesskey"
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 export PAGER=less
@@ -41,6 +43,7 @@ export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 export TEALDEER_CONFIG_DIR="$XDG_CONFIG_HOME/tealdeer"
 export ZSH="$XDG_CONFIG_HOME/oh-my-zsh"
+export ZSH_EVALCACHE_DIR="$XDG_CACHE_HOME/zsh-evalcache"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export CC=gcc-12
 
@@ -79,38 +82,20 @@ HIST_STAMPS="yyyy-mm-dd"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
+    evalcache
     copypath
-    copyfile
+    # copyfile # cat <file> | pbcopy
     history
     zsh-autosuggestions
     zsh-completions
     zsh-syntax-highlighting
     zsh-vim-mode
     # zsh-vi-mode
-    ## completions
 )
 
 # homebrew's completion. !important: need to be sourced before omz
 FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 source $ZSH/oh-my-zsh.sh
-
-
-###############################################################################
-############## GENERAL CONFIG #################################################
-###############################################################################
-
-eval "$(zoxide init zsh)"
-eval "$(starship init zsh)"
-eval $(thefuck --alias)
-
-# Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export VISUAL='nvim'
-  export EDITOR='nvim'
-else
-  export VISUAL='nvim'
-  export EDITOR='nvim'
-fi
 
 ###############################################################################
 ############## ZSH Plugin Config ##############################################
@@ -135,6 +120,24 @@ MODE_CURSOR_REPLACE="underline"
 # MODE_CURSOR_VIINS="#d8dee8 blinking bar"
 # MODE_CURSOR_VICMD="#d8dee8 steady block"
 # MODE_CURSOR_VISUAL="$MODE_CURSOR_VICMD steady bar"
+
+
+###############################################################################
+############## GENERAL CONFIG #################################################
+###############################################################################
+
+_evalcache zoxide init zsh
+_evalcache starship init zsh
+_evalcache thefuck --alias
+
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+  export VISUAL='nvim'
+  export EDITOR='nvim'
+else
+  export VISUAL='nvim'
+  export EDITOR='nvim'
+fi
 
 
 ###############################################################################
@@ -222,20 +225,32 @@ alias brewlist='brew info --json=v2 --installed | jq -r ".formulae[]|select(any(
 
 #### Git #####################
 alias gg='lazygit'
+alias gst='git status'
 alias ga='git add'
-alias gbr='git branch'
+alias grs='git restore'
+alias grm='git rm'
 alias gcm='git commit'
 alias gcma='git commit --amend'
 alias gcman='git commit --amend --no-edit'
 alias goops='git commit --amend --no-edit'
+alias gcl='git clone'
 alias gco='git checkout'
-alias gdf='git diff'
+alias gdi='git diff'
+alias gdiff='git diff'
 alias glast='git log -5'
 alias glog='git log --graph --oneline --decorate'
-alias gre='git restore'
-alias gst='git status'
+alias gbr='git branch'
 alias gsw='git switch'
 alias gswf='git branch --sort=-committerdate | fzf --header "Checkout recent branch" --preview "git diff --color=always {1}" | xargs git switch'
+alias gsta='git stash'
+alias gps='git push'
+alias gpl='git pull'
+alias gfe='git fetch'
+alias gre='git rebase'
+alias gme='git merge'
+alias gcp='git cherry-pick'
+alias gbi='git bisect'
+alias gbl='git blame'
 
 #### Python ##################
 alias python=python3
@@ -289,6 +304,17 @@ function clicolors() {
 function chpwd() {
     # emulate -L zsh
     exa --group-directories-first
+}
+
+# benchmark zsh startup
+timezsh() {
+    echo "\n--- w/ zshrc ----------------"
+    shell=${1-$SHELL}
+    for i in $(seq 1 10); do /usr/bin/time $shell -i -c exit; done
+    hyperfine -N --warmup 5 --max-runs 10 "$shell -i -c exit"
+    echo "\n--- w/o zshrc ---------------"
+    for i in $(seq 1 10); do /usr/bin/time $shell -i -f -c  exit; done
+    hyperfine -N --warmup 5 --max-runs 10 "$shell -i -f -c exit"
 }
 
 ###############################################################################

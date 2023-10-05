@@ -9,13 +9,13 @@ return {
             {
                 "<C-\\>",
                 function()
-                    vim.fn.system("tmux popup -h 90% -w 90% -b rounded -S fg='#5E81AC' -E -d " .. vim.loop.cwd() .. " 'tmux new -As popup'")
+                    vim.fn.system("tmux popup -h 90% -w 95% -b rounded -S fg='#5E81AC' -E -d " .. vim.loop.cwd() .. " 'tmux new -As popup'")
                 end,
                 desc = "Tmux Popup",
             },
             {
                 "<leader>gG",
-                function() vim.fn.system("tmux popup -h 90% -w 90% -b rounded -S fg='#5E81AC' -E -E -d " .. vim.loop.cwd() .. " lazygit") end,
+                function() vim.fn.system("tmux popup -h 90% -w 95% -b rounded -S fg='#5E81AC' -E -E -d " .. vim.loop.cwd() .. " lazygit") end,
                 desc = "LazyGit",
             },
         },

@@ -1,16 +1,4 @@
 local augroup = function(name) return vim.api.nvim_create_augroup("HRB_" .. name, { clear = true }) end
--- Tab configuration
-local function set_tabstop(size)
-    vim.opt_local.tabstop = size
-    vim.opt_local.softtabstop = size
-    vim.opt_local.shiftwidth = size
-end
-vim.api.nvim_create_autocmd("FileType", {
-    group = augroup("TabTwo"),
-    -- pattern = { "typescript", "javascript", "css", "html", "svelte" },
-    pattern = { "css", "html" },
-    callback = function() set_tabstop(2) end,
-})
 
 -- format options
 vim.api.nvim_create_autocmd("BufEnter", {
@@ -24,13 +12,6 @@ vim.api.nvim_create_autocmd("VimResized", {
     callback = function() vim.cmd("tabdo wincmd =") end,
 })
 
--- wrap text
--- vim.api.nvim_create_autocmd("FileType", {
---     group = augroup("Wrap"),
---     pattern = { "markdown" },
---     callback = function() vim.opt_local.wrap = true end,
--- })
-
 -- close some filetypes with `q`
 vim.api.nvim_create_autocmd("FileType", {
     group = augroup("CloseQ"),
@@ -40,12 +21,9 @@ vim.api.nvim_create_autocmd("FileType", {
         "qf",
         "help",
         "man",
-        "notify",
+        "query", -- tree-sitter playground
         "lspinfo",
-        "spectre_panel",
         "startuptime",
-        "tsplayground",
-        "PlenaryTestPopup",
     },
     callback = function(event)
         vim.bo[event.buf].buflisted = false
@@ -82,7 +60,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
         if vim.v.shell_error == 0 then
             vim.notify("Chezmoi added: " .. ev.file)
         else
-            vim.notify("Chezmoi add failed: " .. result)
+            vim.notify("Chezmoi add failed: " .. result, vim.log.levels.WARN)
         end
     end,
 })
@@ -94,41 +72,34 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
     ---@param ev { file: string, match: string }
     callback = function(ev)
         if ev.file:match("COMMIT_EDITMSG") then
-            print("Commit message, not applying")
+            vim.notify("Commit message, not applying")
             return
         end
         local result = vim.fn.system({ "chezmoi", "apply", "--source-path", ev.match })
         if vim.v.shell_error == 0 then
             vim.notify("Chezmoi applied: " .. ev.file)
         else
-            vim.notify("Chezmoi apply failed: " .. result)
+            vim.notify("Chezmoi apply failed: " .. result, vim.log.levels.WARN)
         end
     end,
 })
 
--- -- chezmoi respective filetype
--- vim.api.nvim_create_autocmd({ "BufEnter" }, {
---     group = vim.api.nvim_create_augroup("Chezmoi", {}),
---     pattern = "dot_zshrc",
---     callback = function()
---         vim.opt.filetype = "zsh"
---     end,
+-- Tab configuration
+---@diagnostic disable-next-line: unused-local, unused-function
+-- local function set_tabstop(size)
+--     vim.opt_local.tabstop = size
+--     vim.opt_local.softtabstop = size
+--     vim.opt_local.shiftwidth = size
+-- end
+-- vim.api.nvim_create_autocmd("FileType", {
+--     group = augroup("TabTwo"),
+--     pattern = { "typescript", "javascript", "css", "html", "svelte" },
+--     callback = function() set_tabstop(2) end,
 -- })
 
--- TODO: dynamic help pane location
--- local function is_wide_win()
---   return vim.fn.winwidth(0) > 160
--- end
---
--- vim.api.nvim_create_autocmd({ "FileType" }, {
---   pattern = { "help" },
---   callback = function()
---     print("help win entered")
---     if is_wide_win() then
---       print("wide window")
---       vim.cmd([[ wincmd L ]])
---     else
---       print("narrow window")
---     end
---   end,
+-- wrap text
+-- vim.api.nvim_create_autocmd("FileType", {
+--     group = augroup("Wrap"),
+--     pattern = { "markdown" },
+--     callback = function() vim.opt_local.wrap = true end,
 -- })

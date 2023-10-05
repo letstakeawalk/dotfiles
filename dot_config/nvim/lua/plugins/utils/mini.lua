@@ -69,7 +69,6 @@ return {
                     { mode = "n", keys = "<leader>x", desc = "Trouble" },
 
                     -- TODO: manually make clues for g
-                    -- { mode = "n", keys = "ga", desc = "Easy Align" },
                     { mode = "n", keys = "gc", desc = "Comment" },
                 },
                 window = { delay = 300, config = { width = "auto" } },
@@ -82,6 +81,20 @@ return {
             vim.api.nvim_set_hl(0, "MiniClueFloatTitle", { fg = nord.c09_glcr, bold = true })
             vim.api.nvim_set_hl(0, "MiniClueNextKey", { fg = nord.c08_teal, bold = true })
             vim.api.nvim_set_hl(0, "MiniClueSeparator", { link = "MiniClueBorder" })
+
+            vim.api.nvim_create_autocmd("FileType", {
+                pattern = "fugitive",
+                group = vim.api.nvim_create_augroup("MiniClueFugitive", { clear = true }),
+                callback = function(data)
+                    miniclue.set_mapping_desc("n", "g?", "Help")
+                    miniclue.set_mapping_desc("n", "gu", "Jump to Untracked/Unstaged")
+                    miniclue.set_mapping_desc("n", "gU", "Jump to Unstaged")
+                    miniclue.set_mapping_desc("n", "gs", "Jump to Staged")
+                    miniclue.set_mapping_desc("n", "gp", "Jump to Unpushed")
+                    miniclue.set_mapping_desc("n", "gP", "Jump to Unpulled")
+                    miniclue.set_mapping_desc("n", "gr", "Jump to Rebasing")
+                end,
+            })
         end,
     },
 

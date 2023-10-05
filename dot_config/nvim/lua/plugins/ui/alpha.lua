@@ -3,6 +3,7 @@ return {
     "goolord/alpha-nvim",
     -- enabled = false,
     event = "VimEnter",
+    priority = 30, -- lower priority than persisted.nvim
     config = function()
         local alpha = require("alpha")
 

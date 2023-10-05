@@ -1,4 +1,3 @@
--- link author of rg saying fd is better
 return {
     "nvim-telescope/telescope.nvim",
     dependencies = {
@@ -9,34 +8,36 @@ return {
         "ahmedkhalf/project.nvim", -- project.nvim
     },
     cmd = { "Telescope" },
+    -- stylua: ignore
     keys = {
         -- consider <leader><leader> instead of <leader>t
         -- keymaps
-        { "<leader>b", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
-        { "<leader>f", "<cmd>Telescope find_files<cr>", desc = "Files" },
-        { "<leader>p", "<cmd>Telescope live_grep<cr>", desc = "Live Grep" },
-        { "<leader>tA", "<cmd>Telescope autocommands<cr>", desc = "Autocmd" },
-        { "<leader>tB", "<cmd>Telescope builtin<cr>", desc = "Builtin Pickers" },
-        { "<leader>tc", "<cmd>Telescope commands<cr>", desc = "Commands" },
-        { "<leader>td", "<cmd>Telescope diagnostics<cr>", desc = "Diagnostic" },
-        { "<leader>th", "<cmd>Telescope help_tags<cr>", desc = "Help" },
-        { "<leader>tH", "<cmd>Telescope highlights<cr>", desc = "Highlight" },
-        { "<leader>tk", "<cmd>Telescope keymaps<cr>", desc = "Keymaps" },
-        { "<leader>tM", "<cmd>Telescope marks<cr>", desc = "Marks" },
-        { "<leader>tm", "<cmd>Telescope man_pages<cr>", desc = "Man Pages" },
-        { "<leader>to", "<cmd>Telescope oldfiles<cr>", desc = "Old Files" },
-        { "<leader>tq", "<cmd>Telescope quickfix<cr>", desc = "Quickfix" },
-        { "<leader>tr", "<cmd>Telescope resume<cr>", desc = "Resume" },
-        { "<leader>ts", "<cmd>Telescope spell_suggest<cr>", desc = "Spell Suggest" },
-        { "<leader>tS", "<cmd>Telescope symbols<cr>", desc = "Symbols" },
-        { "<leader>tT", "<cmd>Telescope treesitter<cr>", desc = "Treesitter" },
-        { "<leader>tv", "<cmd>Telescope vim_options<cr>", desc = "Vim Options" },
-        { "<A-s>", "<cmd>Telescope symbols<cr>", desc = "Symbols" },
+        { "<leader>b",  "<cmd>Telescope buffers<cr>",                desc = "Buffers (Telescope)" },
+        { "<leader>f",  "<cmd>Telescope find_files<cr>",             desc = "Files (Telescope)" },
+        { "<leader>F",  "<cmd>Telescope find_files hidden=true<cr>", desc = "All Files (Telescope)" },
+        { "<leader>p",  "<cmd>Telescope live_grep<cr>",              desc = "Live Grep (Telescope)" },
+        { "<leader>tA", "<cmd>Telescope autocommands<cr>",           desc = "Autocmd" },
+        { "<leader>tB", "<cmd>Telescope builtin<cr>",                desc = "Builtin Pickers" },
+        { "<leader>tc", "<cmd>Telescope commands<cr>",               desc = "Commands" },
+        { "<leader>td", "<cmd>Telescope diagnostics<cr>",            desc = "Diagnostic" },
+        { "<leader>th", "<cmd>Telescope help_tags<cr>",              desc = "Help" },
+        { "<leader>tH", "<cmd>Telescope highlights<cr>",             desc = "Highlight" },
+        { "<leader>tk", "<cmd>Telescope keymaps<cr>",                desc = "Keymaps" },
+        { "<leader>tM", "<cmd>Telescope marks<cr>",                  desc = "Marks" },
+        { "<leader>tm", "<cmd>Telescope man_pages<cr>",              desc = "Man Pages" },
+        { "<leader>to", "<cmd>Telescope oldfiles<cr>",               desc = "Old Files" },
+        { "<leader>tq", "<cmd>Telescope quickfix<cr>",               desc = "Quickfix" },
+        { "<leader>tr", "<cmd>Telescope resume<cr>",                 desc = "Resume" },
+        { "<leader>ts", "<cmd>Telescope spell_suggest<cr>",          desc = "Spell Suggest" },
+        { "<leader>tS", "<cmd>Telescope symbols<cr>",                desc = "Symbols" },
+        { "<leader>tT", "<cmd>Telescope treesitter<cr>",             desc = "Treesitter" },
+        { "<leader>tO", "<cmd>Telescope vim_options<cr>",            desc = "Vim Options" },
+        { "<A-s>",      "<cmd>Telescope symbols<cr>",                desc = "Symbols", mode = "i" },
         -- extensions
-        { "<leader>tz", "<cmd>Telescope lazy<cr>", desc = "Lazy" },
-        { "<leader>tf", "<cmd>Telescope projects<cr>", desc = "Projects" },
+        { "<leader>tz", "<cmd>Telescope lazy<cr>",         desc = "Lazy" },
         { "<leader>tb", "<cmd>Telescope file_browser<cr>", desc = "File Browser" },
-        { "<leader>tl", "<cmd>Telescope tldr<cr>", desc = "Tldr" },
+        { "<leader>tl", "<cmd>Telescope tldr<cr>",         desc = "Tldr" },
+        -- { "<leader>tf", "<cmd>Telescope projects<cr>", desc = "Projects" },
     },
     config = function()
         local telescope = require("telescope")
@@ -45,40 +46,51 @@ return {
         telescope.load_extension("fzf") -- telescope-fzf-native
         telescope.load_extension("file_browser") -- telescope-file-browser
         telescope.load_extension("lazy") -- lazy.nvim
-        telescope.load_extension("projects") -- project.nvim
         telescope.load_extension("harpoon") -- harpoon.nvim
         telescope.load_extension("persisted") -- persisted.nvim
+        -- telescope.load_extension("projects") -- project.nvim
+        -- stylua: ignore
         telescope.setup({
             defaults = {
                 layout_strategy = "center", -- horizontal, center, vertical
                 layout_config = { width = 80, height = 0.25 },
                 borderchars = {
-                    prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
+                    prompt  = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
                     results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
                     preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
                 },
-                results_title = false,
+                results_title    = false,
                 sorting_strategy = "ascending",
-                prompt_prefix = "   ", -- ' 🔭🔎 ',
-                selection_caret = "  ",
-                multi_icon = "  ",
-                entry_prefix = "   ",
+                prompt_prefix    = "   ", -- ' 🔭🔎 ',
+                selection_caret  = "  ",
+                multi_icon       = "  ",
+                entry_prefix     = "   ",
                 file_ignore_patterns = { "%.lock", "lock%.json" },
                 mappings = {
                     i = {
-                        ["?"] = "which_key",
+                        ["?"]     = "which_key",
                         ["<ESC>"] = actions.close,
-                        ["<C-q>"] = trouble.open_with_trouble,
-                        -- ["<C-q>"] = actions.close,
+                        ["<M-q>"] = trouble.open_with_trouble,
+                        ["<C-q>"] = actions.close,
                     },
                     n = {
-                        ["k"] = actions.move_selection_next,
-                        ["h"] = actions.move_selection_previous,
-                        ["<C-q>"] = trouble.open_with_trouble,
+                        ["k"]     = actions.move_selection_next,
+                        ["h"]     = actions.move_selection_previous,
+                        ["<M-q>"] = trouble.open_with_trouble,
                     },
                 },
             },
             pickers = {
+                find_files = {
+                    find_command = {
+                        "fd",
+                        "--type", "f",
+                        "--follow",
+                        "--exclude", ".git",
+                        "--exclude", "node_modules",
+                        "--exclude", "target",
+                    },
+                },
                 -- find_files opt.cwd ?? is not set and not being used
                 -- TODO: why does telescope changing pwd on rust workspaces?
                 -- TODO: config fd
@@ -89,13 +101,13 @@ return {
                 file_browser = { hijack_netrw = true },
                 lazy = {
                     mappings = {
-                        open_in_browser = "<C-o>",
-                        open_in_file_browser = "<C-z>",
-                        open_in_find_files = "<C-f>",
-                        open_in_live_grep = "<C-p>",
-                        open_plugins_picker = "<C-g>", -- Works only after having called first another action
+                        open_in_browser           = "<C-o>",
+                        open_in_file_browser      = "<C-z>",
+                        open_in_find_files        = "<C-f>",
+                        open_in_live_grep         = "<C-p>",
+                        open_plugins_picker       = "<C-g>", -- Works only after having called first another action
                         open_lazy_root_find_files = "<C-r>f",
-                        open_lazy_root_live_grep = "<C-r>g",
+                        open_lazy_root_live_grep  = "<C-r>g",
                     },
                 },
                 tldr = {},

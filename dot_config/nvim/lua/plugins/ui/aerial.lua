@@ -15,8 +15,8 @@ return {
                 min_width = 20,
             },
             on_attach = function()
-                vim.keymap.set("n", "{", "<cmd>AerialPrev<cr>", { desc = "AerialPrev" })
-                vim.keymap.set("n", "}", "<cmd>AerialNext<cr>", { desc = "AerialNext" })
+                -- vim.keymap.set("n", "{", "<cmd>AerialPrev<cr>", { desc = "AerialPrev" })
+                -- vim.keymap.set("n", "}", "<cmd>AerialNext<cr>", { desc = "AerialNext" })
             end,
             highlight_on_jump = false,
             keymaps = {

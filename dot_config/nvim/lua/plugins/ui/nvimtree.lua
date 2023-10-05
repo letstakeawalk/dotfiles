@@ -2,7 +2,7 @@ return {
     "nvim-tree/nvim-tree.lua",
     dependencies = "nvim-tree/nvim-web-devicons",
     cmd = "NvimTreeToggle",
-    keys = { { "<leader>e", "<cmd>NvimTreeFindFileToggle<cr>", desc = "NvimTree" } },
+    keys = { { "<leader>E", "<cmd>NvimTreeFindFileToggle<cr>", desc = "NvimTree" } },
     config = function()
         local function on_attach(bufnr)
             local api = require("nvim-tree.api")
@@ -136,6 +136,7 @@ return {
         require("nvim-tree").setup({
             on_attach = on_attach,
             actions = { open_file = { quit_on_open = true } },
+            update_focused_file = { enable = true },
             -- diagnostics = { enable = true },
             filters = { dotfiles = true },
             system_open = { cmd = "open" },

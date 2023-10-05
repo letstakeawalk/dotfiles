@@ -11,7 +11,6 @@ return {
     build = function() require("nvim-treesitter.install").update({ with_sync = true }) end,
     config = function()
         -- TODO: learn treesitter queries (https://tree-sitter.github.io/tree-sitter/using-parsers#pattern-matching-with-queries)
-        -- TODO: incremental selection??? <<- wtf does that mean? (2023/02/12)
         local textobjects = {
             select = {
                 enable = true,
@@ -19,8 +18,10 @@ return {
                 lookahead = true,
                 keymaps = {
                     -- You can use the capture groups defined in textobjects.scm
-                    ["af"] = "@function.outer",
-                    ["if"] = "@function.inner",
+                    ["am"] = "@function.outer",
+                    ["im"] = "@function.inner",
+                    ["af"] = "@call.outer",
+                    ["if"] = "@call.inner",
                     ["ac"] = "@class.outer",
                     ["ic"] = "@class.inner",
                     ["aa"] = "@parameter.outer",
@@ -29,10 +30,12 @@ return {
                     ["ii"] = "@conditional.inner",
                     ["ao"] = "@loop.outer",
                     ["io"] = "@loop.inner",
-                    ["aM"] = "@comment.outer",
-                    ["iM"] = "@comment.outer",
                     ["ak"] = "@block.outer",
                     ["ik"] = "@block.inner",
+                    ["a/"] = "@comment.outer",
+                    ["i/"] = "@comment.outer",
+                    ["a="] = "@assignment.lhs",
+                    ["i="] = "@assignment.rhs",
                 },
             },
             move = {
@@ -41,10 +44,11 @@ return {
                 goto_next_start = {
                     ["]["] = "@function.outer",
                     ["]("] = "@class.outer",
+                    ["]f"] = "@call.outer",
                     ["]a"] = "@parameter.inner",
                     ["]i"] = "@conditional.inner",
                     ["]o"] = "@loop.inner",
-                    -- ["]h"] = "@comment.outer",
+                    ["]/"] = "@comment.outer",
                 },
                 goto_next_end = {
                     ["]]"] = "@function.outer",
@@ -53,10 +57,11 @@ return {
                 goto_previous_start = {
                     ["[["] = "@function.outer",
                     ["[("] = "@class.outer",
+                    ["[f"] = "@call.outer",
                     ["[a"] = "@parameter.inner",
                     ["[i"] = "@conditional.inner",
                     ["[o"] = "@loop.inner",
-                    -- ["[h"] = "@comment.outer",
+                    ["[/"] = "@comment.outer",
                 },
                 goto_previous_end = {
                     ["[]"] = "@function.outer",
@@ -69,51 +74,39 @@ return {
                 swap_previous = { ["<leader>rh"] = "@parameter.inner" },
             },
         }
+        -- stylua: ignore
         local ensure_installed = {
             "bash",
-            "c",
-            -- "c_sharp",
+            "c", "cpp",
             "cmake",
-            "cpp",
-            "css",
             "diff",
             "dockerfile",
-            "git_config",
-            "git_rebase",
-            "gitattributes",
-            "gitcommit",
-            "gitignore",
+            "git_config", "git_rebase", "gitattributes", "gitcommit", "gitignore",
             "go",
-            "html",
+            "html", "htmldjango", "css", "scss", -- "xml",
             "java",
-            "javascript",
+            "javascript", "typescript", "svelte", "jsdoc",
             "jq",
-            "json",
-            "jsonc",
-            "kotlin",
+            "json", "jsonc",
             "latex",
             "lua",
             "make",
-            "markdown",
-            "markdown_inline",
-            -- "mermaid", -- diagrams & charts
-            -- "ocaml",
+            "markdown", "markdown_inline",
+            "proto", -- protocol buffers
             "python",
             "regex",
-            "ron", -- rust object notation
             "ruby",
-            "rust",
-            "scss",
+            "rust", "ron", -- rust object notation
             "sql",
-            "svelte",
             "terraform",
             "toml",
-            "typescript",
-            "vim",
-            "vimdoc",
-            -- "vue",
-            -- "xml",
+            "vim", "vimdoc",
             "yaml",
+            -- "c_sharp",
+            -- "kotlin",
+            -- "mermaid", -- diagrams & charts
+            -- "ocaml",
+            -- "vue",
             -- "zig",
         }
 
@@ -126,6 +119,7 @@ return {
             sync_install = false,
             -- List of parsers to ignore installing
             ignore_install = {},
+            -- highlight module
             highlight = {
                 enable = true, -- `false` will disable the whole extension
                 -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
@@ -135,7 +129,18 @@ return {
                 -- additional_vim_regex_highlighting = false,
                 additional_vim_regex_highlighting = { "markdown" },
             },
-            indent = { enable = false, disable = {} },
+            -- incremental selection module
+            incremental_selection = {
+                enable = false,
+                keymaps = {
+                    init_selection = "<C-space>",
+                    node_incremental = "<C-space>",
+                    scope_incremental = false,
+                    node_decremental = "<bs>",
+                },
+            },
+            -- indent module
+            indent = { enable = true },
             -- text objects module
             textobjects = textobjects,
             -- nvim-ts-context-commentstring module
@@ -144,20 +149,24 @@ return {
                 enable_autocmd = false, -- for Comment.nvim
             },
             -- autotag module
-            autotag = { enable = true, enable_clote_on_slash = false },
+            autotag = { enable = true, enable_close_on_slash = false },
             -- endwise module
             endwise = { enable = true },
         })
-        vim.treesitter.language.register("markdown", "telekasten")
-        -- vim.treesitter.language.register("markdown_inline", "telekasten")
 
         -- code context of current line in winbar
         require("treesitter-context").setup({ enable = true })
-
         vim.api.nvim_set_hl(0, "TreesitterContext", { link = "CursorLine" })
+
+        -- Repeat movement with ; and ,
+        -- ensure ; goes forward and , goes backward regardless of the last direction
+        local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
+        vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next)
+        vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous)
+
+        -- Inspect
         vim.keymap.set("n", "<leader>di", "<cmd>Inspect<cr>", { desc = "Inspect TS node" })
         vim.keymap.set("n", "<leader>dI", "<cmd>InspectTree<cr>", { desc = "Inspect TS tree" })
-        vim.keymap.set("n", "<leader>dp", "<cmd>TSPlayground<cr>", { desc = "TS Playground" })
-        vim.keymap.set("n", "<leader>dT", "<cmd>TSHighlightCapturesUnderCursor<cr>", { desc = "TS highlight" })
+
     end,
 }

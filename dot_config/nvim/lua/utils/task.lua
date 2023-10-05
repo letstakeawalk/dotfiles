@@ -12,6 +12,7 @@ local scheduled_tag  = "[scheduled::%s]"
 local started_tag    = "[started::%s]"
 local priority_tag   = "[priority::%s]"
 local project_tag    = "[project::%s]"
+local list_pattern       = "- [^%[%]]"
 local task_pattern       = "- %[.%]"
 local checked_pattern    = "- %[x%]"
 local unchecked_pattern  = "- %[ %]"
@@ -23,6 +24,22 @@ local started_pattern    = "%s*%[started::" .. date_pattern .. "%]"
 local priority_pattern   = "%s*%[priority::%d%]"
 local project_pattern    = "%s*%[project::[%w%-_%s]+%]"
 -- stylua: ignore end
+
+M.toggle_task = function()
+    local line = vim.api.nvim_get_current_line()
+    if line:match(task_pattern) then
+        if line:match(checked_pattern) then
+            line = line:gsub(checked_pattern, unchecked, 1)
+        else
+            line = line:gsub(unchecked_pattern, checked, 1)
+        end
+    elseif line:match(list_pattern) then
+        line = line:gsub(list_pattern, unchecked, 1)
+    else
+        line = string.format("%s %s", unchecked, line)
+    end
+    vim.api.nvim_set_current_line(line)
+end
 
 M.toggle_started = function()
     local line = vim.api.nvim_get_current_line()

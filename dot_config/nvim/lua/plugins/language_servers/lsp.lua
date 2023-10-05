@@ -3,10 +3,13 @@ return {
         "williamboman/mason.nvim",
         dependencies = "williamboman/mason-lspconfig.nvim",
         cmd = "Mason",
-        keys = { "<leader>im", "<cmd>Mason<cr>", desc = "Mason" },
+        keys = { { "<leader>im", "<cmd>Mason<cr>", desc = "Mason" } },
         config = function()
             require("mason").setup({
-                ui = { border = "double", icons = { package_installed = "✓", package_pending = "", package_uninstalled = "✗" } },
+                ui = {
+                    border = "double",
+                    icons = { package_installed = "✓", package_pending = "", package_uninstalled = "✗" },
+                },
             })
             -- stylua: ignore
             require("mason-lspconfig").setup({
@@ -18,8 +21,12 @@ return {
                     "lua_ls", -- lua
                     "sqlls", -- sql
                     "marksman", -- markdown
-                    -- "jsonls", "yamlls", "taplo", -- json, yaml, toml
+                    "jsonls", "yamlls", "taplo", -- json, yaml, toml
                     "docker_compose_language_service", "dockerls", -- docker
+                    "vimls", -- vim
+                    -- "bufls", -- protobuf
+                    -- "zk", -- zettelkasten
+                    -- "zls" -- zig
                 },
                 automatic_installation = true,
             })
@@ -33,9 +40,9 @@ return {
             cssls = {},
             docker_compose_language_service = {},
             dockerls = {},
-            eslint = {},
+            eslint = { settings = { format = { enable = false } } },
             jdtls = {}, -- java
-            -- jsonls = {},
+            jsonls = { init_options = { provideFormatter = false } },
             lua_ls = {
                 command = { "lua-language-server" },
                 settings = {
@@ -46,9 +53,9 @@ return {
                             library = vim.api.nvim_get_runtime_file("", true), -- Make the server aware of Neovim runtime files
                             checkThirdParty = false,
                         },
-                        -- Do not send telemetry data containing a randomized but unique identifier
-                        telemetry = { enable = false },
+                        telemetry = { enable = false }, -- Do not send telemetry data containing a randomized but unique identifier
                         format = { enable = false },
+                        -- TODO: check options: format, inlay hint, codelens
                     },
                 },
             },
@@ -63,22 +70,27 @@ return {
                     },
                     pyright = { disableOrganizeImports = true },
                 },
-                handlers = {
-                    -- ["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
-                    --     -- filter out Hint diagnostics
-                    --     result.diagnostics = vim.tbl_filter(
-                    --         function(diag) return diag.severity ~= vim.lsp.protocol.DiagnosticSeverity.Hint end,
-                    --         result.diagnostics
-                    --     )
-                    --     vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx, config)
-                    -- end,
-                },
             },
-            ruff_lsp = {},
+            ruff_lsp = {
+                on_attach = function(client, _)
+                    client.server_capabilities.hoverProvider = false -- disable hover in favor of pyright
+                end,
+            },
             sqlls = {},
             tsserver = {
+                handlers = {
+                    -- filter Hint and Info diagnostics
+                    ["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
+                        result.diagnostics = vim.tbl_filter(
+                            function(diag) return diag.severity < vim.diagnostic.severity.INFO end,
+                            result.diagnostics
+                        )
+                        vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx, config)
+                    end,
+                },
                 settings = {
                     typescript = {
+                        -- format = { semicolons = "insert" },
                         inlayHints = {
                             includeInlayParameterNameHints = "none", -- "none" | "literal" | "all"
                             includeInlayParameterNameHintsWhenArgumentMatchesName = false,
@@ -91,6 +103,7 @@ return {
                         },
                     },
                     javascript = {
+                        -- format = { semicolons = "insert" },
                         inlayHints = {
                             includeInlayParameterNameHints = "none",
                             includeInlayParameterNameHintsWhenArgumentMatchesName = false,
@@ -103,11 +116,44 @@ return {
                         },
                     },
                 },
+                on_attach = function(_, bufnr)
+                    local organize_imports = function()
+                        vim.lsp.buf.execute_command({
+                            command = "_typescript.organizeImports",
+                            arguments = { vim.api.nvim_buf_get_name(0) },
+                            title = "",
+                        })
+                    end
+                    vim.api.nvim_create_user_command("OrganizeImports", organize_imports, { desc = "Organize Imports" })
+                    vim.keymap.set("n", "<leader>ro", "<cmd>OrganizeImports<cr>", { buffer = bufnr, desc = "Organize Imports" })
+                end,
             },
-            svelte = {},
+            svelte = {
+                handlers = {
+                    ["textDocument/signatureHelp"] = function(_, result, ctx, config)
+                        vim.print("svelte signature_help called")
+                        return vim.lsp.handlers.signature_help(_, result, ctx, config)
+                    end,
+                },
+                settings = {
+                    svelte = {
+                        plugin = {
+                            svelte = {
+                                defaultScriptLanguage = "ts",
+                                compilerWarnings = {
+                                    ["unused-export-let"] = "ignore",
+                                    ["a11y-invalid-attribute"] = "ignore",
+                                },
+                            },
+                        },
+                    },
+                },
+            },
             tailwindcss = {},
-            -- taplo = {}, -- toml
-            -- yamlls = {},
+            taplo = {},
+            vimls = {},
+            yamlls = {},
+            -- bufls = {}, -- protobuf
             -- sourcery = {}, -- refer to sourcery from lspconfig
             -- rust_analyzer = {}, -- rust-tools.nvim
         },
@@ -145,6 +191,8 @@ return {
             vim.keymap.set("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Goto previous error" })
             vim.keymap.set("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Goto next warning" })
             vim.keymap.set("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Goto previous warning" })
+            -- stylua: ignore
+            vim.keymap.set( "n", "<leader>ro", function() vim.notify("Command not supported", vim.log.levels.WARN) end, { desc = "Organize Imports" })
 
             -- keymaps for LS attached buffers
             vim.api.nvim_create_autocmd("LspAttach", {
@@ -164,6 +212,8 @@ return {
                     if client.server_capabilities.inlayHintProvider and client.name ~= "rust_analyzer" then
                         vim.lsp.inlay_hint(0, true)
                     end
+
+                    -- TODO: codelens support
                 end,
             })
 

@@ -10,10 +10,13 @@ return {
             require("mason-null-ls").setup({
                 ensure_installed = {
                     "prettierd", -- "rustywind", -- js
+                    "prettier",
                     "mypy", "pylint", "isort", "blackd-client", -- python
                     "selene", "stylua", -- lua
                     "markdownlint", "cbfmt", -- markdown
-                    "sqlfluff", "gitlint", "hadolint" -- etc
+                    "yamlfmt", -- yaml
+                    "sqlfluff", "gitlint", "hadolint", -- etc
+                    -- "buf", -- "protolint", -- protobuf
                 }
             })
         end,
@@ -30,9 +33,15 @@ return {
                 debug = false,
                 sources = {
                     -- ts, js, html, css, etc
-                    null_ls.builtins.formatting.prettierd.with({ disabled_filetypes = { "markdown" } }), -- js,ts,css,html,json,yaml,md,etc
-                    -- null_ls.builtins.formatting.prettier,
-                    -- null_ls.builtins.formatting.rustywind, -- tailwindcss
+                    null_ls.builtins.formatting.prettierd.with({ disabled_filetypes = { "markdown", "yaml", "toml", "ron" } }), -- js,ts,css,html,json,yaml,md,etc
+                    -- null_ls.builtins.formatting.prettierd.with({
+                    --     env = {
+                    --         PRETTIERD_DEFAULT_CONFIG = vim.fn.expand("$XDG_CONFIG_HOME") .. "/nvim/prettier.json",
+                    --         -- PRETTIERD_LOCAL_PRETTIER_ONLY = true,
+                    --     },
+                    --     extra_filetypes = { "svelte" },
+                    --     disabled_filetypes = { "markdown" },
+                    -- }), -- js,ts,css,html,json,yaml,md,etc
 
                     -- python
                     null_ls.builtins.diagnostics.mypy, -- type checker
@@ -55,14 +64,20 @@ return {
                     -- markdown
                     null_ls.builtins.formatting.markdownlint.with({
                         filetypes = { "telekasten", "markdown" },
-                        extra_args = { "-c", vim.fn.expand("$XDG_CONFIG_HOME") .. "/runcom/markdownlint.yaml" },
+                        extra_args = { "-c", vim.fn.expand("$XDG_CONFIG_HOME") .. "/markdownlint/markdownlint.yaml" },
                     }),
                     null_ls.builtins.diagnostics.markdownlint.with({
                         filetypes = { "telekasten", "markdown" },
-                        extra_args = { "-c", vim.fn.expand("$XDG_CONFIG_HOME") .. "/runcom/markdownlint.yaml" },
+                        extra_args = { "-c", vim.fn.expand("$XDG_CONFIG_HOME") .. "/markdownlint/markdownlint.yaml" },
                     }),
                     -- cbmfmt -- code block formatter
                     -- markdown_toc -- auto-gen toc
+
+                    -- protobuf
+                    -- null_ls.builtins.formatting.buf,
+                    -- null_ls.builtins.diagnostics.buf,
+                    -- null_ls.builtins.formatting.protolint, -- error
+                    -- null_ls.builtins.diagnostics.protolint,
 
                     -- etc
                     null_ls.builtins.diagnostics.gitlint, -- gitcommit

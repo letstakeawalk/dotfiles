@@ -26,11 +26,13 @@ return {
                 end
 
                 -- Navigation
+                local next_hunk, prev_hunk =
+                    require("nvim-treesitter.textobjects.repeatable_move").make_repeatable_move_pair(gs.next_hunk, gs.prev_hunk)
                 map("n", "]c", function()
                     if vim.wo.diff then
                         return "]c"
                     end
-                    vim.schedule(function() gs.next_hunk() end)
+                    vim.schedule(next_hunk)
                     return "<Ignore>"
                 end, { expr = true, desc = "Goto next hunk" })
 
@@ -38,7 +40,7 @@ return {
                     if vim.wo.diff then
                         return "[c"
                     end
-                    vim.schedule(function() gs.prev_hunk() end)
+                    vim.schedule(prev_hunk)
                     return "<Ignore>"
                 end, { expr = true, desc = "Goto prev hunk" })
 
@@ -59,6 +61,7 @@ return {
 
                 -- Text object
                 map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Git select hunk" })
+                map({ "o", "x" }, "ah", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Git select hunk" })
             end,
         },
     },

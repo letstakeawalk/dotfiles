@@ -2,6 +2,7 @@ return {
     {
         "simrat39/rust-tools.nvim",
         dependencies = "neovim/nvim-lspconfig",
+        -- ft = "rust",
         event = { "BufReadPre", "BufNewFile" },
         config = function()
             local rt = require("rust-tools")
@@ -10,16 +11,16 @@ return {
 
             local on_attach = function(_, bufnr)
                 local bufopts = function(desc) return { noremap = true, silent = true, buffer = bufnr, desc = desc } end
-                -- vim.keymap.set("n", "K", rt.hover_actions.hover_actions, bufopts("Hover Actions"))
                 vim.keymap.set("n", "<leader>cr", rt.runnables.runnables, bufopts("Runnable (rust-tools)"))
                 vim.keymap.set("n", "<leader>cm", rt.expand_macro.expand_macro, bufopts("Expand macro (rust-tools)"))
                 vim.keymap.set("n", "<leader>dg", rt.crate_graph.view_crate_graph, bufopts("Crate graph"))
                 vim.keymap.set("n", "go", rt.open_cargo_toml.open_cargo_toml, bufopts("Open Cargo.toml"))
                 vim.keymap.set("n", "gm", rt.parent_module.parent_module, bufopts("Open parent module"))
-                vim.keymap.set("n", "J", rt.join_lines.join_lines, bufopts("Join lines"))
                 vim.keymap.set("n", "<leader>rs", rt.ssr.ssr, bufopts("Search & Replace (rust-tools)"))
-                vim.keymap.set("n", "<leader>ru", function() rt.move_item.move_item(true) end, bufopts("Move item up"))
-                vim.keymap.set("n", "<leader>rd", function() rt.move_item.move_item(false) end, bufopts("Move item up"))
+                vim.keymap.set("n", "<leader>rH", function() rt.move_item.move_item(true) end, bufopts("Move item up"))
+                vim.keymap.set("n", "<leader>rK", function() rt.move_item.move_item(false) end, bufopts("Move item down"))
+                -- vim.keymap.set("n", "K", rt.hover_actions.hover_actions, bufopts("Hover Actions"))
+                -- vim.keymap.set("n", "J", rt.join_lines.join_lines, bufopts("Join lines"))
             end
 
             rt.setup({

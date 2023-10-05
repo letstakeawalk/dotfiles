@@ -1,5 +1,7 @@
 return {
     "ahmedkhalf/project.nvim",
+    event = "VeryLazy",
+    enabled = false,
     dev = true,
     opts = {
         -- Manual mode doesn't automatically change your root directory, so you have
@@ -12,19 +14,21 @@ return {
         detection_methods = { "lsp", "pattern" },
             -- All the patterns used to detect root dir, when **"pattern"** is in
             -- detection_methods
-            -- stylua: ignore 
+            -- stylua: ignore
             patterns = {
-                ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json",
+                ".git",
+                -- "_darcs", ".hg", ".bzr", ".svn", "Makefile",
                 -- python
-                "pyproject.toml", "requirements.txt", "Pipfile", "pyrightconfig.json",
+                -- "pyproject.toml", "requirements.txt", "Pipfile", "pyrightconfig.json",
                 -- ts
-                "package.json", "tsconfig.json", "jsconfig.json",
+                -- "package.json", "tsconfig.json", "jsconfig.json",
                 -- rust
-                "Cargo.lock", "Cargo.toml",
+                -- "Cargo.lock", "Cargo.toml",
                 -- go
-                "go.mod",
+                -- "go.mod",
                 -- lua
-                "init.lua", "selene.toml", "selene.yml",
+                -- "init.lua",
+                -- "selene.toml", "selene.yml",
                 -- custom
                 ".proj.root", ".project.root",
             },
@@ -66,5 +70,5 @@ return {
             },
         },
     },
-    config = function(opts) require("project_nvim").setup(opts) end,
+    config = function(_, opts) require("project_nvim").setup(opts) end,
 }

@@ -2,6 +2,7 @@ return {
     "ggandor/leap.nvim",
     dependencies = { "ggandor/leap-spooky.nvim", "ggandor/flit.nvim" },
     keys = { "s", "S", "f", "F", "t", "T", "<leader>k", "<leader>h" },
+    event = "BufRead",
     config = function()
         local leap = require("leap")
         leap.setup({})
@@ -20,11 +21,13 @@ return {
                 -- E.g.
                 --   `yrr<leap>` and `ymm<leap>` will yank a line in the current window.
                 --   `drr<leap>` and `dmm<leap>` will delete a line in the current window.
-                --   `dar<target><leap>` will delete around <target>
                 -- You can also use 'rest' & 'move' as mnemonics.
                 remote = { window = "r" },
                 magnetic = { window = "m" },
             },
+            -- Defines text objects like `riw`, `raw`, etc., instead of
+            -- targets.vim-style `irw`, `arw`.
+            prefix = true,
             -- If this option is set to true, the yanked text will automatically be pasted
             -- at the cursor position if the unnamed register is in use.
             paste_on_remote_yank = false,

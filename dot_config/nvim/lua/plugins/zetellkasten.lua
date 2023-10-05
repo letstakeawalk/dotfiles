@@ -1,7 +1,7 @@
 return {
     "renerocksai/telekasten.nvim",
     dependencies = { "nvim-telescope/telescope.nvim", "nvim-treesitter/nvim-treesitter" },
-    enabled = true,
+    enabled = false,
     event = { "BufReadPre " .. vim.env.OBSIDIAN .. "/**.md" },
     keys = {
         { "<leader>nn", function() require("telekasten").new_note() end, { "n" }, desc = "New Note" },
@@ -37,7 +37,6 @@ return {
                 local task = require("utils.task")
                 -- -- config
                 vim.opt_local.filetype = "telekasten"
-                vim.opt_local.expandtab = false
                 vim.opt_local.formatoptions = "cqnlj"
                 -- keymaps
                 vim.keymap.set("n", "<leader>ni", telekasten.insert_link, { desc = "Insert Link" })

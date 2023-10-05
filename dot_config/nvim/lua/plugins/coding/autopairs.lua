@@ -1,6 +1,7 @@
 return {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
+    dev = false,
     config = function()
         local ap = require("nvim-autopairs")
         local Rule = require("nvim-autopairs.rule")
@@ -8,11 +9,18 @@ return {
         local utils = require("nvim-autopairs.utils")
         -- local ts_conds = require("nvim-autopairs.ts-conds")
 
+        -- TODO: flymode same line jump if bracket balanced around
+        -- (this| is a test line) --> press ) at | --> (this is a test line)|
+        -- (this| is a test line --> press ) at | --> (this)| is a test line
+
         ap.setup({
             check_ts = true,
             ts_config = {},
             fast_wrap = {
                 map = "<C-f>",
+                before_key = "k",
+                after_key = "h",
+                cursor_pos_before = false,
             },
             -- ignored_prev_char = "[\\]",
             ignored_prev_char = "",
@@ -38,23 +46,6 @@ return {
                     local context = opts.line:sub(col - 1, col + 2)
                     return vim.tbl_contains({ "(  )", "{  }", "[  ]" }, context)
                 end),
-            -- Below makes abbreviations to not trigger
-            -- Rule(" ", " "):with_pair(function(opts)
-            --     local pair = opts.line:sub(opts.col - 1, opts.col)
-            --     return vim.tbl_contains({
-            --         brackets[1][1] .. brackets[1][2],
-            --         brackets[2][1] .. brackets[2][2],
-            --         brackets[3][1] .. brackets[3][2],
-            --     }, pair)
-            -- end):with_del(function(opts)
-            --     local col = vim.api.nvim_win_get_cursor(0)[2]
-            --     local context = opts.line:sub(col - 1, col + 2)
-            --     return vim.tbl_contains({
-            --         brackets[1][1] .. "  " .. brackets[1][2],
-            --         brackets[2][1] .. "  " .. brackets[2][2],
-            --         brackets[3][1] .. "  " .. brackets[3][2],
-            --     }, context)
-            -- end),
         })
 
         -- `( | )` press ) at | --> `(  )|`
@@ -88,9 +79,9 @@ return {
             ap.add_rules({
                 Rule("", punct)
                     :with_move(function(opts) return opts.char == punct end)
-                    :with_pair(function() return false end)
-                    :with_del(function() return false end)
-                    :with_cr(function() return false end)
+                    :with_pair(conds.none())
+                    :with_del(conds.none())
+                    :with_cr(conds.none())
                     :use_key(punct),
             })
         end
@@ -113,7 +104,7 @@ return {
             return balance == 0
         end
         ap.add_rules({
-            Rule("<", ">", { "rust" }):with_pair(conds.before_regex("%w")):with_move(function(opts)
+            Rule("<", ">", { "rust" }):with_pair(conds.before_regex("[%w:]+")):with_move(function(opts)
                 if opts.char == opts.rule.end_pair then
                     local is_balanced = is_brackets_balanced_around_position(opts.line, opts.rule.start_pair, opts.char, opts.col)
                     return is_balanced
@@ -122,12 +113,14 @@ return {
             end),
         })
 
-        -- Telekasten (markdown)
-        table.insert(ap.get_rule("```").filetypes, "telekasten")
-        table.insert(ap.get_rule("```.*$").filetypes, "telekasten")
-        table.insert(ap.get_rule("```").filetypes, "markdown")
-        table.insert(ap.get_rule("```.*$").filetypes, "markdown")
-        ap.get_rule(" ").not_filetypes = { "telekasten", "markdown" }
+        -- Rust: raw string
+        ap.add_rules({
+            Rule('r#"', '"#', { "rust" })
+                :with_move(function(opts) return opts.char == '"' end)
+                :with_del(conds.none())
+                :with_cr(conds.none())
+                :use_key('"'),
+        })
 
         -- Fly Mode: multiline jump close bracket
         -- https://github.com/windwp/nvim-autopairs/issues/167#issuecomment-1502559849

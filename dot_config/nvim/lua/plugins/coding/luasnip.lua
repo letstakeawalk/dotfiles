@@ -10,10 +10,11 @@ return {
             history = false,
             -- This is cool cause if you have dynamic snippets, it updates as you type!
             update_events = { "TextChanged", "TextChangedI" }, -- default "InsertLeave"
-            enable_autosnippets = true,
+            enable_autosnippets = false, -- default false
             ext_opts = {
                 [types.choiceNode] = {
-                    active = { virt_text = { { "⚫", "DiagnosticHint" } } },
+                    active = { virt_text = { { " ", "DiagnosticHint" } } },
+                    -- active = { virt_text = { { "⚫", "DiagnosticHint" } } },
                 },
             },
         })

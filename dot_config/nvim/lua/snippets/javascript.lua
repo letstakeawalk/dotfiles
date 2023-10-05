@@ -39,12 +39,12 @@ local all = {
         "clog",
         fmt([[console.log("{}: {}");]], {
             p(fname),
-            i(1, "variable"),
+            i(1, "message"),
         })
     ),
     s(
         "clogg",
-        fmt([[console.log("{}: {}", {});]], {
+        fmt([[console.log("{}: {} =", {});]], {
             p(fname),
             f(function(args) return args[1] end, 1),
             i(1, "variable"),
@@ -52,7 +52,7 @@ local all = {
     ),
     s(
         "cerror",
-        fmt([[console.error("{}: {}", {});]], {
+        fmt([[console.error("{}: {} =", {});]], {
             p(fname),
             f(function(args) return args[1] end, 1),
             i(1, "variable"),
@@ -60,7 +60,7 @@ local all = {
     ),
     s(
         "cwarn",
-        fmt([[console.warn("{}: {}", {});]], {
+        fmt([[console.warn("{}: {} =", {});]], {
             p(fname),
             f(function(args) return args[1] end, 1),
             i(1, "variable"),
@@ -68,48 +68,169 @@ local all = {
     ),
 }
 local javascript = {}
+
 local typescript = {
     s(
-        "skload",
+        "load",
         fmt(
             [[
             import type { [type] } from "./$types";
 
-            export const load: [type] = async (event) => {
-                [input]
+            export const load: [type] = async ([load_event]) => {
+                [load_body]
             };
             ]],
-            { type = p(load_type), input = i(1) },
+            {
+                type = p(load_type),
+                load_event = i(1, "event"),
+                load_body = i(2, "// TODO: implement"),
+            },
             { repeat_duplicates = true, delimiters = "[]" }
         )
     ),
     s(
-        "skaction",
+        "actions",
         fmt(
             [[
             import type { Actions } from "./$types";
 
             export const actions: Actions = {
-                [action]: async (event) => {
-                    [input]
+                [action]: async ([action_event]) => {
+                    [action_body]
                 },
             } satisfies Actions;
             ]],
-            { action = i(1, "default"), input = i(2) },
+            {
+                action = i(3, "default"),
+                action_event = i(4, "event"),
+                action_body = i(5, "// TODO: implement"),
+            },
+            { delimiters = "[]" }
+        )
+    ),
+    s(
+        "action",
+        fmt(
+            [[
+            [action_name]: async ([action_event]) => {
+                [action_body]
+            },
+            ]],
+            {
+                action_name = i(1, "default"),
+                action_event = i(2, "event"),
+                action_body = i(3, "// TODO: implement"),
+            },
+            { delimiters = "[]" }
+        )
+    ),
+    s(
+        "loadactions",
+        fmt(
+            [[
+            import type { Actions, [type] } from "./$types";
+
+            export const load: [type] = async ([load_event]) => {
+                [load_body]
+            };
+
+            export const actions: Actions = {
+                [action]: async ([action_event]) => {
+                    [action_body]
+                },
+            } satisfies Actions;
+            ]],
+            {
+                type = p(load_type),
+                load_event = i(1, "event"),
+                load_body = i(2, "// TODO: implement"),
+                action = i(3, "default"),
+                action_event = i(4, "event"),
+                action_body = i(5, "// TODO: implement"),
+            },
+            { repeat_duplicates = true, delimiters = "[]" }
+        )
+    ),
+
+    s(
+        "supervalidate",
+        fmt(
+            [[
+            const [form] = await superValidate([args]);
+            ]],
+            { form = i(1, "form"), args = i(2, "[data], schema") },
             { delimiters = "[]" }
         )
     ),
 }
+
 local svelte = {
     s(
         "script",
         fmt(
             [[
             <script lang="ts">
-                {}
+                [body]
             </script>
             ]],
-            { i(1) }
+            { body = i(1, "// TODO: implement") },
+            { delimiters = "[]" }
+        )
+    ),
+    s(
+        "actionpagedata",
+        fmt(
+            [[
+            import type { ActionData, PageData } from "./$types";
+
+            export let data: PageData;
+            export let form: ActionData;
+            ]],
+            {},
+            { delimiters = "[]" }
+        )
+    ),
+    s(
+        "pagedata",
+        fmt(
+            [[
+            import type { PageData } from "./$types";
+
+            export let data: PageData;
+            ]],
+            {},
+            { delimiters = "[]" }
+        )
+    ),
+    s(
+        "actiondata",
+        fmt(
+            [[
+            import type { ActionData } from "./$types";
+
+            export let form: ActionData;
+            ]],
+            {},
+            { delimiters = "[]" }
+        )
+    ),
+
+    s(
+        "superform",
+        fmt(
+            [[
+            import { superForm } from "sveltekit-superforms/client";
+            
+            const { [form][errors][submitting][enhance] } = superForm([dataform]);
+            ]],
+            {
+                form = i(1, "form, "),
+                errors = i(2, "errors, "),
+                enhance = i(3, "enhance, "),
+                submitting = i(4, "submitting"),
+                dataform = i(5, "data.form"),
+            },
+            { delimiters = "[]" }
         )
     ),
 }

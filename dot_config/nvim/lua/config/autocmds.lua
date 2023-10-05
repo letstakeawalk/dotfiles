@@ -35,7 +35,13 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("FileType", {
     group = augroup("VertSplit"),
     pattern = { "help", "fugitive", "git" },
-    callback = function() vim.cmd.wincmd("L") end,
+    callback = function()
+        if vim.fn.winwidth(0) / 2 > 80 then
+            vim.cmd.wincmd("L")
+        else
+            vim.cmd.wincmd("J")
+        end
+    end,
 })
 
 -- Auto create dir when saving a file, in case some intermediate directory does not exist

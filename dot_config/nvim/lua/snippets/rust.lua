@@ -21,236 +21,347 @@ local n = require("luasnip.extras").nonempty
 local conds = require("luasnip.extras.conditions")
 local conds_expand = require("luasnip.extras.conditions.expand")
 
----newline text_node
----@param text string|nil text to insert before the newline
-local N = function(text) return t({ text and text or "", "" }) end
-
----user_args for function_node
----@param prefix string|nil
----@param suffix string|nil
----@return string[]
-local ua = function(prefix, suffix) return { user_args = { { prefix and prefix or "", suffix and suffix or "" } } } end
-
----callback fn for function_node
----@param nodes string[] texts from reference nodes
----@param parent any immediate parent of function_node
----@param uargs string[] strings to prepend and append in order
----@return string
-local to_lower = function(nodes, parent, uargs)
-    if uargs == nil then
-        return #nodes > 0 and string.lower(nodes[1][1]) or ""
-    end
-    local prefix = #uargs > 0 and uargs[1] and uargs[1] or ""
-    local suffix = #uargs > 1 and uargs[2] and uargs[2] or ""
-    return #nodes > 0 and prefix .. string.lower(nodes[1][1]) .. suffix or ""
+-- utils
+local function generic(idx) return m(idx, l._1:match("<%w+>$"), l._1:match("<%w>"), "") end
+local function comma(idx) return m(idx, "%w+", ", ") end
+local function lower(idx)
+    return f(function(args)
+        local result = string.gsub(args[1][1], "%u%l", function(match) return "_" .. string.lower(match) end)
+        result = string.gsub(result, "%u", string.lower)
+        result = string.gsub(result, "^_", "")
+        return result
+    end, idx)
+end
+local function last_namespace(idx)
+    return f(function(args)
+        local tokens = vim.split(args[1][1], "::")
+        return tokens[#tokens]
+    end, idx)
 end
 
----callback fn for function_node
----comment
----@param args string[]
----@return string
-local generic = function(args)
-    local match = string.match(args[1][1], "<.*>")
-    return match and match or ""
+-- nodes
+local function pub(idx) return c(idx, { t(""), t("pub ") }) end
+local function derive(idx)
+    return c(idx, {
+        fmt("#[derive({}{})]", { i(1, "Debug, Clone"), i(2) }),
+        t("#[derive(Debug, Clone, Default, Serialize, Deserialize, Validate)]"),
+        t(),
+    })
+end
+local function field_type(idx) return sn(idx, { i(1, "field"), t(": "), i(2, "String") }) end
+local function struct_snip()
+    return fmta(
+        [[
+        #[derive(<traits><extra_traits>)]
+        <pub>struct <name> {
+            <pub><field_type>
+        }
+        ]],
+        { traits = i(1, "Debug, Clone"), extra_traits = i(2), pub = pub(3), name = i(4, "Foo"), field_type = field_type(5) },
+        { repeat_duplicates = true }
+    )
+end
+local function impl_snip()
+    return fmta(
+        [[
+        impl<generic> <target> {
+            <fn>
+        }
+        ]],
+        {
+            target = c(1, { i(nil, "Foo"), fmt("{} for {}", { i(1, "Trait"), i(2, "Foo") }) }),
+            generic = generic(1),
+            fn = i(2, "// TODO: implement"),
+        }
+    )
+end
+local function enum_snip()
+    return fmta(
+        [[
+        enum <name> {
+            <variant>
+        }
+        ]],
+        { name = i(1, "Color"), variant = i(2, "Black = 1") }
+    )
 end
 
----callback fn for function_node
----@param nodes string[] texts from reference nodes
----@param parent any immediate parent of function_node
----@param uargs string[] strings to prepend and append in order
----@return string
-local var = function(nodes, parent, uargs)
-    if uargs == nil then
-        return #nodes > 0 and nodes[1][1] or ""
-    end
-    local prefix = #uargs > 0 and uargs[1] or ""
-    local suffix = #uargs > 1 and uargs[2] or ""
-    return #nodes > 0 and prefix .. nodes[1][1] .. suffix or ""
+local function match_snip()
+    return fmt(
+        [[
+        match [] {
+            [] => [],
+            [] => [],
+        }
+        ]],
+        {
+            i(1, "statement"),
+            c(2, { fmt("Some({})", { i(1, "value") }), fmt("Ok({})", { i(1, "result") }) }),
+            i(3, "expr"),
+            c(4, { t("None"), fmt("Err({})", i(1, "error")) }),
+            i(5, "expr"),
+        },
+        { delimiters = "[]" }
+    )
+end
+local function letmatch_snip()
+    return fmt(
+        [[
+        let [] = match [] {
+            [] => [],
+            [] => [],
+        };
+        ]],
+        {
+            i(1, "variable"),
+            i(2, "statement"),
+            c(3, { fmt("Some({})", { i(1, "value") }), fmt("Ok({})", { i(1, "result") }) }),
+            i(4, "expr"),
+            c(5, { t("None"), fmt("Err({})", i(1, "error")) }),
+            i(6, "expr"),
+        },
+        { delimiters = "[]" }
+    )
+end
+local function for_snip()
+    return fmt(
+        [[
+        for [] in [] {
+            []
+        }
+        ]],
+        { i(1, "item"), i(2, "iterable"), i(3, "unimplemented!();") },
+        { delimiters = "[]" }
+    )
+end
+local function ifelse_snip()
+    return fmt(
+        [[
+        if [] {
+            []
+        } else {
+            []
+        }
+        ]],
+        { i(1, "condition"), i(2, "unimplemented!();"), i(3, "unimplemented!();") },
+        { delimiters = "[]" }
+    )
+end
+local function iflet_snip()
+    return fmt(
+        [[
+        if let [] = [] {
+            []
+        };
+        ]],
+        { i(1, "Some(inner)"), i(2, "variable"), i(3, "unimplemented!();") },
+        { delimiters = "[]" }
+    )
 end
 
----sensible wrapper around function_node for prettier formatting
----@param prefix string|nil String to prepend to te ref_node's value
----@param callback function callback function called by function_node
----@param ref_node integer indices of nodes to reference
----@param suffix string|nil String to append to the ref_node's value
----@return unknown
-local F = function(prefix, callback, ref_node, suffix) return f(callback, ref_node, ua(prefix, suffix)) end
-
----convenient insert node with text nodes as prefix and suffix
----@param prefix string|nil
----@param index integer
----@param suffix string|nil
----@param extra integer|nil
----@return unknown
-local I = function(prefix, index, suffix, extra)
-    local nodes = { t(prefix and prefix or ""), i(1), t(suffix and suffix or nil) }
-    if extra ~= nil then
-        table.insert(nodes, i(2))
-    end
-    return sn(index, nodes)
+local function incl_proto()
+    return fmt(
+        [[
+        pub mod {package} {{
+            tonic::include_proto!("{package}");
+        }}
+        ]],
+        { package = i(1, "package_name") },
+        { repeat_duplicates = true }
+    )
+end
+local function tokiomain()
+    return fmt(
+        [[
+        #[tokio::main]
+        async fn main() -> Result<(), Box<dyn std::error::Error>> {{
+            {body}
+        }}
+        ]],
+        { body = i(1, "unimplemented!();") }
+    )
+end
+local function tonicasync()
+    return fmt(
+        [[
+        #[tonic::async_trait]
+        impl {svc_path} for {svc_name}Server {{
+            async fn {svc_method}(&self, request: tonic::Request<{svc_name}Request>)
+            -> Result<tonic::Response<{svc_name}Response>, tonic::Status> {{
+                {implementation}
+            }}
+        }}
+        ]],
+        {
+            svc_path = i(1, "path::to::Service"),
+            svc_method = i(2, "rpc_method"),
+            implementation = i(3, "unimplemented!();"),
+            svc_name = last_namespace(1),
+        },
+        { repeat_duplicates = true }
+    )
 end
 
--- stylua: ignore
+local function mongomodel()
+    return fmt(
+        [=[
+        use bson::oid::ObjectId;
+        use bson::serde_helpers::{ bson_datetime_as_rfc3339_string, serialize_object_id_as_hex_string };
+        use serde::{Deserialize, Serialize};
+        use validator::Validate;
+
+        use crate::utils::{date, date::Date, model::Model};
+
+        #[[derive(Debug, Clone, Serialize, Deserialize, Validate)]]
+        pub struct [model_name] {
+            #[[serde(rename = "_id", skip_serializing_if = "Option::is_none")]]
+            pub id: Option<ObjectId>,
+            pub [field]: [type],
+            pub created_at: Date,
+            pub updated_at: Date,
+        }
+
+        impl [model_name] {
+            fn new() -> Self {
+                unimplemented!();
+            }
+        }
+
+        #[[derive(Debug, Serialize, Deserialize, Validate)]]
+        pub struct Public[model_name] {
+            #[[serde(alias = "_id", serialize_with = "serialize_object_id_as_hex_string")]]
+            pub id: ObjectId,
+            pub [field]: [type],
+            #[[serde(with = "bson_datetime_as_rfc3339_string")]]
+            pub created_at: Date,
+            #[[serde(with = "bson_datetime_as_rfc3339_string")]]
+            pub updated_at: Date,
+        }
+
+        impl From<[model_name]> for Public[model_name] {
+            fn from([lower_model_name]: [model_name]) -> Self {
+                unimplemented!();
+            }
+        }
+        ]=],
+        {
+            model_name = i(1, "ModelName"),
+            field = i(2, "field"),
+            type = i(3, "String"),
+            lower_model_name = lower(1),
+        },
+        { delimiters = "[]", repeat_duplicates = true }
+    )
+end
+local function crudhandlers_mongo()
+    return fmt(
+        [=[
+        use axum::{
+            extract::{Path, Query},
+            http::StatusCode,
+            routing::{delete, get, post, put},
+            Router,
+        };
+        use bson::doc;
+        use futures::TryStreamExt;
+        use mongodb::options::{FindOneAndUpdateOptions, FindOptions, ReturnDocument};
+        use serde::{Deserialize, Serialize};
+        use tracing::debug;
+
+        use crate::errors::Error;
+        use crate::models::[lower_model_name]::{[model_name], Public[model_name]};
+        use crate::utils::{
+            json::Json,
+            model::Model,
+            pagination:: Pagination,
+            query::Sort,
+            response::Response, 
+            date,
+            to_object_id
+        };
+
+        pub fn routes() -> Router {
+            Router::new()
+        }
+
+        #[[derive(Debug, Serialize, Deserialize, Validate)]]
+        struct RequestBody {
+            field: String
+        }
+
+        #[[derive(Debug, Deserialize, Validate)]]
+        struct RequestQuery {
+            field: String,
+        }
+
+        async fn query_[lower_model_name](pagination: Pagination, Query(query): Query<RequestParam>)
+        -> Result<Response<Vec<Public[model_name]>>, Error> {
+            unimplemented!();
+        }
+
+        async fn get_[lower_model_name]_by_id(Path(id): Path<String>)
+        -> Result<Response<Public[model_name]>, Error> {
+            unimplemented!();
+        }
+
+        async fn create_[lower_model_name](Json(body): Json<RequestBody>)
+        -> Result<Response<Public[model_name]>, Error> {
+            unimplemented!();
+        }
+
+        async fn update_[lower_model_name]_by_id(Path(id): Path<String>, Json(body): Json<RequestBody>)
+        -> Result<Response<Public[model_name]>, Error> {
+            unimplemented!();
+        }
+
+        async fn delete_[lower_model_name]_by_id(Path(id): Path<String>)
+        -> Result<Response<()>, Error> {
+            unimplemented!();
+        }
+        ]=],
+        {
+            model_name = i(1, "ModelName"),
+            lower_model_name = lower(1),
+        },
+        { delimiters = "[]", repeat_duplicates = true }
+    )
+end
+
 return {
-    -- rust_analyzer provided snippets: tmod, tfn
-    s("todo",         t("// TODO: ")),
-    s("derive",       I("#[derive(",1,")]")),
-    s("derdebug",     t("#[derive(Debug)]")),
-    s("derserde",     t("#[derive(Debug, Serialize, Deserialize)]")),
-    s("serde",        I("#[serde(",1,")]")),
-    s("validate",     I("#[validate(",1,")]")),
-    s("deadcode",     t("#[allow(dead_code)]")),
-    s("allowfreedom", t("#[allow(unused_variables, dead_code)]")),
-    s(":turbofish",   I("::<",1,">")),
+    -- rust_analyzer provided snippets:
+    -- tmod: test module, tfn: test fn
+    s("todo", t("// TODO: ")),
+    s(":turbofish", fmt("::<{}>", i(1, "Type"))),
+    -- derive
+    s("derive", derive(1)),
+    s("derdebug", t("#[derive(Debug)]")),
+    s("derserde", t("#[derive(Debug, Serialize, Deserialize)]")),
+    -- attributes
+    s("serde", fmt("#[serde({})]", { i(1, "attributes") })),
+    s("strum", fmt("#[strum({})]", { i(1, "attrs") })),
+    s("validate", fmt("#[validate({})]", { i(1, "validator") })),
+    -- diagnostics
+    s("deadcode", c(1, { t("#![allow(dead_code)]"), t("#[allow(dead_code)]") })),
+    s("unused", c(1, { t("#![allow(unused)]"), t("#[allow(unused)]") })),
+    s("freedom", c(1, { t("#![allow(dead_code, unused_variables)]"), t("#[allow(dead_code, unused_variables)]") })),
 
-    -- rust-analyzer override
-    -- s("println!",  { t('println!("'), f(var, {1}, ua(nil,": ")), t('= {:?}", '), i(1), t(");"), i(0) }),
-    -- s("pprintln!", { t('println!("'), f(var, {1}, ua(nil,": ")), t('= {:#?}", '), i(1), t(");"), i(0) }),
-    -- s("assert!",    I("assert!(",1,");")),
-    -- s("assert_eq!", I("assert_eq!(",1,");")),
-    -- s("assert_ne!", I("assert_ne!(",1,");")),
-
-    -- struct, enum, impl, trait
-    s("struct", {
-        N("#[derive(Debug)]"),
-        I("struct ", 1, " {"), N(),
-        I("    ",2), N(),
-        N("}"),
-    }),
-    s("enum", {
-        I("enum ", 1, " {"), N(),
-        I("    ", 2), N(),
-        N("}")
-    }),
-    s("impl", {
-        t("impl"), f(generic, {1}), t({" "}), i(1), N(" {"),
-        I("    ", 2), N(),
-        N("}"),
-    }),
-    -- s("implfrom", {
-    --     t("impl From<"), i(1), I("> for ", 2, " {"), N(),
-    --     I("    fn from(",3,": "), f(var, {1}), N(") -> Self {"),
-    --     I("        ", 4), N(),
-    --     N("    }"),
-    --     N("}")
-    -- }),
-    -- impl default
-    -- impl display
+    s("struct", struct_snip()),
+    s("impl", impl_snip()),
+    s("enum", enum_snip()),
 
     -- control flow
-    s("for", {
-        I("for ",1," in "), i(2), N(" {"),
-        I( "    ",3), N(),
-        N("}")
-    }),
-    s("ifelse", {
-        I("if ",1), N(" {"),
-        I("    ",2), N(),
-        t("} else {" ), N(),
-        I("    ",3), N(),
-        N("}")
-    }),
-    s("iflet", {
-        I("if let ",1," = ",1), N(" {"),
-        I("    ",2), N(),
-        N("};")
-    }),
-    s("match", {
-        I("match ",1), N(" {"),
-        I("    ",2," => ",2), N(","),
-        I("    ",3," => ",3), N(","),
-        N("}")
-    }),
-    s("letmatch", {
-        I( "let ",1," = match ",1), N(" {"),
-        I( "    ",2," => ",2), N(","),
-        I( "    ",3," => ",3), N(","),
-        N( "};")
-    }),
+    s("match", match_snip()),
+    s("letmatch", letmatch_snip()),
+    s("for", letmatch_snip()),
+    s("ifelse", ifelse_snip()),
+    s("iflet", iflet_snip()),
 
-    -- FIX: bug here
-    -- axum, mongodb model
-    s("model", {
-        t("use bson::oid::ObjectId;"), N(),
-        t("use bson::serde_helpers::bson_datetime_as_rfc3339_string;"), N(),
-        t("use bson::serde_helpers::serialize_object_id_as_hex_string;"), N(),
-        t("use serde::{Deserialize, Serialize};"), N(),
-        t("use validator::Validate;"), N(),
-        N(),
-        t("use crate::utils::{date, date::Date };"), N(),
-        N(),
-        t("#[derive(Debug, Clone, Serialize, Deserialize, Validate)]"), N(),
-        t("pub struct "), i(1, "ModelName"), N(" {"),
-        t('    #[serde(rename = "_id", skip_serializing_if = "Option::is_none")]'), N(),
-        t("    pub id: Option<ObjectId>,"), N(),
-        I("    ",2), N(),
-        t("    pub created_at: Date,"), N(),
-        t("    pub updated_at: Date,"), N(),
-        N("}"),
-        N(),
-        F("impl ",var,1), N(" {"),
-        t("    pub fn new() -> Self {"), N(),
-        t("        todo!();"), N(),
-        N("    }"),
-        N("}"),
-        N(),
-        t("#[derive(Debug, Serialize, Deserialize)]"), N(),
-        F("pub struct Public",var,1), N(" {"),
-        t('    #[serde(alias = "_id", serialize_with = "serialize_object_id_as_hex_string")]'), N(),
-        t("    pub id: ObjectId,"), N(),
-        F("    ",var,2), N(),
-        t('    #[serde(with = "bson_datetime_as_rfc3339_string")]'), N(),
-        t("    pub created_at: Date,"), N(),
-        t('    #[serde(with = "bson_datetime_as_rfc3339_string")]'), N(),
-        t("    pub updated_at: Date,"), N(),
-        N( "}"),
-        N(),
-        F("impl From<",var,1), F("> for Public",var,1), N(" {"),
-        F("    fn from(",to_lower,1,": "), f(var, {1}), N( ") -> Self {" ),
-        t("        todo!();"), N(),
-        N("    }"),
-        N("}"),
-    }),
+    -- gRPC + Protobuf snippets
+    s("incl_proto", incl_proto()), -- choice node to include server/client imports
+    s("tokiomain", tokiomain()), -- choice node for main function or just attribute
+    s("tonicasync", tonicasync()),
 
-    s("routes", {
-        N("use axum::http::StatusCode;"),
-        N("use axum::{extract::{Path, Query}, routing::{get, post, put, delete}, Json, Router};"),
-        N("use bson::doc;"),
-        N("use futures::TryStreamExt;"),
-        N("use serde::{Deserialize, Serialize};"),
-        N("use tracing::debug;"),
-        N(),
-        N("use crate::database::CONNECTION;"),
-        N("use crate::errors::Error;"),
-        F("use crate::models::",to_lower,1,"::{"), i(1, "..."), F(", Public",var,1), N("};"),
-        N("use crate::utils::response::{Response, ResponseBuilder};"),
-        N("use crate::utils::to_object_id;"),
-        N(),
-        t("pub fn routes() -> Router"), N(" {"),
-        t("    todo!();"), N(),
-        t("}"), N(),
-        N(),
-        F("async fn create_",to_lower,1), t("(Json(payload): Json<Payload>"), F(">) -> Result<Response<Public",var,1,">, Error> {"), N(),
-        t("    todo!();"), N(),
-        t("}"), N(),
-        N(),
-        F("async fn update_",to_lower,1), t("_by_id(Path(id): Path<String>, Json(payload): Json<Payload>"), F(">) -> Result<Json<Public",var,1,">, Error> {"), N(),
-        t("    todo!();"), N(),
-        t("}"), N(),
-        N(),
-        F("async fn delete_",to_lower,1), t("_by_id(Path(id): Path<String>) -> Result<Response<()>, Error> {"), N(),
-        t("    todo!();"), N(),
-        t("}"), N(),
-        N(),
-        F("async fn get_",to_lower,1), F("_by_id(Path(id): Path<String>) -> Result<Json<Public",var,1,">, Error> {"), N(),
-        t("    todo!();"), N(),
-        t("}"), N(),
-        N(),
-        F("async fn query_",to_lower,1), F("(Query(query): Query<String>) -> Result<Json<Vec<Public",var,1,">>, Error> {"), N(),
-        t("    todo!();"), N(),
-        t("}"), N(),
-        N(),
-        N("#[derive(Serialize, Deserialize)]"),
-        t("struct Payload {}"), N(),
-   })
+    -- Axum + Mongodb
+    s("mongomodel", mongomodel()),
+    s("crudhandlers_mongo", crudhandlers_mongo()),
 }

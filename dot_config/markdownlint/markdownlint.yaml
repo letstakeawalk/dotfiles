@@ -1,0 +1,20 @@
+# https://github.com/DavidAnson/markdownlint/blob/main/schema/.markdownlint.yaml
+
+# Default state for all rules
+default: true
+
+heading-increment: false
+heading-style: "atx"
+ul-style:
+  style: "dash"
+ul-indent:
+  indent: 4
+no-hard-tabs: true
+single-title:
+  front_matter_title: ""
+line-length: false
+blanks-around-fences: false
+fenced-code-language: false
+no-blanks-blockquote: false
+single-trailing-newline: false
+link-image-reference-definitions: false

@@ -13,3 +13,9 @@
 - Remove stale lock files, outdated downloads, old versions of installed formulae.
 
 `brew cleanup [--dry-run]`
+
+- Shortcuts
+
+`brewleaves - List leaves and formulae which depends on the leaf`
+`brewdeps - List formalue and its dependencies`
+`brewlist - List formalae installed on request`

@@ -1138,6 +1138,14 @@
           "from": { "key_code": "slash", "modifiers": { "optional": ["caps_lock"] } },
           "to": { "key_code": "backslash" },
           "conditions": [{ "type": "variable_if", "name": "navigation", "value": 1 }]
+        },
+                    
+        {
+          "description": "Change Input Source using <Tab-Spacebar>",
+          "type": "basic",
+          "from": { "key_code": "spacebar", "modifiers": { "optional": ["caps_lock"] } },
+          "to": { "apple_vendor_top_case_key_code": "keyboard_fn" },
+          "conditions": [{ "type": "variable_if", "name": "navigation", "value": 1 }]
         }
       ]
     }

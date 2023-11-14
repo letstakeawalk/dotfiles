@@ -9,7 +9,6 @@ enum layer_names {
     _QWERTY,
     _NUM,
     _FN,
-    _TEMPLATE,
 };
 enum custom_keycodes {
     TG_LANG = SAFE_RANGE,
@@ -39,14 +38,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_NO,   KC_NO,        KC_VOLD, KC_MUTE, KC_VOLU, KC_NO,    KC_NO,        RGB_HUD, RGB_HUI, RGB_M_SW,RGB_M_SN,RGB_M_K, KC_NO, KC_NO, RGB_MOD, KC_NO,
         KC_TRNS, KC_NO, KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,    KC_NO,        RGB_SAD, RGB_SAI, RGB_M_X, RGB_M_G, KC_NO,   KC_NO, KC_NO, KC_TRNS,
                  KC_NO, KC_NO,                            KC_NO,    KC_NO,        RGB_TOG, KC_NO,            KC_NO,   KC_NO,   KC_NO
-    ),
-
-	[_TEMPLATE] = LAYOUT_default(
-		KC_NO,    KC_NO,        KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, // 16
-        KC_NO,    KC_NO,        KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,        KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, // 15
-        KC_NO,    KC_NO,        KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,        KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, // 16
-        KC_NO,    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,        KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, // 16
-                  KC_NO, KC_NO,                      KC_NO, KC_NO,        KC_NO, KC_NO,        KC_NO, KC_NO, KC_NO // 9
     ),
 };
 

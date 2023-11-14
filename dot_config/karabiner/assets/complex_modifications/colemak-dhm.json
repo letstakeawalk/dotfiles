@@ -498,10 +498,10 @@
     },
 
     {
-      "description": "Hyper Key using <RightCommand>",
+      "description": "Hyper Key using <R-Command>",
       "manipulators": [
         {
-          "description": "<Hyper> key using <RightCommand>",
+          "description": "Hyper key using <R-Command>",
           "type": "basic",
           "from": { "key_code": "right_command" },
           "to": { "key_code": "right_command", "modifiers": ["right_control", "right_alt", "right_shift"] }
@@ -729,6 +729,11 @@
           "type": "basic",
           "from": { "key_code": "open_bracket" },
           "to": { "key_code": "delete_forward" },
+          "conditions": [{ "type": "variable_if", "name": "coding", "value": 1 }]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "close_bracket" },
           "conditions": [{ "type": "variable_if", "name": "coding", "value": 1 }]
         },
         {

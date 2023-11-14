@@ -47,6 +47,8 @@ return {
         telescope.load_extension("file_browser") -- telescope-file-browser
         telescope.load_extension("lazy") -- lazy.nvim
         telescope.load_extension("harpoon") -- harpoon.nvim
+        telescope.load_extension("refactoring") -- refactoring.nvim
+        telescope.load_extension("git_worktree") -- git-worktree.nvim
         telescope.load_extension("persisted") -- persisted.nvim
         -- telescope.load_extension("projects") -- project.nvim
         -- stylua: ignore

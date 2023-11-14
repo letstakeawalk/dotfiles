@@ -16,10 +16,6 @@ require("lazy").setup({
     { import = "plugins" },
     { import = "plugins.coding" }, -- coding essentials
     { import = "plugins.language_servers" }, -- language servers
-    -- { import = "plugins.debug" }, -- debuging tool
-    { import = "plugins.ui" }, -- ui
-    { import = "plugins.ui-enhancers" }, -- ui enhancers
-    { import = "plugins.utils" }, -- utility plugins
 }, {
     -- lazy config
     defaults = { lazy = true },

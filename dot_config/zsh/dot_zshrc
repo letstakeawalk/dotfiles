@@ -7,15 +7,6 @@ export XDG_RUNTIME_DIR="$HOME/.cache"
 export WORKSPACE="$HOME/Workspace"
 export OBSIDIAN="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes"
 
-# PATH
-export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/X11/bin
-export PATH=/Library/TeX/texbin:$PATH # texlive & mactex
-export PATH="$HOME"/.local/bin:$PATH # custom binaries
-export PATH="$XDG_DATA_HOME"/cargo/bin:$PATH # rust
-export PATH="$XDG_DATA_HOME"/bob/nvim-bin:$PATH # neovim
-export PATH="$XDG_DATA_HOME"/nvim/mason/bin:$PATH # lsp, linters, formatters
-export PATH=/opt/homebrew/bin:/opt/homebrew/sbin:$PATH # should be last line
-
 # Configurations
 export ASDF_CONFIG_FILE="$XDG_CONFIG_HOME/asdf/asdfrc"
 export ASDF_DATA_DIR="$XDG_DATA_HOME/asdf"
@@ -47,6 +38,16 @@ export ZSH_EVALCACHE_DIR="$XDG_CACHE_HOME/zsh-evalcache"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export ZK_NOTEBOOK_DIR="$OBSIDIAN"
 export CC=gcc-12
+
+# PATH
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/X11/bin
+export PATH=/Library/TeX/texbin:$PATH # texlive & mactex
+export PATH="$HOME"/.local/bin:$PATH # custom binaries
+export PATH="$CARGO_HOME"/bin:$PATH # rust
+export PATH="$RUSTUP_HOME"/toolchains/stable-aarch64-apple-darwin/bin:$PATH # rust
+export PATH="$XDG_DATA_HOME"/bob/nvim-bin:$PATH # neovim
+export PATH="$XDG_DATA_HOME"/nvim/mason/bin:$PATH # lsp, linters, formatters
+export PATH=/opt/homebrew/bin:/opt/homebrew/sbin:$PATH # should be last line
 
 ###############################################################################
 ############## OH-MY-ZSH CONFIG ###############################################

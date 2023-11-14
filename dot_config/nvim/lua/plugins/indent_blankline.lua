@@ -11,7 +11,7 @@ return {
                 show_end = false,
                 highlight = "Type", -- nord.c09_glcr
             },
-            exclude = { "help", "NvimTree" }, -- are the defaults working?
+            exclude = { filetypes = { "help", "NvimTree" } },
         })
     end,
 }

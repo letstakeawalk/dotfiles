@@ -3,8 +3,8 @@ return {
     -- lazy = false,
     event = "VeryLazy",
     keys = {
-        { "<leader>e", "<cmd>Oil<cr>", desc = "Oil" },
-        { "<leader>o", function() require("oil").open_float() end, desc = "Oil" },
+        { "<leader>o", "<cmd>Oil<cr>", desc = "File Explorer (Oil)" },
+        { "<leader>e", function() require("oil").open_float() end, desc = "File Explorer (Oil)" },
     },
     cmd = { "Oil" },
     opts = {
@@ -29,6 +29,7 @@ return {
             wrap = false,
             signcolumn = "no",
             cursorcolumn = false,
+            cursorline = true,
             foldcolumn = "0",
             spell = false,
             list = false,
@@ -56,9 +57,11 @@ return {
             ["<C-x>"] = "actions.select_split",
             ["<C-t>"] = "actions.select_tab",
             ["<C-p>"] = "actions.preview",
+            ["K"] = "actions.preview",
             ["<C-c>"] = "actions.close",
             ["<C-q>"] = "actions.close",
             ["<leader>e"] = "actions.close",
+            ["<leader>o"] = "actions.close",
             ["<C-l>"] = "actions.refresh",
             ["-"] = "actions.parent",
             ["<BS>"] = "actions.parent",
@@ -94,8 +97,8 @@ return {
         float = {
             -- Padding around the floating window
             padding = 20,
-            max_width = 0,
-            max_height = 40,
+            max_width = 80,
+            max_height = 30,
             border = "rounded",
             win_options = {
                 winblend = 0,

@@ -167,6 +167,5 @@ return {
         -- Inspect
         vim.keymap.set("n", "<leader>di", "<cmd>Inspect<cr>", { desc = "Inspect TS node" })
         vim.keymap.set("n", "<leader>dI", "<cmd>InspectTree<cr>", { desc = "Inspect TS tree" })
-
     end,
 }

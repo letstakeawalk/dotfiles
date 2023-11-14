@@ -1,6 +1,6 @@
 local augroup = function(name) return vim.api.nvim_create_augroup("HRB_" .. name, { clear = true }) end
 
--- format options
+-- format options (override default options set by ftplugin)
 vim.api.nvim_create_autocmd("BufEnter", {
     group = augroup("FormatOptions"),
     callback = function() vim.bo.formatoptions = "cqnlj" end,
@@ -36,11 +36,14 @@ vim.api.nvim_create_autocmd("FileType", {
     group = augroup("VertSplit"),
     pattern = { "help", "fugitive", "git" },
     callback = function()
-        if vim.fn.winwidth(0) / 2 > 80 then
-            vim.cmd.wincmd("L")
-        else
-            vim.cmd.wincmd("J")
-        end
+        vim.cmd("wincmd L")
+        -- vim.notify("VertSplit autocmd")
+        -- vim.notify("winwidth: " .. vim.fn.winwidth(0))
+        -- if vim.fn.winwidth(0) / 2 > 80 then
+        --     vim.cmd.wincmd("L")
+        -- else
+        --     vim.cmd.wincmd("J")
+        -- end
     end,
 })
 

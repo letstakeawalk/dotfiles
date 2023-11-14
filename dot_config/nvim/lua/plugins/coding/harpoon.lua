@@ -17,8 +17,8 @@ return {
         vim.keymap.set("n", "=", function() ui.nav_file(4) end, { desc = "Harpoon 4" })
         vim.keymap.set("n", "-", function() ui.nav_file(5) end, { desc = "Harpoon 5" })
         vim.keymap.set("n", '"', function() ui.nav_file(6) end, { desc = "Harpoon 6" })
-        vim.keymap.set("n", "<PageDown>", ui.nav_prev, { desc = "Prev Harpoon" })
-        vim.keymap.set("n", "<PageUp>",   ui.nav_next, { desc = "Next Harpoon" })
+        vim.keymap.set("n", "<Home>", ui.nav_prev, { desc = "Prev Harpoon" })
+        vim.keymap.set("n", "<End>",   ui.nav_next, { desc = "Next Harpoon" })
         -- stylua: ignore end
 
         harpoon.setup({

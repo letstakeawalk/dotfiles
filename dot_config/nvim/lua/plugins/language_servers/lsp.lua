@@ -14,7 +14,7 @@ return {
             -- stylua: ignore
             require("mason-lspconfig").setup({
                 ensure_installed = {
-                    "rust_analyzer", -- rust
+                    -- "rust_analyzer", -- rust
                     "pyright", "ruff_lsp", -- python
                     "tsserver", "eslint", "tailwindcss", "cssls", "html", "svelte", -- js,ts,css,html
                     "jdtls", -- java
@@ -184,15 +184,16 @@ return {
             end
 
             -- global keymaps
-            vim.keymap.set("n", "E", vim.diagnostic.open_float, { desc = "Open Float" })
-            vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Goto previous diagnostic" })
-            vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Goto next diagnostic" })
-            vim.keymap.set("n", "]e", diagnostic_goto(true, "ERROR"), { desc = "Goto next error" })
+            -- stylua: ignore start
+            vim.keymap.set("n", "E",  vim.diagnostic.open_float,       { desc = "Open Float" })
+            vim.keymap.set("n", "[d", vim.diagnostic.goto_prev,        { desc = "Goto previous diagnostic" })
+            vim.keymap.set("n", "]d", vim.diagnostic.goto_next,        { desc = "Goto next diagnostic" })
+            vim.keymap.set("n", "]e", diagnostic_goto(true, "ERROR"),  { desc = "Goto next error" })
             vim.keymap.set("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Goto previous error" })
-            vim.keymap.set("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Goto next warning" })
-            vim.keymap.set("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Goto previous warning" })
-            -- stylua: ignore
+            vim.keymap.set("n", "]w", diagnostic_goto(true, "WARN"),   { desc = "Goto next warning" })
+            vim.keymap.set("n", "[w", diagnostic_goto(false, "WARN"),  { desc = "Goto previous warning" })
             vim.keymap.set( "n", "<leader>ro", function() vim.notify("Command not supported", vim.log.levels.WARN) end, { desc = "Organize Imports" })
+            -- stylua: ignore end
 
             -- keymaps for LS attached buffers
             vim.api.nvim_create_autocmd("LspAttach", {
@@ -209,8 +210,11 @@ return {
                     vim.keymap.set("n", "<leader>dh", function() vim.lsp.inlay_hint(0) end, bufopts("InlayHint Toggle"))
 
                     local client = vim.lsp.get_client_by_id(ev.data.client_id)
-                    if client.server_capabilities.inlayHintProvider and client.name ~= "rust_analyzer" then
-                        vim.lsp.inlay_hint(0, true)
+                    if client.server_capabilities.inlayHintProvider then
+                        -- let rust-tools handle inlay hints
+                        if client.name ~= "rust_analyzer" then
+                            vim.lsp.inlay_hint(0, true)
+                        end
                     end
 
                     -- TODO: codelens support

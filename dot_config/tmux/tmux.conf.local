@@ -389,17 +389,23 @@ bind > swap-pane -D       # swap current pane with the next one
 bind < swap-pane -U       # swap current pane with the previous one
 
 # Smart pane switching with awareness of Vim splits. Ref: https://github.com/christoomey/vim-tmux-navigator
-is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
-    | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
-bind -n 'C-h' if-shell "$is_vim" { send-keys C-h }  { select-pane -U } # <C-h> -> up
-bind -n 'C-k' if-shell "$is_vim" { send-keys C-k }  { select-pane -D } # <C-k> -> down
-bind -n 'C-j' if-shell "$is_vim" { send-keys C-j }  { select-pane -L } # <C-j> -> left
-bind -n 'C-l' if-shell "$is_vim" { send-keys C-l }  { select-pane -R } # <C-l> -> right
+# is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
+#     | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
+# bind -n 'C-h' if-shell "$is_vim" { send-keys C-h }  { select-pane -U } # <C-h> -> up
+# bind -n 'C-k' if-shell "$is_vim" { send-keys C-k }  { select-pane -D } # <C-k> -> down
+# bind -n 'C-j' if-shell "$is_vim" { send-keys C-j }  { select-pane -L } # <C-j> -> left
+# bind -n 'C-l' if-shell "$is_vim" { send-keys C-l }  { select-pane -R } # <C-l> -> right
 tmux_version='$(tmux -V | sed -En "s/^tmux ([0-9]+(.[0-9]+)?).*/\1/p")'
 if-shell -b '[ "$(echo "$tmux_version < 3.0" | bc)" = 1 ]' \
     "bind -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\'  'select-pane -l'"
 if-shell -b '[ "$(echo "$tmux_version >= 3.0" | bc)" = 1 ]' \
     "bind -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\\\'  'select-pane -l'"
+
+# pane layout
+# bind 'C-1' select-layout even-horizontal
+# bind 'C-2' select-layout even-vertical
+# bind 'C-3' select-layout main-horizontal
+# bind 'C-4' select-layout main-vertical
 
 # pane resizing
 bind -r H resize-pane -U 2

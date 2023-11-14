@@ -45,37 +45,56 @@ return {
                 end, { expr = true, desc = "Goto prev hunk" })
 
                 -- Actions
-                map("v", "<leader>gs", function() gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") }) end, { desc = "Git stage hunk" })
-                map("v", "<leader>gr", function() gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") }) end, { desc = "Git reset hunk" })
-                map("n", "<leader>gs", gs.stage_hunk, { desc = "Git stage hunk" })
-                map("n", "<leader>gu", gs.undo_stage_hunk, { desc = "Git undo stage hunk" })
-                map("n", "<leader>gr", gs.reset_hunk, { desc = "Git reset hunk" })
-                map("n", "<leader>ga", gs.stage_buffer, { desc = "Git stage buffer" })
-                map("n", "<leader>gR", gs.reset_buffer, { desc = "Git reset buffer" })
-                map("n", "<leader>gp", gs.preview_hunk, { desc = "Git preview hunk" })
-                map("n", "<leader>gb", function() gs.blame_line({ full = true }) end, { desc = "Git blame" })
-                map("n", "<leader>gB", gs.toggle_current_line_blame, { desc = "Git blame toggle" })
-                -- map("n", "<leader>gd", gs.diffthis, { desc = "Git diff" })
-                -- map("n", "<leader>gD", function() gs.diffthis("~") end, { desc = "Git diff" })
-                map("n", "<leader>gx", gs.toggle_deleted, { desc = "Git toggle deleted" })
+                map("v", "<leader>gs", function() gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") }) end, { desc = "Stage hunk" })
+                map("v", "<leader>gr", function() gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") }) end, { desc = "Reset hunk" })
+                map("n", "<leader>gs", gs.stage_hunk, { desc = "Stage hunk" })
+                map("n", "<leader>gu", gs.undo_stage_hunk, { desc = "Undo stage hunk" })
+                map("n", "<leader>gr", gs.reset_hunk, { desc = "Reset hunk" })
+                map("n", "<leader>ga", gs.stage_buffer, { desc = "Stage buffer" })
+                map("n", "<leader>gR", gs.reset_buffer, { desc = "Reset buffer" })
+                map("n", "<leader>gp", gs.preview_hunk, { desc = "Preview hunk" })
+                map("n", "<leader>gb", function() gs.blame_line({ full = true }) end, { desc = "Blame line" })
+                map("n", "<leader>gB", gs.toggle_current_line_blame, { desc = "Blame toggle" })
+                -- map("n", "<leader>gd", gs.diffthis, { desc = "Diff" })
+                -- map("n", "<leader>gD", function() gs.diffthis("~") end, { desc = "Diff" })
+                map("n", "<leader>gx", gs.toggle_deleted, { desc = "Toggle deleted" })
 
                 -- Text object
-                map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Git select hunk" })
-                map({ "o", "x" }, "ah", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Git select hunk" })
+                map({ "o", "x" }, "ih", "<cmd><C-U>Gitsigns select_hunk<CR>", { desc = "Select hunk" })
+                map({ "o", "x" }, "ah", "<cmd><C-U>Gitsigns select_hunk<CR>", { desc = "Select hunk" })
             end,
         },
     },
     {
+        "ThePrimeagen/git-worktree.nvim",
+        event = "BufRead",
+        keys = {
+            { "<leader>w", "<cmd>Telescope git_worktree git_worktrees", desc = "Git worktrees (Telescope)" },
+            { "<leader>gW", "<cmd>Telescope git_worktree create_git_worktrees", desc = "Create worktree" },
+        },
+        config = function()
+            -- stylua: ignore
+            require("git-worktree").setup({
+                change_directory_command = "cd",  -- default: "cd",
+                update_on_change         = true,  -- default: true,
+                update_on_change_command = "e .", -- default: "e .",
+                clearjumps_on_change     = true,  -- default: true,
+                autopush                 = false, -- default: false,
+            })
+        end,
+    },
+    {
         "tpope/vim-fugitive", -- git wrapper
+        event = "BufRead",
         dependencies = {
             "junegunn/gv.vim", -- git commit browser
             "tpope/vim-rhubarb", -- fugitive extension for GitHub
         },
         keys = {
-            { "<leader>gg", "<cmd>Git<cr>", desc = "Git status (fugitive)" },
-            { "<leader>gd", "<cmd>Gvdiffsplit<cr>", desc = "Git diff" },
-            { "<leader>gc", "<cmd>GV<cr>", desc = "Git Commit Browser (GV)" },
-            { "<leader>gC", "<cmd>GV!<cr>", desc = "Git BufCommit Browser (GV!)" },
+            { "<leader>gg", "<cmd>Git<cr>", desc = "Fugitive" },
+            { "<leader>gd", "<cmd>Gvdiffsplit<cr>", desc = "Diff split" },
+            { "<leader>gc", "<cmd>GV<cr>", desc = "Commit Browser (GV)" },
+            { "<leader>gC", "<cmd>GV!<cr>", desc = "BufCommit Browser (GV!)" },
         },
     },
 }

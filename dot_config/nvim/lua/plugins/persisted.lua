@@ -2,7 +2,7 @@ return {
     "olimorris/persisted.nvim",
     event = "VimEnter",
     keys = {
-        { "<leader>st", "<cmd>Telescope persisted<cr>", desc = "Search sessions" },
+        { "<leader>sf", "<cmd>Telescope persisted<cr>", desc = "Search sessions" },
         { "<leader>sl", "<cmd>SessionLoad<cr>", desc = "Load session" },
         { "<leader>sd", "<cmd>SessionDelete<cr>", desc = "Delete session" },
         { "<leader>ss", "<cmd>SessionSave<cr>", desc = "Save session" },

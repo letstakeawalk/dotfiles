@@ -47,6 +47,7 @@ return {
                     return vim.tbl_contains({ "(  )", "{  }", "[  ]" }, context)
                 end),
         })
+        ap.get_rule(" ").not_filetypes = { "markdown" }
 
         -- `( | )` press ) at | --> `(  )|`
         local brackets = { { "(", ")" }, { "[", "]" }, { "{", "}" } }

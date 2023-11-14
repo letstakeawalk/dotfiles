@@ -4,7 +4,8 @@
 default: true
 
 heading-increment: false
-heading-style: "atx"
+# heading-style: "atx"
+heading-style: false
 ul-style:
   style: "dash"
 ul-indent:

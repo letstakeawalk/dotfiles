@@ -23,11 +23,13 @@ set({ "i", "c" }, "<A-BS>", "<C-w>") -- delete word
 set("n", "ge", "gi", { desc = "Last edited position" }) -- go to last INSERT pos and insert
 set("n", "gg", "gg", { desc = "Goto first line" }) -- jump to eof center cursor
 set("n", "G", "Gzz", { desc = "Goto last line" }) -- jump to eof center cursor
-set("n", "<C-d>", "<C-d>zz", { desc = "Scroll down" }) -- scroll down
-set("n", "<C-u>", "<C-u>zz", { desc = "Scroll up" }) -- scroll up
+set("n", "<C-d>", function() vim.notify("Use <PageDown> instead", vim.log.levels.WARN) end, { desc = "Scroll down" }) -- scroll down
+set("n", "<C-u>", function() vim.notify("Use <PageUp> instead", vim.log.levels.WARN) end, { desc = "Scroll up" }) -- scroll up
+set("n", "<PageDown>", "<C-d>zz", { desc = "Scroll down" }) -- scroll down
+set("n", "<PageUp>", "<C-u>zz", { desc = "Scroll up" }) -- scroll up
 -- buffers and tabs navigation
-set("n", "<Home>", ":tabnext<cr>", { desc = "Prev tab" })
-set("n", "<End>",  ":tabprev<cr>", { desc = "Next tab" })
+-- set("n", "<End>",  ":tabprev<cr>", { desc = "Next tab" })
+-- set("n", "<Home>", ":tabnext<cr>", { desc = "Prev tab" })
 set("n", "<C-t>", function()
     --- `<C-^>`, `<C-6>`, `:e #` work great, but two issues: (* means active buffer)
     ---    - open A, B, C* -> `:bwipe` (B*) -> trigger -> error
@@ -37,6 +39,7 @@ set("n", "<C-t>", function()
     ---    - open A, B, C* -> `:bdelete B` (B*) -> trigger (C*) -> trigger (B*)
     local success, _ = pcall(vim.cmd.e, "#") -- ":e #" == <C-^> (# := alternate buffer register)
     if not success then
+        ---@diagnostic disable-next-line: param-type-mismatch
         local bufs = vim.tbl_filter(function(b) return b.listed == 1 end, vim.fn.getbufinfo())
         table.sort(bufs, function(a, b) return a.lastused > b.lastused end)
         if #bufs == 1 then
@@ -78,7 +81,7 @@ set("n", "<leader>Cx", "<cmd>!chmod +x %<cr>", { silent = true, desc = "chmod +x
 set("n", "<leader>Sb", "<cmd>so %<cr>",        { desc = "Source buffer" })
 set("n", "<leader>Sk", function() require(vim.fn.stdpath("config") .. "/lua/config/keymaps.lua") end, { desc = "Source keymap" })
 -- Refactor/Replace: <leader>r
-set("n", "<leader>rz", "<cmd>s!\\(https://\\)\\?\\(www.\\)\\?github.com/\\(.*\\)!\\3<cr>", { desc = "Clean gh url" })
+set("n", "<leader>rz", [[:%s!\v(https://)?(www\.)?github.com/([^/]+/[^/]+).*!\3<CR>]], { desc = "Clean gh url" })
 
 -- navigate cursor
 set("n", "k", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = "Down" })
@@ -122,6 +125,20 @@ set("v", "<A-h>",    ":m '<-2<CR>gv=gv",    { desc = "Move line up" })
 --     set("n", key .. "l", "<nop>")
 -- end
 -- stylua: ignore end
+
+-- tmux popup session
+set(
+    "n",
+    "<C-\\>",
+    function() vim.fn.system("tmux popup -h 90% -w 95% -b rounded -S fg='#5E81AC' -E -d " .. vim.loop.cwd() .. " 'tmux new -As popup'") end,
+    { desc = "Tmux Popup" }
+)
+set(
+    "n",
+    "<leader>gG",
+    function() vim.fn.system("tmux popup -h 90% -w 95% -b rounded -S fg='#5E81AC' -E -E -d " .. vim.loop.cwd() .. " lazygit") end,
+    { desc = "LazyGit" }
+)
 
 --- Functions ------------------------------------
 -- TODO: make this work

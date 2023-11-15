@@ -14,7 +14,6 @@ return {
             -- stylua: ignore
             require("mason-lspconfig").setup({
                 ensure_installed = {
-                    -- "rust_analyzer", -- rust
                     "pyright", "ruff_lsp", -- python
                     "tsserver", "eslint", "tailwindcss", "cssls", "html", "svelte", -- js,ts,css,html
                     "jdtls", -- java
@@ -24,8 +23,9 @@ return {
                     "jsonls", "yamlls", "taplo", -- json, yaml, toml
                     "docker_compose_language_service", "dockerls", -- docker
                     "vimls", -- vim
-                    -- "bufls", -- protobuf
-                    -- "zk", -- zettelkasten
+                    "bufls", -- protobuf
+                    "zk", -- zettelkasten
+                    -- "rust_analyzer", -- rust (handled by rust-tools.nvim)
                     -- "zls" -- zig
                 },
                 automatic_installation = true,

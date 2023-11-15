@@ -93,5 +93,17 @@ return {
                 },
             },
         })
+
+
+        -- TODO: formatlistpattern for lists & tasks
+        -- vim.cmd("set formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|\\s*[-+*]\\(\\s\\[[^]]\\]\\)\\?\\s\\+")
+        -- vim.opt_local.formatlistpat="\\"
+        -- vim.cm("set formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|\\s*[-+*]\\(\\s\\[[^]]\\]\\)\\?\\s\\+")
+        -- ^\\s*\\d\\+\\.\\s\\+
+        -- \\|
+        -- ^\\s*[-+*]\\s\\+
+        -- \\|
+        -- ^\\s*[-+*]\\s\\[[^]]\\]
+
     end,
 }

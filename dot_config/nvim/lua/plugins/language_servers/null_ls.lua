@@ -3,26 +3,24 @@ return {
         "jay-babu/mason-null-ls.nvim",
         dependencies = {
             "williamboman/mason.nvim",
-            "jose-elias-alvarez/null-ls.nvim",
+            "nvimtools/none-ls.nvim",
         },
         config = function()
             -- stylua: ignore
             require("mason-null-ls").setup({
                 ensure_installed = {
-                    "prettierd", -- "rustywind", -- js
-                    "prettier",
+                    "prettier", "prettierd", -- js
                     "mypy", "pylint", "isort", "blackd-client", -- python
                     "selene", "stylua", -- lua
-                    "markdownlint", "cbfmt", -- markdown
-                    "yamlfmt", -- yaml
+                    "markdownlint", "cbfmt", -- "markdown_toc", -- markdown
                     "sqlfluff", "gitlint", "hadolint", -- etc
-                    -- "buf", -- "protolint", -- protobuf
+                    "buf" -- protobuf
                 }
             })
         end,
     },
     {
-        "jose-elias-alvarez/null-ls.nvim", -- injectable language server
+        "nvimtools/none-ls.nvim", -- injectable language server (null-ls)
         dependencies = { "neovim/nvim-lspconfig" },
         event = { "BufReadPre", "BufNewFile" },
         config = function()
@@ -32,16 +30,9 @@ return {
             null_ls.setup({
                 debug = false,
                 sources = {
-                    -- ts, js, html, css, etc
-                    null_ls.builtins.formatting.prettierd.with({ disabled_filetypes = { "markdown", "yaml", "toml", "ron" } }), -- js,ts,css,html,json,yaml,md,etc
-                    -- null_ls.builtins.formatting.prettierd.with({
-                    --     env = {
-                    --         PRETTIERD_DEFAULT_CONFIG = vim.fn.expand("$XDG_CONFIG_HOME") .. "/nvim/prettier.json",
-                    --         -- PRETTIERD_LOCAL_PRETTIER_ONLY = true,
-                    --     },
-                    --     extra_filetypes = { "svelte" },
-                    --     disabled_filetypes = { "markdown" },
-                    -- }), -- js,ts,css,html,json,yaml,md,etc
+                    -- stylua: ignore
+                    -- js, ts, vue, css, html, graphql, handlebars
+                    null_ls.builtins.formatting.prettierd.with({ filetypes = {"javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "css", "scss", "less", "html", "graphql", "handlebars"} }),
 
                     -- python
                     null_ls.builtins.diagnostics.mypy, -- type checker
@@ -63,11 +54,9 @@ return {
 
                     -- markdown
                     null_ls.builtins.formatting.markdownlint.with({
-                        filetypes = { "telekasten", "markdown" },
                         extra_args = { "-c", vim.fn.expand("$XDG_CONFIG_HOME") .. "/markdownlint/markdownlint.yaml" },
                     }),
                     null_ls.builtins.diagnostics.markdownlint.with({
-                        filetypes = { "telekasten", "markdown" },
                         extra_args = { "-c", vim.fn.expand("$XDG_CONFIG_HOME") .. "/markdownlint/markdownlint.yaml" },
                     }),
                     -- cbmfmt -- code block formatter
@@ -76,16 +65,14 @@ return {
                     -- protobuf
                     -- null_ls.builtins.formatting.buf,
                     -- null_ls.builtins.diagnostics.buf,
-                    -- null_ls.builtins.formatting.protolint, -- error
-                    -- null_ls.builtins.diagnostics.protolint,
 
                     -- etc
                     null_ls.builtins.diagnostics.gitlint, -- gitcommit
-                    -- null_ls.builtins.diagnostics.commitlint, -- gitcommit
                     null_ls.builtins.diagnostics.hadolint, -- docker
                     null_ls.builtins.code_actions.gitsigns, -- gitsign.nvim
                     null_ls.builtins.code_actions.refactoring, -- thePrimeagen
 
+                    -- null_ls.builtins.diagnostics.commitlint, -- gitcommit
                     -- null_ls.builtins.formatting.jq, -- json
                     -- null_ls.builtins.diagnostics.shellcheck, -- bash
                     -- null_ls.builtins.formatting.shfmt, -- bash

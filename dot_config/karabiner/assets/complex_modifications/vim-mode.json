@@ -1,0 +1,146 @@
+{
+  "title": "Vim Mode++",
+  "author": "Ryan Byon (ryan.h.byon@gmail.com)",
+  "updated_on": "2023-09-23",
+  "credit": "gilitos92 - https://ke-complex-modifications.pqrs.org/#vim_mode_plus_better_notifications",
+  "README": "WIP -- Strongly recommended to NOT use this",
+  "rules": [
+    {
+      "manipulators": [
+        {
+          "description": "Activate Vim mode",
+          "type": "basic",
+          "from": { "apple_vendor_top_case_key_code": "keyboard_fn" },
+          "to": [{ "set_variable": { "name": "vim", "value": 1 } }],
+          "conditions": [
+            { "type": "variable_unless", "name": "vim", "value": 1 },
+            { "type": "frontmost_application_unless", "bundle_identifiers": ["org.alacritty"] }
+          ]
+        },
+        {
+          "description": "Deactivate Vim mode",
+          "type": "basic",
+          "from": { "apple_vendor_top_case_key_code": "keyboard_fn" },
+          "to": [{ "set_variable": { "name": "vim", "value": 0 } }],
+          "conditions": [{ "type": "variable_if", "name": "vim", "value": 1 }]
+        },
+        {
+          "description": "Deactivate Vim mode",
+          "type": "basic",
+          "from": { "key_code": "escape" },
+          "to": [{ "set_variable": { "name": "vim", "value": 0 } }],
+          "conditions": [{ "type": "variable_if", "name": "vim", "value": 1 }]
+        },
+        {
+          "description": "Deactivate Vim mode",
+          "type": "basic",
+          "from": { "key_code": "caps_lock" },
+          "to": [{ "set_variable": { "name": "vim", "value": 0 } }],
+          "conditions": [{ "type": "variable_if", "name": "vim", "value": 1 }]
+        },
+        {
+          "description": "Jump word forward",
+          "type": "basic",
+          "from": { "key_code": "w", "modifiers": { "optional": ["any"] } },
+          "to": { "key_code": "right_arrow", "modifiers": ["left_option"] },
+          "conditions": [{ "type": "variable_if", "name": "vim", "value": 1 }]
+        },
+        {
+          "description": "Jump word backward",
+          "type": "basic",
+          "from": { "key_code": "t", "modifiers": { "optional": ["any"] } },
+          "to": { "key_code": "left_arrow", "modifiers": ["left_option"] },
+          "conditions": [{ "type": "variable_if", "name": "vim", "value": 1 }]
+        },
+        {
+          "description": "Left",
+          "type": "basic",
+          "from": { "key_code": "y", "modifiers": { "optional": ["any"] } },
+          "to": { "key_code": "left_arrow" },
+          "conditions": [{ "type": "variable_if", "name": "vim", "value": 1 }]
+        },
+        {
+          "description": "Right",
+          "type": "basic",
+          "from": { "key_code": "u", "modifiers": { "optional": ["any"] } },
+          "to": { "key_code": "right_arrow" },
+          "conditions": [{ "type": "variable_if", "name": "vim", "value": 1 }]
+        },
+        {
+          "description": "Down",
+          "type": "basic",
+          "from": { "key_code": "n", "modifiers": { "optional": ["any"] } },
+          "to": { "key_code": "down_arrow" },
+          "conditions": [{ "type": "variable_if", "name": "vim", "value": 1 }]
+        },
+        {
+          "description": "Up",
+          "type": "basic",
+          "from": { "key_code": "m", "modifiers": { "optional": ["any"] } },
+          "to": { "key_code": "up_arrow" },
+          "conditions": [{ "type": "variable_if", "name": "vim", "value": 1 }]
+        },
+        {
+          "description": "Beginning of line",
+          "type": "basic",
+          "from": { "key_code": "0", "modifiers": { "optional": ["any"] } },
+          "to": { "key_code": "left_arrow", "modifiers": ["left_command"] },
+          "conditions": [{ "type": "variable_if", "name": "vim", "value": 1 }]
+        },
+        {
+          "description": "End of line",
+          "type": "basic",
+          "from": { "key_code": "4", "modifiers": { "optional": ["any"] } },
+          "to": { "key_code": "right_arrow", "modifiers": ["left_command"] },
+          "conditions": [{ "type": "variable_if", "name": "vim", "value": 1 }]
+        },
+        {
+          "description": "PageDown",
+          "type": "basic",
+          "from": { "key_code": "d", "modifiers": { "mandatory": ["left_control"], "optional": ["any"] } },
+          "to": { "key_code": "page_down" },
+          "conditions": [{ "type": "variable_if", "name": "vim", "value": 1 }]
+        },
+        {
+          "description": "PageUp",
+          "type": "basic",
+          "from": { "key_code": "u", "modifiers": { "mandatory": ["left_control"], "optional": ["any"] } },
+          "to": { "key_code": "page_up" },
+          "conditions": [{ "type": "variable_if", "name": "vim", "value": 1 }]
+        },
+
+        {
+          "description": "Disable other keycodes",
+          "type": "basic",
+          "from": { "any": "key_code" },
+          "conditions": [{ "type": "variable_if", "name": "vim", "value": 1 }]
+        }
+      ],
+      "description": "Vim Mode (e,x,X,p,P,u,<C-r>,i,I,a,A,o,O,G,gg,{,},<A-k>,<A-h>)"
+    },
+    {
+      "description": "Vim - Visual Mode",
+      "manipulators": []
+    },
+    {
+      "description": "Vim - Yank Operation (yy,yf,ye,yb,y0,y^,y$,Y,yG,ygg,y{,y})",
+      "manipulators": []
+    },
+    {
+      "description": "Vim - Delete Operation (dd,dw,de,db,d0,d^,d$,D,dG,dgg,d{,d})",
+      "manipulators": []
+    },
+    {
+      "description": "Vim - Change Operation",
+      "manipulators": []
+    },
+    {
+      "description": "Vim - TextObject Operation (iw, ip, aw, ap)",
+      "manipulators": []
+    },
+    {
+      "description": "Vim - g Operation (condition if vim-mode, visual-mode, copy-mode, del-mode, yank-mode, to-mode)",
+      "manipulators": []
+    }
+  ]
+}

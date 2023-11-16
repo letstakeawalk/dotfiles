@@ -5,7 +5,6 @@ return {
         "nvim-telescope/telescope-symbols.nvim", -- symbol picker
         "nvim-telescope/telescope-file-browser.nvim", -- file browser
         "tsakirist/telescope-lazy.nvim", -- lazy.nvim
-        "ahmedkhalf/project.nvim", -- project.nvim
     },
     cmd = { "Telescope" },
     -- stylua: ignore
@@ -37,7 +36,6 @@ return {
         { "<leader>tz", "<cmd>Telescope lazy<cr>",         desc = "Lazy" },
         { "<leader>tb", "<cmd>Telescope file_browser<cr>", desc = "File Browser" },
         { "<leader>tl", "<cmd>Telescope tldr<cr>",         desc = "Tldr" },
-        -- { "<leader>tf", "<cmd>Telescope projects<cr>", desc = "Projects" },
     },
     config = function()
         local telescope = require("telescope")
@@ -49,7 +47,7 @@ return {
         telescope.load_extension("harpoon") -- harpoon.nvim
         telescope.load_extension("refactoring") -- refactoring.nvim
         telescope.load_extension("git_worktree") -- git-worktree.nvim
-        telescope.load_extension("session-lens") -- auto-session (session-lens)
+        telescope.load_extension("persisted") -- persisted.nvim
         -- stylua: ignore
         telescope.setup({
             defaults = {

@@ -58,7 +58,7 @@ return {
                 vim.keymap.set(
                     "n",
                     "<leader>nv",
-                    "<cmd>ZkNew { title = vim.fn.input('Title: '), dir = vim.fn.expand('$OBSIDIAN')..'/notes/dev/general', template = 'tech-term.md' }<cr>",
+                    "<cmd>ZkNew { title = vim.fn.input('Title: '), dir = vim.fn.expand('$OBSIDIAN')..'/Notes/dev/general', template = 'tech-term.md' }<cr>",
                     { desc = "New Dev Note", buffer = true }
                 )
                 vim.keymap.set("n", "<CR>", "<Cmd>lua vim.lsp.buf.definition()<CR>", { desc = "Open Link", buffer = true })

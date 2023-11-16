@@ -85,6 +85,7 @@ return {
             vim.api.nvim_create_autocmd("FileType", {
                 pattern = "fugitive",
                 group = vim.api.nvim_create_augroup("MiniClueFugitive", { clear = true }),
+                ---@diagnostic disable-next-line: unused-local
                 callback = function(data)
                     miniclue.set_mapping_desc("n", "g?", "Help")
                     miniclue.set_mapping_desc("n", "gu", "Jump to Untracked/Unstaged")
@@ -93,6 +94,14 @@ return {
                     miniclue.set_mapping_desc("n", "gp", "Jump to Unpushed")
                     miniclue.set_mapping_desc("n", "gP", "Jump to Unpulled")
                     miniclue.set_mapping_desc("n", "gr", "Jump to Rebasing")
+                    miniclue.set_mapping_desc("n", "]]", "Jump to Next Section")
+                    miniclue.set_mapping_desc("n", "][", "Jump to Next Section (end)")
+                    miniclue.set_mapping_desc("n", "[[", "Jump to Prev Section")
+                    miniclue.set_mapping_desc("n", "[]", "Jump to Prev Section (end)")
+                    miniclue.set_mapping_desc("n", "]m", "Jump to Next File")
+                    miniclue.set_mapping_desc("n", "[m", "Jump to Prev File")
+                    miniclue.set_mapping_desc("n", "]c", "Jump to Nex Hunk")
+                    miniclue.set_mapping_desc("n", "[c", "Jump to Prev Hunk")
                 end,
             })
         end,

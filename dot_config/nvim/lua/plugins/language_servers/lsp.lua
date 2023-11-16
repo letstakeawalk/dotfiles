@@ -213,7 +213,7 @@ return {
                     if client.server_capabilities.inlayHintProvider then
                         -- let rust-tools handle inlay hints
                         if client.name ~= "rust_analyzer" then
-                            vim.lsp.inlay_hint(0, true)
+                            vim.lsp.inlay_hint.enable(0, true)
                         end
                     end
 

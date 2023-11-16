@@ -49,8 +49,7 @@ return {
         telescope.load_extension("harpoon") -- harpoon.nvim
         telescope.load_extension("refactoring") -- refactoring.nvim
         telescope.load_extension("git_worktree") -- git-worktree.nvim
-        telescope.load_extension("persisted") -- persisted.nvim
-        -- telescope.load_extension("projects") -- project.nvim
+        telescope.load_extension("session-lens") -- auto-session (session-lens)
         -- stylua: ignore
         telescope.setup({
             defaults = {
@@ -93,11 +92,6 @@ return {
                         "--exclude", "target",
                     },
                 },
-                -- find_files opt.cwd ?? is not set and not being used
-                -- TODO: why does telescope changing pwd on rust workspaces?
-                -- TODO: config fd
-                -- https://github.com/nvim-telescope/telescope.nvim/wiki/Configuration-Recipes#remove--from-fd-results
-                -- TODO: keybinding to cd .. in file picker
             },
             extensions = {
                 file_browser = { hijack_netrw = true },
@@ -113,9 +107,6 @@ return {
                     },
                 },
                 tldr = {},
-                persisted = {
-                    -- layout_config = { width = 0.55, height = 0.55 }
-                },
             },
         })
 

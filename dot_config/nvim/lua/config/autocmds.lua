@@ -80,8 +80,8 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
     pattern = { vim.env.CHEZMOI_SOURCE .. "/**/*" },
     ---@param ev { file: string, match: string }
     callback = function(ev)
-        if ev.file:match("COMMIT_EDITMSG") then
-            vim.notify("Commit message, not applying")
+        if vim.bo.filetype == "gitcommit" or vim.bo.filetype == "gitrebase" then
+            vim.notify("Git file, not applying")
             return
         end
         local result = vim.fn.system({ "chezmoi", "apply", "--source-path", ev.match })
@@ -94,17 +94,16 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
 })
 
 -- Tab configuration
----@diagnostic disable-next-line: unused-local, unused-function
--- local function set_tabstop(size)
---     vim.opt_local.tabstop = size
---     vim.opt_local.softtabstop = size
---     vim.opt_local.shiftwidth = size
--- end
--- vim.api.nvim_create_autocmd("FileType", {
---     group = augroup("TabTwo"),
---     pattern = { "typescript", "javascript", "css", "html", "svelte" },
---     callback = function() set_tabstop(2) end,
--- })
+local function set_tabstop(size)
+    vim.opt_local.tabstop = size
+    vim.opt_local.softtabstop = size
+    vim.opt_local.shiftwidth = size
+end
+vim.api.nvim_create_autocmd("FileType", {
+    group = augroup("TabTwo"),
+    pattern = { "json", "yaml", "css" }, -- { "html", "typescript", "javascript", "svelte", "vue" },
+    callback = function() set_tabstop(2) end,
+})
 
 -- wrap text
 -- vim.api.nvim_create_autocmd("FileType", {
@@ -112,3 +111,10 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
 --     pattern = { "markdown" },
 --     callback = function() vim.opt_local.wrap = true end,
 -- })
+
+-- custom filetypes
+vim.api.nvim_create_autocmd("BufRead", {
+    group = augroup("Zshrc"),
+    pattern = { "dot_zshrc" },
+    callback = function() vim.bo.filetype = "zsh" end,
+})

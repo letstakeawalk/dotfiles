@@ -69,8 +69,8 @@ return {
         "ThePrimeagen/git-worktree.nvim",
         event = "BufRead",
         keys = {
-            { "<leader>w", "<cmd>Telescope git_worktree git_worktrees", desc = "Git worktrees (Telescope)" },
-            { "<leader>gW", "<cmd>Telescope git_worktree create_git_worktrees", desc = "Create worktree" },
+            { "<leader>w", "<cmd>Telescope git_worktree git_worktrees<cr>", desc = "Git worktrees (Telescope)" },
+            { "<leader>gW", "<cmd>Telescope git_worktree create_git_worktrees<cr>", desc = "Create worktree" },
         },
         config = function()
             -- stylua: ignore

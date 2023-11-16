@@ -5,7 +5,7 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"
 export XDG_RUNTIME_DIR="$HOME/.cache"
 export WORKSPACE="$HOME/Workspace"
-export OBSIDIAN="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes"
+export OBSIDIAN="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/Notes"
 
 # Configurations
 export ASDF_CONFIG_FILE="$XDG_CONFIG_HOME/asdf/asdfrc"
@@ -205,16 +205,13 @@ alias openf='fd --type directory --max-depth 3 | fzf | xargs open'
 # alias chtf="cheat -l | tail -n +2 | sd -f m '$(\w*)\s*/[^/]*\s*(\w*)' '$1  $3'| fzf "
 
 #### quick edit ##############
-alias conf="z $XDG_CONFIG_HOME"
+alias config="z $XDG_CONFIG_HOME"
 alias data="z $XDG_DATA_HOME"
 alias state="z $XDG_STATE_HOME"
 alias cache="z $XDG_CACHE_HOME"
-alias confnvim="z $CHEZMOI_SOURCE/dot_config/nvim && nvim"
-alias confzsh="z $CHEZMOI_SOURCE/dot_config && nvim zsh/dot_zshrc && source $XDG_CONFIG_HOME/zsh/.zshrc"
-alias confala="z $CHEZMOI_SOURCE/dot_config && nvim alacritty/alacritty.yml"
-alias confchez="z $CHEZMOI_SOURCE/dot_config && nvim"
+alias conf="z $CHEZMOI_SOURCE/dot_config && vim"
 alias chez=chezmoi
-alias note="z $WORKSPACE/notes && vim"
+alias note="z $WORKSPACE/Notes && vim"
 alias notes=note
 # alias confzsh="nvim $XDG_CONFIG_HOME/zsh/.zshrc && chezmoi add $XDG_CONFIG_HOME/zsh/.zshrc && source $XDG_CONFIG_HOME/zsh/.zshrc"
 # alias confnvim="z $XDG_CONFIG_HOME/nvim && nvim"

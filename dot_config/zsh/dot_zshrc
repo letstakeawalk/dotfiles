@@ -188,13 +188,13 @@ alias cd=z
 alias dust='dust --reverse'
 # alias sed=sd
 # alias ssh=mosh
-alias ls='exa --group-directories-first'
-alias lt='exa --tree --level'
-alias ltd='exa -a --tree --only-dirs'
-alias lta='exa -a --tree --level 2'
-alias l='exa -lhg --git --time-style long-iso --group-directories-first'
-alias ll='exa -lhg --git --time-style long-iso --group-directories-first'
-alias la='exa -lhga --git --time-style long-iso --group-directories-first'
+alias ls='eza --group-directories-first'
+alias lt='eza --tree --level'
+alias ltd='eza -a --tree --only-dirs'
+alias lta='eza -a --tree --level 2'
+alias l='eza -lhg --git --time-style long-iso --group-directories-first'
+alias ll='eza -lhg --git --time-style long-iso --group-directories-first'
+alias la='eza -lhga --git --time-style long-iso --group-directories-first'
 
 #### fzf #####################
 alias nvimf='fd --type file --hidden | fzf --preview "bat --color=always -n {1}" --preview-window=right,60% | xargs nvim'
@@ -302,7 +302,7 @@ function clicolors() {
 # always show ls when chpwd
 function chpwd() {
     # emulate -L zsh
-    exa --group-directories-first
+    eza --group-directories-first
 }
 
 # benchmark zsh startup

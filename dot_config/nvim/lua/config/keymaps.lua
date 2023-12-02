@@ -8,23 +8,31 @@ set("i", "<Esc>", "<Nop>")
 set("n", "<Esc>", "<cmd>noh<cr>", { desc = "Clear highlights" })
 set("n", "<C-c>", "<cmd>noh<cr>", { desc = "Clear highlights" })
 -- cursor navigation
-set("n", "k",  "v:count == 0 ? 'gj' : 'j'", { expr = true,    silent = true, desc = "Down" })
-set("n", "h",  "v:count == 0 ? 'gk' : 'k'", { expr = true,    silent = true, desc = "Up" })
+set("n", "k",  "v:count == 0 ? 'gj' : 'j'", { desc = "Down",  silent = true, expr = true })
+set("n", "h",  "v:count == 0 ? 'gk' : 'k'", { desc = "Up",    silent = true, expr = true })
+set("n", "gk", "gj",                        { desc = "Down" })
+set("n", "gh", "gk",                        { desc = "Up" })
 set("n", "j",  "h",                         { desc = "Left",  silent = true })
 set("n", "l",  "l",                         { desc = "Right", silent = true })
 set("x", "k",  "j",                         { desc = "Down",  silent = true })
 set("x", "h",  "k",                         { desc = "Up",    silent = true })
 set("x", "j",  "h",                         { desc = "Left",  silent = true })
 set("x", "l",  "l",                         { desc = "Right", silent = true })
-set("n", "gk", "gj",                        { desc = "Down" })
-set("n", "gh", "gk",                        { desc = "Up" })
 set({ "i", "n", "c" }, "<A-Right>", "<C-Right>", { desc = "Next word" }) -- ^[f
 set({ "i", "n", "c" }, "<A-Left>",  "<C-Left>",  { desc = "Prev word" }) -- ^[b
 set("c", "<C-a>", "<Home>", { desc = "BOL" })
 set("c", "<C-e>", "<End>",  { desc = "EOL" })
 set("n", "ge", "gi", { desc = "Last edited position" }) -- go to last INSERT pos and insert
-set("n", "gg", "gg", { desc = "Goto first line" }) -- jump to eof center cursor
-set("n", "G", "Gzz", { desc = "Goto last line" }) -- jump to eof center cursor
+set("n", "gg", "gg", { desc = "Goto first line" }) -- jump to bof, center cursor
+set("n", "G", "Gzz", { desc = "Goto last line" })  -- jump to eof, center cursor
+set("n", "gj", "zH", { desc = "Scroll Left",  silent = true })
+set("n", "zj", "zL", { desc = "Scroll Left",  silent = true })
+set("n", "zJ", "zL", { desc = "Scroll Left",  silent = true })
+set("n", "zs", "zH", { desc = "Scroll Left",  silent = true })
+set("n", "gl", "zL", { desc = "Scroll Right", silent = true })
+set("n", "zl", "zH", { desc = "Scroll Right", silent = true })
+set("n", "zL", "zH", { desc = "Scroll Right", silent = true })
+set("n", "ze", "zL", { desc = "Scroll Right", silent = true })
 set("n", "<C-d>", function() vim.notify("Use <PageDown> instead", vim.log.levels.WARN) end, { desc = "Scroll down" }) -- scroll down
 set("n", "<C-u>", function() vim.notify("Use <PageUp> instead", vim.log.levels.WARN) end,   { desc = "Scroll up" })   -- scroll up
 set("n", "<PageDown>", "<C-d>zz", { desc = "Scroll down" }) -- scroll down
@@ -106,7 +114,8 @@ set("n", "<leader>Cx", "<cmd>!chmod +x %<cr>", { silent = true, desc = "chmod +x
 set("n", "<leader>Sb", "<cmd>so %<cr>",        { desc = "Source buffer" })
 set("n", "<leader>Sk", function() require(vim.fn.stdpath("config") .. "/lua/config/keymaps.lua") end, { desc = "Source keymap" })
 -- Refactor/Replace: <leader>r
-set("n", "<leader>rz", [[:%s!\v(https://)?(www\.)?github.com/([^/]+/[^/]+).*!\3<CR>]], { desc = "Clean gh url" })
+set("n", "<leader>rg", [[<cmd>s!\v(https://)?(www\.)?github.com/([^/]+/[^/]+).*!\3<cr><cmd>noh<cr>]], { desc = "Clean github url" })
+set("n", "<leader>rl", [[<cmd>s!\v(https://)?(www\.)?(leetcode\.com/problems/)([^/]+).*!\1\2\3\4!<cr><cmd>noh<cr>]], { desc = "Clean leetcode url" })
 -- stylua: ignore end
 
 -- tmux popup session
@@ -114,6 +123,12 @@ set(
     "n",
     "<C-\\>",
     function() vim.fn.system("tmux popup -h 90% -w 95% -b rounded -S fg='#5E81AC' -E -d " .. vim.loop.cwd() .. " 'tmux new -As popup'") end,
+    { desc = "Tmux Popup" }
+)
+set(
+    "n",
+    "<C-w>n",
+    function() vim.fn.system("tmux popup -h 90% -w 95% -b rounded -S fg='#5E81AC' -E -d " .. vim.loop.cwd()) end,
     { desc = "Tmux Popup" }
 )
 set(

@@ -1,7 +1,6 @@
--- TODO: try out chatGPT
--- https://github.com/jackMort/ChatGPT.nvim
 return {
     "jackMort/ChatGPT.nvim",
+    enabled = false,
     dependencies = {
         "MunifTanjim/nui.nvim",
         "nvim-lua/plenary.nvim",
@@ -13,12 +12,21 @@ return {
         "ChatGPTEditWithInstructions",
         "ChatGPTRun",
     },
+    -- stylua: ignore
     keys = {
-        { "<leader>cg", "<cmd>ChatGPT<cr>", desc = "ChatGPT" },
-        { "<leader>cA", "<cmd>ChatGPTActAs<cr>", desc = "ChatGPT Act as" },
-        { "<leader>cR", "<cmd>ChatGPTRun<cr>", desc = "ChatGPT Run" },
-        { "<leader>ce", "<cmd>ChatGPTEditWithInstructions<cr>", desc = "ChatGPT Edit with Instructions", mode = "v" },
-        -- { "<leader>cI", "<cmd>ChatGPTEditWithInstructions<cr>", desc = "ChatGPT Edit with Instructions" },
+        { "<leader>cc", "<cmd>ChatGPT<cr>",                              desc = "ChatGPT" },
+        { "<leader>cA", "<cmd>ChatGPTActAs<cr>",                         desc = "ChatGPT Act as" },
+        { "<leader>ce", "<cmd>ChatGPTEditWithInstructions<cr>",          desc = "Edit with Instructions",    mode = { "n", "v" } },
+        { "<leader>cg", "<cmd>ChatGPTRun grammar_correction<cr>",        desc = "Grammar Correction",        mode = { "n", "v" } },
+        { "<leader>ct", "<cmd>ChatGPTRun translate<cr>",                 desc = "Translate",                 mode = { "n", "v" } },
+        { "<leader>ck", "<cmd>ChatGPTRun keywords<cr>",                  desc = "Keywords",                  mode = { "n", "v" } },
+        { "<leader>cd", "<cmd>ChatGPTRun docstring<cr>",                 desc = "Docstring",                 mode = { "n", "v" } },
+        { "<leader>ca", "<cmd>ChatGPTRun add_tests<cr>",                 desc = "Add Tests",                 mode = { "n", "v" } },
+        { "<leader>co", "<cmd>ChatGPTRun optimize_code<cr>",             desc = "Optimize Code",             mode = { "n", "v" } },
+        { "<leader>cs", "<cmd>ChatGPTRun summarize<cr>",                 desc = "Summarize",                 mode = { "n", "v" } },
+        { "<leader>cf", "<cmd>ChatGPTRun fix_bugs<cr>",                  desc = "Fix Bugs",                  mode = { "n", "v" } },
+        { "<leader>cx", "<cmd>ChatGPTRun explain_code<cr>",              desc = "Explain Code",              mode = { "n", "v" } },
+        { "<leader>cl", "<cmd>ChatGPTRun code_readability_analysis<cr>", desc = "Code Readability Analysis", mode = { "n", "v" } },
     },
     config = function()
         require("chatgpt").setup({
@@ -32,7 +40,7 @@ return {
             },
             popup_input = {
                 submit = "<C-s>", -- default: <C-Enter>
-                submit_n = "<Enter>", -- default: <Enter>
+                submit_n = "<Enter>", -- normal mode submit -- default: <Enter>
             },
         })
 
@@ -45,14 +53,5 @@ return {
 
         local nord = require("utils.nord")
         vim.api.nvim_set_hl(0, "ChatGPTQuestion", { fg = nord.c08_teal })
-
-        -- highlight groups
-        -- ChatGPTWelcome
-        -- ChatGPTQuestion
-        -- ChatGPTCompletion
-        -- ChatGPTTotalTokens
-        -- ChatGPTMessageAction
-        -- ChatGPTSelectedMessage
-        -- ChatGPTTotalTokenBorder
     end,
 }

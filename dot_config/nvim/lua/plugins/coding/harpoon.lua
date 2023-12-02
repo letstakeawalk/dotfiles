@@ -8,8 +8,6 @@ return {
         local ui = require("harpoon.ui")
         vim.keymap.set("n", "+", mark.add_file, { desc = "Next Harpoon" })
         vim.keymap.set("n", "<C-p>", ui.toggle_quick_menu, { desc = "Next Harpoon" })
-        -- vim.keymap.set("n", "}", ui.nav_next, { desc = "Next Harpoon" })
-        -- vim.keymap.set("n", "{", ui.nav_prev, { desc = "Prev Harpoon" })
         -- stylua: ignore start 
         vim.keymap.set("n", "_", function() ui.nav_file(1) end, { desc = "Harpoon 1" })
         vim.keymap.set("n", "(", function() ui.nav_file(2) end, { desc = "Harpoon 2" })
@@ -17,8 +15,8 @@ return {
         vim.keymap.set("n", "=", function() ui.nav_file(4) end, { desc = "Harpoon 4" })
         vim.keymap.set("n", "-", function() ui.nav_file(5) end, { desc = "Harpoon 5" })
         vim.keymap.set("n", '"', function() ui.nav_file(6) end, { desc = "Harpoon 6" })
-        vim.keymap.set("n", "<Home>", ui.nav_prev, { desc = "Prev Harpoon" })
-        vim.keymap.set("n", "<End>",   ui.nav_next, { desc = "Next Harpoon" })
+        vim.keymap.set("n", "]h", ui.nav_next, { desc = "Next Harpoon" })
+        vim.keymap.set("n", "[h", ui.nav_prev, { desc = "Prev Harpoon" })
         -- stylua: ignore end
 
         harpoon.setup({

@@ -17,10 +17,11 @@ return {
         "SessionDelete", -- delete current session
     },
     init = function()
-        vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+        vim.o.sessionoptions = "buffers,curdir,folds,winsize,winpos"
+        local augroup = vim.api.nvim_create_augroup("PersistedHooks", {})
         vim.api.nvim_create_autocmd({ "User" }, {
             pattern = "PersistedTelescopeLoadPre",
-            group = vim.api.nvim_create_augroup("PersistedHooks", {}),
+            group = augroup,
             callback = function()
                 -- save currently loaded session
                 require("persisted").save({ session = vim.g.persisted_loaded_session })
@@ -28,6 +29,13 @@ return {
                 ---@diagnostic disable-next-line: param-type-mismatch
                 pcall(vim.cmd, "%bd!")
                 -- NOTE: perhaps quit language servers?
+            end,
+        })
+        vim.api.nvim_create_autocmd({ "User" }, {
+            pattern = "PersistedTelescopeLoadPost",
+            group = augroup,
+            callback = function()
+                vim.g.persisting = true -- autosave loaded session
             end,
         })
     end,

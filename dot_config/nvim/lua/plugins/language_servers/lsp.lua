@@ -25,6 +25,7 @@ return {
                     "vimls", -- vim
                     "bufls", -- protobuf
                     "zk", -- zettelkasten
+                    -- "typos_lsp", -- typos
                     -- "rust_analyzer", -- rust (handled by rust-tools.nvim)
                     -- "zls" -- zig
                 },

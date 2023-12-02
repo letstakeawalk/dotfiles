@@ -25,17 +25,14 @@ return {
     -- https://github.com/folke/noice.nvim
     -- https://github.com/MunifTanjim/nui.nvim
     -- https://github.com/rcarriga/nvim-notify
-    -- https://github.com/stevearc/oil.nvim -- file explorer in nvim buffer
-
-    -- ssr: search substitute replace
-    -- https://github.com/nvim-pack/nvim-spectre
-    -- https://github.com/cshuaimin/ssr.nvim/
 
     -- utils
     -- https://github.com/sQVe/sort.nvim -- smart sorting
     -- https://github.com/0styx0/abbreinder.nvim -- abbreviation reminder
     -- https://github.com/derektata/lorem.nvim -- lorem ipsum generator
     -- https://github.com/roobert/tailwindcss-colorizer-cmp.nvim -- tailwindcss colorizer
+    -- https://github.com/barklan/capslock.nvim -- software capslock
+    -- https://github.com/vuki656/package-info.nvim -- packages.json info w/ virtual text
 
     -- practice
     -- https://github.com/ThePrimeagen/vim-be-good

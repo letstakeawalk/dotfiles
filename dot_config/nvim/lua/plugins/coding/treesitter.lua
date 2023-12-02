@@ -86,11 +86,10 @@ return {
             "html", "htmldjango", "css", "scss", -- "xml",
             "java",
             "javascript", "typescript", "svelte", "jsdoc",
-            "jq",
-            "json", "jsonc",
+            "json", "jsonc", "jq",
             "latex",
             "lua",
-            "make",
+            "make", -- "just",
             "markdown", "markdown_inline",
             "proto", -- protocol buffers
             "python",
@@ -143,11 +142,6 @@ return {
             indent = { enable = true },
             -- text objects module
             textobjects = textobjects,
-            -- nvim-ts-context-commentstring module
-            context_commentstring = {
-                enable = true,
-                enable_autocmd = false, -- for Comment.nvim
-            },
             -- autotag module
             autotag = { enable = true, enable_close_on_slash = false },
             -- endwise module
@@ -157,6 +151,12 @@ return {
         -- code context of current line in winbar
         require("treesitter-context").setup({ enable = true })
         vim.api.nvim_set_hl(0, "TreesitterContext", { link = "CursorLine" })
+
+        -- context comment string
+        require("ts_context_commentstring").setup({
+            enable_autocmd = false, -- for Comment.nvim
+        })
+        vim.g.skip_ts_context_commentstring_module = true
 
         -- Repeat movement with ; and ,
         -- ensure ; goes forward and , goes backward regardless of the last direction

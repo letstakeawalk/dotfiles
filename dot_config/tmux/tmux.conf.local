@@ -369,8 +369,12 @@ tmux_conf_theme_clock_style="24"
 tmux_conf_copy_to_os_clipboard=false
 
 
-# -- user customizations -------------------------------------------------------
-# this is the place to override or undo settings
+# ------------------------------------------------------------------------------
+# -- User Customizations -------------------------------------------------------
+# -- this is the place to override or undo settings ----------------------------
+# ------------------------------------------------------------------------------
+set-environment -g TMUX_CONF_LOCAL "$XDG_DATA_HOME/chezmoi/dot_config/tmux/tmux.conf.local"
+# bind e new-window -n "#{TMUX_CONF_LOCAL}" sh -c '${EDITOR:-vim} "$TMUX_CONF_LOCAL" && "$TMUX_PROGRAM" ${TMUX_SOCKET:+-S "$TMUX_SOCKET"} source "$TMUX_CONF" \; display "$TMUX_CONF_LOCAL sourced"' 
 set-option -sa terminal-overrides ',alacritty:RGB'  # enable truecolor for alacritty
 
 # window navigation/management
@@ -392,10 +396,9 @@ bind -r K resize-pane -D 2
 bind -r J resize-pane -L 2
 bind -r L resize-pane -R 2
 
-
 # Smart pane switching with awareness of Vim splits. Ref: https://github.com/christoomey/vim-tmux-navigator
-# is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
-#     | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
+is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
+    | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
 # bind -n 'C-h' if-shell "$is_vim" { send-keys C-h }  { select-pane -U } # <C-h> -> up
 # bind -n 'C-k' if-shell "$is_vim" { send-keys C-k }  { select-pane -D } # <C-k> -> down
 # bind -n 'C-j' if-shell "$is_vim" { send-keys C-j }  { select-pane -L } # <C-j> -> left
@@ -405,12 +408,6 @@ bind -r L resize-pane -R 2
 #     "bind -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\'  'select-pane -l'"
 # if-shell -b '[ "$(echo "$tmux_version >= 3.0" | bc)" = 1 ]' \
 #     "bind -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\\\'  'select-pane -l'"
-
-# pane layout
-# bind 'C-1' select-layout even-horizontal
-# bind 'C-2' select-layout even-vertical
-# bind 'C-3' select-layout main-horizontal
-# bind 'C-4' select-layout main-vertical
 
 # copy mode navigation
 bind -T copy-mode-vi 'C-h' select-pane -U
@@ -423,11 +420,11 @@ bind -T copy-mode-vi k     send-keys   Down
 bind -T copy-mode-vi j     send-keys   Left
 bind -T copy-mode-vi l     send-keys   Right
 
-# choose-tree, choose-buffer, choose-client, etc
-bind -T root  h if -F "#{==:#{pane_mode},tree-mode}" "send k" "send h"
-bind -T root  k if -F "#{==:#{pane_mode},tree-mode}" "send j" "send k"
-bind -T root  j if -F "#{==:#{pane_mode},tree-mode}" "send h" "send j"
-bind -T root  l if -F "#{==:#{pane_mode},tree-mode}" "send l" "send l"
+# navigation: choose-tree, choose-buffer, choose-client, etc
+bind -T root  h if -F "#{==:#{pane_mode},tree-mode}" "send k" "send h"  #    Up if in tmux menu, h otherwise
+bind -T root  k if -F "#{==:#{pane_mode},tree-mode}" "send j" "send k"  #  Down if in tmux menu, k otherwise
+bind -T root  j if -F "#{==:#{pane_mode},tree-mode}" "send h" "send j"  #  Left if in tmux menu, j otherwise
+bind -T root  l if -F "#{==:#{pane_mode},tree-mode}" "send l" "send l"  # Right if in tmux menu, l otherwise  # redundant
 
 # popup windows
 bind n popup -h 90% -w 95% -E -b rounded -S fg='#5E81AC' # temparary popup

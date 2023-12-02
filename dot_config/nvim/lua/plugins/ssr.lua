@@ -1,6 +1,6 @@
 return {
     "cshuaimin/ssr.nvim",
-    keys = { { "<leader>rs", function() require("ssr").open() end, desc = "Search & Replace" } },
+    keys = { { "<leader>rr", function() require("ssr").open() end, desc = "Search & Replace" } },
     opts = {
         min_width = 50,
         min_height = 5,

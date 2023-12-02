@@ -32,7 +32,7 @@ return {
                 sources = {
                     -- stylua: ignore
                     -- js, ts, vue, css, html, graphql, handlebars
-                    null_ls.builtins.formatting.prettierd.with({ filetypes = {"javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "css", "scss", "less", "html", "graphql", "handlebars"} }),
+                    null_ls.builtins.formatting.prettierd.with({ filetypes = {"javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "css", "scss", "less", "html", "json", "graphql", "handlebars"} }),
 
                     -- python
                     null_ls.builtins.diagnostics.mypy, -- type checker
@@ -71,6 +71,7 @@ return {
                     null_ls.builtins.diagnostics.hadolint, -- docker
                     null_ls.builtins.code_actions.gitsigns, -- gitsign.nvim
                     null_ls.builtins.code_actions.refactoring, -- thePrimeagen
+                    -- null_ls.builtins.diagnostics.trivy -- security scanner (https://github.com/aquasecurity/trivy)
 
                     -- null_ls.builtins.diagnostics.commitlint, -- gitcommit
                     -- null_ls.builtins.formatting.jq, -- json

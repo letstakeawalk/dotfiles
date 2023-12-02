@@ -4,8 +4,8 @@ return {
     event = "InsertEnter",
     cmd = { "Copilot" },
     keys = {
-        { "<leader>ce", "<cmd>Copilot enable<cr>", desc = "Copilot Enable" },
-        { "<leader>cd", "<cmd>Copilot disable<cr>", desc = "Copilot Disable" },
+        { "<leader>cE", "<cmd>Copilot enable<cr>", desc = "Copilot Enable" },
+        { "<leader>cD", "<cmd>Copilot disable<cr>", desc = "Copilot Disable" },
     },
     init = function() end,
     config = function()

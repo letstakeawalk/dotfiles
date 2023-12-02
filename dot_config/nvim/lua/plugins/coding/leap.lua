@@ -22,11 +22,10 @@ return {
                 --   `yrr<leap>` and `ymm<leap>` will yank a line in the current window.
                 --   `drr<leap>` and `dmm<leap>` will delete a line in the current window.
                 -- You can also use 'rest' & 'move' as mnemonics.
-                remote = { window = "r" },
-                magnetic = { window = "m" },
+                remote = { window = "r", cross_window = "R" },
+                magnetic = { window = "m", cross_window = "M" },
             },
-            -- Defines text objects like `riw`, `raw`, etc., instead of
-            -- targets.vim-style `irw`, `arw`.
+            -- Defines text objects like `riw`, `raw`, etc., instead of targets.vim-style `irw`, `arw`.
             prefix = true,
             -- If this option is set to true, the yanked text will automatically be pasted
             -- at the cursor position if the unnamed register is in use.

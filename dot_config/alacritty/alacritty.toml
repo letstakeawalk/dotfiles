@@ -1,0 +1,148 @@
+ipc_socket = true
+
+[colors.bright]
+black = "#4c566a"
+blue = "#81a1c1"
+cyan = "#8fbcbb"
+green = "#a3be8c"
+magenta = "#b48ead"
+red = "#bf616a"
+white = "#eceff4"
+yellow = "#ebcb8b"
+
+[colors.cursor]
+cursor = "#d8dee9"
+text = "#2e3440"
+
+[colors.dim]
+black = "#373e4d"
+blue = "#68809a"
+cyan = "#6d96a5"
+green = "#809575"
+magenta = "#8c738c"
+red = "#94545d"
+white = "#aeb3bb"
+yellow = "#b29e75"
+
+[colors.footer_bar]
+background = "#434c5e"
+foreground = "#d8dee9"
+
+[colors.normal]
+black = "#3b4252"
+blue = "#81a1c1"
+cyan = "#88c0d0"
+green = "#a3be8c"
+magenta = "#b48ead"
+red = "#bf616a"
+white = "#e5e9f0"
+yellow = "#d08770"
+
+[colors.primary]
+background = "#2e3440"
+dim_foreground = "#a5abb6"
+foreground = "#d8dee9"
+
+[colors.search.matches]
+background = "#88c0d0"
+foreground = "CellBackground"
+
+[colors.selection]
+background = "#4c566a"
+text = "CellForeground"
+
+[colors.vi_mode_cursor]
+cursor = "#d8dee9"
+text = "#2e3440"
+
+[font]
+size = 14
+
+[font.bold]
+family = "FiraCode Nerd Font"
+style = "Bold"
+
+[font.bold_italic]
+family = "SF Mono"
+style = "Heavy Italic"
+
+[font.italic]
+family = "SF Mono"
+style = "Medium Italic"
+
+[font.normal]
+family = "FiraCode Nerd Font"
+style = "Retina"
+
+[hints]
+alphabet = "ntesiroamglpufyw;q"
+
+[keyboard]
+bindings = [
+    # colemak-dhm
+    { key = "H", mode = "Vi|~Search", action = "Up" },
+    { key = "K", mode = "Vi|~Search", action = "Down" },
+    { key = "J", mode = "Vi|~Search", action = "Left" },
+    { key = "L", mode = "Vi|~Search", action = "Right" },
+
+    # MacOS
+    { key = "Q", mods = "Command", action = "Quit" },
+    { key = "W", mods = "Command", action = "Quit" },
+    { key = "H", mods = "Command", action = "None" },   # disable window hiding
+    { key = "F", mods = "Command", chars = "\u0002s" }, # ^bs -- open tmux sessionizer
+    { key = "K", mods = "Command", chars = "\u0002s" }, # ^bs -- open tmux sessionizer
+    { key = "M", mods = "Command", chars = "\u000a" },  # ^j -- tmux pane nav left
+    { key = "N", mods = "Command", chars = "\u000b" },  # ^k -- tmux pane nav down
+    { key = "E", mods = "Command", chars = "\u0008" },  # ^h -- tmux pane nav up
+    { key = "I", mods = "Command", chars = "\u000c" },  # ^l -- tmux pane nav right
+
+    # Alt keymaps
+    { key = "A", mods = "Alt", chars = "\u001Ba" },
+    { key = "B", mods = "Alt", chars = "\u001Bb" },
+    { key = "C", mods = "Alt", chars = "\u001Bc" },
+    { key = "D", mods = "Alt", chars = "\u001Bd" },
+    { key = "E", mods = "Alt", chars = "\u001Be" },
+    { key = "F", mods = "Alt", chars = "\u001Bf" },
+    { key = "G", mods = "Alt", chars = "\u001Bg" },
+    { key = "H", mods = "Alt", chars = "\u001Bh" },
+    { key = "J", mods = "Alt", chars = "\u001Bj" },
+    { key = "I", mods = "Alt", chars = "\u001Bi" },
+    { key = "K", mods = "Alt", chars = "\u001Bk" },
+    { key = "L", mods = "Alt", chars = "\u001Bl" },
+    { key = "M", mods = "Alt", chars = "\u001Bm" },
+    { key = "N", mods = "Alt", chars = "\u001Bn" },
+    { key = "O", mods = "Alt", chars = "\u001Bo" },
+    { key = "P", mods = "Alt", chars = "\u001Bp" },
+    { key = "Q", mods = "Alt", chars = "\u001Bq" },
+    { key = "R", mods = "Alt", chars = "\u001Br" },
+    { key = "S", mods = "Alt", chars = "\u001Bs" },
+    { key = "T", mods = "Alt", chars = "\u001Bt" },
+    { key = "U", mods = "Alt", chars = "\u001Bu" },
+    { key = "V", mods = "Alt", chars = "\u001Bv" },
+    { key = "W", mods = "Alt", chars = "\u001Bw" },
+    { key = "X", mods = "Alt", chars = "\u001Bx" },
+    { key = "Y", mods = "Alt", chars = "\u001By" },
+    { key = "Z", mods = "Alt", chars = "\u001Bz" },
+
+    { key = "Back", mods = "Command", chars = "\u0015" },         # ^u -- delete line
+    { key = "Back", mods = "Alt", chars = "\u0017" },             # ^w -- delete word
+    { key = "Slash", mods = "Control", chars = "\u001F" },        # ^/ == ^_
+    { key = "Return", mods = "Control", chars = "\u001B[13;4u" },
+    { key = "Return", mods = "Shift", chars = "\u001B[13;2u" },
+]
+
+[shell]
+program = "/opt/homebrew/bin/zsh"
+
+[window]
+decorations = "buttonless"
+dynamic_padding = true
+# opacity = 1.0
+# opacity = 0.97 # good
+opacity = 0.95
+startup_mode = "Maximized"
+option_as_alt = "Both"     # escape macos option modifier
+
+[window.padding]
+x = 0
+y = 0

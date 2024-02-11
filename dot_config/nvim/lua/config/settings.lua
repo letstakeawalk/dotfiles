@@ -2,14 +2,14 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 vim.g.python3_host_prog = "/opt/homebrew/bin/python3.11"
-
 -- vim.cmd.syntax("on") -- ???
 local opt = vim.opt
+opt.termguicolors = true -- true color support
 opt.backspace = { "indent", "eol", "start" } -- Intuitive backspacing in insert mode
 opt.backup = false -- backup
 opt.clipboard = "unnamedplus" -- sync w/ system clipboard
-opt.cmdheight = 3 -- height of the command line
-opt.colorcolumn = "88" -- Column hightlight at textwidth
+opt.cmdheight = 2 -- height of the command line
+opt.colorcolumn = "100" -- Column hightlight at textwidth
 opt.completeopt = { "menu", "menuone", "noselect", "preview" } -- nvim-cmp handles. no need here?
 opt.conceallevel = 2 -- hide * markup for bold and itailc
 opt.confirm = true -- confirm operations
@@ -36,17 +36,16 @@ opt.pumheight = 10 -- height of popup menu
 opt.relativenumber = true -- number relatively
 opt.ruler = true -- display current line
 opt.scrolloff = 8 -- num of line to keep above/below the of the cursor
-opt.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 opt.shortmess:append({ c = true, W = true, I = true, C = true }) -- short messages
 opt.showcmd = true -- display incomplete commands
 opt.showmode = false -- do not display vim-mode on message
 opt.showtabline = 1 -- display tab-line only if there are at least two tabs
-opt.sidescrolloff = 8 -- num of cols to keep left/right of the cursor
+opt.sidescrolloff = 5 -- num of cols to keep left/right of the cursor
 opt.signcolumn = "yes" -- Always show the signcolumn, otherwise it would shift the text each time diagnostics appear/become resolved
 opt.splitbelow = true -- always open horizontal split below
 opt.splitright = true -- always open vertical split right
 opt.swapfile = false -- swap file
-opt.termguicolors = true -- true color suppor
 opt.textwidth = 88 -- textwidth
 opt.timeoutlen = 500 -- used to be 500
 opt.undofile = true -- persistent undo

@@ -1,5 +1,14 @@
 local set = vim.keymap.set
 
+--[[
+TODO: refactor all keymaps. Consider moving this function to utils
+---@param lhs string
+---@param rhs string | function
+---@param modes ("i"|"n"|"c"|"v"|"x"|"s"|"o"|"t")[]
+---@param opts { desc: string, silent: boolean, expr: boolean }
+local function set(lhs, rhs, modes, opts) end
+]]
+
 --- General ------------------------------------
 -- stylua: ignore start
 -- go to normal mode (refer to better-escape)
@@ -8,35 +17,40 @@ set("i", "<Esc>", "<Nop>")
 set("n", "<Esc>", "<cmd>noh<cr>", { desc = "Clear highlights" })
 set("n", "<C-c>", "<cmd>noh<cr>", { desc = "Clear highlights" })
 -- cursor navigation
-set("n", "k",  "v:count == 0 ? 'gj' : 'j'", { desc = "Down",  silent = true, expr = true })
-set("n", "h",  "v:count == 0 ? 'gk' : 'k'", { desc = "Up",    silent = true, expr = true })
-set("n", "gk", "gj",                        { desc = "Down" })
-set("n", "gh", "gk",                        { desc = "Up" })
-set("n", "j",  "h",                         { desc = "Left",  silent = true })
-set("n", "l",  "l",                         { desc = "Right", silent = true })
-set("x", "k",  "j",                         { desc = "Down",  silent = true })
-set("x", "h",  "k",                         { desc = "Up",    silent = true })
-set("x", "j",  "h",                         { desc = "Left",  silent = true })
-set("x", "l",  "l",                         { desc = "Right", silent = true })
+set("n", "k",  "v:count == 0 ? 'gj' : 'j'",      { desc = "Down",  silent = true, expr = true })
+set("n", "h",  "v:count == 0 ? 'gk' : 'k'",      { desc = "Up",    silent = true, expr = true })
+set("n", "gk", "gj",                             { desc = "Down" })
+set("n", "gh", "gk",                             { desc = "Up" })
+set("n", "j",  "h",                              { desc = "Left",  silent = true })
+set("n", "l",  "l",                              { desc = "Right", silent = true })
+set("x", "k",  "j",                              { desc = "Down",  silent = true })
+set("x", "h",  "k",                              { desc = "Up",    silent = true })
+set("x", "j",  "h",                              { desc = "Left",  silent = true })
+set("x", "l",  "l",                              { desc = "Right", silent = true })
 set({ "i", "n", "c" }, "<A-Right>", "<C-Right>", { desc = "Next word" }) -- ^[f
 set({ "i", "n", "c" }, "<A-Left>",  "<C-Left>",  { desc = "Prev word" }) -- ^[b
-set("c", "<C-a>", "<Home>", { desc = "BOL" })
-set("c", "<C-e>", "<End>",  { desc = "EOL" })
-set("n", "ge", "gi", { desc = "Last edited position" }) -- go to last INSERT pos and insert
-set("n", "gg", "gg", { desc = "Goto first line" }) -- jump to bof, center cursor
-set("n", "G", "Gzz", { desc = "Goto last line" })  -- jump to eof, center cursor
-set("n", "gj", "zH", { desc = "Scroll Left",  silent = true })
-set("n", "zj", "zL", { desc = "Scroll Left",  silent = true })
-set("n", "zJ", "zL", { desc = "Scroll Left",  silent = true })
-set("n", "zs", "zH", { desc = "Scroll Left",  silent = true })
-set("n", "gl", "zL", { desc = "Scroll Right", silent = true })
-set("n", "zl", "zH", { desc = "Scroll Right", silent = true })
-set("n", "zL", "zH", { desc = "Scroll Right", silent = true })
-set("n", "ze", "zL", { desc = "Scroll Right", silent = true })
-set("n", "<C-d>", function() vim.notify("Use <PageDown> instead", vim.log.levels.WARN) end, { desc = "Scroll down" }) -- scroll down
-set("n", "<C-u>", function() vim.notify("Use <PageUp> instead", vim.log.levels.WARN) end,   { desc = "Scroll up" })   -- scroll up
-set("n", "<PageDown>", "<C-d>zz", { desc = "Scroll down" }) -- scroll down
-set("n", "<PageUp>", "<C-u>zz", { desc = "Scroll up" }) -- scroll up
+set({ "i", "n", "c" }, "<A-f>",     "<C-Right>", { desc = "Next word" }) -- ^[f
+set({ "i", "n", "c" }, "<A-b>",     "<C-Left>",  { desc = "Prev word" }) -- ^[b
+set("c", "<C-a>", "<Home>",                      { desc = "BOL" })
+set("c", "<C-e>", "<End>",                       { desc = "EOL" })
+set("n", "ge", "gi",                             { desc = "Last edited position" }) -- go to last INSERT pos and insert
+set("n", "gg", "gg",                             { desc = "Goto first line" }) -- jump to bof, center cursor
+set("n", "G",  "Gzz5<C-e>",                      { desc = "Goto last line" })  -- jump to eof, center cursor
+set("n", "zz", "zz5<C-e>",                       { desc = "Center Current Line" })
+set("n", "gj", "zH",                             { desc = "Scroll Left",  silent = true })
+set("n", "zj", "zH",                             { desc = "Scroll Left",  silent = true })
+set("n", "zJ", "zH",                             { desc = "Scroll Left",  silent = true })
+set("n", "zs", "zH",                             { desc = "Scroll Left",  silent = true })
+set("n", "gl", "zL",                             { desc = "Scroll Right", silent = true })
+set("n", "zl", "zL",                             { desc = "Scroll Right", silent = true })
+set("n", "zL", "zL",                             { desc = "Scroll Right", silent = true })
+set("n", "ze", "zL",                             { desc = "Scroll Right", silent = true })
+set("n", "}",  "}zz5<C-e>",                      { desc = "Next Paragraph", silent = true })
+set("n", "{",  "{zz5<C-e>",                      { desc = "Prev Paragraph", silent = true })
+set("n", "<C-d>",      "<C-d>zz5<C-e>",          { desc = "Scroll down" })
+set("n", "<C-u>",      "<C-u>zz5<C-e>",          { desc = "Scroll up" })
+set("n", "<PageDown>", "<C-d>zz5<C-e>",          { desc = "Scroll down" })
+set("n", "<PageUp>",   "<C-u>zz5<C-e>",          { desc = "Scroll up" })
 -- buffer/tab/window navigation/management
 set("n", "<C-t>", function() -- better buffer switching
     local success, _ = pcall(vim.cmd.e, "#") -- ":e #" == <C-^> (# := alternate buffer register)
@@ -85,7 +99,7 @@ set("i", ";", ";<c-g>u")  -- add undo break-points
 set("s", "<BS>", "<BS>i")            -- delete selection and stay in INSERT
 set({ "i", "c" }, "<A-BS>", "<C-w>") -- delete word
 set("n", "J", "mzJ`z", { desc = "Join lines" }) -- join lines while preservig cursor pos
-set("x", "p", '"_dP') -- keep copied text in register w/o overriding when pasting/replacing -- "greatest remap ever" by theprimeage 
+set("x", "p", '"_dP') -- keep copied text in register w/o overriding when pasting/replacing -- "greatest remap ever" by theprimeage
 set("n", "<A-down>", ":m .+1<CR>==",        { desc = "Move line below" })
 set("n", "<A-up>",   ":m .-2<CR>==",        { desc = "Move line up" })
 set("i", "<A-down>", "<Esc>:m .+1<CR>==gi", { desc = "Move line below" })
@@ -105,8 +119,8 @@ set("c", "<S-Up>",   "<Up>",   {desc = "Older command-line"})
 set("n", "<leader>dm", "<cmd>message<cr>",         { desc = "Messages" })
 set("n", "<leader>dM", "<cmd>Redir message<cr>",   { desc = "Redir Messages" })
 set("n", "<leader>dC", "<cmd>set cmdheight=3<cr>", { desc = "Cmdline" })
-set("n", "<leader>ds", function() vim.wo.spell = not vim.wo.spell end, { desc = "Spelling Toggle" })
-set("n", "<leader>dw", function() vim.wo.wrap = not vim.wo.wrap end,   { desc = "Wrap Line Toggle" })
+set("n", "<leader>ds", function() vim.wo.spell = not vim.wo.spell; vim.notify("Spelling ".. (vim.wo.spell and "Enabled" or "Disabled")) end, { desc = "Spelling Toggle" })
+set("n", "<leader>dw", function() vim.wo.wrap = not vim.wo.wrap; vim.notify("Wrap " .. (vim.wo.wrap and "Enabled" or "Disabled")) end,   { desc = "Wrap Line Toggle" })
 set("n", "<leader>dW", function() if string.find(vim.bo.formatoptions, "t") then vim.bo.formatoptions = string.gsub(vim.bo.formatoptions, "t", ""); print("Text AutoWrap Disabled") else vim.bo.formatoptions = vim.bo.formatoptions .. "t"; print("Text AutoWrap Enabled") end end, {desc = "Text AutoWrap Toggle"})
 -- etc
 set("n", "'", "`") -- better mark navigation
@@ -114,29 +128,10 @@ set("n", "<leader>Cx", "<cmd>!chmod +x %<cr>", { silent = true, desc = "chmod +x
 set("n", "<leader>Sb", "<cmd>so %<cr>",        { desc = "Source buffer" })
 set("n", "<leader>Sk", function() require(vim.fn.stdpath("config") .. "/lua/config/keymaps.lua") end, { desc = "Source keymap" })
 -- Refactor/Replace: <leader>r
-set("n", "<leader>rg", [[<cmd>s!\v(https://)?(www\.)?github.com/([^/]+/[^/]+).*!\3<cr><cmd>noh<cr>]], { desc = "Clean github url" })
-set("n", "<leader>rl", [[<cmd>s!\v(https://)?(www\.)?(leetcode\.com/problems/)([^/]+).*!\1\2\3\4!<cr><cmd>noh<cr>]], { desc = "Clean leetcode url" })
+set("n", "<leader>rz", [[<cmd>s!\v(https://)?(www\.)?github.com/([^/]+/[^/]+).*!\3<cr><cmd>noh<cr>]], { desc = "Clean GitHub url for Lazy" })
+set("n", "<leader>rg", [[<cmd>s!\v(https://)?(www\.)?(github\.com/[^/]+/[^/]+).*!\1\2\3!<cr><cmd>noh<cr>]], { desc = "Clean GitHub url" })
+set("n", "<leader>rl", [[<cmd>s!\v(https://)?(www\.)?(leetcode\.com/problems/)([^/]+).*!\1\2\3\4!<cr><cmd>noh<cr>]], { desc = "Clean Leetcode url" })
 -- stylua: ignore end
-
--- tmux popup session
-set(
-    "n",
-    "<C-\\>",
-    function() vim.fn.system("tmux popup -h 90% -w 95% -b rounded -S fg='#5E81AC' -E -d " .. vim.loop.cwd() .. " 'tmux new -As popup'") end,
-    { desc = "Tmux Popup" }
-)
-set(
-    "n",
-    "<C-w>n",
-    function() vim.fn.system("tmux popup -h 90% -w 95% -b rounded -S fg='#5E81AC' -E -d " .. vim.loop.cwd()) end,
-    { desc = "Tmux Popup" }
-)
-set(
-    "n",
-    "<leader>gG",
-    function() vim.fn.system("tmux popup -h 90% -w 95% -b rounded -S fg='#5E81AC' -E -d " .. vim.loop.cwd() .. " lazygit") end,
-    { desc = "LazyGit" }
-)
 
 --- Functions ------------------------------------
 -- TODO: make this work -- if in comment, turn on 'c' flag for formatoptions

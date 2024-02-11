@@ -92,6 +92,7 @@ return {
         },
         keys = {
             { "<leader>gg", "<cmd>Git<cr>", desc = "Fugitive" },
+            { "<leader>gq", "<cmd>Git<cr><cmd>bd<cr>", desc = "Close Fugitive" },
             { "<leader>gd", "<cmd>Gvdiffsplit<cr>", desc = "Diff split" },
             { "<leader>gc", "<cmd>GV<cr>", desc = "Commit Browser (GV)" },
             { "<leader>gC", "<cmd>GV!<cr>", desc = "BufCommit Browser (GV!)" },

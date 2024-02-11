@@ -3,7 +3,7 @@ return {
     keys = {
         { "<leader>qq", "<cmd>q<cr>", desc = "Quit" },
         -- { "<leader>qa", "<cmd>bufdo bd<cr>", desc = "Close all buffers" },
-        { "<leader>qa", "<cmd>BDelete all<cr>", desc = "Close all buffers" },
+        { "<leader>qa", "<cmd>BWipeout all<cr>", desc = "Close all buffers" },
         { "<leader>qo", "<cmd>BWipeout other<cr>", desc = "Close other buffers" },
         { "<leader>qt", "<cmd>BWipeout this<cr>", desc = "Close this buffer" },
         -- { "<leader>qt", "<cmd>BDelete this<cr>", desc = "Close this buffer" },
@@ -18,7 +18,7 @@ return {
         -- retrieve the last used buffer
         next_buffer_cmd = function()
             -- local num_wins = #vim.api.nvim_list_wins()
-            local bufs = vim.tbl_filter(function(b) return b.listed == 1 end, vim.fn.getbufinfo())
+            local bufs = vim.tbl_filter(function(b) return b.listed == 1 end, vim.fn.getbufinfo() or {})
             table.sort(bufs, function(a, b) return a.lastused > b.lastused end)
             if #bufs > 1 then
                 local most_recent = bufs[2].bufnr -- when num of wins > 2, unexpected result

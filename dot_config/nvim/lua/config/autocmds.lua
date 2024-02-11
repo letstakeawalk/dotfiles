@@ -1,9 +1,13 @@
-local augroup = function(name) return vim.api.nvim_create_augroup("HRB_" .. name, { clear = true }) end
+local augroup = function(name) return vim.api.nvim_create_augroup("Cstm" .. name, { clear = true }) end
 
 -- format options (override default options set by ftplugin)
-vim.api.nvim_create_autocmd("BufEnter", {
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "rust", "python", "lua" },
     group = augroup("FormatOptions"),
-    callback = function() vim.bo.formatoptions = "cqnlj" end,
+    callback = function()
+        -- vim.notify("BufRead FormatOptions", vim.log.levels.WARN)
+        vim.bo.formatoptions = "cqlj"
+    end,
 })
 
 -- resize splits if window got resized
@@ -105,14 +109,51 @@ vim.api.nvim_create_autocmd("FileType", {
     callback = function() set_tabstop(2) end,
 })
 
--- wrap text
 -- vim.api.nvim_create_autocmd("FileType", {
 --     group = augroup("Wrap"),
 --     pattern = { "markdown" },
 --     callback = function() vim.opt_local.wrap = true end,
 -- })
 
--- custom filetypes
+-- filetypes
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "markdown" },
+    group = augroup("Markdown"),
+    callback = function()
+        -- vim.notify("FileType Markdown", vim.log.levels.WARN)
+        -- vim.bo.formatoptions = "tcqnlj"
+        vim.bo.formatoptions = "tcqj"
+        -- vim.wo.wrap = true
+
+        -- task management
+        local task = require("utils.task")
+        vim.keymap.set("i", "<C-x>", task.toggle_completion, { desc = "Toggle Task", buffer = true })
+        -- vim.keymap.set("n", "<leader>nx", task.toggle_task, { desc = "Toggle List/Task", buffer = true })
+        vim.keymap.set("n", "<leader>nax", task.toggle_completion, { desc = "Toggle Task", buffer = true })
+        vim.keymap.set("n", "<leader>nac", task.toggle_canceled, { desc = "Set Canceled Tag", buffer = true })
+        vim.keymap.set("n", "<leader>nas", task.toggle_started, { desc = "Set Started Tag", buffer = true })
+        vim.keymap.set("n", "<leader>nad", task.toggle_due, { desc = "Set Due Date", buffer = true })
+        vim.keymap.set("n", "<leader>naS", task.toggle_scheduled, { desc = "Set Scheduled Date", buffer = true })
+        vim.keymap.set("n", "<leader>nap", task.toggle_priority, { desc = "Set Priority", buffer = true })
+        vim.keymap.set("n", "<leader>nar", task.toggle_project, { desc = "Set Project", buffer = true })
+
+        -- TODO: formatlistpattern for lists & tasks
+        -- vim.cmd("set formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|\\s*[-+*]\\(\\s\\[[^]]\\]\\)\\?\\s\\+")
+        -- vim.opt_local.formatlistpat="\\"
+        -- vim.cm("set formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|\\s*[-+*]\\(\\s\\[[^]]\\]\\)\\?\\s\\+")
+        -- ^\\s*\\d\\+\\.\\s\\+
+        -- \\|
+        -- ^\\s*[-+*]\\s\\+
+        -- \\|
+        -- ^\\s*[-+*]\\s\\[[^]]\\]
+        vim.bo.formatlistpat = [[^\s*\d\+\.\s\+|\s*[-+*]\s\+]]
+
+        -- formatlistpat=
+        -- ^\s*\d\+\.\s\+  \|
+        -- ^\s*[-*+]\s\+   \|
+        -- ^\[^\ze[^\]]\+\]:\&^.\{4\}
+    end,
+})
 vim.api.nvim_create_autocmd("BufRead", {
     group = augroup("Zshrc"),
     pattern = { "dot_zshrc" },

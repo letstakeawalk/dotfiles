@@ -3,8 +3,8 @@ return {
     -- lazy = false,
     event = "VeryLazy",
     keys = {
-        { "<leader>O", "<cmd>Oil<cr>", desc = "File Explorer (Oil)" },
-        { "<leader>o", function() require("oil").open_float() end, desc = "File Explorer (Oil)" },
+        { "<leader>o", "<cmd>Oil<cr>", desc = "File Explorer (Oil)" },
+        { "<leader>e", function() require("oil").open_float() end, desc = "File Explorer (Oil)" },
     },
     cmd = { "Oil" },
     opts = {

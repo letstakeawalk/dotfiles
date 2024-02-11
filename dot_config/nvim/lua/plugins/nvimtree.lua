@@ -2,7 +2,7 @@ return {
     "nvim-tree/nvim-tree.lua",
     dependencies = "nvim-tree/nvim-web-devicons",
     cmd = "NvimTreeToggle",
-    keys = { { "<leader>e", "<cmd>NvimTreeFindFileToggle<cr>", desc = "NvimTree" } },
+    keys = { { "<leader>E", "<cmd>NvimTreeFindFileToggle<cr>", desc = "NvimTree" } },
     config = function()
         local function on_attach(bufnr)
             local api = require("nvim-tree.api")

@@ -21,6 +21,9 @@ return {
     -- https://github.com/rcarriga/nvim-dap-ui
     -- https://github.com/nvim-neotest/neotest
 
+    -- task runner
+    -- https://github.com/stevearc/overseer.nvim
+
     -- ui
     -- https://github.com/folke/noice.nvim
     -- https://github.com/MunifTanjim/nui.nvim
@@ -33,6 +36,7 @@ return {
     -- https://github.com/roobert/tailwindcss-colorizer-cmp.nvim -- tailwindcss colorizer
     -- https://github.com/barklan/capslock.nvim -- software capslock
     -- https://github.com/vuki656/package-info.nvim -- packages.json info w/ virtual text
+    -- https://github.com/LunarVim/bigfile.nvim -- disables features on bigfiles
 
     -- practice
     -- https://github.com/ThePrimeagen/vim-be-good

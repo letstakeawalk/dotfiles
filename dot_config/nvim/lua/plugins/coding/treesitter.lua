@@ -83,7 +83,7 @@ return {
             "dockerfile",
             "git_config", "git_rebase", "gitattributes", "gitcommit", "gitignore",
             "go",
-            "html", "htmldjango", "css", "scss", -- "xml",
+            "html", "htmldjango", "css", "scss", "xml",
             "java",
             "javascript", "typescript", "svelte", "jsdoc",
             "json", "jsonc", "jq",
@@ -102,6 +102,7 @@ return {
             "vim", "vimdoc",
             "yaml",
             -- "c_sharp",
+            -- "hcl", -- hashicorp configuration language
             -- "kotlin",
             -- "mermaid", -- diagrams & charts
             -- "ocaml",
@@ -149,6 +150,7 @@ return {
         })
 
         -- code context of current line in winbar
+        local nord = require("utils.nord")
         require("treesitter-context").setup({ enable = true })
         vim.api.nvim_set_hl(0, "TreesitterContext", { link = "CursorLine" })
 

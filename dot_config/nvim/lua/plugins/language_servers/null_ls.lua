@@ -14,7 +14,8 @@ return {
                     "selene", "stylua", -- lua
                     "markdownlint", "cbfmt", -- "markdown_toc", -- markdown
                     "sqlfluff", "gitlint", "hadolint", -- etc
-                    "buf" -- protobuf
+                    "buf", -- protobuf
+                    "shellcheck", "shellharden", "shfmt", -- bash
                 }
             })
         end,
@@ -30,9 +31,9 @@ return {
             null_ls.setup({
                 debug = false,
                 sources = {
-                    -- stylua: ignore
-                    -- js, ts, vue, css, html, graphql, handlebars
-                    null_ls.builtins.formatting.prettierd.with({ filetypes = {"javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "css", "scss", "less", "html", "json", "graphql", "handlebars"} }),
+                    null_ls.builtins.formatting.prettierd.with({
+                        disabled_filetypes = { "markdown", "yaml" },
+                    }),
 
                     -- python
                     null_ls.builtins.diagnostics.mypy, -- type checker
@@ -75,8 +76,10 @@ return {
 
                     -- null_ls.builtins.diagnostics.commitlint, -- gitcommit
                     -- null_ls.builtins.formatting.jq, -- json
-                    -- null_ls.builtins.diagnostics.shellcheck, -- bash
-                    -- null_ls.builtins.formatting.shfmt, -- bash
+                    -- bash
+                    null_ls.builtins.diagnostics.shellcheck,
+                    null_ls.builtins.formatting.shfmt,
+                    null_ls.builtins.formatting.shellharden,
 
                     -- future checkout
                     -- terrafmt

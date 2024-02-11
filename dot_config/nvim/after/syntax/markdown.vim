@@ -20,6 +20,6 @@ syn region markdownLinkText matchgroup=markdownLinkTextDelimiter start="!\=\[\%(
 syn region markdownLink matchgroup=markdownLinkDelimiter start="(" end=")" contains=markdownUrl keepend contained conceal
 " highlight
 syn region markdownHighlight matchgroup=markdownHighlightDelimiter start=/==/ end=/==/ concealends contains=markdownLineStart,@Spell
-syn match markdownHighlightDelimiter contained containedin=markdownHighlight /\v\w+/
+syn match markdownHighlightDelimiter contained containedin=markdownHighlight /\v\w+\s*/
 hi markdownHighlightDelimiter guibg=#5C724A
 " TODO: task tags

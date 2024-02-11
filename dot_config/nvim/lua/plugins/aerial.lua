@@ -31,6 +31,8 @@ return {
                 ["<C-l>"] = false,
                 ["<C-k>"] = "actions.down_and_scroll",
                 ["<C-h>"] = "actions.up_and_scroll",
+                ["<Up>"] = "actions.prev",
+                ["<Down>"] = "actions.next",
                 ["h"] = "actions.prev",
                 ["k"] = "actions.next",
                 ["{"] = "actions.prev",
@@ -81,6 +83,7 @@ return {
                     ["<C-c>"] = "actions.close",
                 },
             },
+            post_jump_cmd = "normal! zt",
         })
     end,
 }

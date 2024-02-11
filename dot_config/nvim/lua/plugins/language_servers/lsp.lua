@@ -14,16 +14,17 @@ return {
             -- stylua: ignore
             require("mason-lspconfig").setup({
                 ensure_installed = {
-                    "pyright", "ruff_lsp", -- python
-                    "tsserver", "eslint", "tailwindcss", "cssls", "html", "svelte", -- js,ts,css,html
-                    "jdtls", -- java
-                    "lua_ls", -- lua
-                    "sqlls", -- sql
-                    "marksman", -- markdown
-                    "jsonls", "yamlls", "taplo", -- json, yaml, toml
-                    "docker_compose_language_service", "dockerls", -- docker
-                    "vimls", -- vim
+                    "bashls", -- bash
                     "bufls", -- protobuf
+                    "docker_compose_language_service", "dockerls", -- docker
+                    "jdtls", -- java
+                    "jsonls", "yamlls", "taplo", -- json, yaml, toml
+                    "lua_ls", -- lua
+                    "marksman", -- markdown
+                    "pyright", "ruff_lsp", -- python
+                    "sqlls", -- sql
+                    "tsserver", "eslint", "tailwindcss", "cssls", "html", "svelte", -- js,ts,css,html
+                    "vimls", -- vim
                     "zk", -- zettelkasten
                     -- "typos_lsp", -- typos
                     -- "rust_analyzer", -- rust (handled by rust-tools.nvim)
@@ -38,6 +39,7 @@ return {
         dependencies = { "folke/neodev.nvim" },
         event = { "BufReadPre", "BufNewFile" },
         opts = {
+            bashls = {},
             cssls = {},
             docker_compose_language_service = {},
             dockerls = {},

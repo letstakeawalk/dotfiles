@@ -33,21 +33,23 @@ return {
         { "<leader>tO", "<cmd>Telescope vim_options<cr>",            desc = "Vim Options" },
         { "<A-s>",      "<cmd>Telescope symbols<cr>",                desc = "Symbols", mode = "i" },
         -- extensions
-        { "<leader>tz", "<cmd>Telescope lazy<cr>",         desc = "Lazy" },
-        { "<leader>tb", "<cmd>Telescope file_browser<cr>", desc = "File Browser" },
-        { "<leader>tl", "<cmd>Telescope tldr<cr>",         desc = "Tldr" },
+        { "<leader>ta", "<cmd>Telescope aerial<cr>",        desc = "Aerial" },
+        { "<leader>tb", "<cmd>Telescope file_browser<cr>",  desc = "File Browser" },
+        { "<leader>tl", "<cmd>Telescope tldr<cr>",          desc = "Tldr" },
+        { "<leader>tz", "<cmd>Telescope lazy<cr>",          desc = "Lazy" },
     },
     config = function()
         local telescope = require("telescope")
         local actions = require("telescope.actions")
         local trouble = require("trouble.providers.telescope")
-        telescope.load_extension("fzf") -- telescope-fzf-native
+        telescope.load_extension("aerial") -- aerial.nvim
         telescope.load_extension("file_browser") -- telescope-file-browser
-        telescope.load_extension("lazy") -- lazy.nvim
-        telescope.load_extension("harpoon") -- harpoon.nvim
-        telescope.load_extension("refactoring") -- refactoring.nvim
+        telescope.load_extension("fzf") -- telescope-fzf-native
         telescope.load_extension("git_worktree") -- git-worktree.nvim
+        telescope.load_extension("harpoon") -- harpoon.nvim
+        telescope.load_extension("lazy") -- lazy.nvim
         telescope.load_extension("persisted") -- persisted.nvim
+        telescope.load_extension("refactoring") -- refactoring.nvim
         -- stylua: ignore
         telescope.setup({
             defaults = {

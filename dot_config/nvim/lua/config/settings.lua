@@ -35,7 +35,7 @@ opt.pumblend = 0 -- pum transparency
 opt.pumheight = 10 -- height of popup menu
 opt.relativenumber = true -- number relatively
 opt.ruler = true -- display current line
-opt.scrolloff = 8 -- num of line to keep above/below the of the cursor
+opt.scrolloff = 10 -- num of line to keep above/below the of the cursor
 opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 opt.shortmess:append({ c = true, W = true, I = true, C = true }) -- short messages
 opt.showcmd = true -- display incomplete commands

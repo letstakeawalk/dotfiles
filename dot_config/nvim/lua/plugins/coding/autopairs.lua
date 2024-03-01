@@ -18,12 +18,11 @@ return {
             ts_config = {},
             fast_wrap = {
                 map = "<C-f>",
+                chars = { "{", "[", "(", "<", '"', "'" },
                 before_key = "k",
                 after_key = "h",
                 cursor_pos_before = false,
             },
-            -- ignored_prev_char = "[\\]",
-            ignored_prev_char = "",
             enable_check_bracket_line = false,
             enable_abbr = true,
         })
@@ -67,13 +66,13 @@ return {
         end
 
         -- Ignore auto pair when prev char is \
-        ap.get_rule("("):with_pair(conds.not_before_regex("\\"))
-        ap.get_rule("["):with_pair(conds.not_before_regex("\\"))
-        ap.get_rule("{"):with_pair(conds.not_before_regex("\\"))
-        ap.get_rule("'")[1]:with_pair(conds.not_before_regex("\\"))
-        ap.get_rule('"')[1]:with_pair(conds.not_before_regex("\\"))
-        ap.get_rule("'")[2]:with_pair(conds.not_before_regex("\\"))
-        ap.get_rule('"')[2]:with_pair(conds.not_before_regex("\\"))
+        ap.get_rule("("):with_pair(conds.not_before_regex("\\")):with_move(conds.not_before_regex("\\"))
+        ap.get_rule("["):with_pair(conds.not_before_regex("\\")):with_move(conds.not_before_regex("\\"))
+        ap.get_rule("{"):with_pair(conds.not_before_regex("\\")):with_move(conds.not_before_regex("\\"))
+        ap.get_rule("'")[1]:with_pair(conds.not_before_regex("\\")):with_move(conds.not_before_regex("\\"))
+        ap.get_rule('"')[1]:with_pair(conds.not_before_regex("\\")):with_move(conds.not_before_regex("\\"))
+        ap.get_rule("'")[2]:with_pair(conds.not_before_regex("\\")):with_move(conds.not_before_regex("\\"))
+        ap.get_rule('"')[2]:with_pair(conds.not_before_regex("\\")):with_move(conds.not_before_regex("\\"))
 
         -- Move past commas, semicolons, and colons
         for _, punct in pairs({ ",", ";", ":" }) do
@@ -105,13 +104,21 @@ return {
             return balance == 0
         end
         ap.add_rules({
-            Rule("<", ">", { "rust" }):with_pair(conds.before_regex("[%w:]+")):with_move(function(opts)
-                if opts.char == opts.rule.end_pair then
-                    local is_balanced = is_brackets_balanced_around_position(opts.line, opts.rule.start_pair, opts.char, opts.col)
-                    return is_balanced
-                end
-                return false
-            end),
+            -- stylua: ignore
+            Rule("<", ">", { "rust" })
+                :with_pair(conds.before_regex("[%w:]+"))
+                :with_cr(conds.none())
+                :with_move(
+                    function(opts)
+                        return opts.char == opts.rule.end_pair
+                            and is_brackets_balanced_around_position(
+                                opts.line,
+                                opts.rule.start_pair,
+                                opts.char,
+                                opts.col
+                            )
+                    end
+                ),
         })
 
         -- Rust: raw string
@@ -121,6 +128,13 @@ return {
                 :with_del(conds.none())
                 :with_cr(conds.none())
                 :use_key('"'),
+        })
+
+        -- Rust: closure pipe
+        ap.add_rules({
+            Rule("|", "|", { "rust" })
+                :with_pair(conds.before_regex("%w+%(") and conds.after_text(")"))
+                :with_move(conds.done()),
         })
 
         -- Fly Mode: multiline jump close bracket

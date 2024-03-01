@@ -67,7 +67,8 @@ return {
                 settings = {
                     python = {
                         analysis = {
-                            typeCheckingMode = "off", -- let mypy handle type checking
+                            ignore = { "*" }, -- let ruff_lsp handle linting
+                            typeCheckingMode = "off", -- let mypy handle type-checking
                             diagnosticSeverityOverrides = { reportUndefinedVariable = "none" }, -- "error," "warning," "information," "true," "false," or "none"
                         },
                     },

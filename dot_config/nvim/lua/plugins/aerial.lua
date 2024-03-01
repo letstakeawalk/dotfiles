@@ -5,7 +5,8 @@ return {
     cmd = "Telescope aerial",
     keys = {
         { "<leader>da", "<cmd>AerialToggle!<cr>", desc = "Aerial" },
-        -- { "<leader>dr", "<cmd>AerialNavToggle<cr>", desc = "Aerial" },
+        { "]s", "<cmd>AerialNext<cr>", desc = "Goto next aerial symbol" },
+        { "[s", "<cmd>AerialPrev<cr>", desc = "Goto previous aerial symbol" },
     },
     config = function()
         require("aerial").setup({

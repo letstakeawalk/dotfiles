@@ -32,7 +32,7 @@ return {
                     if vim.wo.diff then
                         return "]c"
                     end
-                    vim.schedule(next_hunk)
+                    vim.schedule(function() next_hunk() end)
                     return "<Ignore>"
                 end, { expr = true, desc = "Goto next hunk" })
 
@@ -40,7 +40,7 @@ return {
                     if vim.wo.diff then
                         return "[c"
                     end
-                    vim.schedule(prev_hunk)
+                    vim.schedule(function() prev_hunk() end)
                     return "<Ignore>"
                 end, { expr = true, desc = "Goto prev hunk" })
 

@@ -35,8 +35,8 @@ set("c", "<C-a>", "<Home>",                      { desc = "BOL" })
 set("c", "<C-e>", "<End>",                       { desc = "EOL" })
 set("n", "ge", "gi",                             { desc = "Last edited position" }) -- go to last INSERT pos and insert
 set("n", "gg", "gg",                             { desc = "Goto first line" }) -- jump to bof, center cursor
-set("n", "G",  "Gzz5<C-e>",                      { desc = "Goto last line" })  -- jump to eof, center cursor
-set("n", "zz", "zz5<C-e>",                       { desc = "Center Current Line" })
+set("n", "G",  "Gzz",                            { desc = "Goto last line" })  -- jump to eof, center cursor
+set("n", "zz", "zz",                             { desc = "Center Current Line" })
 set("n", "gj", "zH",                             { desc = "Scroll Left",  silent = true })
 set("n", "zj", "zH",                             { desc = "Scroll Left",  silent = true })
 set("n", "zJ", "zH",                             { desc = "Scroll Left",  silent = true })
@@ -45,12 +45,12 @@ set("n", "gl", "zL",                             { desc = "Scroll Right", silent
 set("n", "zl", "zL",                             { desc = "Scroll Right", silent = true })
 set("n", "zL", "zL",                             { desc = "Scroll Right", silent = true })
 set("n", "ze", "zL",                             { desc = "Scroll Right", silent = true })
-set("n", "}",  "}zz5<C-e>",                      { desc = "Next Paragraph", silent = true })
-set("n", "{",  "{zz5<C-e>",                      { desc = "Prev Paragraph", silent = true })
-set("n", "<C-d>",      "<C-d>zz5<C-e>",          { desc = "Scroll down" })
-set("n", "<C-u>",      "<C-u>zz5<C-e>",          { desc = "Scroll up" })
-set("n", "<PageDown>", "<C-d>zz5<C-e>",          { desc = "Scroll down" })
-set("n", "<PageUp>",   "<C-u>zz5<C-e>",          { desc = "Scroll up" })
+set("n", "}",  "}zz",                            { desc = "Next Paragraph", silent = true })
+set("n", "{",  "{zz",                            { desc = "Prev Paragraph", silent = true })
+set("n", "<C-d>",      "<C-d>zz",                { desc = "Scroll down" })
+set("n", "<C-u>",      "<C-u>zz",                { desc = "Scroll up" })
+set("n", "<PageDown>", "<C-d>zz",                { desc = "Scroll down" })
+set("n", "<PageUp>",   "<C-u>zz",                { desc = "Scroll up" })
 -- buffer/tab/window navigation/management
 set("n", "<C-t>", function() -- better buffer switching
     local success, _ = pcall(vim.cmd.e, "#") -- ":e #" == <C-^> (# := alternate buffer register)

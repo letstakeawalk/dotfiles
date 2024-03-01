@@ -91,6 +91,7 @@ return {
             "lua",
             "make", -- "just",
             "markdown", "markdown_inline",
+            "mermaid",
             "proto", -- protocol buffers
             "python",
             "regex",
@@ -104,7 +105,6 @@ return {
             -- "c_sharp",
             -- "hcl", -- hashicorp configuration language
             -- "kotlin",
-            -- "mermaid", -- diagrams & charts
             -- "ocaml",
             -- "vue",
             -- "zig",

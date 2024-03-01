@@ -39,17 +39,16 @@ local function last_namespace(idx)
     end, idx)
 end
 
--- nodes
+-- struct & enum
 local function pub(idx) return c(idx, { t(""), t("pub ") }) end
 local function derive(idx)
     return c(idx, {
-        fmt("#[derive({}{})]", { i(1, "Debug, Clone"), i(2) }),
-        t("#[derive(Debug, Clone, Default, Serialize, Deserialize, Validate)]"),
-        t(),
+        fmt("#[derive(Debug{})]", { i(1) }),
+        t("#[derive(Debug, Clone, Serialize, Deserialize, Validate)]"),
     })
 end
-local function field_type(idx) return sn(idx, { i(1, "field"), t(": "), i(2, "String") }) end
-local function struct_snip()
+local function field_type(idx) return sn(idx, { i(1, "field"), t(": "), i(2, "String"), t(",") }) end
+local function struct()
     return fmta(
         [[
         #[derive(<traits><extra_traits>)]
@@ -61,21 +60,7 @@ local function struct_snip()
         { repeat_duplicates = true }
     )
 end
-local function impl_snip()
-    return fmta(
-        [[
-        impl<generic> <target> {
-            <fn>
-        }
-        ]],
-        {
-            target = c(1, { i(nil, "Foo"), fmt("{} for {}", { i(1, "Trait"), i(2, "Foo") }) }),
-            generic = generic(1),
-            fn = i(2, "// TODO: implement"),
-        }
-    )
-end
-local function enum_snip()
+local function enum()
     return fmta(
         [[
         enum <name> {
@@ -85,8 +70,129 @@ local function enum_snip()
         { name = i(1, "Color"), variant = i(2, "Black = 1") }
     )
 end
+local function impl()
+    return fmt(
+        [[
+        impl[generic] [target] {
+            [fn]
+        }
+        ]],
+        {
+            target = c(1, {
+                i(nil, "Foo"), -- struct
+                fmt("{} for {}", { i(1, "Trait"), i(2, "Foo") }), -- trait
+            }),
+            generic = generic(1),
+            fn = i(2, "// TODO: implement"),
+        },
+        { delimiters = "[]" }
+    )
+end
+local function impl_display()
+    return fmt(
+        [[
+        impl[generic] std::fmt::Display for [target] {
+            fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+                write!(f, "{}", self.[field])
+            }
+        }
+        ]],
+        { target = i(1, "Foo"), generic = generic(1), field = i(2, "field") },
+        { delimiters = "[]" }
+    )
+end
+local function impl_ord()
+    return fmt(
+        [[
+        impl[generic] Ord for [target] {
+            fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+                self.[field].cmp(&other.[field])
+            }
+        }
+        ]],
+        { target = i(1, "Foo"), generic = generic(1), field = i(2, "field") },
+        { repeat_duplicates = true, delimiters = "[]" }
+    )
+end
+local function impl_partial_ord()
+    return fmt(
+        [[
+        impl[generic] PartialOrd for [target] {
+            fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+                self.[field].partial_cmp(&other.[field])
+            }
+        }
+        ]],
+        { target = i(1, "Foo"), generic = generic(1), field = i(2, "field") },
+        { repeat_duplicates = true, delimiters = "[]" }
+    )
+end
+local function impl_default()
+    return fmt(
+        [[
+        impl[generic] Default for [target] {
+            fn default() -> Self {
+                Self {
+                    [fields]
+                }
+            }
+        }
+        ]],
+        { target = i(1, "Foo"), generic = generic(1), fields = i(2, "..Default::default()") },
+        { delimiters = "[]" }
+    )
+end
+local function impl_deref()
+    return fmt(
+        [[
+        impl[generic] std::ops::Deref for [target] {
+            type Target = [target_type];
 
-local function match_snip()
+            fn deref(&self) -> &Self::Target {
+                &self.[field]
+            }
+        }
+        ]],
+        { target = i(1, "Foo"), generic = generic(1), field = i(2, "field"), target_type = i(3, "FieldType") },
+        { delimiters = "[]" }
+    )
+end
+local function impl_deref_mut()
+    return fmt(
+        [[
+        impl[generic] std::ops::DerefMut for [target] {
+            fn deref_mut(&mut self) -> &mut Self::Target {
+                &mut self.[field]
+            }
+        }
+        ]],
+        { target = i(1, "Foo"), generic = generic(1), field = i(2, "field") },
+        { delimiters = "[]" }
+    )
+end
+local function impl_from()
+    return fmt(
+        [[
+        impl[generic] From<[source]> for [target] {
+            fn from([source]: [source]) -> Self {
+                Self {
+                    [fields]
+                }
+            }
+        }
+        ]],
+        {
+            target = i(1, "Foo"),
+            generic = generic(1),
+            source = i(2, "SourceType"),
+            fields = i(3, "..Default::default()"),
+        },
+        { delimiters = "[]" }
+    )
+end
+
+-- control flow
+local function match()
     return fmt(
         [[
         match [] {
@@ -104,7 +210,7 @@ local function match_snip()
         { delimiters = "[]" }
     )
 end
-local function letmatch_snip()
+local function letmatch()
     return fmt(
         [[
         let [] = match [] {
@@ -123,7 +229,7 @@ local function letmatch_snip()
         { delimiters = "[]" }
     )
 end
-local function for_snip()
+local function for_()
     return fmt(
         [[
         for [] in [] {
@@ -134,7 +240,7 @@ local function for_snip()
         { delimiters = "[]" }
     )
 end
-local function ifelse_snip()
+local function ifelse()
     return fmt(
         [[
         if [] {
@@ -147,7 +253,7 @@ local function ifelse_snip()
         { delimiters = "[]" }
     )
 end
-local function iflet_snip()
+local function iflet()
     return fmt(
         [[
         if let [] = [] {
@@ -159,17 +265,7 @@ local function iflet_snip()
     )
 end
 
-local function incl_proto()
-    return fmt(
-        [[
-        pub mod {package} {{
-            tonic::include_proto!("{package}");
-        }}
-        ]],
-        { package = i(1, "package_name") },
-        { repeat_duplicates = true }
-    )
-end
+-- tokio, gRPC, Protobuf
 local function tokiomain()
     return fmt(
         [[
@@ -179,6 +275,17 @@ local function tokiomain()
         }}
         ]],
         { body = i(1, "unimplemented!();") }
+    )
+end
+local function incl_proto()
+    return fmt(
+        [[
+        pub mod {package} {{
+            tonic::include_proto!("{package}");
+        }}
+        ]],
+        { package = i(1, "package_name") },
+        { repeat_duplicates = true }
     )
 end
 local function tonicasync()
@@ -202,6 +309,46 @@ local function tonicasync()
     )
 end
 
+-- rstest
+local function rstfn()
+    return fmta(
+        [[
+        #[rstest]
+        #[case(<input_val>, <expected_val>)]
+        fn test_<name>(#[case] <input>: <input_type>, #[case] expected: <expected_type>) {
+            assert_eq!(expected, <method>(<input>));
+        }
+        ]],
+        {
+            name = i(1, "foo_bar"),
+            input_val = i(2, "???"),
+            expected_val = i(3, "???"),
+            input = i(4, "input"),
+            input_type = i(5, "Type"),
+            expected_type = i(6, "Type"),
+            method = i(7, "method"),
+        },
+        { repeat_duplicates = true }
+    )
+end
+local function rstmod()
+    return fmta(
+        [[
+        mod test {
+            use super::*;
+            use rstest::rstest;
+
+            <rstfn>
+        }
+        ]],
+        {
+            rstfn = rstfn(),
+        },
+        { repeat_duplicates = true }
+    )
+end
+
+-- Axum + Mongodb
 local function mongomodel()
     return fmt(
         [=[
@@ -327,41 +474,78 @@ local function crudhandlers_mongo()
     )
 end
 
+-- stylua: ignore start
 return {
     -- rust_analyzer provided snippets:
-    -- tmod: test module, tfn: test fn
-    s("todo", t("// TODO: ")),
-    s(":turbofish", fmt("::<{}>", i(1, "Type"))),
+    -- tmod: test module,
+    -- tfn: test fn
+
+    -- abbrs
+    s(":turbofish", fmt("::<{}>", { i(1, "Type") })),
+    s("clo",        fmta("|<>| {<>}", { i(1, "args"), i(2, "body") })),
+
+    -- collections
+    s("vec",        c(1, { t("Vec::new()"), fmt("Vec::from({})", { i(1, "iterable") }), fmt("vec![{}]", { i(1) }) })),
+    s("hmap",       c(1, { t("HashMap::new()"), fmt("HashMap::from({})", { i(1, "iterable") }) })),
+    s("hset",       c(1, { t("HashSet::new()"), fmt("HashSet::from({})", { i(1, "iterable") }) })),
+    s("bmap",       c(1, { t("BTreeMap::new()"), fmt("BTreeMap::from({})", { i(1, "iterable") }) })),
+    s("bset",       c(1, { t("BTreeSet::new()"), fmt("BTreeSet::from({})", { i(1, "iterable") }) })),
+    s("bheap",      c(1, { t("BinaryHeap::new()"), fmt("BinaryHeap::from({})", { i(1, "iterable") }) })),
+    s("deque",      c(1, { t("VecDeque::new()"), fmt("VecDeque::from({})", { i(1, "iterable") }) })),
+    s("collect()",  c(1, { t("collect()"), fmt("collect::<{}>()", { i(1, "Type") }) })),
+    s("colvec()",   fmt("collect::<Vec<{}>>()", { i(1, "_") })),
+    s("colmap()",   fmt("collect::<HashMap<{}, {}>>()", { i(1, "KeyType"), i(2, "ValueType") })),
+    s("colbmap()",  fmt("collect::<BTreeMap<{}, {}>>()", { i(1, "KeyType"), i(2, "ValueType") })),
+    s("colset()",   fmt("collect::<HashSet<{}>>()", { i(1, "_") })),
+    s("colbset()",  fmt("collect::<BTreeSet<{}>>()", { i(1, "_") })),
+    s("colheap()",  fmt("collect::<BinaryHeap<{}>>()", { i(1, "_") })),
+    s("coldeque()", fmt("collect::<VecDeque<{}>>()", { i(1, "_") })),
+
     -- derive
-    s("derive", derive(1)),
+    s("derive",   derive(1)),
     s("derdebug", t("#[derive(Debug)]")),
     s("derserde", t("#[derive(Debug, Serialize, Deserialize)]")),
     -- attributes
-    s("serde", fmt("#[serde({})]", { i(1, "attributes") })),
-    s("strum", fmt("#[strum({})]", { i(1, "attrs") })),
+    s("serde",    fmt("#[serde({})]", { i(1, "attributes") })),
+    s("strum",    fmt("#[strum({})]", { i(1, "attrs") })),
     s("validate", fmt("#[validate({})]", { i(1, "validator") })),
     -- diagnostics
     s("deadcode", c(1, { t("#![allow(dead_code)]"), t("#[allow(dead_code)]") })),
-    s("unused", c(1, { t("#![allow(unused)]"), t("#[allow(unused)]") })),
-    s("freedom", c(1, { t("#![allow(dead_code, unused_variables)]"), t("#[allow(dead_code, unused_variables)]") })),
+    s("unused",   c(1, { t("#![allow(unused)]"), t("#[allow(unused)]") })),
+    s("freedom",  c(1, { t("#![allow(dead_code, unused)]"), t("#[allow(dead_code, unused)]") })),
 
-    s("struct", struct_snip()),
-    s("impl", impl_snip()),
-    s("enum", enum_snip()),
+    -- struct & enum
+    s("enum",   enum()),
+    s("struct", struct()),
+    s("impl",   impl()),
+    s("impl_display", impl_display()),
+    s("impl_ord", impl_ord()),
+    s("impl_partial_ord", impl_partial_ord()),
+    s("impl_default", impl_default()),
+    s("impl_deref", impl_deref()),
+    s("impl_deref_mut", impl_deref_mut()),
+    s("impl_from", impl_from()),
 
     -- control flow
-    s("match", match_snip()),
-    s("letmatch", letmatch_snip()),
-    s("for", letmatch_snip()),
-    s("ifelse", ifelse_snip()),
-    s("iflet", iflet_snip()),
+    s("for",      for_()),
+    s("match",    match()),
+    s("letmatch", letmatch()),
+    s("ifelse",   ifelse()),
+    s("iflet",    iflet()),
+
+    -- test
+    s("rstmod", rstmod()),
+    s("rstfn",  rstfn()),
+
+    -- tokio
+    s("tokiomain",  tokiomain()), -- choice node for main function or just attribute
 
     -- gRPC + Protobuf snippets
     s("incl_proto", incl_proto()), -- choice node to include server/client imports
-    s("tokiomain", tokiomain()), -- choice node for main function or just attribute
     s("tonicasync", tonicasync()),
 
     -- Axum + Mongodb
-    s("mongomodel", mongomodel()),
+    s("mongomodel",         mongomodel()),
     s("crudhandlers_mongo", crudhandlers_mongo()),
 }
+-- stylua: ignore end

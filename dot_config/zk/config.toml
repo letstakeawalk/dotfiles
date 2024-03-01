@@ -1,2 +1,6 @@
 [notebook]
 dir = "$OBSIDIAN"
+
+[note]
+# Template used to generate a note's filename, without extension.
+filename = "{{id}}_{{slug title}}"

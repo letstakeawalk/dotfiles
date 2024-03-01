@@ -156,12 +156,16 @@ fi
 source "/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
 export FZF_CTRL_T_OPTS="
   --preview 'bat -n --color=always {}'
-  --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+  --bind 'ctrl-/:change-preview-window(up|down|hidden|)'"
 export FZF_CTRL_R_OPTS="--layout=reverse" # history
 export FZF_DEFAULT_COMMAND="fd --type file --hidden --follow"
 export FZF_DEFAULT_OPTS="
-  --color='fg:#98A2B5,bg+:#434C5E,gutter:-1,pointer:red'
-  --pointer=' '"
+  --color='fg:#98A2B5,fg+:#98A2B5,fg+:regular,bg+:#434C5E'
+  --color='hl:#D8DEE9,hl:bold,hl+:#D8DEE9,info:#434C5E,border:#616E88'
+  --color='gutter:-1,pointer:bright-blue'
+  --prompt=' ' --pointer=' '" # 
+export FZF_TMUX_OPTS="-p 50%,50% --reverse"
+
 # ripgrep
 # alias rg="RIPGREP_CONFIG_PATH=$RIPGREP_CONFIG_PATH rg"
 

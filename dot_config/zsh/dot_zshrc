@@ -42,7 +42,7 @@ export CC=gcc-12
 # PATH
 export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/X11/bin
 export PATH=/Library/TeX/texbin:$PATH # texlive & mactex
-export PATH="$HOME"/.local/bin:$PATH # custom binaries
+export PATH="$HOME"/.local/script:$PATH # custom scripts
 export PATH="$CARGO_HOME"/bin:$PATH # rust
 export PATH="$RUSTUP_HOME"/toolchains/stable-aarch64-apple-darwin/bin:$PATH # rust
 export PATH="$XDG_DATA_HOME"/bob/nvim-bin:$PATH # neovim
@@ -233,6 +233,8 @@ alias gcma='git commit --amend'
 alias gcman='git commit --amend --no-edit'
 alias goops='git commit --amend --no-edit'
 alias gcl='git clone'
+alias gclwt="git clone-worktree"
+alias gwt='git worktree'
 alias gco='git checkout'
 alias gdi='git diff'
 alias gdiff='git diff'

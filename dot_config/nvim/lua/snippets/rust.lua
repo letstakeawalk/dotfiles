@@ -23,6 +23,7 @@ local conds_expand = require("luasnip.extras.conditions.expand")
 
 -- utils
 local function generic(idx) return m(idx, l._1:match("<%w+>$"), l._1:match("<%w>"), "") end
+local function lifetime_generic(idx) return m(idx, l._1:match("<%w+>$"), l._1:match("<'a, %w>"), "") end
 local function comma(idx) return m(idx, "%w+", ", ") end
 local function lower(idx)
     return f(function(args)
@@ -38,16 +39,16 @@ local function last_namespace(idx)
         return tokens[#tokens]
     end, idx)
 end
-
--- struct & enum
 local function pub(idx) return c(idx, { t(""), t("pub ") }) end
+local function field_type(idx) return sn(idx, { i(1, "field"), t(": "), i(2, "String"), t(",") }) end
+
+-- struct, enum, impl
 local function derive(idx)
     return c(idx, {
-        fmt("#[derive(Debug{})]", { i(1) }),
+        fmt("#[derive(Debug{})]", { i(0) }),
         t("#[derive(Debug, Clone, Serialize, Deserialize, Validate)]"),
     })
 end
-local function field_type(idx) return sn(idx, { i(1, "field"), t(": "), i(2, "String"), t(",") }) end
 local function struct()
     return fmta(
         [[
@@ -83,7 +84,7 @@ local function impl()
                 fmt("{} for {}", { i(1, "Trait"), i(2, "Foo") }), -- trait
             }),
             generic = generic(1),
-            fn = i(2, "// TODO: implement"),
+            fn = i(0, "// TODO: implement"),
         },
         { delimiters = "[]" }
     )
@@ -93,11 +94,15 @@ local function impl_display()
         [[
         impl[generic] std::fmt::Display for [target] {
             fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-                write!(f, "{}", self.[field])
+                [body]
             }
         }
         ]],
-        { target = i(1, "Foo"), generic = generic(1), field = i(2, "field") },
+        {
+            target = i(1, "Foo"),
+            generic = generic(1),
+            c(0, { i(nil, "todo!()"), fmta([[write!(f, "{}", self.<>)]], { i(1, "field") }) }),
+        },
         { delimiters = "[]" }
     )
 end
@@ -106,12 +111,19 @@ local function impl_ord()
         [[
         impl[generic] Ord for [target] {
             fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-                self.[field].cmp(&other.[field])
+                [body]
             }
         }
         ]],
-        { target = i(1, "Foo"), generic = generic(1), field = i(2, "field") },
-        { repeat_duplicates = true, delimiters = "[]" }
+        {
+            target = i(1, "Foo"),
+            generic = generic(1),
+            body = c(0, {
+                fmt("self.{field}.cmp(&other.{field})", { field = i(1, "field") }, { repeat_duplicates = true }),
+                i(nil, "todo!()"),
+            }),
+        },
+        { delimiters = "[]" }
     )
 end
 local function impl_partial_ord()
@@ -119,12 +131,19 @@ local function impl_partial_ord()
         [[
         impl[generic] PartialOrd for [target] {
             fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-                self.[field].partial_cmp(&other.[field])
+                [body]
             }
         }
         ]],
-        { target = i(1, "Foo"), generic = generic(1), field = i(2, "field") },
-        { repeat_duplicates = true, delimiters = "[]" }
+        {
+            target = i(1, "Foo"),
+            generic = generic(1),
+            body = c(0, {
+                fmt("self.{field}.partial_cmp(&other.{field})", { field = i(1, "field") }, { repeat_duplicates = true }),
+                i(nil, "todo!()"),
+            }),
+        },
+        { delimiters = "[]", repeat_duplicates = true }
     )
 end
 local function impl_default()
@@ -132,14 +151,44 @@ local function impl_default()
         [[
         impl[generic] Default for [target] {
             fn default() -> Self {
-                Self {
-                    [fields]
-                }
+                [body]
             }
         }
         ]],
-        { target = i(1, "Foo"), generic = generic(1), fields = i(2, "..Default::default()") },
+        {
+            target = i(1, "Foo"),
+            generic = generic(1),
+            body = c(2, {
+                i(nil, "todo!()"),
+                fmta("Self { <> }", { i(1, "..Default::default()") }),
+            }),
+        },
         { delimiters = "[]" }
+    )
+end
+local function impl_as_ref()
+    return fmt(
+        [[
+        impl[generic] AsRef<[target_type]> for [target] {
+            fn as_ref(&self) -> &[target_type] {
+                [as_ref_body]
+            }
+        }
+
+        impl[generic] AsMut<[target_type]> for [target] {
+            fn as_mut(&mut self) -> &mut [target_type] {
+                [as_mut_body]
+            }
+        }
+        ]],
+        {
+            target = i(1, "Foo"),
+            generic = generic(1),
+            target_type = i(2, "TargetType"),
+            as_ref_body = c(3, { i(nil, "todo!()"), fmt("&self.{}", { i(1, "field") }) }),
+            as_mut_body = c(3, { i(nil, "todo!()"), fmt("&mut self.{}", { i(1, "field") }) }),
+        },
+        { delimiters = "[]", repeat_duplicates = true }
     )
 end
 local function impl_deref()
@@ -149,32 +198,63 @@ local function impl_deref()
             type Target = [target_type];
 
             fn deref(&self) -> &Self::Target {
-                &self.[field]
+                [deref_body]
             }
         }
-        ]],
-        { target = i(1, "Foo"), generic = generic(1), field = i(2, "field"), target_type = i(3, "FieldType") },
-        { delimiters = "[]" }
-    )
-end
-local function impl_deref_mut()
-    return fmt(
-        [[
+
         impl[generic] std::ops::DerefMut for [target] {
             fn deref_mut(&mut self) -> &mut Self::Target {
-                &mut self.[field]
+                [deref_mut_body]
             }
         }
         ]],
-        { target = i(1, "Foo"), generic = generic(1), field = i(2, "field") },
-        { delimiters = "[]" }
+        {
+            target = i(1, "Foo"),
+            generic = generic(1),
+            target_type = i(2, "TargetType"),
+            deref_body = c(3, { i(nil, "todo!()"), fmt("&self.{}", { i(1, "field") }) }),
+            deref_mut_body = c(2, { i(nil, "body"), fmt("&mut self.{}", { i(1, "field") }) }),
+        },
+        { delimiters = "[]", repeat_duplicates = true }
+    )
+end
+local function impl_into_iter()
+    return fmt(
+        [[
+        impl[generic] IntoIterator for [target] {
+            type Item = [item_type];
+            type IntoIter = std::vec::IntoIter<Self::Item>;
+
+            fn into_iter(self) -> Self::IntoIter {
+                [into_iter_body]
+            }
+        }
+
+        impl[lifetime_generic] IntoIterator for &'a [target] {
+            type Item = &'a [item_type];
+            type IntoIter = std::slice::Iter<'a, Self::Item>;
+
+            fn into_iter(self) -> Self::IntoIter {
+                [iter_body]
+            }
+        }
+        ]],
+        {
+            target = i(1, "Foo"),
+            generic = generic(1),
+            lifetime_generic = lifetime_generic(1),
+            item_type = i(2, "ItemType"),
+            into_iter_body = c(3, { i(nil, "todo!()"), i(nil, "self.0.into_iter()") }),
+            iter_body = c(4, { i(nil, "todo!()"), i(nil, "self.0.iter()") }),
+        },
+        { delimiters = "[]", repeat_duplicates = true }
     )
 end
 local function impl_from()
     return fmt(
         [[
         impl[generic] From<[source]> for [target] {
-            fn from([source]: [source]) -> Self {
+            fn from([source_var]: [source]) -> Self {
                 Self {
                     [fields]
                 }
@@ -185,9 +265,10 @@ local function impl_from()
             target = i(1, "Foo"),
             generic = generic(1),
             source = i(2, "SourceType"),
-            fields = i(3, "..Default::default()"),
+            source_var = i(3, "other"),
+            fields = i(4, "..Default::default()"),
         },
-        { delimiters = "[]" }
+        { delimiters = "[]", repeat_duplicates = true }
     )
 end
 
@@ -522,8 +603,9 @@ return {
     s("impl_ord", impl_ord()),
     s("impl_partial_ord", impl_partial_ord()),
     s("impl_default", impl_default()),
+    s("impl_as_ref", impl_as_ref()),
     s("impl_deref", impl_deref()),
-    s("impl_deref_mut", impl_deref_mut()),
+    s("impl_into_iter", impl_into_iter()),
     s("impl_from", impl_from()),
 
     -- control flow

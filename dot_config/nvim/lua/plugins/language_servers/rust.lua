@@ -1,38 +1,35 @@
 return {
     {
-        "simrat39/rust-tools.nvim",
-        dependencies = "neovim/nvim-lspconfig",
-        -- ft = "rust",
-        event = { "BufReadPre", "BufNewFile" },
+        "mrcjkb/rustaceanvim",
+        version = "^4",
+        ft = { "rust" },
         config = function()
-            local rt = require("rust-tools")
-            -- Add additional capabilities supported by nvim-cmp
-            local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-            local on_attach = function(_, bufnr)
-                local bufopts = function(desc) return { noremap = true, silent = true, buffer = bufnr, desc = desc } end
-                vim.keymap.set("n", "<leader>cr", rt.runnables.runnables, bufopts("Runnable (rust-tools)"))
-                vim.keymap.set("n", "<leader>cm", rt.expand_macro.expand_macro, bufopts("Expand macro (rust-tools)"))
-                vim.keymap.set("n", "<leader>dg", rt.crate_graph.view_crate_graph, bufopts("Crate graph"))
-                vim.keymap.set("n", "go", rt.open_cargo_toml.open_cargo_toml, bufopts("Open Cargo.toml"))
-                vim.keymap.set("n", "gm", rt.parent_module.parent_module, bufopts("Open parent module"))
-                vim.keymap.set("n", "<leader>rs", rt.ssr.ssr, bufopts("Search & Replace (rust-tools)"))
-                vim.keymap.set("n", "<leader>rH", function() rt.move_item.move_item(true) end, bufopts("Move item up"))
-                vim.keymap.set("n", "<leader>rK", function() rt.move_item.move_item(false) end, bufopts("Move item down"))
-                -- vim.keymap.set("n", "K", rt.hover_actions.hover_actions, bufopts("Hover Actions"))
-                -- vim.keymap.set("n", "J", rt.join_lines.join_lines, bufopts("Join lines"))
-            end
-
-            rt.setup({
-                -- all the opts to send to nvim-lspconfig. these override the defaults set by rust-tools.nvim
-                -- see https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#rust_analyzer
+            local executors = require("rustaceanvim.executors")
+            vim.g.rustaceanvim = {
+                tools = {
+                    executor = executors.toggleterm,
+                    test_executor = executors.toggleterm,
+                    crate_test_executor = executors.toggleterm,
+                    hover_actions = { replace_builtin_hover = false },
+                },
                 server = {
-                    -- standalone file support: setting it to false may improve startup time
-                    standalone = true,
-                    on_attach = on_attach,
-                    capabilities = capabilities,
-                }, -- rust-analyzer options
-            })
+                    on_attach = function(_, bufnr)
+                        local bufopts = function(desc) return { noremap = true, silent = true, buffer = bufnr, desc = desc } end
+                        vim.keymap.set("n", "<leader>cr", "<cmd>RustLsp runnables<cr>", bufopts("Runnable (rustaceanvim)"))
+                        vim.keymap.set("n", "<leader>cm", "<cmd>expandMacro<cr>", bufopts("Expand macro (rustaceanvim)"))
+                        vim.keymap.set("n", "<leader>dg", "<cmd>crateGraph<cr>", bufopts("Crate graph"))
+                        vim.keymap.set("n", "go", "<cmd>RuspLsp openCargo<cr>", bufopts("Open Cargo.toml"))
+                        vim.keymap.set("n", "gm", "<cmd>RustLsp parentModule<cr>", bufopts("Open parent module"))
+                        vim.keymap.set("n", "<leader>rs", "<cmd>RustLsp sst<cr>", bufopts("Search & Replace (rustaceanvim)"))
+                        vim.keymap.set("n", "<leader>rH", "<cmd>RustLsp moveItem up<cr>", bufopts("Move item up"))
+                        vim.keymap.set("n", "<leader>rK", "<cmd>RustLsp moveItem down<cr>", bufopts("Move item down"))
+                    end,
+                    -- default_settings = {
+                    --     ["rust-analyzer"] = {},
+                    -- },
+                },
+                -- dap = {},
+            }
         end,
     },
     {

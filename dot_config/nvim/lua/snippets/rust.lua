@@ -23,7 +23,7 @@ local conds_expand = require("luasnip.extras.conditions.expand")
 
 -- utils
 local function generic(idx) return m(idx, l._1:match("<%w+>$"), l._1:match("<%w>"), "") end
-local function lifetime_generic(idx) return m(idx, l._1:match("<%w+>$"), l._1:match("<'a, %w>"), "") end
+local function lifetime_generic(idx) return m(idx, l._1:match("<%w+>$"), l._1:match("<'a, %w>"), "<'a>") end
 local function comma(idx) return m(idx, "%w+", ", ") end
 local function lower(idx)
     return f(function(args)
@@ -41,34 +41,46 @@ local function last_namespace(idx)
 end
 local function pub(idx) return c(idx, { t(""), t("pub ") }) end
 local function field_type(idx) return sn(idx, { i(1, "field"), t(": "), i(2, "String"), t(",") }) end
+local function std_collections(idx)
+    return c(idx, {
+        i(1, "std::vec"),
+        i(1, "std::collections::vec_deque"),
+        i(1, "std::collections::linked_list"),
+        i(1, "std::collections::hash_map"),
+        i(1, "std::collections::hash_set"),
+        i(1, "std::collections::btree_set"),
+        i(1, "std::collections::btree_map"),
+        i(1, "std::collections::binary_heap"),
+    })
+end
 
 -- struct, enum, impl
 local function derive(idx)
     return c(idx, {
-        fmt("#[derive(Debug{})]", { i(0) }),
+        fmt("#[derive(Debug{})]", { i(1) }),
         t("#[derive(Debug, Clone, Serialize, Deserialize, Validate)]"),
     })
 end
 local function struct()
     return fmta(
         [[
-        #[derive(<traits><extra_traits>)]
+        <derive>
         <pub>struct <name> {
-            <pub><field_type>
+            <field>: <type>
         }
         ]],
-        { traits = i(1, "Debug, Clone"), extra_traits = i(2), pub = pub(3), name = i(4, "Foo"), field_type = field_type(5) },
-        { repeat_duplicates = true }
+        { derive = derive(1), pub = pub(2), name = i(3, "FooBar"), field = i(4, "foobar"), type = i(5, "u32") }
     )
 end
 local function enum()
     return fmta(
         [[
+        <derive>
         enum <name> {
             <variant>
         }
         ]],
-        { name = i(1, "Color"), variant = i(2, "Black = 1") }
+        { derive = derive(1), name = i(2, "Color"), variant = i(3, "Black") }
     )
 end
 local function impl()
@@ -101,7 +113,10 @@ local function impl_display()
         {
             target = i(1, "Foo"),
             generic = generic(1),
-            c(0, { i(nil, "todo!()"), fmta([[write!(f, "{}", self.<>)]], { i(1, "field") }) }),
+            body = c(2, {
+                i(1, "todo!()"),
+                fmta([[write!(f, "{}", self.<>)]], { i(1, "field") }),
+            }),
         },
         { delimiters = "[]" }
     )
@@ -118,7 +133,7 @@ local function impl_ord()
         {
             target = i(1, "Foo"),
             generic = generic(1),
-            body = c(0, {
+            body = c(2, {
                 fmt("self.{field}.cmp(&other.{field})", { field = i(1, "field") }, { repeat_duplicates = true }),
                 i(nil, "todo!()"),
             }),
@@ -138,7 +153,7 @@ local function impl_partial_ord()
         {
             target = i(1, "Foo"),
             generic = generic(1),
-            body = c(0, {
+            body = c(2, {
                 fmt("self.{field}.partial_cmp(&other.{field})", { field = i(1, "field") }, { repeat_duplicates = true }),
                 i(nil, "todo!()"),
             }),
@@ -185,8 +200,14 @@ local function impl_as_ref()
             target = i(1, "Foo"),
             generic = generic(1),
             target_type = i(2, "TargetType"),
-            as_ref_body = c(3, { i(nil, "todo!()"), fmt("&self.{}", { i(1, "field") }) }),
-            as_mut_body = c(3, { i(nil, "todo!()"), fmt("&mut self.{}", { i(1, "field") }) }),
+            as_ref_body = c(3, {
+                i(nil, "todo!()"),
+                fmt("&self.{}", { i(1, "field") }),
+            }),
+            as_mut_body = c(4, {
+                i(nil, "todo!()"),
+                fmt("&mut self.{}", { i(1, "field") }),
+            }),
         },
         { delimiters = "[]", repeat_duplicates = true }
     )
@@ -212,8 +233,14 @@ local function impl_deref()
             target = i(1, "Foo"),
             generic = generic(1),
             target_type = i(2, "TargetType"),
-            deref_body = c(3, { i(nil, "todo!()"), fmt("&self.{}", { i(1, "field") }) }),
-            deref_mut_body = c(2, { i(nil, "body"), fmt("&mut self.{}", { i(1, "field") }) }),
+            deref_body = c(3, {
+                i(nil, "todo!()"),
+                fmt("&self.{}", { i(1, "field") }),
+            }),
+            deref_mut_body = c(4, {
+                i(nil, "body"),
+                fmt("&mut self.{}", { i(1, "field") }),
+            }),
         },
         { delimiters = "[]", repeat_duplicates = true }
     )
@@ -223,7 +250,7 @@ local function impl_into_iter()
         [[
         impl[generic] IntoIterator for [target] {
             type Item = [item_type];
-            type IntoIter = std::vec::IntoIter<Self::Item>;
+            type IntoIter = [collections]::IntoIter<Self::Item>;
 
             fn into_iter(self) -> Self::IntoIter {
                 [into_iter_body]
@@ -232,20 +259,51 @@ local function impl_into_iter()
 
         impl[lifetime_generic] IntoIterator for &'a [target] {
             type Item = &'a [item_type];
-            type IntoIter = std::slice::Iter<'a, Self::Item>;
+            type IntoIter = [collections]::Iter<'a, Self::Item>;
 
             fn into_iter(self) -> Self::IntoIter {
                 [iter_body]
             }
         }
+        
+        impl[lifetime_generic] IntoIterator for &'a mut [target] {
+            type Item = &'a mut [item_type];
+            type IntoIter = [collections]::IterMut<'a, Self::Item>;
+
+            fn into_iter(self) -> Self::IntoIter {
+                [iter_mut_body]
+            }
+        }
+
         ]],
         {
             target = i(1, "Foo"),
             generic = generic(1),
             lifetime_generic = lifetime_generic(1),
             item_type = i(2, "ItemType"),
-            into_iter_body = c(3, { i(nil, "todo!()"), i(nil, "self.0.into_iter()") }),
-            iter_body = c(4, { i(nil, "todo!()"), i(nil, "self.0.iter()") }),
+            collections = c(3, {
+                i(nil, "std::vec"),
+                i(nil, "std::slice"),
+                i(nil, "std::collections::vec_deque"),
+                i(nil, "std::collections::linked_list"),
+                i(nil, "std::collections::hash_map"),
+                i(nil, "std::collections::hash_set"),
+                i(nil, "std::collections::btree_set"),
+                i(nil, "std::collections::btree_map"),
+                i(nil, "std::collections::binary_heap"),
+            }),
+            into_iter_body = c(3, {
+                i(nil, "todo!()"),
+                i(nil, "self.0.into_iter()"),
+            }),
+            iter_body = c(4, {
+                i(nil, "todo!()"),
+                i(nil, "self.0.iter()"),
+            }),
+            iter_mut_body = c(5, {
+                i(nil, "todo!()"),
+                i(nil, "self.0.iter_mut()"),
+            }),
         },
         { delimiters = "[]", repeat_duplicates = true }
     )
@@ -346,6 +404,22 @@ local function iflet()
     )
 end
 
+-- other useful snippets
+local function use_prelude() return t("use crate::prelude::*;") end
+local function std_error() return t("std::error::Error") end
+local function box_dyn_error(idx)
+    return c(idx, {
+        t("Box<dyn std::error::Error>"),
+        t("Box<dyn Error>"),
+    })
+end
+local function result_box_dyn_error(idx)
+    return c(idx, {
+        fmt("Result<{}, Box<dyn std::error::Error>>", { i(1, "()") }),
+        fmt("Result<{}, Box<dyn Error>>", { i(1, "()") }),
+    })
+end
+
 -- tokio, gRPC, Protobuf
 local function tokiomain()
     return fmt(
@@ -424,8 +498,7 @@ local function rstmod()
         ]],
         {
             rstfn = rstfn(),
-        },
-        { repeat_duplicates = true }
+        }
     )
 end
 
@@ -605,7 +678,7 @@ return {
     s("impl_default", impl_default()),
     s("impl_as_ref", impl_as_ref()),
     s("impl_deref", impl_deref()),
-    s("impl_into_iter", impl_into_iter()),
+    -- s("impl_into_iter", impl_into_iter()), -- BUG:
     s("impl_from", impl_from()),
 
     -- control flow
@@ -616,8 +689,8 @@ return {
     s("iflet",    iflet()),
 
     -- test
-    s("rstmod", rstmod()),
-    s("rstfn",  rstfn()),
+    -- s("rstmod", rstmod()),
+    -- s("rstfn",  rstfn()),
 
     -- tokio
     s("tokiomain",  tokiomain()), -- choice node for main function or just attribute
@@ -629,5 +702,8 @@ return {
     -- Axum + Mongodb
     s("mongomodel",         mongomodel()),
     s("crudhandlers_mongo", crudhandlers_mongo()),
+
+    -- other
+    s("use_prelude", use_prelude()),
 }
 -- stylua: ignore end

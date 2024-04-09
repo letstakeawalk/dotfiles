@@ -6,16 +6,23 @@ default: true
 heading-increment: false
 # heading-style: "atx"
 heading-style: false
-ul-style:
-  style: "dash"
+ul-style: false
+# ul-style:
+#   style: "" # consistent, asterisk, dash, plus, sublist
 ul-indent:
   indent: 4
 no-hard-tabs: true
 single-title:
   front_matter_title: ""
-line-length: false
 blanks-around-fences: false
+blanks-around-lists: false
 fenced-code-language: false
-no-blanks-blockquote: false
-single-trailing-newline: false
+hr-style: false
+line-length: false
 link-image-reference-definitions: false
+no-blanks-blockquote: false
+no-emphasis-as-header: false
+no-multiple-blanks: false
+no-trailing-spaces: false
+single-trailing-newline: false
+link-fragments: false

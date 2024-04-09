@@ -10,7 +10,7 @@
 `dog                     DNS lookup utility (dig alt)`
 `dust                    Dist space (du alt)`
 `entr                    Run command when files change`
-`exa                     List files/dirs (ls alt)`
+`eza                     List files/dirs (ls alt)`
 `fd                      Find files/dirs (find alt)`
 `fuck                    Command correction`
 `fzf                     Fuzzy finder`
@@ -23,17 +23,13 @@
 `pandoc                  Document format converter`
 `rg                      Recursive Line search (grep alt)`
 `sd                      Find & Replace (sed alt)`
-`skhd                    keyboard shortcut manager`
-`vidir                   Dir Editor (moreutils)`
 `watchman                Watch files and take action`
-`yabai                   Tiling window manager`
 `xz                      Compress or decompress`
 `z (zoxide)              Filesystem navigator (cd alt)`
 `zstd                    Compress or decompress`
 
-- Package Managers
-`rtx:                    Polyglot runtime manager (asdf alt)`
-`asdf                    Polyglot runitme manager`
+- Package & Runtime Managers
+`mise:                   Polyglot runtime manager (asdf alt)`
 `npm                     Node package manager`
 `yarn                    Node package manager`
 `pip                     Python package manager`
@@ -56,6 +52,8 @@
 `pgcli:                  psql alt`
 `miller:                 awk, sed, cut, join, and sort`
 `hexyl:                  hex viewer`
+`yabai                   Tiling window manager`
+`skhd                    keyboard shortcut manager`
 
 - Cargo binaries
 `wiki-tui                Wikipedia tui`

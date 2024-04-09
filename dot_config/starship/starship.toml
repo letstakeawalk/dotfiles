@@ -121,9 +121,9 @@ format = '\[[$symbol($version)]($style)\]'
 
 [directory]
 read_only = " "
-truncate_to_repo = true
+truncate_to_repo = false
 truncation_symbol = "../"
-truncation_length = 3
+truncation_length = 2
 fish_style_pwd_dir_length = 0
 
 [docker_context]
@@ -153,7 +153,7 @@ format = '[$symbol$branch ]($style)'
 
 [git_status]
 format = '([\[$all_status$ahead_behind\] ]($style))'
-style = 'bold yellow'
+style = 'bold fg:#D08770'
 
 [golang]
 symbol = " "
@@ -282,10 +282,3 @@ format = '\[[$symbol($version)]($style)\]'
 
 [zig]
 format = '\[[$symbol($version)]($style)\]'
-
-# [custom.taskwarrior]
-# command = 'task status=pending count'
-# symbol = " "
-# format ='$symbol'
-# format = '\[[$symbol $output]($style)\]'
-# style = 'blue'

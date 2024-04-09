@@ -75,5 +75,12 @@ opt.smarttab = true -- Tab insert blanks according to 'shiftwidth'
 opt.softtabstop = 4 -- backspace remove backspace
 opt.tabstop = 4 -- tabsize = 2 whitespaces
 
+-- custom filetypes
+vim.filetype.add({
+    filename = {
+        ["dot_zshrc"] = "zsh", -- chezmoi
+    }
+})
+
 -- TODO: LessInitFunc :h less
 -- TODO: comment continuation -> discontinue on empty comment

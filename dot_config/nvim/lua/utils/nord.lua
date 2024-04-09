@@ -1,29 +1,35 @@
 -- stylua: ignore start
 local M = {
-    c00_blk_dk = "#272C36", -- 220, 28, 21
-    c00_blk    = "#2E3440", -- 220, 28, 25 -- bg
-    c00_blk_br = "#353C4A", -- 220, 28, 29
-    c01_gry    = "#3B4252", -- 222, 28, 32 -- cursor line
-    c02_gry    = "#434C5E", -- 220, 29, 37 -- visual selection
-    c03_gry    = "#4C566A", -- 220, 28, 42
-    c03_gry_br = "#616E88", -- 220, 29, 53 -- comment, float border,
-    c04_wht_dk = "#98A2B5", -- 219, 16, 71 -- unmatched fuzzy result
-    c04_wht    = "#D8DEE9", -- 219, 7,  91 -- fg
-    c05_wht    = "#E5E9F0", -- 218, 5,  94
-    c06_wht    = "#ECEFF4", -- 218, 3,  96
-    c07_jade   = "#8FBCBB", -- 179, 24, 74
-    c08_teal   = "#88C0D0", -- 193, 35, 82 -- function
-    c09_glcr   = "#81A1C1", -- 210, 33, 76 -- keyword, info
-    c10_blue   = "#5E81AC", -- 213, 45, 67 -- hint
-    c11_red    = "#BF616A", -- 354, 49, 75 -- error
-    c12_orng   = "#D08770", -- 14,  46, 82
-    c13_ylw    = "#EBCB8B", -- 40,  41, 92 -- warn
-    c14_grn    = "#A3BE8C", -- 92,  26, 75 -- string
-    c15_prpl    = "#B48EAD", -- 311, 21, 71 -- number
-    -- c11_red_l  = "#BF757C", -- 354, 39, 75
-    -- c12_orng_l = "#D09786", -- 14,  36, 82
-    -- c13_ylw_l  = "#EBD3A2", -- 40,  31, 92
-    -- c14_grn_l  = "#AEBEA0", -- 92,  16, 75
+    c00_blk_dk  = "#272C36",
+    c00_blk     = "#2E3440", -- bg
+    c00_blk_br  = "#353C4A",
+    c01_gry     = "#3B4252", -- cursor line
+    c02_gry     = "#434C5E", -- visual selection
+    c03_gry     = "#4C566A",
+    c03_gry_br  = "#616E88", -- comment, float border,
+    c04_wht_dk  = "#98A2B5", -- unmatched fuzzy result
+    c04_wht     = "#D8DEE9", -- fg
+    c05_wht     = "#E5E9F0",
+    c06_wht     = "#ECEFF4",
+    c07_jade    = "#8FBCBB",
+    c08_teal    = "#88C0D0", -- function
+    c09_glcr    = "#81A1C1", -- keyword, info
+    c10_blue    = "#5E81AC", -- hint
+    c11_red     = "#BF616A", -- error
+    c12_orng    = "#D08770",
+    c13_ylw     = "#EBCB8B", -- warn
+    c14_grn     = "#A3BE8C", -- string
+    c15_prpl    = "#B48EAD", -- number
+
+    c07_jade_br = "#A5C9C9", c07_jade_dk = "#729696",
+    c08_teal_br = "#A0CDD9", c08_teal_dk = "#6D9AA6",
+    c09_glcr_br = "#9AB4CD", c09_glcr_dk = "#67819A",
+    c10_blue_br = "#7E9ABD", c10_blue_dk = "#4B678A",
+    c11_red_br  = "#CC8188", c11_red_dk  = "#994E55",
+    c12_orng_br = "#D99F8D", c12_orng_dk = "#A66C5A",
+    c13_ylw_br  = "#EFD5A2", c13_ylw_dk  = "#BCA26F",
+    c14_grn_br  = "#B5CBA3", c14_grn_dk  = "#829870",
+    c15_prpl_br = "#C3A5BD", c15_prpl_dk = "#90728A",
 }
 
 M.bg         = M.c00_blk -- c00 black

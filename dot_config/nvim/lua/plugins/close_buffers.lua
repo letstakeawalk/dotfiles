@@ -1,5 +1,6 @@
 return {
     "kazhala/close-buffers.nvim", -- preserve window layout with bdelete/bwipeout
+    cmd = { "BDelete", "BWipeout" },
     keys = {
         { "<leader>qq", "<cmd>q<cr>", desc = "Quit" },
         -- { "<leader>qa", "<cmd>bufdo bd<cr>", desc = "Close all buffers" },

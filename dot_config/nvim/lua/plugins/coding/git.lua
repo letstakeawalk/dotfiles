@@ -1,7 +1,23 @@
 return {
     {
-        "lewis6991/gitsigns.nvim",
+        "tpope/vim-fugitive", -- git wrapper
+        enabled = true,
         event = "BufRead",
+        dependencies = {
+            "junegunn/gv.vim", -- git commit browser
+            "tpope/vim-rhubarb", -- fugitive extension for GitHub
+        },
+        keys = {
+            { "<leader>gg", "<cmd>vert Git<cr>", desc = "Fugitive" },
+            { "<leader>gq", "<cmd>Git<cr><cmd>bd<cr>", desc = "Close Fugitive" },
+            { "<leader>gc", "<cmd>GV<cr>", desc = "Commit Browser (GV)" },
+            { "<leader>gC", "<cmd>GV!<cr>", desc = "BufCommit Browser (GV!)" },
+            -- { "<leader>gd", "<cmd>Gvdiffsplit<cr>", desc = "Diff split" },
+        },
+    },
+    {
+        "lewis6991/gitsigns.nvim",
+        event = "VeryLazy",
         init = function()
             local nord = require("utils.nord")
             vim.api.nvim_set_hl(0, "GitSignsAdd", { fg = nord.c14_grn }) -- diff mode: Added line |diff.txt|
@@ -67,7 +83,6 @@ return {
     },
     {
         "ThePrimeagen/git-worktree.nvim",
-        event = "BufRead",
         keys = {
             { "<leader>w", "<cmd>Telescope git_worktree git_worktrees<cr>", desc = "Git worktrees (Telescope)" },
             { "<leader>gW", "<cmd>Telescope git_worktree create_git_worktrees<cr>", desc = "Create worktree" },
@@ -84,18 +99,53 @@ return {
         end,
     },
     {
-        "tpope/vim-fugitive", -- git wrapper
-        event = "BufRead",
-        dependencies = {
-            "junegunn/gv.vim", -- git commit browser
-            "tpope/vim-rhubarb", -- fugitive extension for GitHub
-        },
+        "sindrets/diffview.nvim",
         keys = {
-            { "<leader>gg", "<cmd>Git<cr>", desc = "Fugitive" },
-            { "<leader>gq", "<cmd>Git<cr><cmd>bd<cr>", desc = "Close Fugitive" },
-            { "<leader>gd", "<cmd>Gvdiffsplit<cr>", desc = "Diff split" },
-            { "<leader>gc", "<cmd>GV<cr>", desc = "Commit Browser (GV)" },
-            { "<leader>gC", "<cmd>GV!<cr>", desc = "BufCommit Browser (GV!)" },
+            { "<leader>gd", "<cmd>DiffviewOpen<cr>", desc = "DiffView" },
         },
+        config = function()
+            local actions = require("diffview.actions")
+            require("diffview").setup({
+                hooks = {},
+                keymaps = {
+                    disable_defaults = false, -- Disable the default keymaps
+                    file_panel = {
+                        {
+                            "n",
+                            "k",
+                            actions.next_entry,
+                            { desc = "Bring the cursor to the next file entry" },
+                        },
+                        {
+                            "n",
+                            "h",
+                            actions.prev_entry,
+                            { desc = "Bring the cursor to the previous file entry" },
+                        },
+                        {
+                            "n",
+                            "l",
+                            actions.select_entry,
+                            { desc = "Open the diff for the selected entry" },
+                        },
+                        { "n", "j", actions.close_fold, { desc = "Collapse fold" } },
+                        { "n", "<c-u>", actions.scroll_view(-0.25), { desc = "Scroll the view up" } },
+                        { "n", "<c-d>", actions.scroll_view(0.25), { desc = "Scroll the view down" } },
+                    },
+                    file_history_panel = {
+                        { "n", "j", nil },
+                        { "n", "k", actions.next_entry, { desc = "Bring the cursor to the next file entry" } },
+                        {
+                            "n",
+                            "h",
+                            actions.prev_entry,
+                            { desc = "Bring the cursor to the previous file entry." },
+                        },
+                        { "n", "<c-u>", actions.scroll_view(-0.25), { desc = "Scroll the view up" } },
+                        { "n", "<c-d>", actions.scroll_view(0.25), { desc = "Scroll the view down" } },
+                    },
+                },
+            })
+        end,
     },
 }

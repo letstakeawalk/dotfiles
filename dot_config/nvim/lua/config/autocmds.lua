@@ -31,23 +31,7 @@ vim.api.nvim_create_autocmd("FileType", {
     },
     callback = function(event)
         vim.bo[event.buf].buflisted = false
-        vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
-    end,
-})
-
--- open some filetypes on vertical split
-vim.api.nvim_create_autocmd("FileType", {
-    group = augroup("VertSplit"),
-    pattern = { "help", "fugitive", "git" },
-    callback = function()
-        vim.cmd("wincmd L")
-        -- vim.notify("VertSplit autocmd")
-        -- vim.notify("winwidth: " .. vim.fn.winwidth(0))
-        -- if vim.fn.winwidth(0) / 2 > 80 then
-        --     vim.cmd.wincmd("L")
-        -- else
-        --     vim.cmd.wincmd("J")
-        -- end
+        vim.keymap.set("n", "q", "<cmd>bwipe<cr>", { buffer = event.buf, silent = true })
     end,
 })
 
@@ -63,7 +47,18 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     end,
 })
 
--- auto add config files to chezmoi source
+-- Tab configuration
+vim.api.nvim_create_autocmd("FileType", {
+    group = augroup("TabTwo"),
+    pattern = { "json", "yaml", "css" }, -- { "html", "typescript", "javascript", "svelte", "vue" },
+    callback = function()
+        vim.opt_local.tabstop = 2
+        vim.opt_local.softtabstop = 2
+        vim.opt_local.shiftwidth = 2
+    end,
+})
+
+-- Chezmoi: auto add config files to chezmoi source
 vim.api.nvim_create_autocmd("BufWritePost", {
     group = augroup("ChezmoiAdd"),
     pattern = { vim.env.XDG_CONFIG_HOME .. "/**/*" },
@@ -78,8 +73,8 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     end,
 })
 
--- auto apply config files to target path
-vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+-- Chezmoi: auto apply config files to target path
+vim.api.nvim_create_autocmd("BufWritePost", {
     group = augroup("ChezmoiApply"),
     pattern = { vim.env.CHEZMOI_SOURCE .. "/**/*" },
     ---@param ev { file: string, match: string }
@@ -95,67 +90,4 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
             vim.notify("Chezmoi apply failed: " .. result, vim.log.levels.WARN)
         end
     end,
-})
-
--- Tab configuration
-local function set_tabstop(size)
-    vim.opt_local.tabstop = size
-    vim.opt_local.softtabstop = size
-    vim.opt_local.shiftwidth = size
-end
-vim.api.nvim_create_autocmd("FileType", {
-    group = augroup("TabTwo"),
-    pattern = { "json", "yaml", "css" }, -- { "html", "typescript", "javascript", "svelte", "vue" },
-    callback = function() set_tabstop(2) end,
-})
-
--- vim.api.nvim_create_autocmd("FileType", {
---     group = augroup("Wrap"),
---     pattern = { "markdown" },
---     callback = function() vim.opt_local.wrap = true end,
--- })
-
--- filetypes
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "markdown" },
-    group = augroup("Markdown"),
-    callback = function()
-        -- vim.notify("FileType Markdown", vim.log.levels.WARN)
-        -- vim.bo.formatoptions = "tcqnlj"
-        vim.bo.formatoptions = "tcqj"
-        -- vim.wo.wrap = true
-
-        -- task management
-        local task = require("utils.task")
-        vim.keymap.set("i", "<C-x>", task.toggle_completion, { desc = "Toggle Task", buffer = true })
-        -- vim.keymap.set("n", "<leader>nx", task.toggle_task, { desc = "Toggle List/Task", buffer = true })
-        vim.keymap.set("n", "<leader>nax", task.toggle_completion, { desc = "Toggle Task", buffer = true })
-        vim.keymap.set("n", "<leader>nac", task.toggle_canceled, { desc = "Set Canceled Tag", buffer = true })
-        vim.keymap.set("n", "<leader>nas", task.toggle_started, { desc = "Set Started Tag", buffer = true })
-        vim.keymap.set("n", "<leader>nad", task.toggle_due, { desc = "Set Due Date", buffer = true })
-        vim.keymap.set("n", "<leader>naS", task.toggle_scheduled, { desc = "Set Scheduled Date", buffer = true })
-        vim.keymap.set("n", "<leader>nap", task.toggle_priority, { desc = "Set Priority", buffer = true })
-        vim.keymap.set("n", "<leader>nar", task.toggle_project, { desc = "Set Project", buffer = true })
-
-        -- TODO: formatlistpattern for lists & tasks
-        -- vim.cmd("set formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|\\s*[-+*]\\(\\s\\[[^]]\\]\\)\\?\\s\\+")
-        -- vim.opt_local.formatlistpat="\\"
-        -- vim.cm("set formatlistpat=^\\s*\\d\\+\\.\\s\\+\\|\\s*[-+*]\\(\\s\\[[^]]\\]\\)\\?\\s\\+")
-        -- ^\\s*\\d\\+\\.\\s\\+
-        -- \\|
-        -- ^\\s*[-+*]\\s\\+
-        -- \\|
-        -- ^\\s*[-+*]\\s\\[[^]]\\]
-        vim.bo.formatlistpat = [[^\s*\d\+\.\s\+|\s*[-+*]\s\+]]
-
-        -- formatlistpat=
-        -- ^\s*\d\+\.\s\+  \|
-        -- ^\s*[-*+]\s\+   \|
-        -- ^\[^\ze[^\]]\+\]:\&^.\{4\}
-    end,
-})
-vim.api.nvim_create_autocmd("BufRead", {
-    group = augroup("Zshrc"),
-    pattern = { "dot_zshrc" },
-    callback = function() vim.bo.filetype = "zsh" end,
 })

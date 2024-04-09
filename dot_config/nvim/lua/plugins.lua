@@ -15,10 +15,12 @@ return {
         },
     },
 
-    -- debug & test
+    -- debug
     -- https://github.com/mfussenegger/nvim-dap
     -- https://github.com/jay-babu/mason-nvim-dap.nvim
     -- https://github.com/rcarriga/nvim-dap-ui
+
+    -- test
     -- https://github.com/nvim-neotest/neotest
 
     -- task runner

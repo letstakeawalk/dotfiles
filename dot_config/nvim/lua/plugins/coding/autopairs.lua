@@ -19,6 +19,7 @@ return {
             fast_wrap = {
                 map = "<C-f>",
                 chars = { "{", "[", "(", "<", '"', "'" },
+                pattern = [=[[%'%"%>%]%)%}%,%?;]]=],
                 before_key = "k",
                 after_key = "h",
                 cursor_pos_before = false,
@@ -70,8 +71,8 @@ return {
         ap.get_rule("["):with_pair(conds.not_before_regex("\\")):with_move(conds.not_before_regex("\\"))
         ap.get_rule("{"):with_pair(conds.not_before_regex("\\")):with_move(conds.not_before_regex("\\"))
         ap.get_rule("'")[1]:with_pair(conds.not_before_regex("\\")):with_move(conds.not_before_regex("\\"))
-        ap.get_rule('"')[1]:with_pair(conds.not_before_regex("\\")):with_move(conds.not_before_regex("\\"))
         ap.get_rule("'")[2]:with_pair(conds.not_before_regex("\\")):with_move(conds.not_before_regex("\\"))
+        ap.get_rule('"')[1]:with_pair(conds.not_before_regex("\\")):with_move(conds.not_before_regex("\\"))
         ap.get_rule('"')[2]:with_pair(conds.not_before_regex("\\")):with_move(conds.not_before_regex("\\"))
 
         -- Move past commas, semicolons, and colons
@@ -104,9 +105,8 @@ return {
             return balance == 0
         end
         ap.add_rules({
-            -- stylua: ignore
             Rule("<", ">", { "rust" })
-                :with_pair(conds.before_regex("[%w:]+"))
+                :with_pair(conds.before_regex("[%w:<]+"))
                 :with_cr(conds.none())
                 :with_move(
                     function(opts)
@@ -128,13 +128,24 @@ return {
                 :with_del(conds.none())
                 :with_cr(conds.none())
                 :use_key('"'),
+            Rule('b"', '"', { "rust" })
+                :with_move(function(opts) return opts.char == '"' end)
+                :with_del(conds.none())
+                :with_cr(conds.none())
+                :use_key('"'),
+            Rule("b'", "'", { "rust" })
+                :with_move(function(opts) return opts.char == "'" end)
+                :with_del(conds.none())
+                :with_cr(conds.none())
+                :use_key("'"),
         })
 
         -- Rust: closure pipe
         ap.add_rules({
             Rule("|", "|", { "rust" })
                 :with_pair(conds.before_regex("%w+%(") and conds.after_text(")"))
-                :with_move(conds.done()),
+                :with_move(conds.done())
+                :with_cr(conds.none()),
         })
 
         -- Fly Mode: multiline jump close bracket

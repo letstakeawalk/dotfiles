@@ -211,12 +211,19 @@ return {
                     vim.keymap.set("n", "<leader>rf", function() vim.lsp.buf.format({ async = true }) end, bufopts("Format File"))
                     vim.keymap.set("n", "<leader>il", "<cmd>LspInfo<cr>", bufopts("Lsp Info"))
                     vim.keymap.set("n", "<leader>dd", toggle_diagnostic, bufopts("Diagnostic Toggle"))
-                    vim.keymap.set("n", "<leader>dh", function() vim.lsp.inlay_hint(0) end, bufopts("InlayHint Toggle"))
 
-                    local client = vim.lsp.get_client_by_id(ev.data.client_id)
-                    if client.server_capabilities.inlayHintProvider then
-                        -- let rust-tools handle inlay hints
-                        if client.name ~= "rust_analyzer" then
+                    -- inlay hint: nightly feature
+                    if vim.version.cmp(vim.version(), { 0, 10 }) == 1 then
+                        vim.keymap.set(
+                            "n",
+                            "<leader>dh",
+                            function() vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled()) end,
+                            bufopts("InlayHint Toggle")
+                        )
+
+                        local client = vim.lsp.get_client_by_id(ev.data.client_id)
+                        if client.server_capabilities.inlayHintProvider then
+                            vim.notify("not less than 0.10", vim.log.levels.WARN)
                             vim.lsp.inlay_hint.enable(0, true)
                         end
                     end

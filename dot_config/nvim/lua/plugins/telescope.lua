@@ -9,8 +9,6 @@ return {
     cmd = { "Telescope" },
     -- stylua: ignore
     keys = {
-        -- consider <leader><leader> instead of <leader>t
-        -- keymaps
         { "<leader>b",  "<cmd>Telescope buffers<cr>",                desc = "Buffers (Telescope)" },
         { "<leader>f",  "<cmd>Telescope find_files<cr>",             desc = "Files (Telescope)" },
         { "<leader>F",  "<cmd>Telescope find_files hidden=true<cr>", desc = "All Files (Telescope)" },
@@ -92,6 +90,12 @@ return {
                         "--exclude", "target",
                     },
                 },
+                help_tags = {
+                    mappings = {
+                        i = { ["<CR>"] = actions.select_vertical, },
+                        n = { ["<CR>"] = actions.select_vertical, }
+                    }
+                }
             },
             extensions = {
                 file_browser = { hijack_netrw = true },

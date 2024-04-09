@@ -84,7 +84,7 @@ return {
                     ["<C-c>"] = "actions.close",
                 },
             },
-            post_jump_cmd = "normal! zt",
+            -- post_jump_cmd = "normal! zt",
         })
     end,
 }

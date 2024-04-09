@@ -4,8 +4,6 @@ return {
     event = "BufRead",
     cmd = { "TodoTrouble", "TodoTelescope" },
     keys = {
-        { "]t", function() require("todo-comments").jump_next() end, desc = "Goto next Todo" },
-        { "[t", function() require("todo-comments").jump_prev() end, desc = "Goto previous Todo" },
         { "<leader>xt", "<cmd>TodoTrouble<cr>", desc = "Todo" },
         { "<leader>tt", "<cmd>TodoTelescope<cr>", desc = "Todo" },
     },

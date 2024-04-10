@@ -1,11 +1,12 @@
-local augroup = function(name) return vim.api.nvim_create_augroup("Cstm" .. name, { clear = true }) end
+local augroup = function(name)
+    return vim.api.nvim_create_augroup("Cstm" .. name, { clear = true })
+end
 
 -- format options (override default options set by ftplugin)
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "rust", "python", "lua" },
     group = augroup("FormatOptions"),
     callback = function()
-        -- vim.notify("BufRead FormatOptions", vim.log.levels.WARN)
         vim.bo.formatoptions = "cqlj"
     end,
 })
@@ -13,7 +14,9 @@ vim.api.nvim_create_autocmd("FileType", {
 -- resize splits if window got resized
 vim.api.nvim_create_autocmd("VimResized", {
     group = augroup("ResizeSplits"),
-    callback = function() vim.cmd("tabdo wincmd =") end,
+    callback = function()
+        vim.cmd.tabdo("wincmd =")
+    end,
 })
 
 -- close some filetypes with `q`
@@ -80,7 +83,6 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     ---@param ev { file: string, match: string }
     callback = function(ev)
         if vim.bo.filetype == "gitcommit" or vim.bo.filetype == "gitrebase" then
-            vim.notify("Git file, not applying")
             return
         end
         local result = vim.fn.system({ "chezmoi", "apply", "--source-path", ev.match })

@@ -71,7 +71,7 @@ set("n", "<C-t>", function() -- better buffer switching
     ---    - open A, B, C* -> `:bwipe` (B*) -> trigger (A*) -> trigger (B*)
     ---    - open A, B, C* -> `:bdelete B` (B*) -> trigger (C*) -> trigger (B*)
 end, { desc = "Open recently edited buffer" })
-set("n", "<C-s>",      ":w<cr>",                      { desc = "Write buffer" })
+set("n", "<C-s>",      "<cmd>silent w<cr>",           { desc = "Write buffer"  })
 set("n", "<C-q>",      "<cmd>q<cr>",                  { desc = "Quit buffer" })
 set("n", "<leader>qn", "<cmd>enew<cr>",               { desc = "New File" })
 set("n", "<C-Up>",     "<cmd>resize +2<cr>",          { desc = "Increase window height" })
@@ -165,9 +165,15 @@ set("n", "yA", "<cmd>%yank<cr>", { desc = "Yank file content" })
 set("n", "dA", "<cmd>%del<cr>", { desc = "Delete file content" })
 
 -- unimpaired
-local function add_blank_line(line) vim.api.nvim_buf_set_lines(0, line, line, true, { "" }) end
-local function add_blank_line_above() add_blank_line(vim.fn.line(".") - 1) end
-local function add_blank_line_below() add_blank_line(vim.fn.line(".")) end
+local function add_blank_line(line)
+    vim.api.nvim_buf_set_lines(0, line, line, false, { "" })
+end
+local function add_blank_line_above()
+    add_blank_line(vim.fn.line(".") - 1)
+end
+local function add_blank_line_below()
+    add_blank_line(vim.fn.line("."))
+end
 set("n", "]<Space>", add_blank_line_below, { desc = "Add line below" })
 set("n", "[<Space>", add_blank_line_above, { desc = "Add line above" })
 set("n", "]q", "<cmd>cnext<cr>", { desc = "Goto next quickfix" })

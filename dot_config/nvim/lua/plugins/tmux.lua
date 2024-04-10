@@ -13,7 +13,7 @@ return {
             vim.g.tmux_navigator_preserve_zoom = 1 -- preserve zoom when navigating between panes
 
             -- tmux-sessionizer
-            vim.keymap.set("n", "<leader>st", "<cmd>!tmux_sessionizer<cr>", { desc = "Tmux sessionizer", silent = true })
+            vim.keymap.set("n", "<leader>st", "<cmd>!tmx session<cr>", { desc = "Tmuxessionizer", silent = true })
 
             -- tmux popup session
             -- stylua: ignore start

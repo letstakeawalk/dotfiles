@@ -18,8 +18,12 @@ return {
         nord_theme.normal.c.bg = nord.c01_gry
         nord_theme.normal.c.fg = nord.c04_wht
         nord_theme.insert.a.bg = nord.c04_wht
-        local function location() return ":%l/%L :%-2v" end
-        local function mode() return " " .. utils.get_mode() end
+        local function location()
+            return ":%l/%L :%-2v"
+        end
+        local function mode()
+            return " " .. utils.get_mode()
+        end
 
         local function harpoon_files()
             local contents = {}
@@ -27,6 +31,10 @@ return {
             for index = 1, harpoon:list():length() do
                 local harpoon_file_path = harpoon:list():get(index).value
                 local file_name = harpoon_file_path == "" and "(empty)" or vim.fn.fnamemodify(harpoon_file_path, ":t")
+                -- rust: foo/mod.rs -> foo/mod.rs
+                file_name = file_name == "mod.rs" and vim.fn.fnamemodify(harpoon_file_path, ":h:t") .. file_name or file_name
+                -- python: foo/__init__.py -> foo/__init__.py
+                file_name = file_name == "__init__.py" and vim.fn.fnamemodify(harpoon_file_path, ":h:t") .. "init.py" or file_name
 
                 if current_file_path == harpoon_file_path then
                     contents[index] = string.format("%%#HarpoonNumberActive#  %s. %%#HarpoonActive#%s  ", index, file_name)

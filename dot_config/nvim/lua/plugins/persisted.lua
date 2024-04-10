@@ -26,8 +26,9 @@ return {
                 -- save currently loaded session
                 require("persisted").save({ session = vim.g.persisted_loaded_session })
                 -- delete all buffers
-                ---@diagnostic disable-next-line: param-type-mismatch
-                pcall(vim.cmd, "%bd!")
+                pcall(function()
+                    vim.cmd("%bd!")
+                end)
                 -- NOTE: perhaps quit language servers?
             end,
         })
@@ -51,7 +52,7 @@ return {
         end,
         autoload = true, -- automatically load the session for the cwd on Neovim startup
         -- function to run when `autoload = true` but there is no session to load
-        on_autoload_no_session = function() vim.notify("No session found for the current directory", vim.log.levels.WARN) end,
+        -- on_autoload_no_session = function() vim.notify("No session found for the current directory", vim.log.levels.WARN) end,
         follow_cwd = true, -- change session file name to match current working directory if it changes
         -- table of dirs that the plugin will auto-save and auto-load from
         allowed_dirs = {

@@ -38,6 +38,7 @@ export ZSH_EVALCACHE_DIR="$XDG_CACHE_HOME/zsh-evalcache"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export ZK_NOTEBOOK_DIR="$OBSIDIAN"
 export CC=gcc-12
+export TMS_CONFIG_PATH="$XDG_CONFIG_HOME/tms/config.toml"
 
 # PATH
 export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/X11/bin
@@ -168,6 +169,11 @@ export FZF_TMUX_OPTS="-p 50%,50% --reverse"
 
 # ripgrep
 # alias rg="RIPGREP_CONFIG_PATH=$RIPGREP_CONFIG_PATH rg"
+
+## zoxide
+# export _ZO_FZF_OPTS
+# export _ZO_ECHO
+# export _ZO_EXCLUDE_DIRS
 
 
 ###############################################################################

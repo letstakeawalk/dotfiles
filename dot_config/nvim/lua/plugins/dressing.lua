@@ -1,20 +1,23 @@
--- vim.ui.[input,select] interface
 return {
     "stevearc/dressing.nvim",
     dependencies = { "nvim-telescope/telescope.nvim" },
     event = "BufRead",
     opts = {
         input = {
-            override = function(conf)
+            buf_options = {},
+            win_options = { winblend = 0 },
+            override = function(conf) -- conf: api.nvim_open_win() parameter
+                if vim.startswith(conf.title, " Are you sure") then
+                    return require("utils").ui.editor_center(conf)
+                end
                 conf.anchor = "NW"
                 conf.row = 1
                 return conf
             end,
-            buf_options = {},
-            win_options = { winblend = 0 },
-            get_config = function()
-                local excluded_filetypes = { "NvimTree" }
-                if vim.tbl_contains(excluded_filetypes, vim.api.nvim_get_option_value("filetype", { buf = 0 })) then
+            get_config = function(_) -- opts: ui.input() parameter
+                local ignored = { "NvimTree" }
+                local ft = vim.api.nvim_get_option_value("filetype", { buf = 0 })
+                if vim.tbl_contains(ignored, ft) then
                     return { enabled = false }
                 end
             end,

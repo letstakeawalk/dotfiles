@@ -69,13 +69,13 @@ return {
                     i = {
                         ["?"]     = "which_key",
                         ["<ESC>"] = actions.close,
-                        ["<M-q>"] = trouble.open_with_trouble,
-                        ["<C-q>"] = actions.close,
+                        ["<C-q>"] = trouble.open_with_trouble,
+                        -- ["<C-q>"] = actions.close,
                     },
                     n = {
                         ["k"]     = actions.move_selection_next,
                         ["h"]     = actions.move_selection_previous,
-                        ["<M-q>"] = trouble.open_with_trouble,
+                        ["<C-q>"] = trouble.open_with_trouble,
                     },
                 },
             },

@@ -316,6 +316,13 @@ local function markdown()
     vim.api.nvim_set_hl(0, "@markup.heading.6", { fg = nord.c08_teal, bold = true})
 end
 
+-- stylua: ignore
+local function extra()
+    vim.api.nvim_set_hl(0, "FugitiveExtSection", { fg = nord.c09_glcr, bold = true })
+    vim.api.nvim_set_hl(0, "FugitiveExtKey",     { fg = nord.c08_teal, bold = true })
+    vim.api.nvim_set_hl(0, "FugitiveExtDesc",    { fg = nord.c04_wht_dk })
+end
+
 ---Applies custom highlights
 function M.apply_highlights()
     editor()
@@ -323,6 +330,7 @@ function M.apply_highlights()
     lsp()
     treesitter()
     markdown()
+    extra()
 
     -- Unknown
     -- vim.api.nvim_set_hl(0, "ToolbarButton", { fg = nord.nord4_gui, bg = nord.none, bold=true })

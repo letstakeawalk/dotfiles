@@ -23,8 +23,14 @@ vim.api.nvim_create_autocmd({ "BufEnter", "WinLeave", "WinResized", "VimResized"
     callback = fugitive_ext.help.open,
 })
 
-vim.api.nvim_create_autocmd("WinClosed", {
+vim.api.nvim_create_autocmd({ "WinClosed", "BufUnload" }, {
     group = vim.api.nvim_create_augroup("FugitiveExtClose", { clear = true }),
     buffer = 0,
+    callback = fugitive_ext.help.close,
+})
+
+vim.api.nvim_create_autocmd("BufEnter", {
+    group = vim.api.nvim_create_augroup("FugitiveExtEtc", { clear = true }),
+    pattern = { "gitcommit", "gitrebase", "gitignore" },
     callback = fugitive_ext.help.close,
 })

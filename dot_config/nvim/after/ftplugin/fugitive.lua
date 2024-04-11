@@ -1,8 +1,8 @@
 local fugitive_ext = require("utils.fugitive_ext")
 
-if vim.api.nvim_win_get_width(0) < 88 then
-    vim.cmd.wincmd("J")
-end
+-- if vim.api.nvim_win_get_width(0) < 88 then
+--     vim.cmd.wincmd("J")
+-- end
 
 vim.wo.number = false
 vim.wo.relativenumber = false
@@ -31,14 +31,14 @@ vim.keymap.set("n", "?",  fugitive_ext.help.toggle,         { buffer = true })
 --     end
 -- end
 
-vim.api.nvim_create_autocmd("BufEnter", {
-    group = vim.api.nvim_create_augroup("FugitiveExtEnter", { clear = true }),
+vim.api.nvim_create_autocmd({ "BufEnter", "WinLeave", "VimResized", "FocusGained", "FocusLost" }, {
+    group = vim.api.nvim_create_augroup("FugitiveExtOpen", { clear = true }),
     buffer = 0,
     callback = fugitive_ext.help.open,
 })
 
-vim.api.nvim_create_autocmd("BufLeave", {
-    group = vim.api.nvim_create_augroup("FugitiveExtLeave", { clear = true }),
+vim.api.nvim_create_autocmd("WinClosed", {
+    group = vim.api.nvim_create_augroup("FugitiveExtClose", { clear = true }),
     buffer = 0,
     callback = fugitive_ext.help.close,
 })

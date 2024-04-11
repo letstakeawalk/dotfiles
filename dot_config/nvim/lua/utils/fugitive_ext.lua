@@ -39,8 +39,10 @@ local function generate_help_txt()
             { "cf",     "fixup!" },
             { "cs",     "squash!" },
             { "crc",    "revert commit" },
+            { "c<sp>",  ":Git commit" },
             { "cr<sp>", ":Git revert" },
             { "cm<cp>", ":Git merge" },
+            { "P",      ":Git push" },
         },
         rebase_stash = {
             { "ri",     "interactive" },
@@ -111,25 +113,52 @@ local function generate_help_txt()
     return lines, padding, num_rows
 end
 
-M.help.open = function()
-    if vim.g.fugitive_ext_winid ~= nil and vim.api.nvim_win_is_valid(vim.g.fugitive_ext_winid) then
+---@return boolean: Whether the floating window is valid
+local function float_is_valid()
+    -- stylua: ignore
+    return vim.g.fugitive_ext_float_winid
+        and vim.api.nvim_win_is_valid(vim.g.fugitive_ext_float_winid)
+        or false
+end
+
+---@return boolean: Whether the fugitive window is resized
+local function fugitive_resized()
+    -- stylua: ignore
+    return vim.g.fugitive_ext_win_width
+        and vim.g.fugitive_ext_win_height
+        and vim.api.nvim_win_get_width(0) ~= vim.g.fugitive_ext_win_width
+        or vim.api.nvim_win_get_height(0) ~= vim.g.fugitive_ext_win_height
+end
+
+--- Helper function to open the help floating window
+local function help_float_open()
+    if float_is_valid() then
         return
     end
+    M.help.close()
+
+    ---@type integer|nil: fugitive window width
+    vim.g.fugitive_ext_win_width = vim.api.nvim_win_get_width(0)
+    ---@type integer|nil: fugitive window height
+    vim.g.fugitive_ext_win_height = vim.api.nvim_win_get_height(0)
+
+    -- if vim.g.fugitive_ext_win_height and vim.g.fugitive_ext_win_height < 35 then
+    --     return
+    -- end
 
     local buf = vim.api.nvim_create_buf(false, true)
     local text, padding, num_rows = generate_help_txt()
     vim.api.nvim_buf_set_text(buf, 0, 0, 0, 0, text)
 
-    local width = vim.api.nvim_win_get_width(0)
-    local height = #text
-    vim.g.fugitive_ext_winid = vim.api.nvim_open_win(buf, false, {
+    ---@type integer|nil: floating window id
+    vim.g.fugitive_ext_float_winid = vim.api.nvim_open_win(buf, false, {
         relative = "win",
         anchor = "NW",
-        width = width,
-        height = height,
+        width = vim.api.nvim_win_get_width(0),
+        height = #text,
         style = "minimal",
         border = { { "─", "WinSeparator" }, { "─", "WinSeparator" }, { "─", "WinSeparator" }, "", "", "", "", "" },
-        row = vim.api.nvim_win_get_height(0) - (height + 1), -- height + #border_lines
+        row = vim.api.nvim_win_get_height(0) - (#text + 1), -- #text + #border_lines
         col = 0,
         -- focusable = false,
         noautocmd = true,
@@ -160,21 +189,40 @@ M.help.open = function()
     -- stylua: ignore end
 end
 
-M.help.close = function()
-    if vim.api.nvim_win_is_valid(vim.g.fugitive_ext_winid) then
-        vim.api.nvim_win_close(vim.g.fugitive_ext_winid, true)
+function M.help.open()
+    if vim.g.fugitive_ext_disabled then
+        return
     end
-end
-
-M.help.toggle = function()
-    if vim.g.fugitive_ext_winid ~= nil and vim.api.nvim_win_is_valid(vim.g.fugitive_ext_winid) then
+    if fugitive_resized() then
         M.help.close()
+        help_float_open()
     else
-        M.help.open()
+        help_float_open()
     end
 end
 
-M.cmd.discard_changes = function()
+function M.help.close()
+    if float_is_valid() then
+        vim.api.nvim_win_close(vim.g.fugitive_ext_float_winid, true)
+        vim.g.fugitive_ext_float_winid = nil
+        vim.g.fugitive_ext_win_width = nil
+        vim.g.fugitive_ext_win_height = nil
+    end
+end
+
+function M.help.toggle()
+    if float_is_valid() then
+        M.help.close()
+        ---@type boolean|nil: Whether the help window is closed
+        vim.g.fugitive_ext_disabled = true
+    else
+        help_float_open()
+        vim.g.fugitive_ext_disabled = false
+    end
+end
+
+
+function M.cmd.discard_changes()
     utils.ui.input({ prompt = "Are you sure to discard changes? (y/n)" }, function(input)
         if input == "y" then
             utils.exec.plug("fugitive:X")
@@ -182,13 +230,16 @@ M.cmd.discard_changes = function()
     end)
 end
 
-M.cmd.git_push = function()
-    utils.ui.input({ prompt = "Git push <options>" }, function(input)
-        vim.cmd("Git push " .. input)
-    end)
+function M.cmd.git_push()
+    -- utils.ui.input({ prompt = "Git push <options>" }, function(input)
+    --     vim.cmd("Git push " .. input)
+    -- end)
+    local keys = ":Git push "
+    local escaped = vim.api.nvim_replace_termcodes(keys, true, true, true)
+    vim.api.nvim_feedkeys(escaped, "n", true)
 end
 
-M.cmd.commit_amend_no_edit = function()
+function M.cmd.commit_amend_no_edit()
     utils.ui.input({ prompt = "Are you sure to `commit --amend --no-edit`? (y/n)" }, function(input)
         if input == "y" then
             utils.exec.plug("fugitive:ce")

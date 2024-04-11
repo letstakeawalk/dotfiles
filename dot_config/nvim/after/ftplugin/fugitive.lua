@@ -15,21 +15,7 @@ vim.keymap.set("n", "X",  fugitive_ext.cmd.discard_changes, { buffer = true })
 vim.keymap.set("n", "?",  fugitive_ext.help.toggle,         { buffer = true })
 -- stylua: ignore end
 
--- for i, line in ipairs(vim.api.nvim_buf_get_lines(0, 0, 4, false)) do
---     if vim.startswith(line, "Help: g?") then
---         local ns = vim.api.nvim_create_namespace("FugitiveExtVirtText")
---         vim.api.nvim_buf_set_extmark(0, ns, i - 1, 6, {
---             virt_text = {
---                 { "?  ", "Normal" },
---                 { "Doc: ", "fugitiveHelpHeader" },
---                 { "g? ", "Normal" },
---             },
---             virt_text_pos = "overlay",
---             hl_mode = "combine",
---         })
---         break
---     end
--- end
+fugitive_ext.help.update_help_header()
 
 vim.api.nvim_create_autocmd({ "BufEnter", "WinLeave", "VimResized", "FocusGained", "FocusLost" }, {
     group = vim.api.nvim_create_augroup("FugitiveExtOpen", { clear = true }),

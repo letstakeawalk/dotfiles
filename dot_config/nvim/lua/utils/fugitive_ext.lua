@@ -221,6 +221,19 @@ function M.help.toggle()
     end
 end
 
+function M.help.update_help_header()
+    for i, line in ipairs(vim.api.nvim_buf_get_lines(0, 0, 4, false)) do
+        if vim.startswith(line, "Help: g?") then
+            vim.bo.modifiable = true
+            vim.bo.readonly = false
+            vim.api.nvim_buf_set_lines(0, i - 1, i, false, { "Help: ?, Doc: g?" })
+            vim.bo.modifiable = false
+            vim.bo.readonly = true
+            vim.api.nvim_buf_add_highlight(0, -1, "fugitiveHelpHeader", i - 1, 9, 12)
+            break
+        end
+    end
+end
 
 function M.cmd.discard_changes()
     utils.ui.input({ prompt = "Are you sure to discard changes? (y/n)" }, function(input)

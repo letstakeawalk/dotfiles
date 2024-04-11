@@ -48,19 +48,20 @@ return {
                     if vim.wo.diff then
                         return "]c"
                     end
-                    vim.schedule(function() next_hunk() end)
+                    vim.schedule(next_hunk)
                     return "<Ignore>"
-                end, { expr = true, desc = "Goto next hunk" })
+                end, { desc = "Goto next hunk", expr = true, silent = true })
 
                 map("n", "[c", function()
                     if vim.wo.diff then
                         return "[c"
                     end
-                    vim.schedule(function() prev_hunk() end)
+                    vim.schedule(prev_hunk)
                     return "<Ignore>"
-                end, { expr = true, desc = "Goto prev hunk" })
+                end, { desc = "Goto prev hunk", expr = true, silent = true })
 
                 -- Actions
+                -- stylua: ignore start
                 map("v", "<leader>gs", function() gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") }) end, { desc = "Stage hunk" })
                 map("v", "<leader>gr", function() gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") }) end, { desc = "Reset hunk" })
                 map("n", "<leader>gs", gs.stage_hunk, { desc = "Stage hunk" })
@@ -78,6 +79,7 @@ return {
                 -- Text object
                 map({ "o", "x" }, "ih", "<cmd><C-U>Gitsigns select_hunk<CR>", { desc = "Select hunk" })
                 map({ "o", "x" }, "ah", "<cmd><C-U>Gitsigns select_hunk<CR>", { desc = "Select hunk" })
+                -- stylua: ignore end
             end,
         },
     },
@@ -110,24 +112,9 @@ return {
                 keymaps = {
                     disable_defaults = false, -- Disable the default keymaps
                     file_panel = {
-                        {
-                            "n",
-                            "k",
-                            actions.next_entry,
-                            { desc = "Bring the cursor to the next file entry" },
-                        },
-                        {
-                            "n",
-                            "h",
-                            actions.prev_entry,
-                            { desc = "Bring the cursor to the previous file entry" },
-                        },
-                        {
-                            "n",
-                            "l",
-                            actions.select_entry,
-                            { desc = "Open the diff for the selected entry" },
-                        },
+                        { "n", "k", actions.next_entry, { desc = "Bring the cursor to the next file entry" } },
+                        { "n", "h", actions.prev_entry, { desc = "Bring the cursor to the previous file entry" } },
+                        { "n", "l", actions.select_entry, { desc = "Open the diff for the selected entry" } },
                         { "n", "j", actions.close_fold, { desc = "Collapse fold" } },
                         { "n", "<c-u>", actions.scroll_view(-0.25), { desc = "Scroll the view up" } },
                         { "n", "<c-d>", actions.scroll_view(0.25), { desc = "Scroll the view down" } },
@@ -135,12 +122,7 @@ return {
                     file_history_panel = {
                         { "n", "j", nil },
                         { "n", "k", actions.next_entry, { desc = "Bring the cursor to the next file entry" } },
-                        {
-                            "n",
-                            "h",
-                            actions.prev_entry,
-                            { desc = "Bring the cursor to the previous file entry." },
-                        },
+                        { "n", "h", actions.prev_entry, { desc = "Bring the cursor to the previous file entry." } },
                         { "n", "<c-u>", actions.scroll_view(-0.25), { desc = "Scroll the view up" } },
                         { "n", "<c-d>", actions.scroll_view(0.25), { desc = "Scroll the view down" } },
                     },

@@ -48,6 +48,7 @@ return {
         telescope.load_extension("lazy") -- lazy.nvim
         telescope.load_extension("persisted") -- persisted.nvim
         telescope.load_extension("refactoring") -- refactoring.nvim
+
         -- stylua: ignore
         telescope.setup({
             defaults = {
@@ -92,8 +93,8 @@ return {
                 },
                 help_tags = {
                     mappings = {
-                        i = { ["<CR>"] = actions.select_vertical, },
-                        n = { ["<CR>"] = actions.select_vertical, }
+                        i = { ["<CR>"] = actions.select_vert_hori, },
+                        n = { ["<CR>"] = actions.select_vert_hori, }
                     }
                 }
             },

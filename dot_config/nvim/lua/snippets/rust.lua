@@ -22,12 +22,20 @@ local conds = require("luasnip.extras.conditions")
 local conds_expand = require("luasnip.extras.conditions.expand")
 
 -- utils
-local function generic(idx) return m(idx, l._1:match("<%w+>$"), l._1:match("<%w>"), "") end
-local function lifetime_generic(idx) return m(idx, l._1:match("<%w+>$"), l._1:match("<'a, %w>"), "<'a>") end
-local function comma(idx) return m(idx, "%w+", ", ") end
+local function generic(idx) -- BUG:
+    return m(idx, l._1:match("<%w+>$"), l._1:match("<%w>"), "")
+end
+local function lifetime_generic(idx)
+    return m(idx, l._1:match("<%w+>$"), l._1:match("<'a, %w>"), "<'a>")
+end
+local function comma(idx)
+    return m(idx, "%w+", ", ")
+end
 local function lower(idx)
     return f(function(args)
-        local result = string.gsub(args[1][1], "%u%l", function(match) return "_" .. string.lower(match) end)
+        local result = string.gsub(args[1][1], "%u%l", function(match)
+            return "_" .. string.lower(match)
+        end)
         result = string.gsub(result, "%u", string.lower)
         result = string.gsub(result, "^_", "")
         return result
@@ -39,8 +47,13 @@ local function last_namespace(idx)
         return tokens[#tokens]
     end, idx)
 end
-local function pub(idx) return c(idx, { t(""), t("pub ") }) end
-local function field_type(idx) return sn(idx, { i(1, "field"), t(": "), i(2, "String"), t(",") }) end
+local function pub(idx)
+    return c(idx, { t(""), t("pub ") })
+end
+local function field_type(idx)
+    -- TODO: fix this
+    return sn(idx, { i(1, "field"), t(": "), i(2, "String"), t(",") })
+end
 local function std_collections(idx)
     return c(idx, {
         i(1, "std::vec"),
@@ -399,14 +412,25 @@ local function iflet()
             []
         };
         ]],
-        { i(1, "Some(inner)"), i(2, "variable"), i(3, "unimplemented!();") },
+        { i(1, "Some(inner)"), i(2, "variable"), i(3, "todo!();") },
+        { delimiters = "[]" }
+    )
+end
+local function ifletelse()
+    return fmt(
+        [[
+        if let [] = [] {
+            []
+        } else {
+            []
+        }
+        ]],
+        { i(1, "Some(inner)"), i(2, "variable"), i(3, "todo!();"), i(4, "todo!();") },
         { delimiters = "[]" }
     )
 end
 
 -- other useful snippets
-local function use_prelude() return t("use crate::prelude::*;") end
-local function std_error() return t("std::error::Error") end
 local function box_dyn_error(idx)
     return c(idx, {
         t("Box<dyn std::error::Error>"),
@@ -421,7 +445,7 @@ local function result_box_dyn_error(idx)
 end
 
 -- tokio, gRPC, Protobuf
-local function tokiomain()
+local function tokio_main()
     return fmt(
         [[
         #[tokio::main]
@@ -429,7 +453,7 @@ local function tokiomain()
             {body}
         }}
         ]],
-        { body = i(1, "unimplemented!();") }
+        { body = i(1, "todo!();") }
     )
 end
 local function incl_proto()
@@ -443,7 +467,7 @@ local function incl_proto()
         { repeat_duplicates = true }
     )
 end
-local function tonicasync()
+local function tonic_async()
     return fmt(
         [[
         #[tonic::async_trait]
@@ -470,12 +494,12 @@ local function rstfn()
         [[
         #[rstest]
         #[case(<input_val>, <expected_val>)]
-        fn test_<name>(#[case] <input>: <input_type>, #[case] expected: <expected_type>) {
+        fn <test_name>(#[case] <input>: <input_type>, #[case] expected: <expected_type>) {
             assert_eq!(expected, <method>(<input>));
         }
         ]],
         {
-            name = i(1, "foo_bar"),
+            test_name = i(1, "foo_bar"),
             input_val = i(2, "???"),
             expected_val = i(3, "???"),
             input = i(4, "input"),
@@ -490,8 +514,9 @@ local function rstmod()
     return fmta(
         [[
         mod test {
-            use super::*;
             use rstest::rstest;
+
+            use super::*;
 
             <rstfn>
         }
@@ -503,7 +528,7 @@ local function rstmod()
 end
 
 -- Axum + Mongodb
-local function mongomodel()
+local function mongo_model()
     return fmt(
         [=[
         use bson::oid::ObjectId;
@@ -639,29 +664,26 @@ return {
     s("clo",        fmta("|<>| {<>}", { i(1, "args"), i(2, "body") })),
 
     -- collections
-    s("vec",        c(1, { t("Vec::new()"), fmt("Vec::from({})", { i(1, "iterable") }), fmt("vec![{}]", { i(1) }) })),
-    s("hmap",       c(1, { t("HashMap::new()"), fmt("HashMap::from({})", { i(1, "iterable") }) })),
-    s("hset",       c(1, { t("HashSet::new()"), fmt("HashSet::from({})", { i(1, "iterable") }) })),
-    s("bmap",       c(1, { t("BTreeMap::new()"), fmt("BTreeMap::from({})", { i(1, "iterable") }) })),
-    s("bset",       c(1, { t("BTreeSet::new()"), fmt("BTreeSet::from({})", { i(1, "iterable") }) })),
+    s("vec",        c(1, { t("Vec::new()"),        fmt("Vec::from({})",        { i(1, "iterable") }),   fmt("vec![{}]", { i(1) }) })),
+    s("hmap",       c(1, { t("HashMap::new()"),    fmt("HashMap::from({})",    { i(1, "iterable") }) })),
+    s("hset",       c(1, { t("HashSet::new()"),    fmt("HashSet::from({})",    { i(1, "iterable") }) })),
+    s("bmap",       c(1, { t("BTreeMap::new()"),   fmt("BTreeMap::from({})",   { i(1, "iterable") }) })),
+    s("bset",       c(1, { t("BTreeSet::new()"),   fmt("BTreeSet::from({})",   { i(1, "iterable") }) })),
     s("bheap",      c(1, { t("BinaryHeap::new()"), fmt("BinaryHeap::from({})", { i(1, "iterable") }) })),
-    s("deque",      c(1, { t("VecDeque::new()"), fmt("VecDeque::from({})", { i(1, "iterable") }) })),
-    s("collect()",  c(1, { t("collect()"), fmt("collect::<{}>()", { i(1, "Type") }) })),
-    s("colvec()",   fmt("collect::<Vec<{}>>()", { i(1, "_") })),
-    s("colmap()",   fmt("collect::<HashMap<{}, {}>>()", { i(1, "KeyType"), i(2, "ValueType") })),
+    s("deque",      c(1, { t("VecDeque::new()"),   fmt("VecDeque::from({})",   { i(1, "iterable") }) })),
+    s("collect()",  c(1, { t("collect()"),         fmt("collect::<{}>()",      { i(1, "Type") }) })),
+    s("colvec()",   fmt("collect::<Vec<{}>>()",          { i(1, "_") })),
+    s("colmap()",   fmt("collect::<HashMap<{}, {}>>()",  { i(1, "KeyType"), i(2, "ValueType") })),
     s("colbmap()",  fmt("collect::<BTreeMap<{}, {}>>()", { i(1, "KeyType"), i(2, "ValueType") })),
-    s("colset()",   fmt("collect::<HashSet<{}>>()", { i(1, "_") })),
-    s("colbset()",  fmt("collect::<BTreeSet<{}>>()", { i(1, "_") })),
-    s("colheap()",  fmt("collect::<BinaryHeap<{}>>()", { i(1, "_") })),
-    s("coldeque()", fmt("collect::<VecDeque<{}>>()", { i(1, "_") })),
+    s("colset()",   fmt("collect::<HashSet<{}>>()",      { i(1, "_") })),
+    s("colbset()",  fmt("collect::<BTreeSet<{}>>()",     { i(1, "_") })),
+    s("colheap()",  fmt("collect::<BinaryHeap<{}>>()",   { i(1, "_") })),
+    s("coldeque()", fmt("collect::<VecDeque<{}>>()",     { i(1, "_") })),
 
-    -- derive
-    s("derive",   derive(1)),
-    s("derdebug", t("#[derive(Debug)]")),
-    s("derserde", t("#[derive(Debug, Serialize, Deserialize)]")),
     -- attributes
-    s("serde",    fmt("#[serde({})]", { i(1, "attributes") })),
-    s("strum",    fmt("#[strum({})]", { i(1, "attrs") })),
+    s("derive",   derive(1)),
+    s("serde",    fmt("#[serde({})]",    { i(1, "attributes") })),
+    s("strum",    fmt("#[strum({})]",    { i(1, "attrs") })),
     s("validate", fmt("#[validate({})]", { i(1, "validator") })),
     -- diagnostics
     s("deadcode", c(1, { t("#![allow(dead_code)]"), t("#[allow(dead_code)]") })),
@@ -669,41 +691,50 @@ return {
     s("freedom",  c(1, { t("#![allow(dead_code, unused)]"), t("#[allow(dead_code, unused)]") })),
 
     -- struct & enum
-    s("enum",   enum()),
-    s("struct", struct()),
-    s("impl",   impl()),
-    s("impl_display", impl_display()),
-    s("impl_ord", impl_ord()),
+    s("enum",             enum()),
+    s("struct",           struct()),
+    s("impl",             impl()),
+    s("impl_display",     impl_display()),
+    s("impl_ord",         impl_ord()),
     s("impl_partial_ord", impl_partial_ord()),
-    s("impl_default", impl_default()),
-    s("impl_as_ref", impl_as_ref()),
-    s("impl_deref", impl_deref()),
-    -- s("impl_into_iter", impl_into_iter()), -- BUG:
-    s("impl_from", impl_from()),
+    s("impl_default",     impl_default()),
+    s("impl_as_ref",      impl_as_ref()),
+    s("impl_deref",       impl_deref()),
+    -- s("impl_into_iter",   impl_into_iter()),   -- BUG:
+    s("impl_from",        impl_from()),
 
     -- control flow
-    s("for",      for_()),
-    s("match",    match()),
-    s("letmatch", letmatch()),
-    s("ifelse",   ifelse()),
-    s("iflet",    iflet()),
+    s("for",       for_()),
+    s("match",     match()),
+    s("letmatch",  letmatch()),
+    s("ifelse",    ifelse()),
+    s("iflet",     iflet()),
+    s("ifletelse", ifletelse()),
 
     -- test
     -- s("rstmod", rstmod()),
     -- s("rstfn",  rstfn()),
 
+    -- tracing
+    s("tinfo",  fmta("tracing::info!(<>)",  { i(1) })),
+    s("tdebug", fmta("tracing::debug!(<>)", { i(1) })),
+    s("twarn",  fmta("tracing::warn!(<>)",  { i(1) })),
+    s("terror", fmta("tracing::error!(<>)", { i(1) })),
+
     -- tokio
-    s("tokiomain",  tokiomain()), -- choice node for main function or just attribute
+    s("tokiomain",  tokio_main()), -- choice node for main function or just attribute
 
     -- gRPC + Protobuf snippets
     s("incl_proto", incl_proto()), -- choice node to include server/client imports
-    s("tonicasync", tonicasync()),
+    s("tonicasync", tonic_async()),
 
     -- Axum + Mongodb
-    s("mongomodel",         mongomodel()),
+    s("mongomodel",         mongo_model()),
     s("crudhandlers_mongo", crudhandlers_mongo()),
 
     -- other
-    s("use_prelude", use_prelude()),
+    s("use_prelude", t("use crate::prelude::*;")),
+    s("stderror",    box_dyn_error(1)),
+    s("reserr",      result_box_dyn_error(1)),
 }
 -- stylua: ignore end

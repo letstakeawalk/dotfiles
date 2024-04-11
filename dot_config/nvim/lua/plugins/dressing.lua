@@ -8,7 +8,7 @@ return {
             win_options = { winblend = 0 },
             override = function(conf) -- conf: api.nvim_open_win() parameter
                 if vim.startswith(conf.title, " Are you sure") then
-                    return require("utils").ui.editor_center(conf)
+                    return require("utils").ui.config_editor_center(conf)
                 end
                 conf.anchor = "NW"
                 conf.row = 1

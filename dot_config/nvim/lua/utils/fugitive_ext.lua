@@ -131,7 +131,8 @@ local function fugitive_resized()
 end
 
 --- Helper function to open the help floating window
-local function help_float_open()
+---@param opts { force: boolean }
+local function help_open(opts)
     if float_is_valid() then
         return
     end
@@ -142,9 +143,9 @@ local function help_float_open()
     ---@type integer|nil: fugitive window height
     vim.g.fugitive_ext_win_height = vim.api.nvim_win_get_height(0)
 
-    -- if vim.g.fugitive_ext_win_height and vim.g.fugitive_ext_win_height < 35 then
-    --     return
-    -- end
+    if not opts.force and vim.g.fugitive_ext_win_height < 40 then
+        return
+    end
 
     local buf = vim.api.nvim_create_buf(false, true)
     local text, padding, num_rows = generate_help_txt()
@@ -195,9 +196,9 @@ function M.help.open()
     end
     if fugitive_resized() then
         M.help.close()
-        help_float_open()
+        help_open({ force = false })
     else
-        help_float_open()
+        help_open({ force = false })
     end
 end
 
@@ -216,7 +217,7 @@ function M.help.toggle()
         ---@type boolean|nil: Whether the help window is closed
         vim.g.fugitive_ext_disabled = true
     else
-        help_float_open()
+        help_open({ force = true })
         vim.g.fugitive_ext_disabled = false
     end
 end

@@ -17,7 +17,7 @@ vim.keymap.set("n", "?",  fugitive_ext.help.toggle,         { buffer = true })
 
 fugitive_ext.help.update_help_header()
 
-vim.api.nvim_create_autocmd({ "BufEnter", "WinLeave", "VimResized", "FocusGained", "FocusLost" }, {
+vim.api.nvim_create_autocmd({ "BufEnter", "WinLeave", "WinResized", "VimResized", "FocusGained", "FocusLost" }, {
     group = vim.api.nvim_create_augroup("FugitiveExtOpen", { clear = true }),
     buffer = 0,
     callback = fugitive_ext.help.open,

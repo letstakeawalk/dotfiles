@@ -318,9 +318,16 @@ end
 
 -- stylua: ignore
 local function extra()
-    vim.api.nvim_set_hl(0, "FugitiveExtSection", { fg = nord.c09_glcr, bold = true })
-    vim.api.nvim_set_hl(0, "FugitiveExtKey",     { fg = nord.c08_teal, bold = true })
-    vim.api.nvim_set_hl(0, "FugitiveExtDesc",    { fg = nord.c04_wht_dk })
+    vim.api.nvim_set_hl(0, "diffLine",                 { fg = nord.c00_blk, bg = nord.c08_teal })
+    vim.api.nvim_set_hl(0, "fugitiveUntrackedSection", { fg = nord.c04_wht_dk })
+    vim.api.nvim_set_hl(0, "fugitiveUnstagedSection",  { fg = nord.c04_wht_dk })
+    vim.api.nvim_set_hl(0, "fugitiveStagedSection",    { fg = nord.c04_wht_dk })
+    vim.api.nvim_set_hl(0, "fugitiveSection",          { fg = nord.c04_wht_dk })
+    vim.api.nvim_set_hl(0, "fugitiveHunk",             { fg = nord.c03_gry_br })
+    vim.api.nvim_set_hl(0, "fugitiveHash",             { fg = nord.c03_gry_br })
+    vim.api.nvim_set_hl(0, "FugitiveExtSection",       { fg = nord.c09_glcr, bold = true })
+    vim.api.nvim_set_hl(0, "FugitiveExtKey",           { fg = nord.c08_teal, bold = true })
+    vim.api.nvim_set_hl(0, "FugitiveExtDesc",          { fg = nord.c04_wht_dk })
 end
 
 ---Applies custom highlights

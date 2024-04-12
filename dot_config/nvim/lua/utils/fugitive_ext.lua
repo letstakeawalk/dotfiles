@@ -1,7 +1,91 @@
 local utils = require("utils")
 local M = vim.defaulttable()
 
-local function generate_help_txt()
+---@return boolean: Whether the floating window is valid
+local function float_is_valid()
+    -- stylua: ignore
+    return vim.g.fugitive_ext_float_winid
+        and vim.api.nvim_win_is_valid(vim.g.fugitive_ext_float_winid)
+        or false
+end
+
+---@return boolean: Whether the fugitive window is resized
+local function fugitive_resized()
+    -- stylua: ignore
+    return vim.g.fugitive_ext_win_width
+        and vim.g.fugitive_ext_win_height
+        and vim.api.nvim_win_get_width(0) ~= vim.g.fugitive_ext_win_width
+        or vim.api.nvim_win_get_height(0) ~= vim.g.fugitive_ext_win_height
+end
+
+--- Helper function to open the help floating window
+---@param opts { force: boolean }
+local function help_open(opts)
+    if float_is_valid() then
+        return
+    end
+    M.help.close()
+
+    ---@type integer|nil: fugitive window width
+    vim.g.fugitive_ext_win_width = vim.api.nvim_win_get_width(0)
+    ---@type integer|nil: fugitive window height
+    vim.g.fugitive_ext_win_height = vim.api.nvim_win_get_height(0)
+
+    if not opts.force and vim.g.fugitive_ext_win_height < 40 then
+        return
+    end
+
+    local buf = vim.api.nvim_create_buf(false, true)
+    local help_text = vim.g.fugitive_ext_help.text
+    local padding = vim.g.fugitive_ext_help.padding
+    local max_num_tips = vim.g.fugitive_ext_help.num_tips
+
+    vim.api.nvim_buf_set_text(buf, 0, 0, 0, 0, help_text)
+
+    ---@type integer|nil: floating window id
+    vim.g.fugitive_ext_float_winid = vim.api.nvim_open_win(buf, false, {
+        relative = "win",
+        anchor = "NW",
+        width = vim.api.nvim_win_get_width(0),
+        height = #help_text,
+        style = "minimal",
+        border = { { "─", "WinSeparator" }, { "─", "WinSeparator" }, { "─", "WinSeparator" }, "", "", "", "", "" },
+        row = vim.api.nvim_win_get_height(0) - (#help_text + 1), -- #text + #border_lines
+        col = 0,
+        -- focusable = false,
+        noautocmd = true,
+    })
+
+    -- nvim_buf_add_highlight
+    -- stylua: ignore start
+    local nav_key          = padding.nav.key  + padding.key
+    local nav_val          = nav_key          + padding.nav.val          + padding.desc
+    local staging_key      = nav_val          + padding.staging.key      + padding.key
+    local staging_val      = staging_key      + padding.staging.val      + padding.desc
+    local commit_key       = staging_val      + padding.commit.key       + padding.key
+    local commit_val       = commit_key       + padding.commit.val       + padding.desc
+    local rebase_stash_key = commit_val       + padding.rebase_stash.key + padding.key
+    local rebase_stash_val = rebase_stash_key + padding.rebase_stash.val + padding.desc
+
+    vim.api.nvim_buf_add_highlight(buf, -1, "FugitiveExtSection", 0, 0, -1)
+    for i = padding.header + 1, max_num_tips + 1 do
+        vim.api.nvim_buf_add_highlight(buf, -1, "FugitiveExtKey",  i, 0,                nav_key)
+        vim.api.nvim_buf_add_highlight(buf, -1, "FugitiveExtDesc", i, nav_key,          nav_val)
+        vim.api.nvim_buf_add_highlight(buf, -1, "FugitiveExtKey",  i, nav_val,          staging_key)
+        vim.api.nvim_buf_add_highlight(buf, -1, "FugitiveExtDesc", i, staging_key,      staging_val)
+        vim.api.nvim_buf_add_highlight(buf, -1, "FugitiveExtKey",  i, staging_val,      commit_key)
+        vim.api.nvim_buf_add_highlight(buf, -1, "FugitiveExtDesc", i, commit_key,       commit_val)
+        vim.api.nvim_buf_add_highlight(buf, -1, "FugitiveExtKey",  i, commit_val,       rebase_stash_key)
+        vim.api.nvim_buf_add_highlight(buf, -1, "FugitiveExtDesc", i, rebase_stash_key, rebase_stash_val)
+    end
+    -- stylua: ignore end
+end
+
+--- Generate text and extra info for the help floating window (`vim.g.fugitive_ext_help`)
+function M.help.generate()
+    if vim.g.fugitive_ext_help then
+        return
+    end
     local align = require("plenary.strings").align_str
     -- stylua: ignore
     local text = {
@@ -68,9 +152,10 @@ local function generate_help_txt()
         commit = {},
         rebase_stash = {},
     }
-    local num_rows = 0
+    ---@type integer: Maximum number of tooltips among all sections
+    local num_tips = 0
     for section, tips in pairs(text) do
-        num_rows = math.max(num_rows, #tips)
+        num_tips = math.max(num_tips, #tips)
         local klen, vlen = 0, 0
         for _, tip in ipairs(tips) do
             klen = math.max(klen, #tip[1])
@@ -91,7 +176,7 @@ local function generate_help_txt()
     for _ = 1, padding.header do
         table.insert(lines, "")
     end
-    for i = 1, num_rows do
+    for i = 1, num_tips do
         text.nav[i] = text.nav[i] or {}
         text.staging[i] = text.staging[i] or {}
         text.commit[i] = text.commit[i] or {}
@@ -110,86 +195,10 @@ local function generate_help_txt()
     for _ = 1, padding.footer do
         table.insert(lines, "")
     end
-    return lines, padding, num_rows
+    vim.g.fugitive_ext_help = { text = lines, padding = padding, num_tips = num_tips }
 end
 
----@return boolean: Whether the floating window is valid
-local function float_is_valid()
-    -- stylua: ignore
-    return vim.g.fugitive_ext_float_winid
-        and vim.api.nvim_win_is_valid(vim.g.fugitive_ext_float_winid)
-        or false
-end
-
----@return boolean: Whether the fugitive window is resized
-local function fugitive_resized()
-    -- stylua: ignore
-    return vim.g.fugitive_ext_win_width
-        and vim.g.fugitive_ext_win_height
-        and vim.api.nvim_win_get_width(0) ~= vim.g.fugitive_ext_win_width
-        or vim.api.nvim_win_get_height(0) ~= vim.g.fugitive_ext_win_height
-end
-
---- Helper function to open the help floating window
----@param opts { force: boolean }
-local function help_open(opts)
-    if float_is_valid() then
-        return
-    end
-    M.help.close()
-
-    ---@type integer|nil: fugitive window width
-    vim.g.fugitive_ext_win_width = vim.api.nvim_win_get_width(0)
-    ---@type integer|nil: fugitive window height
-    vim.g.fugitive_ext_win_height = vim.api.nvim_win_get_height(0)
-
-    if not opts.force and vim.g.fugitive_ext_win_height < 40 then
-        return
-    end
-
-    local buf = vim.api.nvim_create_buf(false, true)
-    local text, padding, num_rows = generate_help_txt()
-    vim.api.nvim_buf_set_text(buf, 0, 0, 0, 0, text)
-
-    ---@type integer|nil: floating window id
-    vim.g.fugitive_ext_float_winid = vim.api.nvim_open_win(buf, false, {
-        relative = "win",
-        anchor = "NW",
-        width = vim.api.nvim_win_get_width(0),
-        height = #text,
-        style = "minimal",
-        border = { { "─", "WinSeparator" }, { "─", "WinSeparator" }, { "─", "WinSeparator" }, "", "", "", "", "" },
-        row = vim.api.nvim_win_get_height(0) - (#text + 1), -- #text + #border_lines
-        col = 0,
-        -- focusable = false,
-        noautocmd = true,
-    })
-
-    -- nvim_buf_add_highlight
-    -- stylua: ignore start
-    local nav_key          = padding.nav.key  + padding.key
-    local nav_val          = nav_key          + padding.nav.val          + padding.desc
-    local staging_key      = nav_val          + padding.staging.key      + padding.key
-    local staging_val      = staging_key      + padding.staging.val      + padding.desc
-    local commit_key       = staging_val      + padding.commit.key       + padding.key
-    local commit_val       = commit_key       + padding.commit.val       + padding.desc
-    local rebase_stash_key = commit_val       + padding.rebase_stash.key + padding.key
-    local rebase_stash_val = rebase_stash_key + padding.rebase_stash.val + padding.desc
-
-    vim.api.nvim_buf_add_highlight(buf, -1, "FugitiveExtSection", 0, 0, -1)
-    for i = padding.header + 1, num_rows + 1 do
-        vim.api.nvim_buf_add_highlight(buf, -1, "FugitiveExtKey",  i, 0,                nav_key)
-        vim.api.nvim_buf_add_highlight(buf, -1, "FugitiveExtDesc", i, nav_key,          nav_val)
-        vim.api.nvim_buf_add_highlight(buf, -1, "FugitiveExtKey",  i, nav_val,          staging_key)
-        vim.api.nvim_buf_add_highlight(buf, -1, "FugitiveExtDesc", i, staging_key,      staging_val)
-        vim.api.nvim_buf_add_highlight(buf, -1, "FugitiveExtKey",  i, staging_val,      commit_key)
-        vim.api.nvim_buf_add_highlight(buf, -1, "FugitiveExtDesc", i, commit_key,       commit_val)
-        vim.api.nvim_buf_add_highlight(buf, -1, "FugitiveExtKey",  i, commit_val,       rebase_stash_key)
-        vim.api.nvim_buf_add_highlight(buf, -1, "FugitiveExtDesc", i, rebase_stash_key, rebase_stash_val)
-    end
-    -- stylua: ignore end
-end
-
+--- Open the help floating window
 function M.help.open()
     if vim.g.fugitive_ext_disabled then
         return
@@ -202,6 +211,7 @@ function M.help.open()
     end
 end
 
+--- Close the help floating window
 function M.help.close()
     if float_is_valid() then
         vim.api.nvim_win_close(vim.g.fugitive_ext_float_winid, true)
@@ -211,6 +221,7 @@ function M.help.close()
     end
 end
 
+--- Toggle the help floating window
 function M.help.toggle()
     if float_is_valid() then
         M.help.close()
@@ -222,7 +233,8 @@ function M.help.toggle()
     end
 end
 
-function M.help.update_help_header()
+--- Update the help header in the fugitive buffer
+function M.ui.update_help_header()
     for i, line in ipairs(vim.api.nvim_buf_get_lines(0, 0, 4, false)) do
         if vim.startswith(line, "Help: g?") then
             vim.bo.modifiable = true
@@ -236,6 +248,7 @@ function M.help.update_help_header()
     end
 end
 
+--- Confirm to discard changes
 function M.cmd.discard_changes()
     utils.ui.input({ prompt = "Are you sure to discard changes? (y/n)" }, function(input)
         if input == "y" then
@@ -244,6 +257,7 @@ function M.cmd.discard_changes()
     end)
 end
 
+--- :Git push <options>
 function M.cmd.git_push()
     -- utils.ui.input({ prompt = "Git push <options>" }, function(input)
     --     vim.cmd("Git push " .. input)
@@ -253,6 +267,7 @@ function M.cmd.git_push()
     vim.api.nvim_feedkeys(escaped, "n", true)
 end
 
+--- Confirm to `commit --amend --no-edit`
 function M.cmd.commit_amend_no_edit()
     utils.ui.input({ prompt = "Are you sure to `commit --amend --no-edit`? (y/n)" }, function(input)
         if input == "y" then
@@ -277,5 +292,18 @@ M.nav.next_hunk           = "i"
 M.nav.expand_prev_hunk    = "[c"
 M.nav.expand_next_hunk    = "]c"
 -- stylua: ignore start
+
+--- TODO: Set highlight for conventional commit message: <type>[optional scope]: <description>
+--- use treesitter instead of syntax match below
+--[[ function M.ui.set_commit_msg_highlight()
+    vim.cmd("syntax match ConventionalCommitType /\\v^\\w+:/ contained")
+    vim.cmd("syntax match ConventionalCommitScope /\\v:\\s\\w+/ contained")
+    vim.cmd("syntax match ConventionalCommitDesc /\\v:\\s.+/ contained")
+    vim.cmd("highlight link ConventionalCommitType Type")
+    vim.cmd("highlight link ConventionalCommitScope Type")
+    vim.cmd("highlight link ConventionalCommitDesc Comment")
+end ]]
+
+
 
 return M

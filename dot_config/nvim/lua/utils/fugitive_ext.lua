@@ -242,7 +242,7 @@ function M.ui.update_help_header()
             vim.api.nvim_buf_set_lines(0, i - 1, i, false, { "Help: ?, Doc: g?" })
             vim.bo.modifiable = false
             vim.bo.readonly = true
-            vim.api.nvim_buf_add_highlight(0, -1, "fugitiveHelpHeader", i - 1, 9, 12)
+            vim.api.nvim_buf_add_highlight(0, -1, "fugitiveHelpHeader", i - 1, 9, 13)
             break
         end
     end

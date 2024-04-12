@@ -90,7 +90,7 @@ end
 local function syntax()
     vim.api.nvim_set_hl(0, "Boolean",        { fg = nord.c09_glcr })    -- a boolean constant: true, false
     vim.api.nvim_set_hl(0, "Character",      { fg = nord.c14_grn })     -- any character constant: 'c', '\n'
-    vim.api.nvim_set_hl(0, "Comment",        { fg = nord.c03_gry_br, --[[italic = true]] })
+    vim.api.nvim_set_hl(0, "Comment",        { fg = nord.c03_gry_br, italic = true })
     vim.api.nvim_set_hl(0, "Conditional",    { fg = nord.c09_glcr })    -- if, then, else, endif, switch, etc.
     vim.api.nvim_set_hl(0, "Constant",       { fg = nord.fg })          -- any constant
     vim.api.nvim_set_hl(0, "Decorator",      { fg = nord.c12_orng })    -- ??

@@ -1,19 +1,116 @@
 return {
     {
-        "tpope/vim-fugitive", -- git wrapper
-        enabled = true,
-        event = "BufRead",
+        dir = "$WORKSPACE/Dev/Projects/fugitive-ext.nvim",
         dependencies = {
+            "tpope/vim-fugitive", -- git interface
             "junegunn/gv.vim", -- git commit browser
             "tpope/vim-rhubarb", -- fugitive extension for GitHub
         },
+        -- stylua: ignore
         keys = {
-            { "<leader>gg", "<cmd>vert Git<cr>", desc = "Fugitive" },
+            { "<leader>gg", "<cmd>vert Git<cr>",       desc = "Fugitive" },
             { "<leader>gq", "<cmd>Git<cr><cmd>bd<cr>", desc = "Close Fugitive" },
-            { "<leader>gc", "<cmd>GV<cr>", desc = "Commit Browser (GV)" },
-            { "<leader>gC", "<cmd>GV!<cr>", desc = "BufCommit Browser (GV!)" },
-            -- { "<leader>gd", "<cmd>Gvdiffsplit<cr>", desc = "Diff split" },
+            { "<leader>gc", "<cmd>GV<cr>",             desc = "Commit Browser (GV)" },
+            { "<leader>gC", "<cmd>GV!<cr>",            desc = "BufCommit Browser (GV!)" },
         },
+        config = function()
+            local fugitive_ext = require("fugitive-ext")
+            fugitive_ext:setup({
+                _debug = false,
+                fugitive = {
+                    line_number = false,
+                    relative_number = false,
+                },
+                hint = {
+                    title = true,
+                    visibility = false,
+                    sections = {
+                        {
+                            title = "Navigation",
+                            entries = {
+                                { "gu", "untracked" },
+                                { "gU", "unstaged" },
+                                { "gs", "staged" },
+                                { "gp", "unpushed" },
+                                { "gP", "unpulled" },
+                                { "gr", "rebasing" },
+                                { "gi", "exclude/ignore" },
+                                { "gI", "exclude/ignore++" },
+                                { "i", "expand next" },
+                                { "(, )", "goto prev/next" },
+                                { "[[, ]]", "prev/next section" },
+                            },
+                        },
+                        {
+                            title = "Stage/Stash",
+                            entries = {
+                                { "s", "stage" },
+                                { "u", "unstage" },
+                                { "-, a", "stage/unstage" },
+                                { "X", "discard" },
+                                { "=", "inline diff" },
+                                { "I", "patch" },
+                                { "coo", "checkout" },
+                                { "czz, czw", "push stash" },
+                                { "czp", "pop stash" },
+                                { "cza", "apply stash" },
+                                { "cz<sp>", ":Git stash" },
+                            },
+                        },
+                        {
+                            title = "Commit",
+                            entries = {
+                                { "cc", "commit" },
+                                { "ca", "amend" },
+                                { "ce", "amend no-edit" },
+                                { "cw", "reword" },
+                                { "cf, cF", "fixup!" },
+                                { "cs, cS", "squash!" },
+                                { "crc", "revert commit" },
+                                { "c<sp>", ":Git commit" },
+                                { "cr<sp>", ":Git revert" },
+                                { "cm<cp>", ":Git merge" },
+                                { "p", ":Git push" },
+                            },
+                        },
+                        {
+                            title = "Rebase",
+                            entries = {
+                                { "ri", "interactive" },
+                                { "rr", "continue" },
+                                { "rs", "skip commit" },
+                                { "ra", "abort" },
+                                { "re", "edit todo" },
+                                { "rw", "mark reword" },
+                                { "rm", "mark edit" },
+                                { "rd", "mark drop" },
+                                { "r<sp>", ":Git rebase" },
+                                { "P", ":Git pull" },
+                            },
+                        },
+                    },
+                },
+            })
+
+            vim.api.nvim_create_autocmd("FileType", {
+                group = vim.api.nvim_create_augroup("FugitiveExtKeymap", { clear = true }),
+                pattern = "fugitive",
+                callback = function()
+                    -- stylua: ignore start
+                    local actions = require("fugitive-ext.actions")
+                    vim.keymap.set("n", "p",  actions.push_cmdline,              { desc = ":Git push",       buffer = true })
+                    vim.keymap.set("n", "P",  actions.pull_cmdline,              { desc = ":Git pull",       buffer = true })
+                    vim.keymap.set("n", "X",  actions.discard_confirm,           { desc = "Discard changes", buffer = true })
+                    vim.keymap.set("n", "gu", actions.goto_unstaged,             { desc = "Goto unstaged",   buffer = true })
+                    vim.keymap.set("n", "gU", actions.goto_untracked,            { desc = "Goto untracked",  buffer = true })
+                    vim.keymap.set("n", "h",  actions.goto_prev_hunk,            { desc = "Prev hunk",       buffer = true })
+                    vim.keymap.set("n", "k",  actions.goto_next_hunk,            { desc = "Next hunk",       buffer = true })
+                    vim.keymap.set("n", "(",  actions.collapse_curr_expand_prev, { desc = "Previous hunk",   buffer = true })
+                    vim.keymap.set("n", ")",  actions.collapse_curr_expand_next, { desc = "Next hunk",       buffer = true })
+                    -- stylua: ignore end
+                end,
+            })
+        end,
     },
     {
         "lewis6991/gitsigns.nvim",

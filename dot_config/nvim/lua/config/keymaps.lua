@@ -51,6 +51,8 @@ set("n", "<C-d>",      "<C-d>zz",                { desc = "Scroll down" })
 set("n", "<C-u>",      "<C-u>zz",                { desc = "Scroll up" })
 set("n", "<PageDown>", "<C-d>zz",                { desc = "Scroll down" })
 set("n", "<PageUp>",   "<C-u>zz",                { desc = "Scroll up" })
+set("n", "<C-e>",      "10<C-e>",                { desc = "Scroll down" })
+set("n", "<C-y>",      "10<C-y>",                { desc = "Scroll up" })
 -- buffer/tab/window navigation/management
 set("n", "<C-t>", function() -- better buffer switching
     local success, _ = pcall(vim.cmd.e, "#") -- ":e #" == <C-^> (# := alternate buffer register)

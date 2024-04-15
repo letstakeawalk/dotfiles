@@ -11,7 +11,6 @@ return {
         local utils = require("lualine.utils.mode")
         local nord = require("utils.nord")
         local nord_theme = require("lualine.themes.nord")
-        local harpoon = require("harpoon")
         nord_theme.normal.a.bg = nord.c09_glcr
         nord_theme.normal.b.bg = nord.c03_gry
         nord_theme.normal.b.fg = nord.c04_wht
@@ -26,15 +25,18 @@ return {
         end
 
         local function harpoon_files()
+            local harpoon = require("harpoon")
             local contents = {}
             local current_file_path = vim.fn.fnamemodify(vim.fn.expand("%:p"), ":.")
             for index = 1, harpoon:list():length() do
                 local harpoon_file_path = harpoon:list():get(index).value
                 local file_name = harpoon_file_path == "" and "(empty)" or vim.fn.fnamemodify(harpoon_file_path, ":t")
                 -- rust: foo/mod.rs -> foo/mod.rs
-                file_name = file_name == "mod.rs" and vim.fn.fnamemodify(harpoon_file_path, ":h:t") .. file_name or file_name
+                file_name = file_name == "mod.rs" and vim.fn.fnamemodify(harpoon_file_path, ":h:t") .. "/" .. file_name or file_name
                 -- python: foo/__init__.py -> foo/__init__.py
-                file_name = file_name == "__init__.py" and vim.fn.fnamemodify(harpoon_file_path, ":h:t") .. "init.py" or file_name
+                file_name = file_name == "__init__.py" and vim.fn.fnamemodify(harpoon_file_path, ":h:t") .. "/init.py" or file_name
+                -- lua: foo/init.lua -> foo/init.lua
+                file_name = file_name == "init.lua" and vim.fn.fnamemodify(harpoon_file_path, ":h:t") .. "/" .. file_name or file_name
 
                 if current_file_path == harpoon_file_path then
                     contents[index] = string.format("%%#HarpoonNumberActive#  %s. %%#HarpoonActive#%s  ", index, file_name)

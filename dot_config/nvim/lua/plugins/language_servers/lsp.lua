@@ -36,8 +36,8 @@ return {
     },
     {
         "neovim/nvim-lspconfig",
+        event = "VeryLazy",
         dependencies = { "folke/neodev.nvim" },
-        event = { "BufReadPre", "BufNewFile" },
         opts = {
             bashls = {},
             cssls = {},
@@ -52,6 +52,7 @@ return {
                     Lua = {
                         runtime = { version = "LuaJIT" },
                         diagnostics = { globals = { "vim" } }, -- Get the language server to recognize the `vim` global
+                        completion = { callSnippet = "Replace" },
                         workspace = {
                             library = vim.api.nvim_get_runtime_file("", true), -- Make the server aware of Neovim runtime files
                             checkThirdParty = false,
@@ -85,10 +86,9 @@ return {
                 handlers = {
                     -- filter Hint and Info diagnostics
                     ["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
-                        result.diagnostics = vim.tbl_filter(
-                            function(diag) return diag.severity < vim.diagnostic.severity.INFO end,
-                            result.diagnostics
-                        )
+                        result.diagnostics = vim.tbl_filter(function(diag)
+                            return diag.severity < vim.diagnostic.severity.INFO
+                        end, result.diagnostics)
                         vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx, config)
                     end,
                 },
@@ -162,7 +162,13 @@ return {
             -- rust_analyzer = {}, -- rust-tools.nvim
         },
         config = function(_, servers)
-            require("neodev").setup() -- important to setup before lspconfig
+            require("neodev").setup({ -- important to setup before lspconfig
+                override = function(root_dir, options)
+                    if root_dir == vim.fn.expand("$CHEZMOI_SOURCE/dot_config/nvim") then
+                        options.plugins = true
+                    end
+                end,
+            })
             local lsp_config = require("lspconfig")
 
             -- Add additional capabilities supported by nvim-cmp
@@ -179,7 +185,9 @@ return {
             local diagnostic_goto = function(next, severity)
                 local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
                 severity = severity and vim.diagnostic.severity[severity] or nil
-                return function() go({ severity = severity }) end
+                return function()
+                    go({ severity = severity })
+                end
             end
             -- stylua: ignore
             local toggle_diagnostic = function()
@@ -197,7 +205,6 @@ return {
             vim.keymap.set("n", "]w", diagnostic_goto(true, "WARN"),   { desc = "Goto next warning" })
             vim.keymap.set("n", "[w", diagnostic_goto(false, "WARN"),  { desc = "Goto previous warning" })
             vim.keymap.set( "n", "<leader>ro", function() vim.notify("Command not supported", vim.log.levels.WARN) end, { desc = "Organize Imports" })
-            -- stylua: ignore end
 
             -- keymaps for LS attached buffers
             vim.api.nvim_create_autocmd("LspAttach", {
@@ -213,13 +220,8 @@ return {
                     vim.keymap.set("n", "<leader>dd", toggle_diagnostic, bufopts("Diagnostic Toggle"))
 
                     -- inlay hint: nightly feature
-                    if vim.version.cmp(vim.version(), { 0, 10 }) == 1 then
-                        vim.keymap.set(
-                            "n",
-                            "<leader>dh",
-                            function() vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled()) end,
-                            bufopts("InlayHint Toggle")
-                        )
+                    if vim.fn.has("nvim-0.10.0") == 1 then
+                        vim.keymap.set("n", "<leader>dh", function() vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled()) end, bufopts("InlayHint Toggle"))
 
                         local client = vim.lsp.get_client_by_id(ev.data.client_id)
                         if client.server_capabilities.inlayHintProvider then
@@ -231,6 +233,7 @@ return {
                     -- TODO: codelens support
                 end,
             })
+            -- stylua: ignore end
 
             --------------------------------------------------------------------------------
             -- UI customization ------------------------------------------------------------
@@ -252,6 +255,7 @@ return {
             end
 
             -- display the source of diagnostic
+            -- stylua: ignore
             vim.diagnostic.config({
                 virtual_text = false,
                 float = { -- format as `i: message (code) [src]`

@@ -93,8 +93,8 @@ return {
                 },
                 help_tags = {
                     mappings = {
-                        i = { ["<CR>"] = actions.select_vert_hori, },
-                        n = { ["<CR>"] = actions.select_vert_hori, }
+                        i = { ["<CR>"] = actions.select_vertical_if_wide_enough, },
+                        n = { ["<CR>"] = actions.select_vertical_if_wide_enough, }
                     }
                 }
             },

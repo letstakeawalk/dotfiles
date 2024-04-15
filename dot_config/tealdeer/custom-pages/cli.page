@@ -23,6 +23,7 @@
 `pandoc                  Document format converter`
 `rg                      Recursive Line search (grep alt)`
 `sd                      Find & Replace (sed alt)`
+`tokei                   Count code`
 `watchman                Watch files and take action`
 `xz                      Compress or decompress`
 `z (zoxide)              Filesystem navigator (cd alt)`

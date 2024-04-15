@@ -26,3 +26,4 @@ no-multiple-blanks: false
 no-trailing-spaces: false
 single-trailing-newline: false
 link-fragments: false
+no-inline-html: false

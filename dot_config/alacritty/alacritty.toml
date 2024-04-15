@@ -144,9 +144,7 @@ program = "/opt/homebrew/bin/zsh"
 [window]
 decorations = "buttonless"
 dynamic_padding = true
-# opacity = 1.0
-# opacity = 0.97 # good
-opacity = 0.95
+opacity = 0.97             # good values: 0.97, 0.95, 0.93
 startup_mode = "Maximized"
 option_as_alt = "Both"     # escape macos option modifier
 

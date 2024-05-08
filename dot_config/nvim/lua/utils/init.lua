@@ -1,11 +1,11 @@
-utils = vim.defaulttable()
+local utils = vim.defaulttable()
 
 --- Wrapper around `vim.ui.input()` to abort if the input is empty string or nil.
 ---@param opts { prompt: string|nil, default: string|nil, completion: string|nil, highlight: fun() }
 ---@param on_confirm function(input: string|nil): nil
 function utils.ui.input(opts, on_confirm)
     vim.ui.input(opts, function(input)
-        if input == nil or #utils.strings.strip(input) == 0 then
+        if input == nil or #utils.strings.trim(input) == 0 then
             return
         end
         on_confirm(input)
@@ -74,7 +74,7 @@ end
 --- Strip leading and trailing whitespaces from a string.
 ---@param str string
 ---@return string
-function utils.strings.strip(str)
+function utils.strings.trim(str)
     return string.match(str, "^%s*(.-)%s*$")
 end
 
@@ -89,3 +89,5 @@ function utils.print_all_buffers()
         vim.print(string.format("%d: %s, ft: %s, listed: %s, hidden: %s", buf, name, filetype, listed, hidden))
     end
 end
+
+return utils

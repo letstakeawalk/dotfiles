@@ -59,6 +59,10 @@ return {
                         },
                         telemetry = { enable = false }, -- Do not send telemetry data containing a randomized but unique identifier
                         format = { enable = false },
+                        hint = {
+                            enable = true,
+                            arrayIndex = "Disable",
+                        },
                         -- TODO: check options: format, inlay hint, codelens
                     },
                 },
@@ -172,7 +176,7 @@ return {
             local lsp_config = require("lspconfig")
 
             -- Add additional capabilities supported by nvim-cmp
-            local capabilities = require("cmp_nvim_lsp").default_capabilities()
+            local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
             -- Use a loop to conveniently call 'setup' on multiple servers and
             -- map buffer local keybindings when the language server attaches
@@ -209,8 +213,8 @@ return {
             -- keymaps for LS attached buffers
             vim.api.nvim_create_autocmd("LspAttach", {
                 group = vim.api.nvim_create_augroup("UserLspConfig", {}),
-                callback = function(ev)
-                    local bufopts = function(desc) return { noremap = true, silent = true, buffer = ev.buf, desc = desc } end
+                callback = function(args)
+                    local bufopts = function(desc) return { noremap = true, silent = true, buffer = args.buf, desc = desc } end
                     vim.keymap.set("n", "H", vim.lsp.buf.signature_help, bufopts("Display Signature Help"))
                     vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts("Display Hover Info"))
                     vim.keymap.set({ "n", "v" }, "<leader>ra", vim.lsp.buf.code_action, bufopts("Code Action"))
@@ -221,12 +225,26 @@ return {
 
                     -- inlay hint: nightly feature
                     if vim.fn.has("nvim-0.10.0") == 1 then
-                        vim.keymap.set("n", "<leader>dh", function() vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled()) end, bufopts("InlayHint Toggle"))
+                        vim.keymap.set("n", "<leader>dh", function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end, bufopts("InlayHint Toggle"))
 
-                        local client = vim.lsp.get_client_by_id(ev.data.client_id)
+                        local client = vim.lsp.get_client_by_id(args.data.client_id)
                         if client.server_capabilities.inlayHintProvider then
-                            vim.notify("not less than 0.10", vim.log.levels.WARN)
-                            vim.lsp.inlay_hint.enable(0, true)
+                            local augroup = vim.api.nvim_create_augroup("InlayHint", {clear = false})
+                            vim.api.nvim_create_autocmd("InsertEnter", {
+                                group = augroup,
+                                buffer = args.buf,
+                                callback = function()
+                                    vim.lsp.inlay_hint.enable(false)
+                                end
+                            })
+                            vim.api.nvim_create_autocmd("InsertLeave", {
+                                group = augroup,
+                                buffer = args.buf,
+                                callback = function()
+                                    vim.lsp.inlay_hint.enable(true)
+                                end
+                            })
+                            vim.lsp.inlay_hint.enable(true)
                         end
                     end
 

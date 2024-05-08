@@ -114,6 +114,7 @@ return {
     },
     {
         "lewis6991/gitsigns.nvim",
+        commit = "d96ef3bbff0bdbc3916a220f5c74a04c4db033f2",
         event = "VeryLazy",
         init = function()
             local nord = require("utils.nord")
@@ -204,7 +205,7 @@ return {
                 "<leader>gd",
                 function()
                     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-                        if vim.api.nvim_buf_get_option(buf, "filetype") == "DiffViewFiles" then
+                        if vim.api.nvim_get_option_value("filetype", { buf = buf }) == "DiffViewFiles" then
                             return vim.cmd("DiffviewClose")
                         end
                     end

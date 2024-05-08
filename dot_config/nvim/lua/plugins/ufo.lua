@@ -11,7 +11,7 @@ return {
                 -- return ft_provider[ft] or { "lsp", "indent" }
                 return ft_provider[ft] or { "treesitter", "indent" }
             end,
-            close_fold_kinds = { "comment", "imports", "region" },
+            close_fold_kinds_for_ft = { "comment", "imports", "region" },
             -- fold_virt_text_handler = nil, -- default nil
             -- enable_get_fold_virt_text = false, -- default false
         })

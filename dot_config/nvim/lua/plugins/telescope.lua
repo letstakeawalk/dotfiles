@@ -49,6 +49,25 @@ return {
         telescope.load_extension("persisted") -- persisted.nvim
         telescope.load_extension("refactoring") -- refactoring.nvim
 
+        -- custom picker action
+        local function open_vertical_if_wide_enough(prompt_bufnr)
+            local action_set = require("telescope.actions.set")
+            local wins = vim.api.nvim_tabpage_list_wins(0)
+
+            local winbufs = vim.tbl_map(function(win)
+                return { win, vim.api.nvim_win_get_buf(win) }
+            end, wins)
+
+            local listed_winbufs = vim.tbl_filter(function(winbuf)
+                return vim.api.nvim_get_option_value("buflisted", { buf = winbuf[2] })
+            end, winbufs)
+
+            if #listed_winbufs == 1 and vim.api.nvim_win_get_width(listed_winbufs[1][1]) > 160 then
+                return action_set.select(prompt_bufnr, "vertical")
+            end
+            return action_set.select(prompt_bufnr, "horizontal")
+        end
+
         -- stylua: ignore
         telescope.setup({
             defaults = {
@@ -93,8 +112,8 @@ return {
                 },
                 help_tags = {
                     mappings = {
-                        i = { ["<CR>"] = actions.select_vertical_if_wide_enough, },
-                        n = { ["<CR>"] = actions.select_vertical_if_wide_enough, }
+                        i = { ["<CR>"] = open_vertical_if_wide_enough, },
+                        n = { ["<CR>"] = open_vertical_if_wide_enough, }
                     }
                 }
             },

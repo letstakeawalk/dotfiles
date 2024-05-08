@@ -25,10 +25,15 @@ return {
         end
 
         cmp.setup({
-            snippet = { expand = function(args) luasnip.lsp_expand(args.body) end },
+            snippet = {
+                expand = function(args)
+                    luasnip.lsp_expand(args.body)
+                end,
+            },
             preselect = cmp.PreselectMode.Item, -- preselect entry respect to LSP
             -- automatically select first item OR preselected item from the LSP
             completion = { completeopt = "menu,menuone" }, -- default 'menu,menuone,noselect'
+            ---@diagnostic disable-next-line: missing-fields
             formatting = {
                 fields = { "abbr", "kind", "menu" },
                 format = function(entry, vim_item) -- wrapper for extra padding

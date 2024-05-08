@@ -14,7 +14,9 @@ return {
                 },
                 server = {
                     on_attach = function(_, bufnr)
-                        local bufopts = function(desc) return { noremap = true, silent = true, buffer = bufnr, desc = desc } end
+                        local bufopts = function(desc)
+                            return { noremap = true, silent = true, buffer = bufnr, desc = desc }
+                        end
                         vim.keymap.set("n", "<leader>cr", "<cmd>RustLsp runnables<cr>", bufopts("Runnable (rustaceanvim)"))
                         vim.keymap.set("n", "<leader>cm", "<cmd>expandMacro<cr>", bufopts("Expand macro (rustaceanvim)"))
                         vim.keymap.set("n", "<leader>dg", "<cmd>crateGraph<cr>", bufopts("Crate graph"))
@@ -24,9 +26,13 @@ return {
                         vim.keymap.set("n", "<leader>rH", "<cmd>RustLsp moveItem up<cr>", bufopts("Move item up"))
                         vim.keymap.set("n", "<leader>rK", "<cmd>RustLsp moveItem down<cr>", bufopts("Move item down"))
                     end,
-                    -- default_settings = {
-                    --     ["rust-analyzer"] = {},
-                    -- },
+                    default_settings = {
+                        ["rust-analyzer"] = {
+                            inlayHints = {
+                                parameterHints = { enable = false },
+                            },
+                        },
+                    },
                 },
                 -- dap = {},
             }
@@ -52,7 +58,9 @@ return {
                 pattern = "Cargo.toml",
                 callback = function(ev)
                     require("cmp").setup.buffer({ sources = { { name = "crates" } } })
-                    local bufopts = function(desc) return { noremap = true, silent = true, buffer = ev.buf, desc = desc } end
+                    local bufopts = function(desc)
+                        return { noremap = true, silent = true, buffer = ev.buf, desc = desc }
+                    end
                     -- vim.keymap.set("n", "<leader>ct", crates.toggle, bufopts("Toggle"))
                     vim.keymap.set("n", "<leader>cr", crates.reload, bufopts("Reload"))
 

@@ -52,7 +52,9 @@ return {
 
                     -- lua
                     null_ls.builtins.diagnostics.selene.with({
-                        condition = function(utils) return utils.root_has_file({ "selene.toml" }) end,
+                        condition = function(utils)
+                            return utils.root_has_file({ "selene.toml" })
+                        end,
                     }),
                     null_ls.builtins.formatting.stylua,
 
@@ -80,7 +82,7 @@ return {
                     -- null_ls.builtins.diagnostics.shellcheck, -- req by bash_ls
 
                     -- git
-                    null_ls.builtins.code_actions.gitsigns, -- gitsign.nvim
+                    -- null_ls.builtins.code_actions.gitsigns, -- gitsign.nvim
                     null_ls.builtins.diagnostics.gitlint, -- gitcommit
                     -- null_ls.builtins.diagnostics.commitlint, -- gitcommit
 

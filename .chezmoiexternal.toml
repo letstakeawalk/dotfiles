@@ -1,0 +1,50 @@
+# Oh My Zsh
+[".config/oh-my-zsh"]
+type = "archive"
+url = "https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
+
+[".config/oh-my-zsh/custom/plugins/evalcache"]
+type = "archive"
+url = "https://github.com/mroth/evalcache/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
+
+[".config/oh-my-zsh/custom/plugins/zsh-autosuggestions"]
+type = "archive"
+url = "https://github.com/zsh-users/zsh-autosuggestions/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
+
+[".config/oh-my-zsh/custom/plugins/zsh-completions"]
+type = "archive"
+url = "https://github.com/zsh-users/zsh-completions/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
+
+[".config/oh-my-zsh/custom/plugins/zsh-syntax-highlighting"]
+type = "archive"
+url = "https://github.com/zsh-users/zsh-syntax-highlighting/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
+
+[".config/oh-my-zsh/custom/plugins/zsh-vim-mode"]
+type = "archive"
+url = "https://github.com/softmoth/zsh-vim-mode/archive/main.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
+
+# Oh My Tmux
+[".config/oh-my-tmux"]
+type = "archive"
+url = "https://github.com/gpakosz/.tmux/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"

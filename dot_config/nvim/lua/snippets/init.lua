@@ -32,11 +32,16 @@ ls.add_snippets("javascript", require("snippets.javascript").javascript)
 ls.add_snippets("typescript", require("snippets.javascript").typescript)
 ls.add_snippets("svelte", require("snippets.javascript").svelte)
 
+local function from_today(format, days)
+    return os.date(format, os.time() + days * 24 * 60 * 60)
+end
+
 ls.add_snippets("all", {
     -- Current date & time. MM/DD/YY HH:MM
     s(
         "now",
         c(1, {
+            p(os.date, "%Y.%m.%d %H:%M"),
             p(os.date, "%Y-%m-%d %H:%M"),
             p(os.date, "%Y/%m/%d %H:%M"),
         })
@@ -44,6 +49,8 @@ ls.add_snippets("all", {
     s(
         "today",
         c(1, {
+            p(os.date, "%Y.%m.%d"),
+            p(os.date, "%Y.%m.%d.%a"),
             p(os.date, "%Y-%m-%d"),
             p(os.date, "%Y-%m-%d-%a"),
             p(os.date, "%A, %B %d, %Y"),
@@ -52,33 +59,41 @@ ls.add_snippets("all", {
     s(
         "yesterday",
         c(1, {
-            p(os.date, "%Y-%m-%d", os.time() - 24 * 60 * 60),
-            p(os.date, "%Y-%m-%d-%a", os.time() - 24 * 60 * 60),
-            p(os.date, "%A, %B %d, %Y", os.time() - 24 * 60 * 60),
+            p(from_today, "%Y.%m.%d", -1),
+            p(from_today, "%Y.%m.%d.%a", -1),
+            p(from_today, "%Y-%m-%d", -1),
+            p(from_today, "%Y-%m-%d-%a", -1),
+            p(from_today, "%A, %B %d, %Y", -1),
         })
     ),
     s(
         "tomorrow",
         c(1, {
-            p(os.date, "%Y-%m-%d", os.time() + 24 * 60 * 60),
-            p(os.date, "%Y-%m-%d-%a", os.time() + 24 * 60 * 60),
-            p(os.date, "%A, %B %d, %Y", os.time() + 24 * 60 * 60),
+            p(from_today, "%Y.%m.%d", 1),
+            p(from_today, "%Y.%m.%d.%a", 1),
+            p(from_today, "%Y-%m-%d", 1),
+            p(from_today, "%Y-%m-%d-%a", 1),
+            p(from_today, "%A, %B %d, %Y", 1),
         })
     ),
     s(
         "nextweek",
         c(1, {
-            p(os.date, "%Y-%m-%d", os.time() + 24 * 60 * 60 * 7),
-            p(os.date, "%Y-%m-%d-%a", os.time() + 24 * 60 * 60 * 7),
-            p(os.date, "%A, %B %d, %Y", os.time() + 24 * 60 * 60 * 7),
+            p(from_today, "%Y.%m.%d", 7),
+            p(from_today, "%Y.%m.%d.%a", 7),
+            p(from_today, "%Y-%m-%d", 7),
+            p(from_today, "%Y-%m-%d-%a", 7),
+            p(from_today, "%A, %B %d, %Y", 7),
         })
     ),
     s(
         "lastweek",
         c(1, {
-            p(os.date, "%Y-%m-%d", os.time() - 24 * 60 * 60 * 7),
-            p(os.date, "%Y-%m-%d-%a", os.time() - 24 * 60 * 60 * 7),
-            p(os.date, "%A, %B %d, %Y", os.time() - 24 * 60 * 60 * 7),
+            p(from_today, "%Y.%m.%d", -7),
+            p(from_today, "%Y.%m.%d.%a", -7),
+            p(from_today, "%Y-%m-%d", -7),
+            p(from_today, "%Y-%m-%d-%a", -7),
+            p(from_today, "%A, %B %d, %Y", -7),
         })
     ),
 })

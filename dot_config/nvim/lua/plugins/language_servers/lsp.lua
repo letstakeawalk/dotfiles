@@ -20,12 +20,13 @@ return {
                     "jdtls", -- java
                     "jsonls", "yamlls", "taplo", -- json, yaml, toml
                     "lua_ls", -- lua
-                    "marksman", -- markdown
+                    "markdown_oxide", -- markdown, obsidian
                     "pyright", "ruff_lsp", -- python
                     "sqlls", -- sql
                     "tsserver", "eslint", "tailwindcss", "cssls", "html", "svelte", -- js,ts,css,html
                     "vimls", -- vim
-                    "zk", -- zettelkasten
+                    -- "marksman", -- markdown
+                    -- "zk", -- zettelkasten
                     -- "typos_lsp", -- typos
                     -- "rust_analyzer", -- rust (handled by rust-tools.nvim)
                     -- "zls" -- zig
@@ -67,7 +68,15 @@ return {
                     },
                 },
             },
-            marksman = { filetypes = { "markdown", "telekasten" } },
+            markdown_oxide = {
+                capabilities = {
+                    workspace = {
+                        didChangeWatchedFiles = {
+                            dynamicRegistration = true,
+                        },
+                    },
+                },
+            },
             pyright = {
                 settings = {
                     python = {
@@ -161,6 +170,7 @@ return {
             taplo = {},
             vimls = {},
             yamlls = {},
+            -- marksman = { filetypes = { "markdown", "telekasten" } },
             -- bufls = {}, -- protobuf
             -- sourcery = {}, -- refer to sourcery from lspconfig
             -- rust_analyzer = {}, -- rust-tools.nvim
@@ -181,7 +191,7 @@ return {
             -- Use a loop to conveniently call 'setup' on multiple servers and
             -- map buffer local keybindings when the language server attaches
             for server, config in pairs(servers) do
-                config.capabilities = capabilities
+                config.capabilities = vim.tbl_extend("force", capabilities, config.capabilities)
                 lsp_config[server].setup(config)
             end
 

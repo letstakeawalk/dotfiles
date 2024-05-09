@@ -110,6 +110,11 @@ return {
                         end
                         return true
                     end,
+                    option = {
+                        markdown_oxide = {
+                            keyword_pattern = [[\(\k\| \|\/\|#\)\+]],
+                        },
+                    },
                 },
                 { name = "nvim_lua" },
                 -- { name = "copilot", max_item_count = 2 },

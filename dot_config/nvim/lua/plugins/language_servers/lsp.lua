@@ -191,7 +191,7 @@ return {
             -- Use a loop to conveniently call 'setup' on multiple servers and
             -- map buffer local keybindings when the language server attaches
             for server, config in pairs(servers) do
-                config.capabilities = vim.tbl_extend("force", capabilities, config.capabilities)
+                config.capabilities = vim.tbl_extend("force", capabilities, config.capabilities or {})
                 lsp_config[server].setup(config)
             end
 

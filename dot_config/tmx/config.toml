@@ -1,0 +1,126 @@
+[display]
+title = false
+info = true
+help = true
+help_text = "<ctrl-s> tmux-sessions | <ctrl-g> git-worktree | <ctrl-z> zoxide"
+border = true
+border_style = "rounded"                                                       #  rounded (default) | plain | double
+prompt = " "
+pointer = ">>"
+
+[theme]
+query_fg = "#D8DEE9"
+query_bg = "none"
+item_fg = "#98A2B5"
+item_bg = "none"
+selected_fg = "#98A2B5"
+selected_bg = "#434C5E"
+highlighted_fg = "#D8DEE9"
+border_fg = "#616E88"
+border_bg = "none"
+title = "#616E88"
+info = "#434C5E"
+help = "#81A1C1"
+prompt = "#81A1C1"
+pointer = "#81A1C1"
+
+
+[tmux-session]
+# boolean - default: true
+enabled = true
+# last_attached (default) | alphabetical
+sort = "last_attached"
+
+[git-worktree]
+# boolean - default: true
+enabled = false
+# path to search for git worktrees - default: ["$HOME"]
+search_dirs = ["$WORKSPACE"]
+# max depth to search - default: 10
+depth = 5
+
+[zoxide]
+enabled = true
+# path = "zoxide"
+
+[keymaps]
+# whether to use default keybindings
+use_default = true # boolean - default: true
+
+# custom keybindings
+#
+# List of objects with `key`, `mods`, `action`.
+#
+# Available keys (required):
+# - a character
+# - Esc 
+# - Enter 
+# - Tab 
+# - Backspace 
+# - Delete 
+# - Left 
+# - Right 
+# - Up 
+# - Down 
+# - Home 
+# - End 
+# - PageUp 
+# - PageDown 
+#
+# Available mods (optional, case-sensitive):
+# - Shift
+# - Control
+# - Alt
+# - combination of above delimited by pipe (`|`) - e.g. Control|Alt
+#
+# Available actions (required, case-sensitive):
+# - Quit
+# - Confirm
+# - DeleteBackward
+# - DeleteBackwardWord
+# - DeleteBackwardLine
+# - DeleteForward
+# - ClearQuery
+# - MoveCursorLeft
+# - MoveCursorRight
+# - MoveCursorStart
+# - MoveCursorEnd
+# - SelectPrevious
+# - SelectNext
+# - SelectFirst
+# - SelectLast
+# - SwitchToSession
+# - SwitchToGitWorktree
+# - SwitchToZoxide
+# - SwitchToPreset
+# - Nop - no operation (used to disable default keybinding)
+#
+# Default bindings:
+# bindings = [
+#     { key = "c", mods = "Control", action = "Quit" },
+#     { key = "Esc", action = "Quit" },
+# ]
+bindings = [
+    # quit
+    { key = "Esc", action = "Quit" },
+    { key = "c", mods = "Control", action = "Quit" },
+    # confirm
+    { key = "Enter", action = "Confirm" },
+    { key = "t", mods = "Control", action = "NewWindow" },
+    { key = "v", mods = "Control", action = "SplitWindowVertical" },   # tmux split-window -h
+    { key = "x", mods = "Control", action = "SplitWindowHorizontal" }, # tmux split-window -v
+    # query & cursor
+    { key = "Left", action = "MoveCursorLeft" },
+    { key = "Right", action = "MoveCursorRight" },
+    { key = "Home", action = "MoveCursorStart" },
+    { key = "End", action = "MoveCursorRight" },
+    { key = "w", mods = "Control", action = "DeleteBackwardWord" },
+    { key = "u", mods = "Control", action = "DeleteBackwardLine" },
+    # selection
+    { key = "Down", action = "SelectNext" },
+    { key = "Up", action = "SelectPrevious" },
+    # switch modes
+    { key = "s", mods = "Control", action = "SwitchToSession" },
+    { key = "g", mods = "Control", action = "SwitchToGitWorktree" },
+    { key = "z", mods = "Control", action = "SwitchToZoxide" },
+]

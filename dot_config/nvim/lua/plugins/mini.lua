@@ -75,8 +75,6 @@ return {
             })
 
             miniclue.set_mapping_desc("n", "ga", "Align")
-            miniclue.set_mapping_desc("n", "<leader>h", "Leap upward")
-            miniclue.set_mapping_desc("n", "<leader>k", "Leap downward")
             local nord = require("utils.nord")
             vim.api.nvim_set_hl(0, "MiniClueFloatTitle", { fg = nord.c09_glcr, bold = true })
             vim.api.nvim_set_hl(0, "MiniClueNextKey", { fg = nord.c08_teal, bold = true })

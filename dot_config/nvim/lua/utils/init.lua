@@ -1,11 +1,18 @@
 local utils = vim.defaulttable()
 
+---@param name string
+---@param opts vim.api.keyset.create_augroup
+---@return integer
+function utils.create_augroup(name, opts)
+    return vim.api.nvim_create_augroup("HRB_" .. name, opts)
+end
+
 --- Wrapper around `vim.ui.input()` to abort if the input is empty string or nil.
 ---@param opts { prompt: string|nil, default: string|nil, completion: string|nil, highlight: fun() }
 ---@param on_confirm function(input: string|nil): nil
 function utils.ui.input(opts, on_confirm)
     vim.ui.input(opts, function(input)
-        if input == nil or #utils.strings.trim(input) == 0 then
+        if input == nil or #vim.trim(input) == 0 then
             return
         end
         on_confirm(input)
@@ -91,3 +98,36 @@ function utils.print_all_buffers()
 end
 
 return utils
+
+-- TODO: add current line to quickfix list
+-- :h setqflist()
+
+-- To send the current line to the quickfix list in Neovim, you need to first capture the details of the current line,
+-- such as the filename, line number, and optionally, the column and text of the line.
+-- Then, you can create an entry and add it to the quickfix list using `vim.fn.setqflist()`.
+-- Here's how you can do it with Lua:
+--
+-- ```lua
+-- -- Get the current buffer number and line number
+-- local bufnr = vim.api.nvim_get_current_buf()
+-- local lnum = vim.api.nvim_win_get_cursor(0)[1]  -- Index 1 is the line number
+-- local col = vim.api.nvim_win_get_cursor(0)[2]  -- Index 2 is the column number
+-- local filename = vim.api.nvim_buf_get_name(bufnr)
+-- local line_text = vim.api.nvim_buf_get_lines(bufnr, lnum - 1, lnum, false)[1]  -- 0-based index for lines
+--
+-- -- Create a quickfix list entry
+-- local qf_entry = {{
+--     bufnr = bufnr,
+--     lnum = lnum,
+--     col = col + 1,  -- Convert from 0-based to 1-based index
+--     text = line_text,
+--     filename = filename
+-- }}
+--
+-- -- Add entry to the quickfix list and open it
+-- vim.fn.setqflist(qf_entry, "r")  -- 'r' to replace the current list
+-- vim.cmd('copen')  -- Open the quickfix window
+-- ```
+--
+-- This Lua snippet will grab the current buffer number and line number, build a quickfix entry,
+-- and then add this entry to the quickfix list, replacing any existing entries. Finally, it opens the quickfix window to show the list containing the current line.

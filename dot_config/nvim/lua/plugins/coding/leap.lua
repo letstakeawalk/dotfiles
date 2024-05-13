@@ -6,7 +6,11 @@ return {
     config = function()
         local leap = require("leap")
         leap.setup({})
-        leap.set_default_keymaps()
+        -- leap.set_default_keymaps()
+        vim.keymap.set({"n", "x", "o"}, "s", "<Plug>(leap-forward)", { desc = "Leap forward" })
+        vim.keymap.set({"n", "x", "o"}, "S", "<Plug>(leap-backward)", { desc = "Leap backward" })
+        vim.keymap.set({"n", "x", "o"}, "gs", "<Plug>(leap-from-window)", { desc = "Leap window" })
+
         leap.opts.special_keys.prev_target = { "<s-cr>", "," }
 
         local flit = require("flit")

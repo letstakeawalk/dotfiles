@@ -188,8 +188,6 @@ return {
             -- Add additional capabilities supported by nvim-cmp
             local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
-            -- Use a loop to conveniently call 'setup' on multiple servers and
-            -- map buffer local keybindings when the language server attaches
             for server, config in pairs(servers) do
                 config.capabilities = vim.tbl_extend("force", capabilities, config.capabilities or {})
                 lsp_config[server].setup(config)
@@ -211,9 +209,9 @@ return {
 
             -- global keymaps
             -- stylua: ignore start
-            vim.keymap.set("n", "E",  vim.diagnostic.open_float,       { desc = "Open Float" })
-            vim.keymap.set("n", "[d", vim.diagnostic.goto_prev,        { desc = "Goto previous diagnostic" })
-            vim.keymap.set("n", "]d", vim.diagnostic.goto_next,        { desc = "Goto next diagnostic" })
+            vim.keymap.set("n", "E",  vim.diagnostic.open_float, { desc = "Open Float" })
+            vim.keymap.set("n", "[d", vim.diagnostic.goto_prev,  { desc = "Goto previous diagnostic" })
+            vim.keymap.set("n", "]d", vim.diagnostic.goto_next,  { desc = "Goto next diagnostic" })
             vim.keymap.set("n", "]e", diagnostic_goto(true, "ERROR"),  { desc = "Goto next error" })
             vim.keymap.set("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Goto previous error" })
             vim.keymap.set("n", "]w", diagnostic_goto(true, "WARN"),   { desc = "Goto next warning" })
@@ -236,29 +234,11 @@ return {
                     -- inlay hint: nightly feature
                     if vim.fn.has("nvim-0.10.0") == 1 then
                         vim.keymap.set("n", "<leader>dh", function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end, bufopts("InlayHint Toggle"))
-
                         local client = vim.lsp.get_client_by_id(args.data.client_id)
                         if client.server_capabilities.inlayHintProvider then
-                            local augroup = vim.api.nvim_create_augroup("InlayHint", {clear = false})
-                            vim.api.nvim_create_autocmd("InsertEnter", {
-                                group = augroup,
-                                buffer = args.buf,
-                                callback = function()
-                                    vim.lsp.inlay_hint.enable(false)
-                                end
-                            })
-                            vim.api.nvim_create_autocmd("InsertLeave", {
-                                group = augroup,
-                                buffer = args.buf,
-                                callback = function()
-                                    vim.lsp.inlay_hint.enable(true)
-                                end
-                            })
                             vim.lsp.inlay_hint.enable(true)
                         end
                     end
-
-                    -- TODO: codelens support
                 end,
             })
             -- stylua: ignore end
@@ -269,7 +249,7 @@ return {
             require("lspconfig.ui.windows").default_options.border = "double"
             -- globally override border -- https://github.com/neovim/nvim-lspconfig/wiki/UI-customization#borders
             local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
-            function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...) ---@diagnostic disable-line: duplicate-set-field, redefined-local
+            function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
                 opts = opts or {}
                 opts.border = opts.border or "rounded"
                 return orig_util_open_floating_preview(contents, syntax, opts, ...)
@@ -283,11 +263,12 @@ return {
             end
 
             -- display the source of diagnostic
-            -- stylua: ignore
             vim.diagnostic.config({
                 virtual_text = false,
                 float = { -- format as `i: message (code) [src]`
-                    format = function(diag) return diag.message end,
+                    format = function(diag)
+                        return diag.message
+                    end,
                     suffix = function(diag, _, _)
                         local source = diag.source ~= nil and " [" .. diag.source .. "]" or ""
                         local code = diag.code ~= nil and " (" .. diag.code .. ")" or ""

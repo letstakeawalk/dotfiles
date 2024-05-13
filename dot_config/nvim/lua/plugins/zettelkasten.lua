@@ -101,21 +101,25 @@ return {
             vim.g.bullets_outline_levels = { "std-" }
             vim.g.bullets_checkbox_markers = " .oOx"
         end,
-        -- stylua: ignore
         config = function()
-            vim.keymap.set("i", "<cr>",           "<Plug>(bullets-newline)",         { buffer = true })
-            vim.keymap.set("i", "<s-cr>",         "<cr>",                            { buffer = true, noremap = true })
-            vim.keymap.set("n", "o",              "<Plug>(bullets-newline)",         { buffer = true })
-            vim.keymap.set({ "n", "v" }, "gN",    "<Plug>(bullets-renumber)",        { buffer = true })
-            vim.keymap.set("n", "<leader>nx",     "<Plug>(bullets-toggle-checkbox)", { buffer = true })
-            vim.keymap.set("n", ">>",             "<Plug>(bullets-demote)",          { buffer = true })
-            vim.keymap.set("n", "<<",             "<Plug>(bullets-promote)",         { buffer = true })
-            vim.keymap.set("i", "<C-v>",          "<Plug>(bullets-demote)",          { buffer = true })
-            vim.keymap.set("i", "<C-d>",          "<Plug>(bullets-promote)",         { buffer = true })
-            vim.keymap.set("v", ">",              "<Plug>(bullets-demote)",          { buffer = true })
-            vim.keymap.set("v", "<",              "<Plug>(bullets-promote)",         { buffer = true })
-
-            -- markdown
+            vim.api.nvim_create_autocmd("FileType", {
+                group = require("utils").create_augroup("Bullet", {}),
+                pattern = { "markdown", "text", "gitcommit" },
+                -- stylua: ignore
+                callback = function()
+                    vim.keymap.set("i", "<cr>",           "<Plug>(bullets-newline)",         { buffer = true })
+                    vim.keymap.set("i", "<s-cr>",         "<cr>",                            { buffer = true, noremap = true })
+                    vim.keymap.set("n", "o",              "<Plug>(bullets-newline)",         { buffer = true })
+                    vim.keymap.set({ "n", "v" }, "gN",    "<Plug>(bullets-renumber)",        { buffer = true })
+                    vim.keymap.set("n", "<leader>nx",     "<Plug>(bullets-toggle-checkbox)", { buffer = true })
+                    vim.keymap.set("n", ">>",             "<Plug>(bullets-demote)",          { buffer = true })
+                    vim.keymap.set("n", "<<",             "<Plug>(bullets-promote)",         { buffer = true })
+                    vim.keymap.set("i", "<C-v>",          "<Plug>(bullets-demote)",          { buffer = true })
+                    vim.keymap.set("i", "<C-d>",          "<Plug>(bullets-promote)",         { buffer = true })
+                    vim.keymap.set("v", ">",              "<Plug>(bullets-demote)",          { buffer = true })
+                    vim.keymap.set("v", "<",              "<Plug>(bullets-promote)",         { buffer = true })
+                end,
+            })
         end,
     },
 }

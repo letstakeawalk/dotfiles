@@ -1,6 +1,7 @@
 return {
     {
-        dir = "$WORKSPACE/Dev/Projects/fugitive-ext.nvim",
+        "bharam/fugitive-ext.nvim",
+        -- dir = "$WORKSPACE/Dev/Projects/fugitive-ext.nvim",
         dependencies = {
             "tpope/vim-fugitive", -- git interface
             "junegunn/gv.vim", -- git commit browser

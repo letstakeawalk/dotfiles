@@ -35,6 +35,11 @@ return {
                 file_name = file_name == "mod.rs" and vim.fn.fnamemodify(harpoon_file_path, ":h:t") .. "/" .. file_name or file_name
                 -- python: foo/__init__.py -> foo/__init__.py
                 file_name = file_name == "__init__.py" and vim.fn.fnamemodify(harpoon_file_path, ":h:t") .. "/init.py" or file_name
+                -- javascript: foo/index.[js,jsx,ts,tsx] -> foo/index.[]
+                file_name = file_name == "index.js" and vim.fn.fnamemodify(harpoon_file_path, ":h:t") .. "/" .. file_name or file_name
+                file_name = file_name == "index.jsx" and vim.fn.fnamemodify(harpoon_file_path, ":h:t") .. "/" .. file_name or file_name
+                file_name = file_name == "index.ts" and vim.fn.fnamemodify(harpoon_file_path, ":h:t") .. "/" .. file_name or file_name
+                file_name = file_name == "index.tsx" and vim.fn.fnamemodify(harpoon_file_path, ":h:t") .. "/" .. file_name or file_name
                 -- lua: foo/init.lua -> foo/init.lua
                 file_name = file_name == "init.lua" and vim.fn.fnamemodify(harpoon_file_path, ":h:t") .. "/" .. file_name or file_name
 

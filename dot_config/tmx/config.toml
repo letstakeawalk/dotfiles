@@ -121,6 +121,6 @@ bindings = [
     { key = "Up", action = "SelectPrevious" },
     # switch modes
     { key = "s", mods = "Control", action = "SwitchToSession" },
-    { key = "g", mods = "Control", action = "SwitchToGitWorktree" },
+    # { key = "g", mods = "Control", action = "SwitchToGitWorktree" },
     { key = "z", mods = "Control", action = "SwitchToZoxide" },
 ]

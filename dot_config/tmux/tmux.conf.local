@@ -450,7 +450,7 @@ bind -n 'C-\' if-shell "test $(tmux display-message -p '#{session_name}') = 'pop
 # bind -n 'C-\' if-shell "test $(tmux display-message -p '#{session_name}') = 'popup'" "detach-client -s popup" "display-popup -h 90% -w 80% -E -b rounded -S fg='#5E81AC' 'tmux new -As popup'"
 
 # tmuxessionizer
-bind s run-shell 'tmux display-popup -w 35% -h 40% -BE tmx session'
+bind s run-shell 'tmux display-popup -w 80 -h 40% -BE tmx session'
 
 # increase history size
 #set -g history-limit 10000

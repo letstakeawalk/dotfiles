@@ -1,30 +1,7 @@
 return {
     {
-        "jay-babu/mason-null-ls.nvim",
-        dependencies = {
-            "williamboman/mason.nvim",
-            "nvimtools/none-ls.nvim",
-        },
-        config = function()
-            -- stylua: ignore
-            require("mason-null-ls").setup({
-                ensure_installed = {
-                    "prettier", "prettierd", -- js
-                    "mypy", "pylint", "isort", "blackd-client", -- python
-                    "selene", "stylua", -- lua
-                    "markdownlint", "cbfmt", -- "markdown_toc", -- markdown
-                    "sqlfluff", -- sql
-                    "gitlint", -- git
-                    "hadolint", -- docker
-                    "buf", -- protobuf
-                    "shellharden", "shfmt", "shellcheck" -- bash
-                }
-            })
-        end,
-    },
-    {
         "nvimtools/none-ls.nvim", -- injectable language server (null-ls)
-        dependencies = { "neovim/nvim-lspconfig" },
+        dependencies = { "neovim/nvim-lspconfig", "jay-babu/mason-null-ls.nvim" },
         event = { "BufReadPre", "BufNewFile" },
         config = function()
             -- https://github.com/jose-elias-alvarez/none-ls.nvim/blob/main/doc/BUILTINS.md
@@ -51,11 +28,7 @@ return {
                     -- null_ls.builtins.diagnostics.bandit,  -- check back later for PR
 
                     -- lua
-                    null_ls.builtins.diagnostics.selene.with({
-                        condition = function(utils)
-                            return utils.root_has_file({ "selene.toml" })
-                        end,
-                    }),
+                    -- null_ls.builtins.diagnostics.selene.with({ condition = function(utils) return utils.root_has_file({ "selene.toml" }) end, }),
                     null_ls.builtins.formatting.stylua,
 
                     -- sql
@@ -89,7 +62,6 @@ return {
                     -- etc
                     null_ls.builtins.diagnostics.hadolint, -- docker
                     null_ls.builtins.code_actions.refactoring, -- thePrimeagen
-                    -- null_ls.builtins.diagnostics.trivy -- security scanner (https://github.com/aquasecurity/trivy)
                     -- null_ls.builtins.formatting.jq, -- json
 
                     -- checkout later
@@ -102,6 +74,30 @@ return {
 
             vim.keymap.set("n", "<leader>in", "<cmd>NullLsInfo<cr>", { desc = "Null-ls Info" })
             vim.api.nvim_set_hl(0, "NullLsInfoBorder", { link = "FloatBorder" })
+        end,
+    },
+    {
+        "jay-babu/mason-null-ls.nvim",
+        dependencies = {
+            "williamboman/mason.nvim",
+            "nvimtools/none-ls.nvim",
+        },
+        config = function()
+            -- stylua: ignore
+            require("mason-null-ls").setup({
+                ensure_installed = {
+                    "prettier", "prettierd", -- js
+                    "mypy", -- "pylint", "isort", "blackd-client", -- python
+                    "stylua", -- "selene", -- lua
+                    "markdownlint", "cbfmt", -- "markdown_toc", -- markdown
+                    "sqlfluff", -- sql
+                    "gitlint", -- git
+                    "hadolint", -- docker
+                    "buf", -- protobuf
+                    "shellharden", "shfmt", "shellcheck" -- bash
+                },
+                automatic_installation = true,
+            })
         end,
     },
 }

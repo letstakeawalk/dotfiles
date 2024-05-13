@@ -1,51 +1,17 @@
 return {
     {
-        "williamboman/mason.nvim",
-        dependencies = "williamboman/mason-lspconfig.nvim",
-        cmd = "Mason",
-        keys = { { "<leader>im", "<cmd>Mason<cr>", desc = "Mason" } },
-        config = function()
-            require("mason").setup({
-                ui = {
-                    border = "double",
-                    icons = { package_installed = "✓", package_pending = "", package_uninstalled = "✗" },
-                },
-            })
-            -- stylua: ignore
-            require("mason-lspconfig").setup({
-                ensure_installed = {
-                    "bashls", -- bash
-                    "bufls", -- protobuf
-                    "docker_compose_language_service", "dockerls", -- docker
-                    "jdtls", -- java
-                    "jsonls", "yamlls", "taplo", -- json, yaml, toml
-                    "lua_ls", -- lua
-                    "markdown_oxide", -- markdown, obsidian
-                    "pyright", "ruff_lsp", -- python
-                    "sqlls", -- sql
-                    "tsserver", "eslint", "tailwindcss", "cssls", "html", "svelte", -- js,ts,css,html
-                    "vimls", -- vim
-                    -- "marksman", -- markdown
-                    -- "zk", -- zettelkasten
-                    -- "typos_lsp", -- typos
-                    -- "rust_analyzer", -- rust (handled by rust-tools.nvim)
-                    -- "zls" -- zig
-                },
-                automatic_installation = true,
-            })
-        end,
-    },
-    {
         "neovim/nvim-lspconfig",
         event = "VeryLazy",
         dependencies = { "folke/neodev.nvim" },
         opts = {
             bashls = {},
+            bufls = {},
             cssls = {},
             docker_compose_language_service = {},
             dockerls = {},
             eslint = { settings = { format = { enable = false } } },
-            jdtls = {}, -- java
+            html = {},
+            jdtls = {},
             jsonls = { init_options = { provideFormatter = false } },
             lua_ls = {
                 command = { "lua-language-server" },
@@ -171,7 +137,6 @@ return {
             vimls = {},
             yamlls = {},
             -- marksman = { filetypes = { "markdown", "telekasten" } },
-            -- bufls = {}, -- protobuf
             -- sourcery = {}, -- refer to sourcery from lspconfig
             -- rust_analyzer = {}, -- rust-tools.nvim
         },
@@ -285,4 +250,40 @@ return {
             -- vim.lsp.set_log_level("debug") -- set this then run :LspInfo
         end,
     },
+    {
+            "williamboman/mason.nvim",
+            dependencies = "williamboman/mason-lspconfig.nvim",
+            cmd = "Mason",
+            keys = { { "<leader>im", "<cmd>Mason<cr>", desc = "Mason" } },
+            config = function()
+                require("mason").setup({
+                    ui = {
+                        border = "double",
+                        icons = { package_installed = "✓", package_pending = "", package_uninstalled = "✗" },
+                    },
+                })
+                -- stylua: ignore
+                require("mason-lspconfig").setup({
+                    ensure_installed = {
+                        "bashls", -- bash
+                        "bufls", -- protobuf
+                        "docker_compose_language_service", "dockerls", -- docker
+                        "jdtls", -- java
+                        "jsonls", "yamlls", "taplo", -- json, yaml, toml
+                        "lua_ls", -- lua
+                        "markdown_oxide", -- markdown, obsidian
+                        "pyright", "ruff_lsp", -- python
+                        "sqlls", -- sql
+                        "tsserver", "eslint", "tailwindcss", "cssls", "html", "svelte", -- js,ts,css,html
+                        "vimls", -- vim
+                        -- "marksman", -- markdown
+                        -- "zk", -- zettelkasten
+                        -- "typos_lsp", -- typos
+                        -- "rust_analyzer", -- rust (handled by rust-tools.nvim)
+                        -- "zls" -- zig
+                    },
+                    automatic_installation = true,
+                })
+            end,
+        },
 }

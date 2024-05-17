@@ -2,6 +2,7 @@ return {
     "kevinhwang91/nvim-ufo", -- pretty fold block
     dependencies = "kevinhwang91/promise-async",
     event = "BufRead", -- use verylazy if still buggy
+    enabled = false,
     config = function()
         local ufo = require("ufo")
 

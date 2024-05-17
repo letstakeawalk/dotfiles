@@ -180,3 +180,12 @@ set("n", "]<Space>", add_blank_line_below, { desc = "Add line below" })
 set("n", "[<Space>", add_blank_line_above, { desc = "Add line above" })
 set("n", "]q", "<cmd>cnext<cr>", { desc = "Goto next quickfix" })
 set("n", "[q", "<cmd>cprev<cr>", { desc = "Goto previous quickfix" })
+
+-- current file path + cursor position to clipboard
+local function clip_curr_location()
+    local path = string.sub(vim.fn.expand("%:p"), #vim.fn.getcwd() + 2)
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local cursor = string.format("%d:%d", row, col)
+    vim.fn.setreg("+", path .. " " .. cursor)
+end
+set("n", "<leader>y", clip_curr_location, { desc = "CurrLoc to clipboard" })

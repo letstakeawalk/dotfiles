@@ -39,9 +39,9 @@ return {
                     null_ls.builtins.formatting.markdownlint.with({
                         extra_args = { "-c", vim.fn.expand("$XDG_CONFIG_HOME") .. "/markdownlint/markdownlint.yaml" },
                     }),
-                    null_ls.builtins.diagnostics.markdownlint.with({
-                        extra_args = { "-c", vim.fn.expand("$XDG_CONFIG_HOME") .. "/markdownlint/markdownlint.yaml" },
-                    }),
+                    -- null_ls.builtins.diagnostics.markdownlint.with({
+                    --     extra_args = { "-c", vim.fn.expand("$XDG_CONFIG_HOME") .. "/markdownlint/markdownlint.yaml" },
+                    -- }),
                     -- cbmfmt -- code block formatter
                     -- markdown_toc -- auto-gen toc
 

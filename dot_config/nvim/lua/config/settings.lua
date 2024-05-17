@@ -58,6 +58,9 @@ opt.foldcolumn = "0"
 opt.foldenable = true
 opt.foldlevel = 99
 opt.foldlevelstart = 99
+opt.foldmethod = "expr"
+opt.foldexpr = "nvim_treesitter#foldexpr()"
+opt.foldtext = ""
 -- search & substitute
 opt.ignorecase = true -- Search case-insensitive
 opt.incsearch = true -- Incremental search

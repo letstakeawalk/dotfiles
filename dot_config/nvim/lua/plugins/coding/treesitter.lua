@@ -85,7 +85,7 @@ return {
             "go",
             "html", "htmldjango", "css", "scss", "xml",
             "java",
-            "javascript", "typescript", "svelte", "jsdoc",
+            "javascript", "typescript", "tsx", "svelte", "jsdoc",
             "json", "jsonc", "jq",
             "latex",
             "lua",

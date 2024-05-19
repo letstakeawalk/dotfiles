@@ -36,9 +36,9 @@ end
 ---@return { row: number, col: number, width: number, height: number, relative: string|nil }
 function utils.ui.config_editor_center(config)
     local status_height = 1
-    local cmd_height = vim.api.nvim_get_option("cmdheight")
-    local editor_height = vim.api.nvim_get_option("lines") - status_height - cmd_height
-    local editor_width = vim.api.nvim_get_option("columns")
+    local cmd_height = vim.api.nvim_get_option_value("cmdheight", {})
+    local editor_height = vim.api.nvim_get_option_value("lines", {}) - status_height - cmd_height
+    local editor_width = vim.api.nvim_get_option_value("columns", {})
     config.row = math.floor((editor_height - config.height) / 2)
     config.col = math.floor((editor_width - config.width) / 2)
     config.relative = "editor"
@@ -47,11 +47,11 @@ end
 
 ---@return number: height of tabline (0 or 1)
 function utils.ui.tabline_height()
-    local showtabline = vim.api.nvim_get_option("showtabline")
+    local showtabline = vim.api.nvim_get_option_value("showtabline", {})
     if showtabline == 0 then
         return 0
     elseif showtabline == 1 then
-        local tabline = vim.api.nvim_get_option("tabline")
+        local tabline = vim.api.nvim_get_option_value("tabline", {})
         if tabline == nil or #tabline == 0 then
             return 0
         end
@@ -61,7 +61,7 @@ end
 
 ---@return number: height of statusline (0 or 1)
 function utils.ui.statusline_height()
-    local laststatus = vim.api.nvim_get_option("laststatus")
+    local laststatus = vim.api.nvim_get_option_value("laststatus", {})
     if laststatus == 0 then
         return 0
     elseif laststatus == 1 and #vim.api.nvim_tabpage_list_wins(0) < 2 then
@@ -90,9 +90,9 @@ function utils.print_all_buffers()
     local buffers = vim.api.nvim_list_bufs()
     for _, buf in ipairs(buffers) do
         local name = vim.api.nvim_buf_get_name(buf)
-        local filetype = vim.api.nvim_buf_get_option(buf, "filetype")
-        local listed = vim.api.nvim_buf_get_option(buf, "buflisted")
-        local hidden = vim.api.nvim_buf_get_option(buf, "buftype") == "nofile"
+        local filetype = vim.api.nvim_buf_get_option_value("filetype", { buf = buf })
+        local listed = vim.api.nvim_buf_get_option_value("buflisted", { buf = buf })
+        local hidden = vim.api.nvim_buf_get_option_value("buftype", { buf = buf }) == "nofile"
         vim.print(string.format("%d: %s, ft: %s, listed: %s, hidden: %s", buf, name, filetype, listed, hidden))
     end
 end

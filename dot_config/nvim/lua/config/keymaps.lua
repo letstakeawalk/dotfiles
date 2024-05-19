@@ -88,6 +88,13 @@ set("n", "<c-w>K",     "<c-w>J",                      { desc = "Move pane to dow
 set("n", "<c-w>H",     "<c-w>K",                      { desc = "Move pane to up" })
 set("n", "<c-w>J",     "<c-w>H",                      { desc = "Move pane to left" })
 set("n", "<c-w>L",     "<c-w>L",                      { desc = "Move pane to right" })
+-- Fold
+set("n", "z0", "zM",    { desc = "Fold level: 0" })
+set("n", "z1", "zMzr",  { desc = "Fold level: 1" })
+set("n", "z2", "zM2zr", { desc = "Fold level: 2" })
+set("n", "z3", "zM3zr", { desc = "Fold level: 3" })
+set("n", "z4", "zM4zr", { desc = "Fold level: 4" })
+set("n", "z5", "zM5zr", { desc = "Fold level: 5" })
 -- Editing
 set("i", "<C-d>", "<C-d>", { desc = "Indent -1 level" })
 set("i", "<C-v>", "<C-t>", { desc = "Indent +1 level" })

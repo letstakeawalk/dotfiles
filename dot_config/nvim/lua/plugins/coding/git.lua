@@ -213,7 +213,7 @@ return {
                     -- return require("diffview.config").actions.open_in_diffview()
                     return vim.cmd("DiffviewOpen")
                 end,
-                desc = "DiffView open",
+                desc = "DiffView Toggle",
             },
             -- { "<leader>gD", "<cmd>DiffviewClose<cr>", desc = "DiffView close" },
         },

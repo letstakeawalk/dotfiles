@@ -1,14 +1,14 @@
 -- stylua: ignore start
-local M = {
+local nord = {
     c00_blk_dk  = "#272C36",
-    c00_blk     = "#2E3440", -- bg
+    c00_blk     = "#2E3440", -- background
     c00_blk_br  = "#353C4A",
     c01_gry     = "#3B4252", -- cursor line
     c02_gry     = "#434C5E", -- visual selection
     c03_gry     = "#4C566A",
-    c03_gry_br  = "#616E88", -- comment, float border,
+    c03_gry_br  = "#616E88", -- comment, float border, conceal
     c04_wht_dk  = "#98A2B5", -- unmatched fuzzy result
-    c04_wht     = "#D8DEE9", -- fg
+    c04_wht     = "#D8DEE9", -- foreground
     c05_wht     = "#E5E9F0",
     c06_wht     = "#ECEFF4",
     c07_jade    = "#8FBCBB",
@@ -32,15 +32,14 @@ local M = {
     c15_prpl_br = "#C3A5BD", c15_prpl_dk = "#90728A",
 }
 
-M.bg         = M.c00_blk -- c00 black
-M.fg         = M.c04_wht -- c04 white
-M.visual     = M.c02_gry -- c02_grry
-M.cursorline = M.c01_gry -- c01 gray
-M.error      = M.c11_red -- c11 red
-M.warn       = M.c13_ylw -- c13 yellow
-M.info       = M.c08_teal -- c09 glacier
-M.hint       = M.c10_blue -- c10 blue
-M.ok         = M.c14_grn -- c14 green
--- stylua ignore end
+nord.bg         = nord.c00_blk   -- c00 black
+nord.fg         = nord.c04_wht   -- c04 white
+nord.visual     = nord.c02_gry   -- c02_grry
+nord.cursorline = nord.c01_gry   -- c01 gray
+nord.error      = nord.c11_red   -- c11 red
+nord.warn       = nord.c13_ylw   -- c13 yellow
+nord.info       = nord.c08_teal  -- c09 glacier
+nord.hint       = nord.c10_blue  -- c10 blue
+nord.ok         = nord.c14_grn   -- c14 green
 
-return M
+return nord

@@ -31,5 +31,13 @@ return {
             i(1, "plugin"),
         })
     ),
-    s("print", fmt([[vim.print("{}=", {})]], { f(function(args) return args[1] end, 1), i(1, "variable") })),
+    s(
+        "print",
+        fmt([[vim.print("{}=", {})]], { f(function(args)
+            return args[1]
+        end, 1), i(1, "variable") })
+    ),
+    s("si", t("-- stylua: ignore")),
+    s("sis", t("-- stylua: ignore start")),
+    s("sie", t("-- stylua: ignore end")),
 }

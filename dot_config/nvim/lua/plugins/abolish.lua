@@ -1,7 +1,6 @@
--- easily search, substitute, abbr multiple variants of a word
 return {
     "tpope/vim-abolish",
-    event = "VeryLazy",
+    event = "BufRead",
     config = function()
         -- abbrs
         vim.cmd.abbr("bc", "because")

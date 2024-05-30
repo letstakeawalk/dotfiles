@@ -7,8 +7,13 @@ return {
         scope = {
             show_start = false, -- underline of the scope
             show_end = false,
-            highlight = "Type", -- nord.c09_glcr
         },
-        exclude = { filetypes = { "help", "NvimTree" } },
+        exclude = {
+            filetypes = {
+                "help",
+                "NvimTree",
+                "markdown",
+            },
+        },
     },
 }

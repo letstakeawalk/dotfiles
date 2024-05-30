@@ -167,7 +167,11 @@ local function impl_partial_ord()
             target = i(1, "Foo"),
             generic = generic(1),
             body = c(2, {
-                fmt("self.{field}.partial_cmp(&other.{field})", { field = i(1, "field") }, { repeat_duplicates = true }),
+                fmt(
+                    "self.{field}.partial_cmp(&other.{field})",
+                    { field = i(1, "field") },
+                    { repeat_duplicates = true }
+                ),
                 i(nil, "todo!()"),
             }),
         },
@@ -653,12 +657,8 @@ local function crudhandlers_mongo()
     )
 end
 
--- stylua: ignore start
+-- stylua: ignore
 return {
-    -- rust_analyzer provided snippets:
-    -- tmod: test module,
-    -- tfn: test fn
-
     -- abbrs
     s(":turbofish", fmt("::<{}>", { i(1, "Type") })),
     s("clo",        fmta("|<>| {<>}", { i(1, "args"), i(2, "body") })),
@@ -737,4 +737,3 @@ return {
     s("stderror",    box_dyn_error(1)),
     s("reserr",      result_box_dyn_error(1)),
 }
--- stylua: ignore end

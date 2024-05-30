@@ -1,6 +1,7 @@
 return {
     "gbprod/yanky.nvim",
     event = "BufRead",
+    enabled = false,
     keys = {
         { "y", "<Plug>(YankyYank)", { "n", "x" }, desc = "Yank" },
         { "p", "<Plug>(YankyPutAfter)", desc = "Paste After" },
@@ -10,8 +11,7 @@ return {
     },
     opts = {
         ring = {
-            history_length = 3,
-            sync_with_numbered_register = true,
+            history_length = 10,
         },
         highlight = {
             on_put = false,

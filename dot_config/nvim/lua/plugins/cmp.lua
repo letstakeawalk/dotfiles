@@ -1,0 +1,143 @@
+return {
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+        "neovim/nvim-lspconfig",
+        "nvim-lua/plenary.nvim",
+        "hrsh7th/cmp-nvim-lsp",
+        "hrsh7th/cmp-buffer",
+        "hrsh7th/cmp-path",
+        "hrsh7th/cmp-cmdline",
+        "hrsh7th/cmp-nvim-lua",
+        "petertriho/cmp-git",
+        "onsails/lspkind.nvim",
+        "L3MON4D3/LuaSnip",
+        "saadparwaiz1/cmp_luasnip",
+        -- https://github.com/hrsh7th/nvim-cmp/wiki/List-of-sources
+        -- zbirenbaum/copilot-cmp
+    },
+    event = { "InsertEnter", "CmdlineEnter" },
+    config = function()
+        local cmp = require("cmp")
+        local lspkind = require("lspkind")
+
+        local function has_words_before()
+            local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+            return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+        end
+
+        ---@param fallback function
+        local function tab(fallback)
+            if cmp.visible() then
+                cmp.confirm({ select = true, behavior = cmp.ConfirmBehavior.Select })
+            elseif has_words_before() then
+                cmp.complete()
+            else
+                fallback()
+            end
+        end
+
+        ---@param callback? function
+        local function close_or(callback)
+            ---@param fallback function
+            return function(fallback)
+                if cmp.visible() then
+                    cmp.close()
+                elseif callback ~= nil then
+                    callback()
+                else
+                    fallback()
+                end
+            end
+        end
+
+        local formatter = lspkind.cmp_format({
+            mode = "symbol_text",
+        })
+
+        cmp.setup({
+            snippet = {
+                expand = function(args)
+                    require("luasnip").lsp_expand(args.body)
+                end,
+            },
+            preselect = cmp.PreselectMode.Item, -- preselect entry respect to LSP
+            ---@diagnostic disable-next-line: missing-fields
+            -- performance = { max_view_entries = 8 },
+            -- automatically select first item OR preselected item from the LSP
+            completion = { completeopt = "menu,menuone" }, -- default 'menu,menuone,noselect'
+            formatting = {
+                fields = { "abbr", "kind", "menu" },
+                format = function(entry, vim_item)
+                    vim_item.abbr = " " .. vim_item.abbr .. "     "
+                    return formatter(entry, vim_item)
+                end,
+                expandable_indicator = true,
+            },
+            window = {
+                completion = cmp.config.window.bordered(),
+                documentation = cmp.config.window.bordered(),
+            },
+            mapping = {
+                ["<Down>"] = cmp.mapping.select_next_item(),
+                ["<Up>"] = cmp.mapping.select_prev_item(),
+                -- ["<C-n>"] = cmp.mapping.select_next_item(),
+                -- ["<C-p>"] = cmp.mapping.select_prev_item(),
+                ["<C-u>"] = cmp.mapping.scroll_docs(-4),
+                ["<C-d>"] = cmp.mapping.scroll_docs(4),
+                ["<Esc>"] = close_or(nil),
+                ["<Tab>"] = cmp.mapping(tab, { "i", "s" }),
+            },
+            sources = cmp.config.sources({
+                { name = "luasnip" },
+                {
+                    name = "nvim_lsp",
+                    option = {
+                        markdown_oxide = { keyword_pattern = [[\(\k\| \|\/\|#\)\+]] },
+                    },
+                },
+                { name = "nvim_lua" },
+            }, {
+                { name = "buffer" },
+            }),
+            -- sorting = {},
+        })
+
+        local cmdline_mapping = {
+            ["<Down>"] = { c = cmp.mapping.select_next_item() },
+            ["<Up>"] = { c = cmp.mapping.select_prev_item() },
+            ["<Tab>"] = { c = tab },
+            ["<Esc>"] = {
+                c = close_or(function()
+                    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-c>", true, false, true), "c", true)
+                end),
+            },
+        }
+
+        cmp.setup.cmdline(":", {
+            mapping = cmdline_mapping,
+            sources = cmp.config.sources({
+                { name = "path" },
+            }, {
+                { name = "cmdline" },
+            }),
+        })
+
+        cmp.setup.cmdline({ "/", "?" }, {
+            mapping = cmdline_mapping,
+            sources = {
+                { name = "buffer" },
+            },
+        })
+
+        -- To use git you need to install the plugin petertriho/cmp-git and uncomment lines below
+        -- Set configuration for specific filetype.
+        cmp.setup.filetype("gitcommit", {
+            sources = cmp.config.sources({
+                { name = "git" },
+            }, {
+                { name = "buffer" },
+            }),
+        })
+        require("cmp_git").setup()
+    end,
+}

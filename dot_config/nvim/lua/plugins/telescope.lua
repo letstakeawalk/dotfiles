@@ -1,12 +1,14 @@
 return {
     "nvim-telescope/telescope.nvim",
+    tag = "0.1.8",
     dependencies = {
+        "nvim-lua/plenary.nvim",
         { "nvim-telescope/telescope-fzf-native.nvim", build = "make" }, -- use fzf
-        "nvim-telescope/telescope-symbols.nvim", -- symbol picker
-        "nvim-telescope/telescope-file-browser.nvim", -- file browser
+        "nvim-telescope/telescope-ui-select.nvim",
         "tsakirist/telescope-lazy.nvim", -- lazy.nvim
+        -- "nvim-telescope/telescope-smart-history.nvim"
     },
-    cmd = { "Telescope" },
+    event = "VeryLazy",
     -- stylua: ignore
     keys = {
         { "<leader>b",  "<cmd>Telescope buffers<cr>",                desc = "Buffers (Telescope)" },
@@ -14,151 +16,27 @@ return {
         { "<leader>F",  "<cmd>Telescope find_files hidden=true<cr>", desc = "All Files (Telescope)" },
         { "<leader>p",  "<cmd>Telescope live_grep<cr>",              desc = "Live Grep (Telescope)" },
         { "<leader>tA", "<cmd>Telescope autocommands<cr>",           desc = "Autocmd" },
-        { "<leader>tB", "<cmd>Telescope builtin<cr>",                desc = "Builtin Pickers" },
+        { "<leader>tb", "<cmd>Telescope builtin<cr>",                desc = "Builtin Pickers" },
         { "<leader>tc", "<cmd>Telescope commands<cr>",               desc = "Commands" },
-        { "<leader>td", "<cmd>Telescope diagnostics<cr>",            desc = "Diagnostic" },
         { "<leader>th", "<cmd>Telescope help_tags<cr>",              desc = "Help" },
-        { "<leader>tH", "<cmd>Telescope highlights<cr>",             desc = "Highlight" },
         { "<leader>tk", "<cmd>Telescope keymaps<cr>",                desc = "Keymaps" },
-        { "<leader>tM", "<cmd>Telescope marks<cr>",                  desc = "Marks" },
-        { "<leader>tm", "<cmd>Telescope man_pages<cr>",              desc = "Man Pages" },
+        { "<leader>tl", "<cmd>Telescope highlights<cr>",             desc = "Highlight" },
+        { "<leader>tm", "<cmd>Telescope marks<cr>",                  desc = "Marks" },
         { "<leader>to", "<cmd>Telescope oldfiles<cr>",               desc = "Old Files" },
         { "<leader>tq", "<cmd>Telescope quickfix<cr>",               desc = "Quickfix" },
         { "<leader>tr", "<cmd>Telescope resume<cr>",                 desc = "Resume" },
         { "<leader>ts", "<cmd>Telescope spell_suggest<cr>",          desc = "Spell Suggest" },
-        { "<leader>tS", "<cmd>Telescope symbols<cr>",                desc = "Symbols" },
-        { "<leader>tT", "<cmd>Telescope treesitter<cr>",             desc = "Treesitter" },
-        { "<leader>tO", "<cmd>Telescope vim_options<cr>",            desc = "Vim Options" },
-        { "<A-s>",      "<cmd>Telescope symbols<cr>",                desc = "Symbols", mode = "i" },
+        { "<leader>tt", "<cmd>Telescope treesitter<cr>",             desc = "Treesitter" },
+        -- { "<leader>td", "<cmd>Telescope diagnostics<cr>",            desc = "Diagnostic" },
+        -- { "<leader>tm", "<cmd>Telescope man_pages<cr>",              desc = "Man Pages" },
+        -- { "<leader>tS", "<cmd>Telescope symbols<cr>",                desc = "Symbols" },
+        -- { "<leader>tO", "<cmd>Telescope vim_options<cr>",            desc = "Vim Options" },
+        -- { "<A-s>",      "<cmd>Telescope symbols<cr>",                desc = "Symbols", mode = "i" },
         -- extensions
-        { "<leader>ta", "<cmd>Telescope aerial<cr>",        desc = "Aerial" },
-        { "<leader>tb", "<cmd>Telescope file_browser<cr>",  desc = "File Browser" },
-        { "<leader>tl", "<cmd>Telescope tldr<cr>",          desc = "Tldr" },
-        { "<leader>tz", "<cmd>Telescope lazy<cr>",          desc = "Lazy" },
+        { "<leader>ta", "<cmd>Telescope aerial<cr>", desc = "Aerial" },
+        { "<leader>tz", "<cmd>Telescope lazy<cr>",   desc = "Lazy" },
     },
     config = function()
-        local telescope = require("telescope")
-        local actions = require("telescope.actions")
-        local trouble = require("trouble.providers.telescope")
-        telescope.load_extension("aerial") -- aerial.nvim
-        telescope.load_extension("file_browser") -- telescope-file-browser
-        telescope.load_extension("fzf") -- telescope-fzf-native
-        telescope.load_extension("git_worktree") -- git-worktree.nvim
-        telescope.load_extension("harpoon") -- harpoon.nvim
-        telescope.load_extension("lazy") -- lazy.nvim
-        telescope.load_extension("persisted") -- persisted.nvim
-        telescope.load_extension("refactoring") -- refactoring.nvim
-
-        -- custom picker action
-        local function open_vertical_if_wide_enough(prompt_bufnr)
-            local action_set = require("telescope.actions.set")
-            local wins = vim.api.nvim_tabpage_list_wins(0)
-
-            local winbufs = vim.tbl_map(function(win)
-                return { win, vim.api.nvim_win_get_buf(win) }
-            end, wins)
-
-            local listed_winbufs = vim.tbl_filter(function(winbuf)
-                return vim.api.nvim_get_option_value("buflisted", { buf = winbuf[2] })
-            end, winbufs)
-
-            if #listed_winbufs == 1 and vim.api.nvim_win_get_width(listed_winbufs[1][1]) > 160 then
-                return action_set.select(prompt_bufnr, "vertical")
-            end
-            return action_set.select(prompt_bufnr, "horizontal")
-        end
-
-        -- stylua: ignore
-        telescope.setup({
-            defaults = {
-                layout_strategy = "center", -- horizontal, center, vertical
-                layout_config = { width = 80, height = 0.25 },
-                borderchars = {
-                    prompt  = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
-                    results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
-                    preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-                },
-                results_title    = false,
-                sorting_strategy = "ascending",
-                prompt_prefix    = "   ", -- ' 🔭🔎 ',
-                selection_caret  = "  ",
-                multi_icon       = "  ",
-                entry_prefix     = "   ",
-                file_ignore_patterns = { "%.lock", "lock%.json" },
-                mappings = {
-                    i = {
-                        ["?"]     = "which_key",
-                        ["<ESC>"] = actions.close,
-                        ["<C-q>"] = trouble.open_with_trouble,
-                        -- ["<C-q>"] = actions.close,
-                    },
-                    n = {
-                        ["k"]     = actions.move_selection_next,
-                        ["h"]     = actions.move_selection_previous,
-                        ["<C-q>"] = trouble.open_with_trouble,
-                    },
-                },
-            },
-            pickers = {
-                find_files = {
-                    find_command = {
-                        "fd",
-                        "--type", "f",
-                        "--follow",
-                        "--exclude", ".git",
-                        "--exclude", "node_modules",
-                        "--exclude", "target",
-                    },
-                },
-                help_tags = {
-                    mappings = {
-                        i = { ["<CR>"] = open_vertical_if_wide_enough, },
-                        n = { ["<CR>"] = open_vertical_if_wide_enough, }
-                    }
-                }
-            },
-            extensions = {
-                file_browser = { hijack_netrw = true },
-                lazy = {
-                    mappings = {
-                        open_in_browser           = "<C-o>",
-                        open_in_file_browser      = "<C-z>",
-                        open_in_find_files        = "<C-f>",
-                        open_in_live_grep         = "<C-p>",
-                        open_plugins_picker       = "<C-g>", -- Works only after having called first another action
-                        open_lazy_root_find_files = "<C-r>f",
-                        open_lazy_root_live_grep  = "<C-r>g",
-                    },
-                },
-                tldr = {},
-            },
-        })
-
-        -- highlight
-        -- stylua: ignore start
-        local nord = require("utils.nord")
-        vim.api.nvim_set_hl(0, "TelescopeTitle",          { link = "FloatTitle" })
-        vim.api.nvim_set_hl(0, "TelescopeBorder",         { link = "FloatBorder" })
-        vim.api.nvim_set_hl(0, "TelescopePromptBorder",   { link = "FloatBorder" })
-        vim.api.nvim_set_hl(0, "TelescopeResultsBorder",  { link = "FloatBorder" })
-        vim.api.nvim_set_hl(0, "TelescopePreviewBorder",  { link = "FloatBorder" })
-        vim.api.nvim_set_hl(0, "TelescopePromptPrefix",   { link = "TelescopeTitle" })
-        vim.api.nvim_set_hl(0, "TelescopeMatching",       { fg = nord.fg, bold = true })
-        vim.api.nvim_set_hl(0, "TelescopeResultsNormal",  { fg = nord.c04_wht_dk })
-        vim.api.nvim_set_hl(0, "TelescopeSelection",      { link = "Visual" })
-        vim.api.nvim_set_hl(0, "TelescopeSelectionCaret", { link = "TelescopeSelection" })
-        -- stylua: ignore end
-
-        -- list of extensions
-        -- nvim-telescope/telescope-dap.nvim
-        -- nvim-telescope/telescope-frecency.nvim, -- frecency alg
-        -- nvim-telescope/telescope-live-grep-args.nvim
-        -- kkharji/sqlite.lua, -- req by telescope-frecency.nvim
-        -- nvim-telescope/telescope-github.nvim
-        -- sudormrfbin/cheatsheet.nvim
-        -- danielpieper/telescope-tmuxinator.nvim
-
-        -- barrett-ruth/telescope-http.nvim
-        -- chip/telescope-software-licenses.nvim
+        require("config.telescope")
     end,
 }

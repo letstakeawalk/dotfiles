@@ -1,40 +1,47 @@
 return {
     "monaqa/dial.nvim",
+    -- stylua: ignore
     keys = {
-        { "<C-a>", function() return require("dial.map").inc_normal() end, expr = true, desc = "Increment" },
-        { "<C-x>", function() return require("dial.map").dec_normal() end, expr = true, desc = "Increment" },
-        { "<C-a>", function() return require("dial.map").inc_visual() end, mode = "v", expr = true, desc = "Increment" },
-        { "<C-x>", function() return require("dial.map").dec_visual() end, mode = "v", expr = true, desc = "Increment" },
-        { "g<C-a>", function() return require("dial.map").inc_gvisual() end, mode = "v", expr = true, desc = "Increment" },
-        { "g<C-x>", function() return require("dial.map").dec_gvisual() end, mode = "v", expr = true, desc = "Increment" },
+        { "<C-a>",  "<Plug>(dial-increment)", mode = "n", desc = "Increment" },
+        { "<C-x>",  "<Plug>(dial-decrement)", mode = "n", desc = "Decrement" },
+        { "<C-a>",  "<Plug>(dial-increment)", mode = "v", desc = "Increment" },
+        { "<C-x>",  "<Plug>(dial-decrement)", mode = "v", desc = "Decrement" },
+        { "g<C-a>", "<Plug>(dial-increment)", mode = "n", desc = "Increment" },
+        { "g<C-x>", "<Plug>(dial-decrement)", mode = "n", desc = "Decrement" },
+        { "g<C-a>", "<Plug>(dial-increment)", mode = "v", desc = "Increment" },
+        { "g<C-x>", "<Plug>(dial-decrement)", mode = "v", desc = "Decrement" },
     },
     config = function()
         local augend = require("dial.augend")
         require("dial.config").augends:register_group({
-            augend.integer.alias.decimal, -- nonnegative decimal number
-            augend.integer.alias.hex, -- nonnegative hex number
-            augend.integer.alias.octal,
-            augend.integer.alias.binary,
-            -- date (2022/02/19, etc.)
-            augend.date.new({
-                pattern = "%Y/%m/%d",
-                default_kind = "day",
-            }),
-            augend.date.new({
-                pattern = "%Y-%m-%d",
-                default_kind = "day",
-            }),
-            augend.date.new({
-                pattern = "%m/%d",
-                default_kind = "day",
-                only_valid = true,
-            }),
-            augend.date.new({
-                pattern = "%H:%M",
-                default_kind = "day",
-                only_valid = true,
-            }),
-            augend.semver,
+            default = {
+                augend.integer.alias.decimal, -- nonnegative decimal number
+                augend.integer.alias.hex, -- nonnegative hex number
+                augend.integer.alias.octal,
+                augend.integer.alias.binary,
+                augend.date.alias["%Y/%m/%d"],
+                augend.date.alias["%Y-%m-%d"],
+                augend.date.alias["%H:%M"],
+                augend.date.new({
+                    pattern = "%Y.%m.%d",
+                    default_kind = "day",
+                    only_valid = true,
+                    word = false,
+                }),
+                augend.date.new({
+                    pattern = "%a",
+                    default_kind = "day",
+                    only_valid = true,
+                    word = false,
+                }),
+                augend.date.new({
+                    pattern = "%A",
+                    default_kind = "day",
+                    only_valid = true,
+                    word = false,
+                }),
+                augend.semver.alias.semver,
+            },
         })
     end,
 }

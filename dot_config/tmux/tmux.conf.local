@@ -411,26 +411,25 @@ bind -r J resize-pane -L 2
 bind -r L resize-pane -R 2
 
 # Smart pane switching with awareness of Vim splits. Ref: https://github.com/christoomey/vim-tmux-navigator
-is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
-    | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?|fzf)(diff)?$'"
-bind -n 'C-h' if-shell "$is_vim" { send-keys C-h }  { select-pane -U } # <C-h> -> up
-bind -n 'C-k' if-shell "$is_vim" { send-keys C-k }  { select-pane -D } # <C-k> -> down
-bind -n 'C-j' if-shell "$is_vim" { send-keys C-j }  { select-pane -L } # <C-j> -> left
-bind -n 'C-l' if-shell "$is_vim" { send-keys C-l }  { select-pane -R } # <C-l> -> right
-bind C-l send-keys 'C-l'
-bind C-k send-keys 'C-k'
-# tmux_version='$(tmux -V | sed -En "s/^tmux ([0-9]+(.[0-9]+)?).*/\1/p")'
-# if-shell -b '[ "$(echo "$tmux_version < 3.0" | bc)" = 1 ]' \
-#     "bind -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\'  'select-pane -l'"
-# if-shell -b '[ "$(echo "$tmux_version >= 3.0" | bc)" = 1 ]' \
-#     "bind -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\\\'  'select-pane -l'"
+# is_vim="ps -o state= -o comm= -t '#{pane_tty}' \ | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?|fzf)(diff)?$'"
+# bind -n 'C-h' if-shell "$is_vim" { send-keys C-h }  { select-pane -U } # <C-h> -> up
+# bind -n 'C-k' if-shell "$is_vim" { send-keys C-k }  { select-pane -D } # <C-k> -> down
+# bind -n 'C-j' if-shell "$is_vim" { send-keys C-j }  { select-pane -L } # <C-j> -> left
+# bind -n 'C-l' if-shell "$is_vim" { send-keys C-l }  { select-pane -R } # <C-l> -> right
+# bind C-l send-keys 'C-l'
+# bind C-k send-keys 'C-k'
+
+is_vim="ps -o state= -o comm= -t '#{pane_tty}' | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?\.?(view|n?vim?x?)(-wrapped)?(diff)?$'"
+bind -n 'C-h' if-shell "$is_vim" { send-keys C-h } { if -F '#{pane_at_top}' '' { select-pane -U } }
+bind -n 'C-k' if-shell "$is_vim" { send-keys C-k } { if -F '#{pane_at_bottom}' '' { select-pane -D } }
+bind -n 'C-j' if-shell "$is_vim" { send-keys C-j } { if -F '#{pane_at_left}' '' { select-pane -L } }
+bind -n 'C-l' if-shell "$is_vim" { send-keys C-l } { if -F '#{pane_at_right}' '' { select-pane -R } }
 
 # copy mode navigation
-bind -T copy-mode-vi 'C-h' select-pane -U
-bind -T copy-mode-vi 'C-k' select-pane -D
-bind -T copy-mode-vi 'C-j' select-pane -L
-bind -T copy-mode-vi 'C-l' select-pane -R
-bind -T copy-mode-vi 'C-\' select-pane -l
+bind -T copy-mode-vi 'C-h' if -F '#{pane_at_top}' '' 'select-pane -U'
+bind -T copy-mode-vi 'C-k' if -F '#{pane_at_bottom}' '' 'select-pane -D'
+bind -T copy-mode-vi 'C-j' if -F '#{pane_at_left}' '' 'select-pane -L'
+bind -T copy-mode-vi 'C-l' if -F '#{pane_at_right}' '' 'select-pane -R'
 bind -T copy-mode-vi h     send-keys   Up
 bind -T copy-mode-vi k     send-keys   Down
 bind -T copy-mode-vi j     send-keys   Left
@@ -441,6 +440,23 @@ bind -T root  h if -F "#{==:#{pane_mode},tree-mode}" "send k" "send h"  #    Up 
 bind -T root  k if -F "#{==:#{pane_mode},tree-mode}" "send j" "send k"  #  Down if in tmux menu, k otherwise
 bind -T root  j if -F "#{==:#{pane_mode},tree-mode}" "send h" "send j"  #  Left if in tmux menu, j otherwise
 bind -T root  l if -F "#{==:#{pane_mode},tree-mode}" "send l" "send l"  # Right if in tmux menu, l otherwise  # redundant
+
+# resizing
+# bind -n 'M-h' if-shell "$is_vim" 'send-keys M-h' 'resize-pane -L 1'
+# bind -n 'M-j' if-shell "$is_vim" 'send-keys M-j' 'resize-pane -D 1'
+# bind -n 'M-k' if-shell "$is_vim" 'send-keys M-k' 'resize-pane -U 1'
+# bind -n 'M-l' if-shell "$is_vim" 'send-keys M-l' 'resize-pane -R 1'
+#
+# bind-key -T copy-mode-vi M-h resize-pane -L 1
+# bind-key -T copy-mode-vi M-j resize-pane -D 1
+# bind-key -T copy-mode-vi M-k resize-pane -U 1
+# bind-key -T copy-mode-vi M-l resize-pane -R 1
+
+# tmux_version='$(tmux -V | sed -En "s/^tmux ([0-9]+(.[0-9]+)?).*/\1/p")'
+# if-shell -b '[ "$(echo "$tmux_version < 3.0" | bc)" = 1 ]' \
+#     "bind -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\'  'select-pane -l'"
+# if-shell -b '[ "$(echo "$tmux_version >= 3.0" | bc)" = 1 ]' \
+#     "bind -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\\\'  'select-pane -l'"
 
 # popup windows
 bind n popup -h 90% -w 95% -E -b rounded -S fg='#5E81AC' # temparary popup

@@ -56,18 +56,18 @@ cursor = "#d8dee9"
 text = "#2e3440"
 
 [font]
-size = 16
+{{- if eq .chezmoi.hostname "HRBs-MacBook-Pro" }}
+size = 19
+{{- else if eq .chezmoi.hostname "HRBs-MacBook-Pro-Work" }}
+size = 17
+{{- end }}
 
-# families: FiraCode, RecMono Mono [Linear, Duotone, Casual]
+# families: FiraCode(Retina), RecMono[Linear, Duotone, Casual]
 [font.normal]
-family = "FiraCode Nerd Font"
-style = "Retina"
-# family = "RecMonoLinear Nerd Font"
-# style = "Regular"
+family = "RecMonoCasual Nerd Font"
+style = "Regular"
 
 [font.bold]
-family = "FiraCode Nerd Font"
-# family = "RecMonoLinear Nerd Font"
 style = "Bold"
 
 [font.bold_italic]
@@ -93,46 +93,17 @@ bindings = [
     { key = "Q", mods = "Command", action = "Quit" },
     { key = "W", mods = "Command", action = "Quit" },
     { key = "H", mods = "Command", action = "None" },   # disable window hiding
-    { key = "F", mods = "Command", chars = "\u0002s" }, # ^bs -- open tmux sessionizer
     { key = "K", mods = "Command", chars = "\u0002s" }, # ^bs -- open tmux sessionizer
     { key = "M", mods = "Command", chars = "\u000a" },  # ^j -- tmux pane nav left
     { key = "N", mods = "Command", chars = "\u000b" },  # ^k -- tmux pane nav down
     { key = "E", mods = "Command", chars = "\u0008" },  # ^h -- tmux pane nav up
     { key = "I", mods = "Command", chars = "\u000c" },  # ^l -- tmux pane nav right
 
-    # Alt keymaps
-    { key = "A", mods = "Alt", chars = "\u001Ba" },
-    { key = "B", mods = "Alt", chars = "\u001Bb" },
-    { key = "C", mods = "Alt", chars = "\u001Bc" },
-    { key = "D", mods = "Alt", chars = "\u001Bd" },
-    { key = "E", mods = "Alt", chars = "\u001Be" },
-    { key = "F", mods = "Alt", chars = "\u001Bf" },
-    { key = "G", mods = "Alt", chars = "\u001Bg" },
-    { key = "H", mods = "Alt", chars = "\u001Bh" },
-    { key = "J", mods = "Alt", chars = "\u001Bj" },
-    { key = "I", mods = "Alt", chars = "\u001Bi" },
-    { key = "K", mods = "Alt", chars = "\u001Bk" },
-    { key = "L", mods = "Alt", chars = "\u001Bl" },
-    { key = "M", mods = "Alt", chars = "\u001Bm" },
-    { key = "N", mods = "Alt", chars = "\u001Bn" },
-    { key = "O", mods = "Alt", chars = "\u001Bo" },
-    { key = "P", mods = "Alt", chars = "\u001Bp" },
-    { key = "Q", mods = "Alt", chars = "\u001Bq" },
-    { key = "R", mods = "Alt", chars = "\u001Br" },
-    { key = "S", mods = "Alt", chars = "\u001Bs" },
-    { key = "T", mods = "Alt", chars = "\u001Bt" },
-    { key = "U", mods = "Alt", chars = "\u001Bu" },
-    { key = "V", mods = "Alt", chars = "\u001Bv" },
-    { key = "W", mods = "Alt", chars = "\u001Bw" },
-    { key = "X", mods = "Alt", chars = "\u001Bx" },
-    { key = "Y", mods = "Alt", chars = "\u001By" },
-    { key = "Z", mods = "Alt", chars = "\u001Bz" },
-
-    { key = "Back", mods = "Command", chars = "\u0015" },         # ^u -- delete line
-    { key = "Back", mods = "Alt", chars = "\u0017" },             # ^w -- delete word
-    { key = "Slash", mods = "Control", chars = "\u001F" },        # ^/ == ^_
+    { key = "Back",   mods = "Command", chars = "\u0015" }, # ^u -- delete line
+    { key = "Back",   mods = "Alt",     chars = "\u0017" }, # ^w -- delete word
+    { key = "Slash",  mods = "Control", chars = "\u001F" }, # ^/ == ^_
     { key = "Return", mods = "Control", chars = "\u001B[13;4u" },
-    { key = "Return", mods = "Shift", chars = "\u001B[13;2u" },
+    { key = "Return", mods = "Shift",   chars = "\u001B[13;2u" },
 ]
 
 [shell]

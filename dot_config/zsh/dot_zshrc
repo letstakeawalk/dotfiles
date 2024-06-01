@@ -37,7 +37,7 @@ export ZSH="$XDG_CONFIG_HOME/oh-my-zsh"
 export ZSH_EVALCACHE_DIR="$XDG_CACHE_HOME/zsh-evalcache"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export ZK_NOTEBOOK_DIR="$OBSIDIAN"
-export CC=gcc-12
+export CC=gcc
 export TMS_CONFIG_PATH="$XDG_CONFIG_HOME/tms/config.toml"
 export MISE_DATA_DIR="$XDG_DATA_HOME/mise"
 export MISE_CACHE_DIR="$XDG_CACHE_HOME/mise"
@@ -53,6 +53,7 @@ export PATH="$CARGO_HOME"/bin:$PATH # rust
 export PATH="$RUSTUP_HOME"/toolchains/stable-aarch64-apple-darwin/bin:$PATH # rust
 export PATH="$XDG_DATA_HOME"/bob/nvim-bin:$PATH # neovim
 export PATH="$XDG_DATA_HOME"/nvim/mason/bin:$PATH # lsp, linters, formatters
+# export PATH=/opt/homebrew/opt/llvm/bin:$PATH # llvm
 export PATH=/opt/homebrew/bin:/opt/homebrew/sbin:$PATH # should be last line
 
 ###############################################################################

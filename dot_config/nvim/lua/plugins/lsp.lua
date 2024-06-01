@@ -6,19 +6,17 @@ return {
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
         "WhoIsSethDaniel/mason-tool-installer.nvim",
-        "stevearc/conform.nvim",
-        "mfussenegger/nvim-lint",
+        "nvimtools/none-ls.nvim",
         "ray-x/lsp_signature.nvim",
         { "j-hui/fidget.nvim", version = "*" },
-        -- "nvimtools/none-ls.nvim",
     },
     config = function()
         require("neodev").setup({ -- important to setup before lspconfig
-            -- override = function(root_dir, options)
-            --     if root_dir == vim.fn.expand("$CHEZMOI_SOURCE/dot_config/nvim") then
-            --         options.plugins = true
-            --     end
-            -- end,
+            override = function(root_dir, options)
+                if root_dir == vim.fn.expand("$CHEZMOI_SOURCE/dot_config/nvim") then
+                    options.plugins = true
+                end
+            end,
         })
 
         local servers = {
@@ -164,7 +162,8 @@ return {
 
         local ensure_installed = {
             "stylua",
-            -- "gitlint",
+            "gitlint",
+            "shellharden",
             -- "markdownlint",
             -- "mdformat",
             -- "mdslw",
@@ -191,41 +190,59 @@ return {
         -- Add additional capabilities supported by nvim-cmp
         local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
+        -- language servers
         for server, config in pairs(servers) do
             config.capabilities = vim.tbl_extend("force", capabilities, config.capabilities or {})
             lsp_config[server].setup(config)
         end
 
+        -- linters and formatters
+        local nls = require("null-ls")
+        nls.setup({
+            debug = false,
+            border = "double",
+            sources = {
+                nls.builtins.formatting.stylua, -- lua
+                nls.builtins.diagnostics.gitlint, -- git
+                nls.builtins.formatting.shellharden, -- bash
+                -- nls.builtins.formatting.jq,
+                -- nls.builtins.diagnostics.actionlint, -- github action
+                -- nls.builtins.diagnostics.ansiblelint, -- ansible
+                -- nls.builtins.diagnostics.hadolint, -- docker
+                -- nls.builtins.diagnostics.buf, -- protobuf
+                -- nls.builtins.diagnostics.mypy, -- python
+                -- nls.builtins.diagnostics.bandit, -- python
+                -- nls.builtins.diagnostics.sqlfluff, -- sql
+                -- nls.builtins.formatting.sqlfluff, -- sql
+
+                -- nls.builtins.formatting.markdownlint.with({
+                --     extra_args = { "-c", vim.fn.expand("$XDG_CONFIG_HOME") .. "/markdownlint/markdownlint.yaml" },
+                -- }),
+
+            }
+        })
+
+        -- stylua: ignore
         vim.api.nvim_create_autocmd("LspAttach", {
             callback = function(args)
                 local bufnr = args.buf
-                -- stylua: ignore start
-                vim.keymap.set("n", "H", vim.lsp.buf.signature_help, { buffer = bufnr, desc = "Display Signature Help" })
-                vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr, desc = "Display Hover Info" })
-                -- vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr, desc = "Go to Definition" })
-                -- vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = bufnr, desc = "Go to Definition" })
-                -- vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr, desc = "Go to Definition" })
-                -- vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = bufnr, desc = "Go to Definition" })
-                -- vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = bufnr, desc = "Go to Definition" })
-                -- stylua: ignore end
-
-                vim.keymap.set("n", "<leader>ra", vim.lsp.buf.code_action, { buffer = bufnr, desc = "Code Action" })
-                vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr, desc = "Rename" })
-                -- vim.keymap.set("n", "<leader>rf", function() vim.lsp.buf.format({ async = true }) end, { buffer = bufnr, desc = "Format File"})
-                vim.keymap.set("n", "<leader>dd", function()
-                    vim.diagnostic.enable(not vim.diagnostic.is_enabled())
-                end, { buffer = bufnr, desc = "Diagnostic Toggle" })
-                vim.keymap.set("n", "<leader>dh", function()
-                    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
-                end, { buffer = bufnr, desc = "InlayHint Toggle" })
-                require("lsp_signature").on_attach({
-                    hint_enable = false,
-                }, bufnr)
+                vim.keymap.set("n", "H",          vim.lsp.buf.signature_help,                                                      { buffer = bufnr, desc = "Display Signature Help" })
+                vim.keymap.set("n", "K",          vim.lsp.buf.hover,                                                               { buffer = bufnr, desc = "Display Hover Info" })
+                vim.keymap.set("n", "<leader>ra", vim.lsp.buf.code_action,                                                         { buffer = bufnr, desc = "Code Action" })
+                vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename,                                                              { buffer = bufnr, desc = "Rename" })
+                vim.keymap.set("n", "<leader>rf", function() vim.lsp.buf.format({ async = true }) end,                             { buffer = bufnr, desc = "Format File"})
+                vim.keymap.set("n", "<leader>dd", function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end,           { buffer = bufnr, desc = "Diagnostic Toggle" })
+                vim.keymap.set("n", "<leader>dh", function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({})) end, { buffer = bufnr, desc = "InlayHint Toggle" })
+                require("lsp_signature").on_attach({ hint_enable = false }, bufnr)
             end,
         })
         vim.keymap.set("n", "<leader>il", "<cmd>LspInfo<cr>", { desc = "Lsp Info" })
-        vim.keymap.set("n", "<leader>im", "<cmd>Mason<cr>", { desc = "Mason" })
+        vim.keymap.set("n", "<leader>im", "<cmd>Mason<cr>", { desc = "Mason Info" })
+        vim.keymap.set("n", "<leader>in", "<cmd>NullLsInfo<cr>", { desc = "Null-ls Info" })
 
+        --------------------------------------------------------------------------------
+        -- UI customization ------------------------------------------------------------
+        --------------------------------------------------------------------------------
         require("fidget").setup({
             progress = {
                 display = {
@@ -240,9 +257,6 @@ return {
             },
         })
 
-        --------------------------------------------------------------------------------
-        -- UI customization ------------------------------------------------------------
-        --------------------------------------------------------------------------------
         require("lspconfig.ui.windows").default_options.border = "double"
         -- globally override border -- https://github.com/neovim/nvim-lspconfig/wiki/UI-customization#borders
         local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
@@ -287,30 +301,6 @@ return {
                     [vim.diagnostic.severity.INFO] = "DiagnosticInfo",
                 },
             },
-        })
-
-        --------------------------------------------------------------------------------
-        -- Formatter & Linter ----------------------------------------------------------
-        --------------------------------------------------------------------------------
-
-        local formatter = require("conform")
-        formatter.setup({
-            formatters_by_ft = {
-                lua = { "stylua" },
-            },
-        })
-        vim.keymap.set({ "n", "v" }, "<leader>rf", formatter.format, { desc = "Format" })
-        vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
-
-        local linter = require("lint")
-        linter.linters_by_ft = {
-            gitcommit = { "gitlint" },
-        }
-
-        vim.api.nvim_create_autocmd("TextChanged", {
-            callback = function()
-                linter.try_lint()
-            end,
         })
     end,
 }

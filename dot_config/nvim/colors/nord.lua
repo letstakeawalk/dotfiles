@@ -170,6 +170,7 @@ set(0, "@keyword.gitcommit",            { fg = nord.c09_glcr, bold = true })
 --------------------------------------------------------------------------------
 -- lsp
 set(0, "LspInfoBorder",           { link = "FloatBorder" })
+set(0, "NullLsInfoBorder",        { link = "FloatBorder" })
 
 -- telescope.nvim
 set(0, "TelescopeTitle",          { link = "FloatTitle" })

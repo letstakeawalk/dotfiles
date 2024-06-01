@@ -96,7 +96,6 @@ local parsers = {
     "sql",
     "svelte",
     "terraform",
-    "tmux",
     "toml",
     "typescript", "tsx",
     "vim",

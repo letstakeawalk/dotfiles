@@ -153,7 +153,19 @@ return {
                 },
             },
             tailwindcss = {},
-            taplo = {},
+            taplo = {
+                handlers = {
+                    -- filter chezmoi templates (marked by {{...}})
+                    ["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
+                        result.diagnostics = vim.tbl_filter(function(diag)
+                            local lnum = diag.range.start.line
+                            local line = vim.api.nvim_buf_get_lines(0, lnum, lnum + 1, false)[1]
+                            return string.match(line, "^%s*{{.*}}%s*$") == nil
+                        end, result.diagnostics)
+                        vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx, config)
+                    end,
+                },
+            },
             yamlls = {},
             -- vimls = {},
             -- marksman = { filetypes = { "markdown", "telekasten" } },

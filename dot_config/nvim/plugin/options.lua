@@ -47,7 +47,10 @@ opt.shiftwidth = 4 -- Number of spaces to use in auto(indent)
 -- custom filetypes
 vim.filetype.add({
     filename = {
-        ["dot_zshrc"] = "zsh", -- chezmoi
+        ["dot_zshrc"] = "zsh",
+    },
+    pattern = {
+        [".*%.toml%.tmpl"] = "toml",
     },
 })
 

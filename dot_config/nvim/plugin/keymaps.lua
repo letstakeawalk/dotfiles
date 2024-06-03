@@ -38,12 +38,7 @@ set("n", "<PageDown>", "<C-d>zz",                { desc = "Scroll down" })
 set("n", "<PageUp>",   "<C-u>zz",                { desc = "Scroll up" })
 set("n", "<C-e>",      "10<C-e>",                { desc = "Scroll down" })
 set("n", "<C-y>",      "10<C-y>",                { desc = "Scroll up" })
-set("n", "'", "g'",                              { desc = "Jump to mark" })
-
-set("n", "E",  vim.diagnostic.open_float, { desc = "Open Float" })
-set("n", "[d", vim.diagnostic.goto_prev,  { desc = "Goto previous diagnostic" })
-set("n", "]d", vim.diagnostic.goto_next,  { desc = "Goto next diagnostic" })
-
+set("n", "'", "g`",                              { desc = "Jump to mark" })
 
 -- Buffer/Tab/Pane Navigation & Management
 set("n", "<C-q>",     "<cmd>q<cr>",                  { desc = "Close buffer"  })

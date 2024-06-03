@@ -32,14 +32,7 @@ return {
                 command = { "lua-language-server" },
                 settings = {
                     Lua = {
-                        -- runtime = { version = "LuaJIT" },
-                        -- diagnostics = { globals = { "vim" } }, -- Get the language server to recognize the `vim` global
                         completion = { callSnippet = "Replace" },
-                        -- workspace = {
-                        --     library = vim.api.nvim_get_runtime_file("", true), -- Make the server aware of Neovim runtime files
-                        --     checkThirdParty = false,
-                        -- },
-                        -- telemetry = { enable = false }, -- Do not send telemetry data containing a randomized but unique identifier
                         format = { enable = false },
                         hint = {
                             enable = true,
@@ -160,7 +153,7 @@ return {
                         result.diagnostics = vim.tbl_filter(function(diag)
                             local lnum = diag.range.start.line
                             local line = vim.api.nvim_buf_get_lines(0, lnum, lnum + 1, false)[1]
-                            return string.match(line, "^%s*{{.*}}%s*$") == nil
+                            return string.match(line, "^%s*{{.-}}%s*$") == nil
                         end, result.diagnostics)
                         vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx, config)
                     end,
@@ -230,27 +223,35 @@ return {
                 -- nls.builtins.formatting.markdownlint.with({
                 --     extra_args = { "-c", vim.fn.expand("$XDG_CONFIG_HOME") .. "/markdownlint/markdownlint.yaml" },
                 -- }),
-
-            }
+            },
         })
 
-        -- stylua: ignore
+        -- stylua: ignore start
+        local next_diag, prev_diag =
+            require("nvim-treesitter.textobjects.repeatable_move").make_repeatable_move_pair(
+                function() vim.diagnostic.jump({ count = 1,  float = true }) end,
+                function() vim.diagnostic.jump({ count = -1, float = true }) end
+            )
         vim.api.nvim_create_autocmd("LspAttach", {
             callback = function(args)
                 local bufnr = args.buf
-                vim.keymap.set("n", "H",          vim.lsp.buf.signature_help,                                                      { buffer = bufnr, desc = "Display Signature Help" })
-                vim.keymap.set("n", "K",          vim.lsp.buf.hover,                                                               { buffer = bufnr, desc = "Display Hover Info" })
-                vim.keymap.set("n", "<leader>ra", vim.lsp.buf.code_action,                                                         { buffer = bufnr, desc = "Code Action" })
-                vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename,                                                              { buffer = bufnr, desc = "Rename" })
-                vim.keymap.set("n", "<leader>rf", function() vim.lsp.buf.format({ async = true }) end,                             { buffer = bufnr, desc = "Format File"})
-                vim.keymap.set("n", "<leader>dd", function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end,           { buffer = bufnr, desc = "Diagnostic Toggle" })
-                vim.keymap.set("n", "<leader>dh", function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({})) end, { buffer = bufnr, desc = "InlayHint Toggle" })
+                vim.keymap.set("n", "H",          vim.lsp.buf.signature_help,                                                      { desc = "Display Signature Help",   buffer = bufnr })
+                vim.keymap.set("n", "K",          vim.lsp.buf.hover,                                                               { desc = "Display Hover Info",       buffer = bufnr })
+                vim.keymap.set("n", "<leader>ra", vim.lsp.buf.code_action,                                                         { desc = "Code Action",              buffer = bufnr })
+                vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename,                                                              { desc = "Rename",                   buffer = bufnr })
+                vim.keymap.set("n", "<leader>rf", function() vim.lsp.buf.format({ async = true }) end,                             { desc = "Format File",              buffer = bufnr})
+                vim.keymap.set("n", "<leader>dd", function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end,           { desc = "Diagnostic Toggle",        buffer = bufnr })
+                vim.keymap.set("n", "<leader>dh", function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({})) end, { desc = "InlayHint Toggle",         buffer = bufnr })
+                vim.keymap.set("n", "[d",         prev_diag,                                                                       { desc = "Goto previous diagnostic", buffer = bufnr })
+                vim.keymap.set("n", "]d",         next_diag,                                                                       { desc = "Goto next diagnostic",     buffer = bufnr})
+                vim.keymap.set("n", "E",          vim.diagnostic.open_float,                                                       { desc = "Open Float",               buffer = bufnr })
                 require("lsp_signature").on_attach({ hint_enable = false }, bufnr)
             end,
         })
-        vim.keymap.set("n", "<leader>il", "<cmd>LspInfo<cr>", { desc = "Lsp Info" })
-        vim.keymap.set("n", "<leader>im", "<cmd>Mason<cr>", { desc = "Mason Info" })
+        vim.keymap.set("n", "<leader>il", "<cmd>LspInfo<cr>",    { desc = "Lsp Info" })
+        vim.keymap.set("n", "<leader>im", "<cmd>Mason<cr>",      { desc = "Mason Info" })
         vim.keymap.set("n", "<leader>in", "<cmd>NullLsInfo<cr>", { desc = "Null-ls Info" })
+        -- stylua: ignore end
 
         --------------------------------------------------------------------------------
         -- UI customization ------------------------------------------------------------

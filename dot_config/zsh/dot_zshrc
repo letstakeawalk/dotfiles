@@ -27,6 +27,7 @@ export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
 export REDISCLI_HISTFILE="$XDG_DATA_HOME/rediscli_history"
 export REDISCLI_RCFILE="$XDG_CONFIG_HOME/redis/redisclirc"
 export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/rg/ripgreprc"
+export SHELL=/opt/homebrew/bin/zsh
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 export STARSHIP_CONFIG="$XDG_CONFIG_HOME/starship/starship.toml"
 export TEALDEER_CONFIG_DIR="$XDG_CONFIG_HOME/tealdeer"

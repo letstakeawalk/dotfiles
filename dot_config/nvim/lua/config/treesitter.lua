@@ -113,7 +113,7 @@ local parsers = {
 
 require("nvim-treesitter.configs").setup({
     ensure_installed = parsers,
-    auto_install = true,
+    auto_install = false,
     sync_install = false,
     ignore_install = {},
     highlight = { enable = true },

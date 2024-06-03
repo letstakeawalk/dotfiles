@@ -161,6 +161,9 @@ set(0, "tag",            { fg = nord.c09_glcr })
 set(0, "@tag.delimiter", { fg = nord.c09_glcr })
 set(0, "@tag.attribute", { fg = nord.c08_teal })
 
+-- json
+set(0, "@property.json", { fg = nord.c09_glcr })
+
 -- gitcommit
 set(0, "@string.special.url.gitcommit", { fg = nord.c04_wht_dk })
 set(0, "@keyword.gitcommit",            { fg = nord.c09_glcr, bold = true })
@@ -238,3 +241,8 @@ set(0, "TroublePreview", { link = "Search" })
 
 -- zen
 set(0, "ZenBg", { bg = nord.c00_blk_dk })
+
+-- fugitive
+vim.api.nvim_set_hl(0, "FugitiveExtSection", { fg = nord.c09_glcr, bold = true })
+vim.api.nvim_set_hl(0, "FugitiveExtKey",     { fg = nord.c08_teal, bold = true })
+vim.api.nvim_set_hl(0, "FugitiveExtDesc",    { fg = nord.c04_wht_dk })

@@ -17,8 +17,6 @@ set("x", "k",  "j",                              { desc = "Down",  silent = true
 set("x", "h",  "k",                              { desc = "Up",    silent = true })
 set("x", "j",  "h",                              { desc = "Left",  silent = true })
 set("x", "l",  "l",                              { desc = "Right", silent = true })
-set({ "i", "n", "c" }, "<A-Right>", "<C-Right>", { desc = "Next word" }) -- ^[f
-set({ "i", "n", "c" }, "<A-Left>",  "<C-Left>",  { desc = "Prev word" }) -- ^[b
 set({ "i", "n", "c" }, "<A-f>",     "<C-Right>", { desc = "Next word" }) -- ^[f
 set({ "i", "n", "c" }, "<A-b>",     "<C-Left>",  { desc = "Prev word" }) -- ^[b
 set("c", "<C-a>", "<Home>",                      { desc = "BoL" })

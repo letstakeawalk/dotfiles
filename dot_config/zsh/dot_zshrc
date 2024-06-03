@@ -68,14 +68,16 @@ zinit wait lucid for \
 zinit ice depth=1
 zinit light jeffreytse/zsh-vi-mode
 ZVM_VI_INSERT_ESCAPE_BINDKEY=kh
-bindkey -M   vicmd  k    vi-down-line-or-history
-bindkey -M   vicmd  h    vi-up-line-or-history
-bindkey -M   vicmd  j    vi-backward-char
-bindkey -M   vicmd  l    vi-forward-char
-bindkey -M   visual k    vi-down-line-or-history
-bindkey -M   visual h    vi-up-line-or-history
-bindkey -M   visual j    vi-backward-char
-bindkey -M   visual l    vi-forward-char
+bindkey -M   vicmd    k    vi-down-line-or-history
+bindkey -M   vicmd    h    vi-up-line-or-history
+bindkey -M   vicmd    j    vi-backward-char
+bindkey -M   vicmd    l    vi-forward-char
+bindkey -M   visual   k    vi-down-line-or-history
+bindkey -M   visual   h    vi-up-line-or-history
+bindkey -M   visual   j    vi-backward-char
+bindkey -M   visual   l    vi-forward-char
+bindkey '^[f' vi-forward-word
+bindkey '^[b' vi-backward-word
 
 #### history #################
 HISTFILE="$XDG_DATA_HOME/zsh_history"

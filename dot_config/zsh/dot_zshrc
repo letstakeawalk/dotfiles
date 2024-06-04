@@ -45,17 +45,17 @@ export PATH="$XDG_DATA_HOME"/nvim/mason/bin:$PATH # lsp, linters, formatters
 # export PATH=/opt/homebrew/opt/llvm/bin:$PATH # llvm
 export PATH=/opt/homebrew/bin:/opt/homebrew/sbin:$PATH # should be last line
 
-#### homebrew ################
+#### homebrew ####################################
 FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 
-#### zinit ###################
+#### zinit #######################################
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
 [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 source "${ZINIT_HOME}/zinit.zsh"
 
-#### syntax, completion, suggestions
-zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
+#### syntax, completion, suggestions #############
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*' # case in-sensitive
 zinit wait lucid for \
  atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
     zdharma-continuum/fast-syntax-highlighting \
@@ -64,23 +64,25 @@ zinit wait lucid for \
  atload"!_zsh_autosuggest_start" \
     zsh-users/zsh-autosuggestions
 
-
-#### vi-mode #################
+#### vi-mode ####################################
 zinit ice depth=1
 zinit light jeffreytse/zsh-vi-mode
 ZVM_VI_INSERT_ESCAPE_BINDKEY=kh
-bindkey -M   vicmd    k    vi-down-line-or-history
-bindkey -M   vicmd    h    vi-up-line-or-history
-bindkey -M   vicmd    j    vi-backward-char
-bindkey -M   vicmd    l    vi-forward-char
-bindkey -M   visual   k    vi-down-line-or-history
-bindkey -M   visual   h    vi-up-line-or-history
-bindkey -M   visual   j    vi-backward-char
-bindkey -M   visual   l    vi-forward-char
-bindkey '^[f' vi-forward-word
-bindkey '^[b' vi-backward-word
+function zvm_after_init() {
+    bindkey -M   vicmd    k    vi-down-line-or-history
+    bindkey -M   vicmd    h    vi-up-line-or-history
+    bindkey -M   vicmd    j    vi-backward-char
+    bindkey -M   vicmd    l    vi-forward-char
+    bindkey -M   visual   k    vi-down-line-or-history
+    bindkey -M   visual   h    vi-up-line-or-history
+    bindkey -M   visual   j    vi-backward-char
+    bindkey -M   visual   l    vi-forward-char
+    bindkey -M   viins   '^w'  vi-backward-kill-word
+    bindkey '^[f' vi-forward-word
+    bindkey '^[b' vi-backward-word
+}
 
-#### history #################
+#### history #####################################
 HISTFILE="$XDG_DATA_HOME/zsh_history"
 HISTSIZE=1000000
 HISTORY_IGNORE="(ls|cd|z|eza|exit)*"
@@ -97,7 +99,7 @@ setopt APPEND_HISTORY        # append to history file (Default)
 setopt HIST_NO_STORE         # Don't store history commands
 setopt HIST_REDUCE_BLANKS    # Remove superfluous blanks from each command line being added to the history.
 
-#### evalcache ###############
+#### evalcache ###################################
 export ZSH_EVALCACHE_DIR="$XDG_CACHE_HOME/zsh-evalcache"
 zinit light mroth/evalcache
 _evalcache zoxide init zsh
@@ -112,10 +114,9 @@ else
   export EDITOR='nvim'
 fi
 
-#### fzf #####################
+#### fzf #########################################
 zinit ice lucid wait
 zinit snippet OMZP::fzf
-source "/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
 export FZF_CTRL_T_OPTS="
   --preview 'bat -n --color=always {}'
   --bind 'ctrl-/:change-preview-window(up|down|hidden|)'"
@@ -128,8 +129,18 @@ export FZF_DEFAULT_OPTS="
   --prompt=' ' --pointer=' '" # 
 export FZF_TMUX_OPTS="-p 50%,50% --reverse"
 
+#### fzf-tab #####################################
+zinit ice lucid wait
+zinit light Aloxaf/fzf-tab
+zstyle ':completion:*:git-checkout:*' sort false # disable sort when completing `git checkout`
+# NOTE: don't use escape sequences here, fzf-tab will ignore them
+zstyle ':completion:*:descriptions' format '[%d]' # set descriptions format to enable group support
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} # set list-colors to enable filename colorizing
+zstyle ':completion:*' menu no # force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath' # preview directory's content with eza when completing cd
+zstyle ':fzf-tab:*' switch-group '<' '>' # switch group using `<` and `>`
 
-#### General #################
+#### General #####################################
 alias c=clear           # clear screen
 alias f=open            # open in MacOS finder
 # alias dirs='dirs -v'    # disp stack w/ index
@@ -137,7 +148,7 @@ alias f=open            # open in MacOS finder
 alias mkdir='mkdir -pv' # mkdir: create parent directories
 alias so="source $XDG_CONFIG_HOME/zsh/.zshrc"
 
-#### Alternatives ############
+#### Alternatives ################################
 alias find=fd
 alias grep=rg
 alias cat=bat
@@ -153,13 +164,13 @@ alias l='eza -lhg --git --time-style long-iso --group-directories-first'
 alias ll='eza -lhg --git --time-style long-iso --group-directories-first'
 alias la='eza -lhga --git --time-style long-iso --group-directories-first'
 
-#### fzf #####################
+#### fzf integration #############################
 alias nvimf='fd --type file --hidden | fzf --preview "bat --color=always -n {1}" --preview-window=right,60% | xargs nvim'
 alias jqf='fd --type file "json$" | fzf --preview "bat --color=always -n {1}" --preview-window=right,60% | xargs cat | jq "."'
 alias tldrf='tldr --list | fzf --preview "tldr --color always {1}" --preview-window=right,70% | xargs tldr'
 alias openf='fd --type directory --max-depth 3 | fzf | xargs open'
 
-#### quick edit ##############
+#### quick edit ##################################
 alias config="z $XDG_CONFIG_HOME"
 alias data="z $XDG_DATA_HOME"
 alias state="z $XDG_STATE_HOME"
@@ -168,12 +179,12 @@ alias notes="z $OBSIDIAN"
 alias chez=chezmoi
 alias note="z $WORKSPACE/Notes && vim"
 
-#### Homebrew ################
+#### Homebrew ####################################
 alias brewleaves='brew leaves | xargs brew deps --formula --for-each | sed "s/^.*:/$(tput setaf 4)&$(tput sgr0)/"'
 alias brewdeps='brew list -1 --formula | xargs brew deps --formula --for-each | sed "s/^.*:/$(tput setaf 4)&$(tput sgr0)/"'
 alias brewlist='brew info --json=v2 --installed | jq -r ".formulae[]|select(any(.installed[]; .installed_on_request)).full_name"'
 
-#### Git #####################
+#### Git #########################################
 alias gst='git status'
 alias ga='git add'
 alias grs='git restore'
@@ -203,14 +214,14 @@ alias gcp='git cherry-pick'
 alias gbi='git bisect'
 alias gbl='git blame'
 
-#### Python ###################
+#### Python ######################################
 alias py=python3
 
-#### Docker ###################
+#### Docker ######################################
 alias doco='docker-compose'
 alias doma='docker-machine'
 
-#### Neovim ###################
+#### Neovim ######################################
 alias v=nvim
 alias vi=nvim
 alias vim=nvim
@@ -218,31 +229,15 @@ alias view='nvim -R'
 alias vimdiff='nvim -d'
 alias diff='nvim -d'
 
-#### Sensitive data ###########
+#### Sensitive data ##############################
 if [ -f "$ZDOTDIR/.zshrc.private" ]; then
   source $ZDOTDIR/.zshrc.private
 fi
-
 
 ###############################################################################
 ############## Functions ######################################################
 ###############################################################################
 
-# colors, a lot of colors!
-function clicolors() {
-    i=1
-    for color in {000..255}; do;
-        c=$c"$FG[$color]$color✔$reset_color  ";
-        if [ `expr $i % 8` -eq 0 ]; then
-            c=$c"\n"
-        fi
-        i=`expr $i + 1`
-    done;
-    echo $c | sed 's/%//g' | sed 's/{//g' | sed 's/}//g' | sed '$s/..$//';
-    c=''
-}
-
-# zsh hook
 # always show ls when chpwd
 function chpwd() {
     # emulate -L zsh
@@ -253,9 +248,7 @@ function chpwd() {
 timezsh() {
     echo "\n--- w/ zshrc ----------------"
     shell=${1-$SHELL}
-    for i in $(seq 1 10); do /usr/bin/time $shell -i -c exit; done
-    hyperfine -N --warmup 5 --max-runs 10 "$shell -i -c exit"
+    hyperfine -N --warmup 5 --max-runs 30 "$shell -i -c exit"
     echo "\n--- w/o zshrc ---------------"
-    for i in $(seq 1 10); do /usr/bin/time $shell -i -f -c  exit; done
-    hyperfine -N --warmup 5 --max-runs 10 "$shell -i -f -c exit"
+    hyperfine -N --warmup 5 --max-runs 30 "$shell -i -f -c exit"
 }

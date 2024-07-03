@@ -2,14 +2,14 @@ return {
     "monaqa/dial.nvim",
     -- stylua: ignore
     keys = {
-        { "<C-a>",  "<Plug>(dial-increment)", mode = "n", desc = "Increment" },
-        { "<C-x>",  "<Plug>(dial-decrement)", mode = "n", desc = "Decrement" },
-        { "<C-a>",  "<Plug>(dial-increment)", mode = "v", desc = "Increment" },
-        { "<C-x>",  "<Plug>(dial-decrement)", mode = "v", desc = "Decrement" },
-        { "g<C-a>", "<Plug>(dial-increment)", mode = "n", desc = "Increment" },
-        { "g<C-x>", "<Plug>(dial-decrement)", mode = "n", desc = "Decrement" },
-        { "g<C-a>", "<Plug>(dial-increment)", mode = "v", desc = "Increment" },
-        { "g<C-x>", "<Plug>(dial-decrement)", mode = "v", desc = "Decrement" },
+        { "<C-a>",  function() require("dial.map").manipulate("increment", "normal")  end, mode = "n", desc = "Increment" },
+        { "<C-x>",  function() require("dial.map").manipulate("decrement", "normal")  end, mode = "n", desc = "Decrement" },
+        { "g<C-a>", function() require("dial.map").manipulate("increment", "gnormal") end, mode = "n", desc = "Increment"},
+        { "g<C-x>", function() require("dial.map").manipulate("decrement", "gnormal") end, mode = "n", desc = "Decrement" },
+        { "<C-a>",  function() require("dial.map").manipulate("increment", "visual")  end, mode = "v", desc = "Increment"},
+        { "<C-x>",  function() require("dial.map").manipulate("decrement", "visual")  end, mode = "v", desc = "Decrement" },
+        { "g<C-a>", function() require("dial.map").manipulate("increment", "gvisual") end, mode = "v", desc = "Increment"},
+        { "g<C-x>", function() require("dial.map").manipulate("decrement", "gvisual") end, mode = "v", desc = "Decrement" },
     },
     config = function()
         local augend = require("dial.augend")

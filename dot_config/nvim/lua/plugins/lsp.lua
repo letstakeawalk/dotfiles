@@ -169,6 +169,7 @@ return {
             "stylua",
             "gitlint",
             "shellharden",
+            "yamlfmt",
             -- "markdownlint",
             -- "mdformat",
             -- "mdslw",
@@ -210,6 +211,7 @@ return {
                 nls.builtins.formatting.stylua, -- lua
                 nls.builtins.diagnostics.gitlint, -- git
                 nls.builtins.formatting.shellharden, -- bash
+                nls.builtins.formatting.yamlfmt,
                 -- nls.builtins.formatting.jq,
                 -- nls.builtins.diagnostics.actionlint, -- github action
                 -- nls.builtins.diagnostics.ansiblelint, -- ansible
@@ -232,19 +234,19 @@ return {
                 function() vim.diagnostic.jump({ count = 1,  float = true }) end,
                 function() vim.diagnostic.jump({ count = -1, float = true }) end
             )
+        vim.keymap.set("n", "[d", prev_diag, { desc = "Goto previous diagnostic" })
+        vim.keymap.set("n", "]d", next_diag, { desc = "Goto next diagnostic" })
         vim.api.nvim_create_autocmd("LspAttach", {
             callback = function(args)
                 local bufnr = args.buf
-                vim.keymap.set("n", "H",          vim.lsp.buf.signature_help,                                                      { desc = "Display Signature Help",   buffer = bufnr })
-                vim.keymap.set("n", "K",          vim.lsp.buf.hover,                                                               { desc = "Display Hover Info",       buffer = bufnr })
-                vim.keymap.set("n", "<leader>ra", vim.lsp.buf.code_action,                                                         { desc = "Code Action",              buffer = bufnr })
-                vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename,                                                              { desc = "Rename",                   buffer = bufnr })
-                vim.keymap.set("n", "<leader>rf", function() vim.lsp.buf.format({ async = true }) end,                             { desc = "Format File",              buffer = bufnr})
-                vim.keymap.set("n", "<leader>dd", function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end,           { desc = "Diagnostic Toggle",        buffer = bufnr })
-                vim.keymap.set("n", "<leader>dh", function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({})) end, { desc = "InlayHint Toggle",         buffer = bufnr })
-                vim.keymap.set("n", "[d",         prev_diag,                                                                       { desc = "Goto previous diagnostic", buffer = bufnr })
-                vim.keymap.set("n", "]d",         next_diag,                                                                       { desc = "Goto next diagnostic",     buffer = bufnr})
-                vim.keymap.set("n", "E",          vim.diagnostic.open_float,                                                       { desc = "Open Float",               buffer = bufnr })
+                vim.keymap.set("n", "H",          vim.lsp.buf.signature_help,                                                      { desc = "Display Signature Help", buffer = bufnr })
+                vim.keymap.set("n", "K",          vim.lsp.buf.hover,                                                               { desc = "Display Hover Info",     buffer = bufnr })
+                vim.keymap.set("n", "<leader>ra", vim.lsp.buf.code_action,                                                         { desc = "Code Action",            buffer = bufnr })
+                vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename,                                                              { desc = "Rename",                 buffer = bufnr })
+                vim.keymap.set("n", "<leader>rf", function() vim.lsp.buf.format({ async = true }) end,                             { desc = "Format File",            buffer = bufnr })
+                vim.keymap.set("n", "<leader>dd", function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end,           { desc = "Diagnostic Toggle",      buffer = bufnr })
+                vim.keymap.set("n", "<leader>dh", function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({})) end, { desc = "InlayHint Toggle",       buffer = bufnr })
+                vim.keymap.set("n", "E",          vim.diagnostic.open_float,                                                       { desc = "Open Float",             buffer = bufnr })
                 require("lsp_signature").on_attach({ hint_enable = false }, bufnr)
             end,
         })

@@ -56,9 +56,9 @@ cursor = "#d8dee9"
 text = "#2e3440"
 
 [font]
-{{- if eq .chezmoi.hostname "HRBs-MacBook-Pro" }}
+{{- if eq .chezmoi.hostname "HRBs-MBP" }}
 size = 19
-{{- else if eq .chezmoi.hostname "HRBs-MacBook-Pro-Work" }}
+{{- else if eq .chezmoi.hostname "HRBs-MBP-Work" }}
 size = 17
 {{- end }}
 
@@ -115,7 +115,7 @@ program = "/opt/homebrew/bin/zsh"
 [window]
 decorations = "buttonless"
 dynamic_padding = true
-opacity = 0.97             # good values: 0.97, 0.95, 0.93
+opacity = 0.95             # good values: 0.97, 0.95, 0.93
 startup_mode = "Maximized"
 option_as_alt = "Both"     # escape macos option modifier
 

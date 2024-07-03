@@ -19,7 +19,7 @@ return {
                 relative_number = false,
             },
             hint = {
-                title = true,
+                title = false,
                 visibility = false,
                 -- stylua: ignore
                 sections = {

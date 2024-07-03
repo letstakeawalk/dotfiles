@@ -6,5 +6,5 @@ vim.keymap.set("n", "gu", actions.goto_unstaged,             { desc = "Goto unst
 vim.keymap.set("n", "gU", actions.goto_untracked,            { desc = "Goto untracked",  buffer = true })
 vim.keymap.set("n", "h",  actions.goto_prev_hunk,            { desc = "Prev hunk",       buffer = true })
 vim.keymap.set("n", "k",  actions.goto_next_hunk,            { desc = "Next hunk",       buffer = true })
-vim.keymap.set("n", "(",  actions.collapse_curr_expand_prev, { desc = "Previous hunk",   buffer = true })
-vim.keymap.set("n", ")",  actions.collapse_curr_expand_next, { desc = "Next hunk",       buffer = true })
+-- vim.keymap.set("n", "(",  actions.collapse_curr_expand_prev, { desc = "Previous hunk",   buffer = true })
+-- vim.keymap.set("n", ")",  actions.collapse_curr_expand_next, { desc = "Next hunk",       buffer = true })

@@ -55,7 +55,7 @@ ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 source "${ZINIT_HOME}/zinit.zsh"
 
 #### syntax, completion, suggestions #############
-zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*' # case in-sensitive
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zinit wait lucid for \
  atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
     zdharma-continuum/fast-syntax-highlighting \
@@ -130,15 +130,15 @@ export FZF_DEFAULT_OPTS="
 export FZF_TMUX_OPTS="-p 50%,50% --reverse"
 
 #### fzf-tab #####################################
-zinit ice lucid wait
-zinit light Aloxaf/fzf-tab
-zstyle ':completion:*:git-checkout:*' sort false # disable sort when completing `git checkout`
-# NOTE: don't use escape sequences here, fzf-tab will ignore them
-zstyle ':completion:*:descriptions' format '[%d]' # set descriptions format to enable group support
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} # set list-colors to enable filename colorizing
-zstyle ':completion:*' menu no # force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath' # preview directory's content with eza when completing cd
-zstyle ':fzf-tab:*' switch-group '<' '>' # switch group using `<` and `>`
+# zinit ice lucid wait
+# zinit light Aloxaf/fzf-tab
+# zstyle ':completion:*:git-checkout:*' sort false # disable sort when completing `git checkout`
+# # NOTE: don't use escape sequences here, fzf-tab will ignore them
+# zstyle ':completion:*:descriptions' format '[%d]' # set descriptions format to enable group support
+# zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} # set list-colors to enable filename colorizing
+# zstyle ':completion:*' menu no # force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
+# zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath' # preview directory's content with eza when completing cd
+# zstyle ':fzf-tab:*' switch-group '<' '>' # switch group using `<` and `>`
 
 #### General #####################################
 alias c=clear           # clear screen
@@ -147,6 +147,7 @@ alias f=open            # open in MacOS finder
 # alias jobs='jobs -l'    # list jobs with process id
 alias mkdir='mkdir -pv' # mkdir: create parent directories
 alias so="source $XDG_CONFIG_HOME/zsh/.zshrc"
+alias ssh="TERM=xterm-256color ssh"
 
 #### Alternatives ################################
 alias find=fd

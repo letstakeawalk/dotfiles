@@ -12,7 +12,6 @@ return {
         vim.cmd.abbr("ftr", "for the record")
         vim.cmd.abbr("ppl", "people")
         vim.cmd.abbr("tho", "though")
-        vim.cmd.abbr("wo", "without")
         vim.cmd.abbr("wrt", "with respect to")
 
         vim.cmd("Abolish {a,e,s,no}th             {any,every,some,no}thing")

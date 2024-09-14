@@ -1382,6 +1382,13 @@
           "to": { "key_code": "0", "modifiers": ["shift"] },
           "conditions": [{ "type": "variable_if", "name": "_coding", "value": 1 }],
           "type": "basic"
+        },
+
+        {
+          "from": { "key_code": "spacebar", "modifiers": { "optional": ["caps_lock"] } },
+          "to": { "key_code": "spacebar", "modifiers": ["control"] },
+          "conditions": [{ "type": "variable_if", "name": "_coding", "value": 1 }],
+          "type": "basic"
         }
       ]
     },

@@ -58,4 +58,5 @@
     last = log -1 HEAD
     five = log -5
     # worktree
+    init-worktree  = "!sh $HOME/.local/script/git_init_bare_worktree"
     clone-worktree = "!sh $HOME/.local/script/git_clone_bare_worktree"

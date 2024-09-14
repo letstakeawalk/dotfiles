@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -e # exit on error
+
+name=$1
+
+mkdir "$name"
+cd "$name"
+
+git init --bare .bare
+echo "gitdir: .bare" > .git

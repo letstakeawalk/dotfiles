@@ -145,5 +145,14 @@ return {
                 :with_move(conds.done())
                 :with_cr(conds.none()),
         })
+
+        -- Askama, django, and jinja2: curly braces
+        ap.add_rules({
+            Rule("%", "%", { "html", "htmldjango" })
+                :with_pair(conds.before_text("{"))
+                :with_move(conds.none())
+                :with_del(conds.none())
+                :with_cr(conds.none())
+        })
     end,
 }

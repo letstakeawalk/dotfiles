@@ -126,20 +126,32 @@ return {
                     return "<Ignore>"
                 end, { desc = "Goto previous hunk", expr = true, silent = true })
 
+                local function toggle_blame_buf()
+                    local bufs = vim.tbl_filter(function(b)
+                        return vim.api.nvim_get_option_value("filetype", { buf = b }) == "gitsigns.blame"
+                    end, vim.api.nvim_list_bufs())
+                    if #bufs == 0 then
+                        gs.blame()
+                    else
+                        vim.api.nvim_buf_delete(bufs[1], { force = true })
+                    end
+                end
+
                 -- stylua: ignore start
                 map("v", "<leader>gs", function() gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") }) end, { desc = "Stage hunk" })
                 map("v", "<leader>gr", function() gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") }) end, { desc = "Reset hunk" })
-                map("n", "<leader>gs", gs.stage_hunk, { desc = "Stage hunk" })
-                map("n", "<leader>gu", gs.undo_stage_hunk, { desc = "Undo stage hunk" })
-                map("n", "<leader>gr", gs.reset_hunk, { desc = "Reset hunk" })
-                map("n", "<leader>ga", gs.stage_buffer, { desc = "Stage buffer" })
-                map("n", "<leader>gR", gs.reset_buffer, { desc = "Reset buffer" })
-                map("n", "<leader>gp", gs.preview_hunk, { desc = "Preview hunk" })
-                map("n", "<leader>gb", function() gs.blame_line({ full = true }) end, { desc = "Blame line" })
-                map("n", "<leader>gB", gs.toggle_current_line_blame, { desc = "Blame toggle" })
-                map("n", "<leader>gd", gs.diffthis, { desc = "Diff" })
+                map("n", "<leader>gs", gs.stage_hunk,                   { desc = "Stage hunk" })
+                map("n", "<leader>gu", gs.undo_stage_hunk,              { desc = "Undo stage hunk" })
+                map("n", "<leader>gr", gs.reset_hunk,                   { desc = "Reset hunk" })
+                map("n", "<leader>ga", gs.stage_buffer,                 { desc = "Stage buffer" })
+                map("n", "<leader>gR", gs.reset_buffer,                 { desc = "Reset buffer" })
+                map("n", "<leader>gp", gs.preview_hunk,                 { desc = "Preview hunk" })
+                map("n", "<leader>gb", toggle_blame_buf,                { desc = "Blame" })
+                map("n", "<leader>gd", gs.diffthis,                     { desc = "Diff" })
                 map("n", "<leader>gD", function() gs.diffthis("~") end, { desc = "Diff" })
-                map("n", "<leader>gx", gs.toggle_deleted, { desc = "Toggle deleted" })
+                map("n", "<leader>gx", gs.toggle_deleted,               { desc = "Toggle deleted" })
+                -- map("n", "<leader>gb", function() gs.blame_line({ full = true }) end, { desc = "Blame line" })
+                -- map("n", "<leader>gB", gs.toggle_current_line_blame, { desc = "Blame toggle" })
 
                 -- Text object
                 map({ "o", "x" }, "ih", "<cmd><C-U>Gitsigns select_hunk<CR>", { desc = "Select hunk" })

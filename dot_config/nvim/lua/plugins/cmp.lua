@@ -50,9 +50,18 @@ return {
             end
         end
 
-        local formatter = lspkind.cmp_format({
+        local lspkind_formatter = lspkind.cmp_format({
             mode = "symbol_text",
         })
+        ---@param item string
+        ---@param max_len number
+        local function truncate(item, max_len)
+            if #item > max_len then
+                return string.sub(item, 1, max_len - 1) .. "…"
+            else
+                return item
+            end
+        end
 
         cmp.setup({
             snippet = {
@@ -68,8 +77,12 @@ return {
             formatting = {
                 fields = { "abbr", "kind", "menu" },
                 format = function(entry, vim_item)
-                    vim_item.abbr = " " .. vim_item.abbr .. "     "
-                    return formatter(entry, vim_item)
+                    vim_item.abbr = truncate(vim_item.abbr, 25)
+                    vim_item.abbr = " " .. vim_item.abbr .. "  "
+                    if vim_item.menu ~= nil then
+                        vim_item.menu = truncate(vim_item.menu, 40)
+                    end
+                    return lspkind_formatter(entry, vim_item)
                 end,
                 expandable_indicator = true,
             },

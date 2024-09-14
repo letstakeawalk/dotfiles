@@ -94,6 +94,7 @@ local parsers = {
     "ruby",
     "rust",
     "sql",
+    "ssh_config",
     "svelte",
     "terraform",
     "toml",

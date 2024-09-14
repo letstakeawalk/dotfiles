@@ -13,6 +13,7 @@ vim.api.nvim_create_autocmd("FileType", {
     group = utils.augroup("EasyClose", { clear = true }),
     pattern = {
         "git",
+        "gitsigns.blame",
         "fugitive",
         "qf",
         "help",

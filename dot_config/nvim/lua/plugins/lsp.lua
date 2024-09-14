@@ -68,8 +68,7 @@ return {
                     client.server_capabilities.hoverProvider = false -- disable hover in favor of pyright
                 end,
             },
-            -- sqlls = {},
-            tsserver = {
+            ts_ls = {
                 handlers = {
                     -- filter Hint and Info diagnostics
                     ["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
@@ -153,6 +152,9 @@ return {
                         result.diagnostics = vim.tbl_filter(function(diag)
                             local lnum = diag.range.start.line
                             local line = vim.api.nvim_buf_get_lines(0, lnum, lnum + 1, false)[1]
+                            if line == nil then
+                                return true
+                            end
                             return string.match(line, "^%s*{{.-}}%s*$") == nil
                         end, result.diagnostics)
                         vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx, config)
@@ -174,7 +176,7 @@ return {
             -- "mdformat",
             -- "mdslw",
             -- "cbfmt",
-            -- "sqlfluff",
+            "sqlfluff",
             -- "hadolint",
             -- "buf",
             -- "shellharden", "shfmt", "shellcheck"
@@ -208,10 +210,13 @@ return {
             debug = false,
             border = "double",
             sources = {
-                nls.builtins.formatting.stylua, -- lua
-                nls.builtins.diagnostics.gitlint, -- git
-                nls.builtins.formatting.shellharden, -- bash
+                nls.builtins.formatting.stylua,
+                nls.builtins.diagnostics.gitlint,
+                nls.builtins.formatting.shellharden,
                 nls.builtins.formatting.yamlfmt,
+                nls.builtins.diagnostics.sqlfluff.with({ extra_args = { "--dialect", "postgres" } }),
+                nls.builtins.formatting.sqlfluff.with({ extra_args = { "--dialect", "postgres" } }),
+                nls.builtins.formatting.prettier.with({ filetypes = { "javascrpit", "typescript", "javascriptreact", "typescriptreact" } })
                 -- nls.builtins.formatting.jq,
                 -- nls.builtins.diagnostics.actionlint, -- github action
                 -- nls.builtins.diagnostics.ansiblelint, -- ansible
@@ -219,8 +224,6 @@ return {
                 -- nls.builtins.diagnostics.buf, -- protobuf
                 -- nls.builtins.diagnostics.mypy, -- python
                 -- nls.builtins.diagnostics.bandit, -- python
-                -- nls.builtins.diagnostics.sqlfluff, -- sql
-                -- nls.builtins.formatting.sqlfluff, -- sql
 
                 -- nls.builtins.formatting.markdownlint.with({
                 --     extra_args = { "-c", vim.fn.expand("$XDG_CONFIG_HOME") .. "/markdownlint/markdownlint.yaml" },
@@ -239,14 +242,14 @@ return {
         vim.api.nvim_create_autocmd("LspAttach", {
             callback = function(args)
                 local bufnr = args.buf
-                vim.keymap.set("n", "H",          vim.lsp.buf.signature_help,                                                      { desc = "Display Signature Help", buffer = bufnr })
-                vim.keymap.set("n", "K",          vim.lsp.buf.hover,                                                               { desc = "Display Hover Info",     buffer = bufnr })
-                vim.keymap.set("n", "<leader>ra", vim.lsp.buf.code_action,                                                         { desc = "Code Action",            buffer = bufnr })
-                vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename,                                                              { desc = "Rename",                 buffer = bufnr })
-                vim.keymap.set("n", "<leader>rf", function() vim.lsp.buf.format({ async = true }) end,                             { desc = "Format File",            buffer = bufnr })
-                vim.keymap.set("n", "<leader>dd", function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end,           { desc = "Diagnostic Toggle",      buffer = bufnr })
-                vim.keymap.set("n", "<leader>dh", function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({})) end, { desc = "InlayHint Toggle",       buffer = bufnr })
-                vim.keymap.set("n", "E",          vim.diagnostic.open_float,                                                       { desc = "Open Float",             buffer = bufnr })
+                vim.keymap.set("n", "H",                   vim.lsp.buf.signature_help,                                                      { desc = "Display Signature Help", buffer = bufnr })
+                vim.keymap.set("n", "K",                   vim.lsp.buf.hover,                                                               { desc = "Display Hover Info",     buffer = bufnr })
+                vim.keymap.set("n", "<leader>ra",          vim.lsp.buf.code_action,                                                         { desc = "Code Action",            buffer = bufnr })
+                vim.keymap.set("n", "<leader>rn",          vim.lsp.buf.rename,                                                              { desc = "Rename",                 buffer = bufnr })
+                vim.keymap.set({ "n", "v" }, "<leader>rf", function() vim.lsp.buf.format({ async = true }) end,                    { desc = "Format File",                     buffer = bufnr })
+                vim.keymap.set("n", "<leader>dd",          function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end,           { desc = "Diagnostic Toggle",      buffer = bufnr })
+                vim.keymap.set("n", "<leader>dh",          function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({})) end, { desc = "InlayHint Toggle",       buffer = bufnr })
+                vim.keymap.set("n", "E",                   vim.diagnostic.open_float,                                                       { desc = "Open Float",             buffer = bufnr })
                 require("lsp_signature").on_attach({ hint_enable = false }, bufnr)
             end,
         })

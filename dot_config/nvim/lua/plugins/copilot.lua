@@ -54,13 +54,13 @@ return {
         },
         -- stylua: ignore
         keys = {
-            { "<leader>cc", "<cmd>CopilotChatToggle<cr>",   desc = "CopilotChat toggle" },
-            { "<leader>ce", "<cmd>CopilotChatExplain<cr>",  desc = "CopilotChat explain",  mode = {"n",  "v"} },
-            { "<leader>cr", "<cmd>CopilotChatReview<cr>",   desc = "CopilotChat review",   mode = {"n",  "v"} },
-            { "<leader>cf", "<cmd>CopilotChatFix<cr>",      desc = "CopilotChat fix",      mode = { "n", "v" } },
-            { "<leader>co", "<cmd>CopilotChatOptimize<cr>", desc = "CopilotChat optimize", mode = {"n",  "v"} },
-            { "<leader>cd", "<cmd>CopilotChatDocs<cr>",     desc = "CopilotChat docs",     mode = {"n",  "v"} },
-            { "<leader>ct", "<cmd>CopilotChatTests<cr>",    desc = "CopilotChat tests",    mode = {"n",  "v"} },
+            { "<leader>cc", "<cmd>CopilotChatToggle<cr>",   desc = "CopilotChat toggle",   mode = {"n", "v"} },
+            { "<leader>ce", "<cmd>CopilotChatExplain<cr>",  desc = "CopilotChat explain",  mode = {"n", "v"} },
+            { "<leader>cr", "<cmd>CopilotChatReview<cr>",   desc = "CopilotChat review",   mode = {"n", "v"} },
+            { "<leader>cf", "<cmd>CopilotChatFix<cr>",      desc = "CopilotChat fix",      mode = {"n", "v"} },
+            { "<leader>co", "<cmd>CopilotChatOptimize<cr>", desc = "CopilotChat optimize", mode = {"n", "v"} },
+            { "<leader>cd", "<cmd>CopilotChatDocs<cr>",     desc = "CopilotChat docs",     mode = {"n", "v"} },
+            { "<leader>ct", "<cmd>CopilotChatTests<cr>",    desc = "CopilotChat tests",    mode = {"n", "v"} },
             { "<leader>cC", "<cmd>CopilotChatCommit<cr>",   desc = "CopilotChat commit" },
             {
                 "<leader>ch",

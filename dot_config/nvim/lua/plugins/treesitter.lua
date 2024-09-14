@@ -7,7 +7,7 @@ return {
         "RRethy/nvim-treesitter-endwise", -- endwise lua, ruby, etc
         "windwp/nvim-ts-autotag", -- auto closes tags for html, react, etc
     },
-    event = "VeryLazy",
+    event = { "BufReadPre", "BufNewFile" },
     build = function()
         require("nvim-treesitter.install").update({ with_sync = true })
     end,

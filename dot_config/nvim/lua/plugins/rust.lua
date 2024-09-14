@@ -60,6 +60,11 @@ return {
                     autofocus = false,
                     border = "rounded",
                 },
+                src = {
+                    cmp = {
+                        enabled = true,
+                    }
+                }
             })
 
             -- lazy load cmp source, and buffer specific keymaps
@@ -67,7 +72,6 @@ return {
                 group = vim.api.nvim_create_augroup("CargoCrates", { clear = true }),
                 pattern = "Cargo.toml",
                 callback = function(ev)
-                    require("cmp").setup.buffer({ sources = { { name = "crates" } } })
                     local bufopts = function(desc)
                         return { noremap = true, silent = true, buffer = ev.buf, desc = desc }
                     end

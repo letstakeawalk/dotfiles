@@ -24,6 +24,7 @@ local function harpoon_files()
             "index.jsx",
             "index.ts",
             "index.tsx",
+            "index.html"
         }
         if vim.tbl_contains(filters, fname) then
             fname = parent .. "/" .. fname

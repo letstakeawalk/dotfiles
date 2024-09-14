@@ -1,10 +1,9 @@
 return {
     "stevearc/oil.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    -- stylua: ignore
     keys = {
-        { "<leader>o", "<cmd>Oil<cr>",            desc = "File Explorer (Oil)" },
-        { "<leader>e", function() require("oil").open_float() end, desc = "File Explorer (Oil)" },
+        { "<leader>e", "<cmd>Oil<cr>", desc = "File Explorer (Oil)" },
+        { "<leader>E", function() require("oil").open_float() end, desc = "File Explorer (Oil)" },
     },
     cmd = { "Oil" },
     opts = {
@@ -12,6 +11,12 @@ return {
         win_options = {
             cursorline = true,
             signcolumn = "yes",
+        },
+        view_options = {
+            sort = {
+                { "type", "asc" },
+                { "name", "asc" },
+            }
         },
         -- Keymaps in oil buffer. Can be any value that `vim.keymap.set` accepts OR a table of keymap
         -- options with a `callback` (e.g. { callback = function() ... end, desc = "", mode = "n" })

@@ -175,6 +175,9 @@ set(0, "@keyword.gitcommit",            { fg = nord.c09_glcr, bold = true })
 set(0, "LspInfoBorder",           { link = "FloatBorder" })
 set(0, "NullLsInfoBorder",        { link = "FloatBorder" })
 
+-- rust
+set(0, "@lsp.type.macro",         { link = "Macro" })
+
 -- telescope.nvim
 set(0, "TelescopeTitle",          { link = "FloatTitle" })
 set(0, "TelescopeBorder",         { link = "FloatBorder" })

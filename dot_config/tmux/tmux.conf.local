@@ -371,9 +371,10 @@ set-option -sa terminal-overrides ',alacritty:RGB'  # enable truecolor for alacr
 
 # window navigation/management
 bind Space last-window
+bind C-Space next-layout
 # bind -r -T root Home previous-window # navigate to previous tmux window
 # bind -r -T root End  next-window     # navigate to next tmux window
-bind _ split-window -v -l 35%  # split current window vertically
+bind _ split-window -v -l 13   # split current window vertically
 bind - split-window -h         # split current window horizontally
 
 # pane navigation/management
@@ -445,6 +446,9 @@ bind -n 'C-\' if-shell "test $(tmux display-message -p '#{session_name}') = 'pop
 
 # tmuxessionizer
 bind s run-shell 'tmux display-popup -w 80 -h 40% -BE tmx session'
+
+# sync panes
+bind C-s setw synchronize-panes
 
 # increase history size
 #set -g history-limit 10000

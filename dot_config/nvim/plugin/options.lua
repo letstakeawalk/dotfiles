@@ -1,6 +1,5 @@
 local opt = vim.opt
 
-opt.clipboard = "unnamedplus" -- sync w/ system clipboard
 opt.confirm = true
 opt.cursorline = true -- Higlight current line
 opt.formatoptions = "cqnlj" -- default tcqj  :help fo-table
@@ -43,17 +42,6 @@ opt.breakindent = true -- Indent wrapped lines
 opt.expandtab = true -- expand tabs into spaces
 opt.shiftround = true -- Round indent to multiple of 'shiftwidth'
 opt.shiftwidth = 4 -- Number of spaces to use in auto(indent)
-
--- custom filetypes
-vim.filetype.add({
-    filename = {
-        ["dot_zshrc"] = "zsh",
-    },
-    pattern = {
-        [".*%.toml%.tmpl"] = "toml",
-        [".*/git/config"] = "gitconfig",
-    },
-})
 
 -- TODO: LessInitFunc :h less
 -- TODO: comment continuation -> discontinue on empty comment

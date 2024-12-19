@@ -46,12 +46,11 @@ return {
     },
     {
         "CopilotC-Nvim/CopilotChat.nvim",
-        -- tag = "*",
-        branch = "canary",
         dependencies = {
             { "zbirenbaum/copilot.lua" },
             { "nvim-lua/plenary.nvim" },
         },
+        -- build = "make tiktoken",
         -- stylua: ignore
         keys = {
             { "<leader>cc", "<cmd>CopilotChatToggle<cr>",   desc = "CopilotChat toggle",   mode = {"n", "v"} },
@@ -74,7 +73,13 @@ return {
             },
         },
         opts = {
-            model = "gpt-3.5-turbo",
+            model = "claude-3.5-sonnet",
+            mappings = {
+                close = {
+                    normal = "q",
+                    insert = "<C-q>",
+                }
+            }
         },
     },
 }

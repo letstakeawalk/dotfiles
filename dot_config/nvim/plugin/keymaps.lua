@@ -179,9 +179,11 @@ end
 set("n", "<leader>y", yank_location, { desc = "Yank current location" })
 
 -- disable defaults
+del("n", "grn")
 del("n", "gra")
 del("n", "grr")
-del("n", "grn")
+del("n", "gri")
+del("n", "gO")
 
 -- TODO
 -- local function better_yank()

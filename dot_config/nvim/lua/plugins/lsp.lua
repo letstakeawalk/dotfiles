@@ -25,8 +25,10 @@ return {
             -- cssls = {},
             -- docker_compose_language_service = {},
             -- dockerls = {},
-            -- eslint = { settings = { format = { enable = false } } },
-            jdtls = {},
+            eslint = { settings = { format = { enable = false } } },
+            html = { filetypes = { "html", "htmldjango" } },
+            htmx = { filetypes = { "html", "htmldjango" } },
+            -- jdtls = {},
             jsonls = { init_options = { provideFormatter = false } },
             lua_ls = {
                 command = { "lua-language-server" },
@@ -63,7 +65,7 @@ return {
                     pyright = { disableOrganizeImports = true },
                 },
             },
-            ruff_lsp = {
+            ruff = {
                 on_attach = function(client, _)
                     client.server_capabilities.hoverProvider = false -- disable hover in favor of pyright
                 end,
@@ -216,7 +218,9 @@ return {
                 nls.builtins.formatting.yamlfmt,
                 nls.builtins.diagnostics.sqlfluff.with({ extra_args = { "--dialect", "postgres" } }),
                 nls.builtins.formatting.sqlfluff.with({ extra_args = { "--dialect", "postgres" } }),
-                nls.builtins.formatting.prettier.with({ filetypes = { "javascrpit", "typescript", "javascriptreact", "typescriptreact" } })
+                nls.builtins.formatting.prettier.with({
+                    filetypes = { "javascrpit", "typescript", "javascriptreact", "typescriptreact" },
+                }),
                 -- nls.builtins.formatting.jq,
                 -- nls.builtins.diagnostics.actionlint, -- github action
                 -- nls.builtins.diagnostics.ansiblelint, -- ansible

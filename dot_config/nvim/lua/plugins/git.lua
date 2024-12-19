@@ -6,6 +6,7 @@ return {
             "junegunn/gv.vim", -- git commit browser
             "tpope/vim-rhubarb", -- fugitive extension for GitHub
         },
+        cmd = "Git",
         keys = {
             { "<leader>gg", "<cmd>vert Git<cr>", desc = "Fugitive" },
             { "<leader>gq", "<cmd>Git<cr><cmd>bd<cr>", desc = "Close Fugitive" },
@@ -107,8 +108,8 @@ return {
 
                 local next_hunk, prev_hunk =
                     require("nvim-treesitter.textobjects.repeatable_move").make_repeatable_move_pair(
-                        gs.next_hunk,
-                        gs.prev_hunk
+                        function() gs.nav_hunk("next") end,
+                        function() gs.nav_hunk("prev") end
                     )
                 map("n", "]c", function()
                     if vim.wo.diff then

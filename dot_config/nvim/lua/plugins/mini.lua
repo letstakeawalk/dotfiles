@@ -67,6 +67,9 @@ return {
                     -- { mode = "n", keys = "<leader>s", desc = "Session" },
                     { mode = "n", keys = "<leader>t", desc = "Telescope" },
                     { mode = "n", keys = "<leader>x", desc = "Trouble" },
+                    -- custom
+                    { mode = "n", keys = "<leader>k", desc = "Leap Downward" },
+                    { mode = "n", keys = "<leader>h", desc = "Leap Upward" },
                 },
                 window = { delay = 300, config = { width = "auto" } },
             })

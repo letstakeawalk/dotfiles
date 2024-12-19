@@ -1,6 +1,6 @@
 vim.opt.bg = "dark"
 vim.cmd([[highlight clear]])
-
+vim.highlight.priorities.semantic_tokens = 99
 
 -- stylua: ignore start
 local nord = require("utils.nord")
@@ -143,7 +143,7 @@ set(0, "DiagnosticUnderlineInfo",  { fg = nord.info,  undercurl = true })
 set(0, "DiagnosticUnderlineHint",  { fg = nord.hint,  undercurl = true })
 set(0, "DiagnosticUnderlineOk",    { fg = nord.ok,    undercurl = true })
 set(0, "DiagnosticDeprecated",     { strikethrough = true })
-set(0, "LspInlayHint",                         { link = "Comment" })
+set(0, "LspInlayHint",             { link = "Comment" })
 
 --------------------------------------------------------------------------------
 -- Treesitter
@@ -155,6 +155,7 @@ set(0, "@markup.heading.3.markdown", { fg = nord.c08_teal_br, bold = true })
 set(0, "@markup.heading.4.markdown", { bold = true })
 set(0, "@markup.heading.5.markdown", { bold = true })
 set(0, "@markup.heading.6.markdown", { bold = true })
+set(0, "@markup.strikethrough.markdown_inline", { strikethrough = true })
 
 set(0, "@variable",      { link = "Variable" })
 set(0, "tag",            { fg = nord.c09_glcr })
@@ -176,7 +177,10 @@ set(0, "LspInfoBorder",           { link = "FloatBorder" })
 set(0, "NullLsInfoBorder",        { link = "FloatBorder" })
 
 -- rust
-set(0, "@lsp.type.macro",         { link = "Macro" })
+set(0, "@lsp.type.string.rust",                {}) -- needed for treesitter injected queries (sql)
+set(0, "@lsp.type.macro.rust",                 { link = "Function" })
+set(0, "@lsp.typemod.enumMember.library.rust", { link = "Constant" })
+set(0, "@unit",                                { fg = nord.c04_wht_dk, italic = true })
 
 -- telescope.nvim
 set(0, "TelescopeTitle",          { link = "FloatTitle" })

@@ -120,7 +120,7 @@ require("nvim-treesitter.configs").setup({
     highlight = { enable = true },
     indent = { enable = true },
     textobjects = textobjects,
-    endwise = { enable = true },
+    -- endwise = { enable = true },
 })
 
 require("nvim-ts-autotag").setup({

@@ -20,14 +20,15 @@ end
 
 telescope.setup({
     defaults = {
-        layout_strategy = "center",
-        layout_config = { width = 80, height = 0.30 },
-        sorting_strategy = "ascending",
-        borderchars = {
-            prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
-            results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
-            preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-        },
+        -- layout_strategy = "center",
+        -- layout_config = { width = 80, height = 0.30 },
+        -- sorting_strategy = "ascending",
+        -- borderchars = {
+        --     prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
+        --     results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
+        --     preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+        -- },
+        layout_config = { width = 120, height = { padding = 7 } },
         prompt_prefix = "   ",
         selection_caret = " >> ",
         multi_icon = "   ",
@@ -57,9 +58,9 @@ telescope.setup({
         },
         lazy = {
             mappings = {
-                change_cwd_to_plugin = ""
-            }
-        }
+                change_cwd_to_plugin = "",
+            },
+        },
     },
 })
 

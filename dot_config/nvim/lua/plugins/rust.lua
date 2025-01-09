@@ -61,10 +61,8 @@ return {
                     border = "rounded",
                 },
                 src = {
-                    cmp = {
-                        enabled = true,
-                    }
-                }
+                    cmp = { enabled = true },
+                },
             })
 
             -- lazy load cmp source, and buffer specific keymaps

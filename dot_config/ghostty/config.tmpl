@@ -1,0 +1,39 @@
+theme = nord
+font-family = "RecMonoCasual Nerd Font Mono"
+font-size = 19
+{{- if eq .chezmoi.hostname "HRBs-MBP-Work"}}
+font-size = 16
+{{- end}}
+background-opacity = 0.90
+
+fullscreen = true
+window-width = 100
+window-height = 55
+window-decoration = false
+macos-non-native-fullscreen = visible-menu 
+macos-option-as-alt = true
+
+# Keybinds
+
+# delete by word and line -- ^w, ^u
+keybind = alt+backspace=text:\x17
+keybind = cmd+backspace=text:\x15
+
+# tmux sessionizer -- ^bs
+keybind = cmd+k=text:\x02\x73
+
+# ^/ == ^_
+keybind = ctrl+/=text:\x1f
+
+# tmux & vim navigation -- ^[jkhl]
+keybind = cmd+m=text:\x0a
+keybind = cmd+n=text:\x0b
+keybind = cmd+e=text:\x08
+keybind = cmd+i=text:\x0c
+
+# tmux navigation -- ^b[jkhl]
+# keybind = cmd+m=text:\x02\x6a
+# keybind = cmd+n=text:\x02\x6b
+# keybind = cmd+e=text:\x02\x68
+# keybind = cmd+i=text:\x02\x6c
+

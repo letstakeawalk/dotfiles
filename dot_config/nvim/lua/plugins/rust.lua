@@ -2,7 +2,7 @@ return {
     {
         "mrcjkb/rustaceanvim",
         dependencies = { "akinsho/toggleterm.nvim" },
-        version = "^4",
+        version = "^5",
         ft = { "rust" },
         lazy = false, -- this plugin is already lazy
         config = function()
@@ -34,6 +34,13 @@ return {
                         vim.keymap.set("n", "<leader>rh", "<cmd>RustLsp moveItem up<cr>", bufopts("Move item up"))
                         vim.keymap.set("n", "<leader>rk", "<cmd>RustLsp moveItem down<cr>", bufopts("Move item down"))
                     end,
+                    capabilities = {
+                        offsetEncoding = { "utf-16" },
+                        general = {
+                            positionEncodings = { "utf-16" },
+                        },
+                    },
+                    offset_encoding = "utf-16",
                     default_settings = {
                         ["rust-analyzer"] = {
                             inlayHints = {
@@ -42,7 +49,7 @@ return {
                         },
                     },
                 },
-                -- dap = {},
+                dap = {},
             }
         end,
     },

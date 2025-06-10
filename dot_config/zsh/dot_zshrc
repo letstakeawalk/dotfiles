@@ -12,6 +12,7 @@ export CC=gcc
 export CHEZMOI_SOURCE=$XDG_DATA_HOME/chezmoi
 export DOCKER_CONFIG=$XDG_CONFIG_HOME/docker
 export GITLINT_CONFIG=$XDG_CONFIG_HOME/git/gitlintrc
+export GOKU_EDN_CONFIG_FILE=$XDG_CONFIG_HOME/goku/karabiner.edn
 export GOPATH=$WORKSPACE/go
 export LESS="-R --lesskey-src=$XDG_CONFIG_HOME/less/lesskey"
 export MISE_CACHE_DIR=$XDG_CACHE_HOME/mise

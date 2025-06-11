@@ -150,6 +150,10 @@
         [:##equal_sign             :vk_none]
         [:##delete_or_backspace    :vk_none]
         [:##spacebar               :spacebar]
+        [:##left_command           :left_command]
+        [:##left_control           :left_control]
+        [:##left_option            :left_option]
+        [:##left_shift             :left_shift]
       ]
     } ;; end of coding layer
 
@@ -206,6 +210,10 @@
         [:##equal_sign             :vk_none]
         [:##delete_or_backspace    :vk_none]
         [:##spacebar               :0 :apple]
+        [:##left_command           :left_command]
+        [:##left_control           :left_control]
+        [:##left_option            :left_option]
+        [:##left_shift             :left_shift]
       ]
     } ;; end of number layer
 

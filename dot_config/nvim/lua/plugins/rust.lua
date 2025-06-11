@@ -12,6 +12,7 @@ return {
                     executor = executors.toggleterm,
                     test_executor = executors.toggleterm,
                     crate_test_executor = executors.toggleterm,
+                    enable_nextest = true,
                     hover_actions = { replace_builtin_hover = false },
                 },
                 server = {

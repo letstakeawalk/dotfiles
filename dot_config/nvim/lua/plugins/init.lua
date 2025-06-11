@@ -11,4 +11,10 @@ return {
         --     },
         -- },
     },
+
+    -- TODO: checkout
+    -- https://github.com/chrisgrieser/nvim-lsp-endhints
+    -- https://github.com/jmbuhr/otter.nvim
+    -- https://github.com/b0o/SchemaStore.nvim
+    -- https://github.com/chrisgrieser/nvim-lsp-endhints
 }

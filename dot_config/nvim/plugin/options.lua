@@ -1,5 +1,6 @@
 local opt = vim.opt
 
+opt.cmdheight = 2
 opt.confirm = true
 opt.cursorline = true -- Higlight current line
 opt.formatoptions = "cqnlj" -- default tcqj  :help fo-table

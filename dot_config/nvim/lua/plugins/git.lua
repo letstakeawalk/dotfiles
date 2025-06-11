@@ -150,7 +150,7 @@ return {
                 map("n", "<leader>gb", toggle_blame_buf,                { desc = "Blame" })
                 map("n", "<leader>gd", gs.diffthis,                     { desc = "Diff" })
                 map("n", "<leader>gD", function() gs.diffthis("~") end, { desc = "Diff" })
-                map("n", "<leader>gx", gs.toggle_deleted,               { desc = "Toggle deleted" })
+                map("n", "<leader>gx", gs.preview_hunk_inline,          { desc = "Toggle deleted" })
                 -- map("n", "<leader>gb", function() gs.blame_line({ full = true }) end, { desc = "Blame line" })
                 -- map("n", "<leader>gB", gs.toggle_current_line_blame, { desc = "Blame toggle" })
 

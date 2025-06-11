@@ -2,7 +2,7 @@ theme = nord
 font-family = "RecMonoCasual Nerd Font Mono"
 font-size = 19
 {{- if eq .chezmoi.hostname "HRBs-MBP-Work"}}
-font-size = 16
+font-size = 15
 {{- end}}
 background-opacity = 0.90
 
@@ -12,13 +12,15 @@ window-height = 55
 window-decoration = false
 macos-non-native-fullscreen = visible-menu 
 macos-option-as-alt = true
-
 quick-terminal-animation-duration = 0
 
 # Keybinds
+# use `xxd`
 
 # global keybinding
 keybind = global:ctrl+space=toggle_quick_terminal
+keybind = all:cmd+shift+f=toggle_fullscreen
+keybind = all:cmd+shift+n=new_window
 
 # disable
 keybind = cmd+h=ignore

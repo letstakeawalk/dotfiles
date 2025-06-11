@@ -164,9 +164,22 @@ local function add_blank_line(above)
         vim.api.nvim_buf_set_lines(0, lnum, lnum, false, { "" })
     end
 end
+---@diagnostic disable-next-line: unused-local, unused-function
+local function move_cursor_and_insert(above)
+    local lnum = unpack(vim.api.nvim_win_get_cursor(0))
+    if above then
+        vim.api.nvim_win_set_cursor(0, { lnum - 1, 0 })
+    else
+        vim.api.nvim_win_set_cursor(0, { lnum + 1, 0 })
+    end
+    vim.cmd.startinsert()
+end
 -- stylua: ignore start
 set("n", "[<Space>", function() add_blank_line(true)  end, { desc = "Add blank line above" })
 set("n", "]<Space>", function() add_blank_line(false) end, { desc = "Add blank line below" })
+-- set("n", "[i", function() add_blank_line(true);  move_cursor_and_insert(true);  end, { desc = "Add blank line above and insert" })
+-- set("n", "]i", function() add_blank_line(false); move_cursor_and_insert(false); end, { desc = "Add blank line above and insert" })
+
 -- stylua: ignore end
 
 local function yank_location()

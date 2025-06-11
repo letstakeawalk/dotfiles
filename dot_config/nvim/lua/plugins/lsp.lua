@@ -21,11 +21,11 @@ return {
 
         local servers = {
             bashls = {},
-            -- bufls = {},
             -- cssls = {},
             -- docker_compose_language_service = {},
             -- dockerls = {},
-            eslint = { settings = { format = { enable = false } } },
+            biome = {},
+            -- eslint = { settings = { format = { enable = false } } },
             html = { filetypes = { "html", "htmldjango" } },
             htmx = { filetypes = { "html", "htmldjango" } },
             -- jdtls = {},
@@ -57,12 +57,12 @@ return {
                 settings = {
                     python = {
                         analysis = {
-                            ignore = { "*" }, -- let ruff_lsp handle linting
-                            typeCheckingMode = "off", -- let mypy handle type-checking
+                            ignore = { "*" }, -- let ruff handle linting
+                            -- typeCheckingMode = "off", -- let mypy handle type-checking
                             diagnosticSeverityOverrides = { reportUndefinedVariable = "none" }, -- "error," "warning," "information," "true," "false," or "none"
                         },
                     },
-                    pyright = { disableOrganizeImports = true },
+                    -- pyright = { disableOrganizeImports = true },
                 },
             },
             ruff = {
@@ -73,11 +73,11 @@ return {
             ts_ls = {
                 handlers = {
                     -- filter Hint and Info diagnostics
-                    ["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
+                    ["textDocument/publishDiagnostics"] = function(err, result, ctx)
                         result.diagnostics = vim.tbl_filter(function(diag)
                             return diag.severity < vim.diagnostic.severity.INFO
                         end, result.diagnostics)
-                        vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx, config)
+                        vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx)
                     end,
                 },
                 settings = {
@@ -187,6 +187,8 @@ return {
         }
 
         vim.list_extend(ensure_installed, vim.tbl_keys(servers))
+
+        ---@diagnostic disable-next-line: missing-fields
         require("mason").setup({
             ui = {
                 border = "double",

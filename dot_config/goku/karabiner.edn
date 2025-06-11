@@ -1,6 +1,6 @@
 ; https://karabiner-elements.pqrs.org/docs/
 ; https://github.com/yqrashawn/GokuRakuJoudo
-{ 
+{
   :profiles {
     :Default {
         :default true
@@ -20,7 +20,17 @@
     :input_us {:input_source_id "com.apple.keylayout.US" :language "en"}
     :input_ko {:input_source_id "com.apple.inputmethod.Korean.2SetKorean" :language "ko"}
   }
-  :layers {:navigation {:key :tab}}
+  :layers {
+    :navigation {:key :tab}
+    ;; TODO: VIM mode (insert, normal, visual) with `tos`
+    ; :testing {
+    ;   :key :some_key 
+    ;   :afterup [
+    ;     {:set ["condition-foo" 0]} {:set ["condition-bar" 0]}
+    ;   ]
+    ;   :condi [:some_condition :other_condition]
+    ; }
+  }
   :simlayers {
     :symbols {:key :a}
     :numbers {:key :z}
@@ -102,6 +112,8 @@
         [:##close_bracket          :vk_none :terminals]  ;; terminal: none
         [:##backslash              :vk_none]
         ; [:##a                      :vk_none] ;; coding-layer activation key
+        ; [:##a                      ["symbols" 1] ["symbols" 0] {:alone :a}]
+        ; [:##a                      ["symbols" 0] ["symbols" 1] {:alone :a}]
         [:##s                      :!S1]
         [:##d                      :!S2]
         [:##f                      :!S3]
@@ -259,22 +271,19 @@
       ]
     } ;; end of caps lock
 
-    { :des "Right Command - Hyper" :rules [[:##right_command :!CTOleft_shift]] }
-
     { :des "Colemak-dhm"
       :rules [
-        [:condi :!navigation :!symbols :!numbers]
         [:##open_bracket  :delete_or_backspace]   ;; [ --> delete char
         [:##close_bracket :!Odelete_or_backspace] ;; ] --> delete word
 
-        [:condi :!navigation :!symbols :!numbers :!terminals]
+        :!terminals
         [:!Ti :!Cdelete_or_backspace] ;; ^u --> delete BOL
         [:!Tw :!Odelete_or_backspace] ;; ^w --> delete word
         ; [:!Th :vk_none]             ;; ^h --> delete char           ;; default macos
         ; [:!Tk :vk_none]             ;; ^k --> delete EOL            ;; default macos
         ; [:!Td :vk_none]             ;; ^d --> delete char forward   ;; default macos
 
-        [:condi :input_us :!navigation :!symbols :!numbers]
+        :input_us
         [:##q         :q]
         [:##w         :w]
         [:##e         :f]
@@ -304,7 +313,7 @@
         [:##m         :h]
 
         ;; Korean
-        [:condi :input_ko :!navigation :!symbols :!numbers]
+        :input_ko
         [:#SRPq         :q]
         [:#SRPw         :w]
         [:#SRPe         :e]
@@ -360,8 +369,10 @@
         [:#CTOSPb         :v]
         [:#CTOSPn         :k]
         [:#CTOSPm         :h]
-      ] ;; end of rules
+      ]
     } ;; end of colemak-dhm
+
+    { :des "Right Command - Hyper" :rules [[:##right_command :!CTOleft_shift]] }
 
   ] ;; end of main
 } ;; end of file

@@ -26,6 +26,7 @@
 `tokei                   Count code`
 `watchman                Watch files and take action`
 `xh                      HTTP client`
+`xxd                     Hexdump`
 `xz                      Compress or decompress`
 `z (zoxide)              Filesystem navigator (cd alt)`
 `zstd                    Compress or decompress`
@@ -60,7 +61,6 @@
 - Lua
 `luarocks                Lua package manager` 
 `stylua                  Lua formatter`
-
 
 - File Processors
 `jq                      json processor`

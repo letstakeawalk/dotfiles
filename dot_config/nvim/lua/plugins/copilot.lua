@@ -8,7 +8,8 @@ return {
             panel = { enabled = false },
             suggestion = {
                 enabled = true,
-                auto_trigger = true,
+                auto_trigger = false,
+                hide_during_completion = true,
                 keymap = {
                     accept = false,
                     accept_word = false,
@@ -37,10 +38,11 @@ return {
             vim.keymap.set("n", "<leader>cT", "<cmd>Copilot toggle<cr>", { desc = "Copilot Toggle" })
             vim.keymap.set("n", "<leader>cs", toggle_auto_trigger,       { desc = "Copilot Suggestion Toggle" })
             vim.keymap.set("i", "<C-e>",      toggle_auto_trigger,       { desc = "Copilot Suggestion Toggle" })
-            vim.keymap.set("i", "<C-a>",      suggestion.accept,         { desc = "Copilot Suggestion Accept" })
-            vim.keymap.set("i", "<C-y>",      suggestion.accept,         { desc = "Copilot Suggestion Accept" })
-            vim.keymap.set("i", "<C-n>",      suggestion.next,           { desc = "Copilot Next" })
-            vim.keymap.set("i", "<C-p>",      suggestion.prev,           { desc = "Copilot Previous" })
+            -- check cmp keymaps
+            -- vim.keymap.set("i", "<C-a>",      suggestion.accept,         { desc = "Copilot Suggestion Accept" })
+            -- vim.keymap.set("i", "<C-y>",      suggestion.accept,         { desc = "Copilot Suggestion Accept" })
+            -- vim.keymap.set("i", "<C-n>",      suggestion.next,           { desc = "Copilot Next" })
+            -- vim.keymap.set("i", "<C-p>",      suggestion.prev,           { desc = "Copilot Previous" })
             -- stylua: ignore end
         end,
     },
@@ -78,8 +80,8 @@ return {
                 close = {
                     normal = "q",
                     insert = "<C-q>",
-                }
-            }
+                },
+            },
         },
     },
 }

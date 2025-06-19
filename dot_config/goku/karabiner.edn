@@ -10,7 +10,7 @@
         :held    250    ;; to_if_held_down_threshold_milliseconds (default: 500)
     }
   }
-  :simlayer-threshold 150 ;; default: 250
+  :simlayer-threshold 150 ;; default: 250 // 150 is best?
   :devices {:apple [{:vendor_id 1452}]}
   :applications {
     :terminals ["^com\\.mitchellh\\.ghostty$" "^com\\.apple\\.Terminal$" "^io\\.alacritty$" "^net\\.kovidgoyal\\.kitty$"]
@@ -154,6 +154,7 @@
         [:##left_control           :left_control]
         [:##left_option            :left_option]
         [:##left_shift             :left_shift]
+        [:##caps_lock              :left_control]
       ]
     } ;; end of coding layer
 
@@ -214,6 +215,7 @@
         [:##left_control           :left_control]
         [:##left_option            :left_option]
         [:##left_shift             :left_shift]
+        [:##caps_lock              :left_control]
       ]
     } ;; end of number layer
 

@@ -86,7 +86,60 @@ return {
             })
         end
 
-        -- Checks if bracket chars are balanced around specific postion.
+        ---Fly Mode: multiline jump close bracket [(reference)](https://github.com/windwp/nvim-autopairs/issues/167#issuecomment-1502559849)
+        local function multiline_close_jump(open, close)
+            return Rule(close, "")
+                :with_pair(function()
+                    local row, col = utils.get_cursor(0)
+                    local line = utils.text_get_current_line(0)
+
+                    if #line ~= col then -- cursor not at EOL
+                        return false
+                    end
+
+                    -- check if the line starts with the opening pair
+                    local unclosed_count = 0
+                    for c in line:gmatch("[\\" .. open .. "\\" .. close .. "]") do
+                        if c == open then
+                            unclosed_count = unclosed_count + 1
+                        end
+                        if unclosed_count > 0 and c == close then
+                            unclosed_count = unclosed_count - 1
+                        end
+                    end
+                    if unclosed_count > 0 then
+                        return false
+                    end
+
+                    local nextrow = row + 1
+                    if -- if the next line exists and it starts with the closing pair
+                        nextrow < vim.api.nvim_buf_line_count(0)
+                        and vim.regex("^\\s*" .. close):match_line(0, nextrow)
+                    then
+                        return true
+                    end
+                    return false
+                end)
+                :with_move(conds.none())
+                :with_cr(conds.none())
+                :with_del(conds.none())
+                :set_end_pair_length(0)
+                :replace_endpair(function(opts)
+                    -- local cleanup = "" == opts.line:match("^%s*(.-)%s*$") and "dd" or "xj" -- delete current line if emptly else delete closing pair
+                    local cleanup = "xj"
+                    local row, _ = utils.get_cursor(0)
+                    local action = vim.regex("^" .. close):match_line(0, row + 1) and "0a"
+                        or ("0f%sa"):format(opts.char)
+                    return ("<esc>%s%s"):format(cleanup, action)
+                end)
+        end
+        ap.add_rules({
+            multiline_close_jump("(", ")"),
+            multiline_close_jump("[", "]"),
+            multiline_close_jump("{", "}"),
+        })
+
+        ---Checks if bracket chars are balanced around specific postion.
         local function is_brackets_balanced_around_position(line, open_char, close_char, col)
             local balance = 0
             for i = 1, #line, 1 do
@@ -152,7 +205,7 @@ return {
                 :with_pair(conds.before_text("{"))
                 :with_move(conds.none())
                 :with_del(conds.none())
-                :with_cr(conds.none())
+                :with_cr(conds.none()),
         })
     end,
 }

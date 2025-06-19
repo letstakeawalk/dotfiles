@@ -71,6 +71,8 @@ set("n", "z5", "zM5zr",    { desc = "Fold level: 5" })
 set("n", "zv", "zMzvzczO", { desc = "Open enough fold" })
 
 -- Editing
+set("i", "<C-d>", "<C-d>", { desc = "Indent -1 level" })
+set("i", "<C-v>", "<C-t>", { desc = "Indent +1 level" })
 set("n", "<<", "<h",       { desc = "Indent -1 level" })
 set("n", ">>", ">l",       { desc = "Indent +1 level" })
 set("v", "<", "<gv",       { desc = "Indent -1 level" })

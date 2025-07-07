@@ -63,19 +63,9 @@ return {
             { "<leader>cd", "<cmd>CopilotChatDocs<cr>",     desc = "CopilotChat docs",     mode = {"n", "v"} },
             { "<leader>ct", "<cmd>CopilotChatTests<cr>",    desc = "CopilotChat tests",    mode = {"n", "v"} },
             { "<leader>cC", "<cmd>CopilotChatCommit<cr>",   desc = "CopilotChat commit" },
-            {
-                "<leader>ch",
-                function() local actions = require("CopilotChat.actions"); require("CopilotChat.integrations.telescope").pick(actions.help_actions()) end,
-                desc = "CopilotChat help actions",
-            },
-            {
-                "<leader>cp",
-                function() local actions = require("CopilotChat.actions"); require("CopilotChat.integrations.telescope").pick(actions.prompt_actions()) end,
-                desc = "CopilotChat prompt actions",
-            },
         },
         opts = {
-            model = "claude-3.5-sonnet",
+            model = "gemini-2.5-pro",
             mappings = {
                 close = {
                     normal = "q",

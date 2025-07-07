@@ -179,8 +179,9 @@ set(0, "NullLsInfoBorder",        { link = "FloatBorder" })
 -- rust
 set(0, "@lsp.type.string.rust",                {}) -- needed for treesitter injected queries (sql)
 set(0, "@lsp.type.macro.rust",                 { link = "Function" })
+set(0, "@lsp.type.typeAlias.rust",             { link = "Type" })
 set(0, "@lsp.typemod.enumMember.library.rust", { link = "Constant" })
-set(0, "@unit",                                { fg = nord.c04_wht_dk, italic = true })
+-- set(0, "@unit.rust",                                { fg = nord.c04_wht_dk, italic = true })
 
 -- telescope.nvim
 set(0, "TelescopeTitle",          { link = "FloatTitle" })

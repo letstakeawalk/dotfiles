@@ -7,7 +7,7 @@ set("n", "<C-c>", vim.cmd.noh, { desc = "Clear highlights" })
 set("n", "<Esc>", vim.cmd.noh, { desc = "Clear highlights" })
 -- set("i", "<C-c>", function() return vim.api.nvim_win_get_cursor(0)[2] > 1 and "<esc>l" or "<esc>" end, { expr = true })
 set("i", "<C-c>", "<Esc>")
-set("i", "<Esc>", "<Nop>")
+-- set("i", "<Esc>", "<Nop>")
 
 --- Cursor Navigation
 set("n", "k",  "v:count == 0 ? 'gj' : 'j'",  { desc = "Down",  silent = true, expr = true })

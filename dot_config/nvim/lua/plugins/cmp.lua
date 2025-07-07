@@ -54,6 +54,7 @@ return {
         ---@param forward boolean
         local function select_cmp_copilot_snip_jump(forward)
             ---@param fallback function
+            ---@diagnostic disable-next-line: unused-local
             return function(fallback)
                 if cmp.visible() then
                     if forward then
@@ -71,8 +72,6 @@ return {
                     luasnip.jump(1)
                 elseif not forward and luasnip.locally_jumpable(-1) then
                     luasnip.jump(-1)
-                else
-                    fallback()
                 end
             end
         end

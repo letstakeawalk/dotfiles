@@ -219,12 +219,13 @@
       ]
     } ;; end of number layer
 
-    { :des "CapsLock - Hold: Control, Alone: Escape, With Mods: Grave Accent"
+    { :des "CapsLock - Hold: Control, Alone: Escape, With Cmd: Grave Accent"
       :rules [
         ; [:caps_lock :left_control nil {:alone :escape}] ;; original
         [:caps_lock ["ctrl" 1] ["ctrl" 0] {:alone :escape :afterup ["ctrl" 0]}] ;; working 1
         [:caps_lock ["ctrl" 0] ["ctrl" 1] {:alone :escape}] ;; working 1
-        [:##caps_lock :grave_accent_and_tilde]
+        [:!C##caps_lock     :grave_accent_and_tilde]
+        [:##caps_lock       :vk_none]
         :ctrl
         [:##q                      :!Tq]
         [:##w                      :!Odelete_or_backspace :!terminals] ;; ^w --> delete word

@@ -34,8 +34,8 @@ return {
                     vim.keymap.set("n", "<<",             "<Plug>(bullets-promote)",         { buffer = true, desc = "Promote bullet" })
                     vim.keymap.set("i", "<C-v>",          "<Plug>(bullets-demote)",          { buffer = true, desc = "Demote bullet" })
                     vim.keymap.set("i", "<C-d>",          "<Plug>(bullets-promote)",         { buffer = true, desc = "Promote bullet" })
-                    vim.keymap.set("v", ">",              "<Plug>(bullets-demote):normal! gv",  { buffer = true, desc = "Demote bullet" })
-                    vim.keymap.set("v", "<",              "<Plug>(bullets-promote):normal! gv", { buffer = true, desc = "Promote bullet" })
+                    vim.keymap.set("v", ">",              "<Plug>(bullets-demote)gv",  { buffer = true, desc = "Demote bullet" })
+                    vim.keymap.set("v", "<",              "<Plug>(bullets-promote)gv", { buffer = true, desc = "Promote bullet" })
                     -- stylua: ignore end
                 end,
             })

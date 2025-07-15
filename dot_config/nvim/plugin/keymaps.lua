@@ -100,6 +100,7 @@ set("v", "<A-h>",    ":m '<-2<CR>gv=gv",    { desc = "Move line up" })
 -- Display/Toggle: <leader>d
 set("n", "<leader>dm", "<cmd>message<cr>",         { desc = "Messages" })
 set("n", "<leader>dM", "<cmd>Redir message<cr>",   { desc = "Redir Messages" })
+set("n", "<leader>dn", function() vim.wo.relativenumber = not vim.wo.relativenumber; vim.wo.number = not vim.wo.number; end,   { desc = "Display numbers" })
 set("n", "<leader>dc", function() vim.wo.conceallevel = vim.wo.conceallevel == 0 and 2 or 0; vim.notify("Conceal ".. (vim.wo.conceallevel == 2 and "Enabled" or "Disabled")) end, { desc = "Spelling Toggle" })
 set("n", "<leader>ds", function() vim.wo.spell = not vim.wo.spell; vim.notify("Spelling ".. (vim.wo.spell and "Enabled" or "Disabled")) end,                                                                                                                                         { desc = "Spelling Toggle" })
 set("n", "<leader>dw", function() vim.wo.wrap = not vim.wo.wrap; vim.notify("Wrap " .. (vim.wo.wrap and "Enabled" or "Disabled")) end,                                                                                                                                               { desc = "Wrap Line Toggle" })

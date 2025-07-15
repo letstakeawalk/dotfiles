@@ -28,7 +28,7 @@ telescope.setup({
         --     results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
         --     preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
         -- },
-        layout_config = { width = 150, height = { padding = 7 } },
+        layout_config = { width = 166, height = { padding = 5 } },
         prompt_prefix = "   ",
         selection_caret = " >> ",
         multi_icon = "   ",

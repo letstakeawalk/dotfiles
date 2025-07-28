@@ -12,16 +12,13 @@ return {
         "onsails/lspkind.nvim",
         "L3MON4D3/LuaSnip",
         "saadparwaiz1/cmp_luasnip",
-        "zbirenbaum/copilot.lua",
         -- https://github.com/hrsh7th/nvim-cmp/wiki/List-of-sources
-        -- zbirenbaum/copilot-cmp
     },
     event = { "InsertEnter", "CmdlineEnter" },
     config = function()
         local cmp = require("cmp")
         local lspkind = require("lspkind")
         local luasnip = require("luasnip")
-        local copilot = require("copilot.suggestion")
 
         local function has_words_before()
             local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -39,20 +36,10 @@ return {
             end
         end
 
-        ---@param fallback function
-        local function confirm_or_copilot_accept(fallback)
-            if cmp.visible() then
-                cmp.confirm({ select = true, behavior = cmp.ConfirmBehavior.Select })
-            elseif copilot.is_visible() then
-                copilot.accept()
-            else
-                fallback()
-            end
-        end
 
         ---Select cmp next/prev items, copilot next/prev suggestions, jump luasnips OR fallback
         ---@param forward boolean
-        local function select_cmp_copilot_snip_jump(forward)
+        local function select_cmp_snip_jump(forward)
             ---@param fallback function
             ---@diagnostic disable-next-line: unused-local
             return function(fallback)
@@ -61,12 +48,6 @@ return {
                         cmp.select_next_item()
                     else
                         cmp.select_prev_item()
-                    end
-                elseif copilot.is_visible() then
-                    if forward then
-                        copilot.next()
-                    else
-                        copilot.prev()
                     end
                 elseif forward and luasnip.locally_jumpable(1) then
                     luasnip.jump(1)
@@ -138,7 +119,6 @@ return {
                 ["<C-p>"] = cmp.mapping(select_cmp_copilot_snip_jump(false), { "i", "s" }),
                 ["<C-u>"] = cmp.mapping.scroll_docs(-4),
                 ["<C-d>"] = cmp.mapping.scroll_docs(4),
-                ["<C-y>"] = cmp.mapping(confirm_or_copilot_accept),
                 ["<Esc>"] = close_or(nil),
                 ["<Tab>"] = cmp.mapping(confirm_complete, { "i", "s" }),
             },

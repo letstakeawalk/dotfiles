@@ -57,8 +57,9 @@ return {
                     miniclue.gen_clues.windows(),
                     miniclue.gen_clues.z(),
 
+                    { mode = "n", keys = "<leader>a", desc = "Avante" },
+                    { mode = "x", keys = "<leader>a", desc = "Avante" },
                     { mode = "n", keys = "<leader>C", desc = "Commands" },
-                    { mode = "n", keys = "<leader>c", desc = "Copilot & ChatGPT" },
                     { mode = "n", keys = "<leader>d", desc = "Display" },
                     { mode = "n", keys = "<leader>g", desc = "Git" },
                     { mode = "n", keys = "<leader>i", desc = "Info" },

@@ -5,6 +5,7 @@ return {
         "nvim-lua/plenary.nvim",
         { "nvim-telescope/telescope-fzf-native.nvim", build = "make" }, -- use fzf
         "nvim-telescope/telescope-ui-select.nvim",
+        "nvim-telescope/telescope-symbols.nvim",
         "tsakirist/telescope-lazy.nvim", -- lazy.nvim
         "archie-judd/telescope-words.nvim",
         -- "nvim-telescope/telescope-smart-history.nvim"

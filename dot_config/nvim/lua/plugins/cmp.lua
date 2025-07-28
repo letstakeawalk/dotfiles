@@ -37,22 +37,22 @@ return {
         end
 
 
-        ---Select cmp next/prev items, copilot next/prev suggestions, jump luasnips OR fallback
+        ---Jump luasnips, select cmp next/prev items
         ---@param forward boolean
-        local function select_cmp_snip_jump(forward)
+        local function snip_jump_cmp_select(forward)
             ---@param fallback function
             ---@diagnostic disable-next-line: unused-local
             return function(fallback)
-                if cmp.visible() then
+                if forward and luasnip.locally_jumpable(1) then
+                    luasnip.jump(1)
+                elseif not forward and luasnip.locally_jumpable(-1) then
+                    luasnip.jump(-1)
+                elseif cmp.visible() then
                     if forward then
                         cmp.select_next_item()
                     else
                         cmp.select_prev_item()
                     end
-                elseif forward and luasnip.locally_jumpable(1) then
-                    luasnip.jump(1)
-                elseif not forward and luasnip.locally_jumpable(-1) then
-                    luasnip.jump(-1)
                 end
             end
         end
@@ -115,8 +115,8 @@ return {
             mapping = {
                 ["<Down>"] = cmp.mapping.select_next_item(),
                 ["<Up>"] = cmp.mapping.select_prev_item(),
-                ["<C-n>"] = cmp.mapping(select_cmp_copilot_snip_jump(true), { "i", "s" }),
-                ["<C-p>"] = cmp.mapping(select_cmp_copilot_snip_jump(false), { "i", "s" }),
+                ["<C-n>"] = cmp.mapping(snip_jump_cmp_select(true), { "i", "s" }),
+                ["<C-p>"] = cmp.mapping(snip_jump_cmp_select(false), { "i", "s" }),
                 ["<C-u>"] = cmp.mapping.scroll_docs(-4),
                 ["<C-d>"] = cmp.mapping.scroll_docs(4),
                 ["<Esc>"] = close_or(nil),

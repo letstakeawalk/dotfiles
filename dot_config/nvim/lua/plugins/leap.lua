@@ -6,11 +6,19 @@ return {
     config = function()
         local leap = require("leap")
         leap.setup({})
-        -- leap.set_default_keymaps()
-        vim.keymap.set({"n", "o"},      "s", "<Plug>(leap-forward)",      { desc = "Leap forward" })
-        vim.keymap.set({"n", "o"},      "S", "<Plug>(leap-backward)",     { desc = "Leap backward" })
-        vim.keymap.set({"x"},           "s", "<Plug>(leap-from-window)",  { desc = "Leap backward" })
-        vim.keymap.set({"n", "x", "o"}, "gs", "<Plug>(leap-from-window)", { desc = "Leap window" })
+
+        vim.keymap.set({ "n", "o" }, "s", "<Plug>(leap-forward)", { desc = "Leap forward" })
+        vim.keymap.set({ "n", "o" }, "S", "<Plug>(leap-backward)", { desc = "Leap backward" })
+        vim.keymap.set({ "x" }, "s", "<Plug>(leap-from-window)", { desc = "Leap backward" })
+        vim.keymap.set({ "n", "x", "o" }, "gs", "<Plug>(leap-from-window)", { desc = "Leap window" })
+
+        require("leap.user").set_repeat_keys("<enter>", "<backspace>", {
+            -- If set to true, the keys will work like the native
+            -- semicolon/comma, i.e., forward/backward is understood in
+            -- relation to the last motion.
+            relative_directions = false,
+            modes = { "n", "x", "o" },
+        })
 
         leap.opts.special_keys.prev_target = { "<s-cr>", "," }
 
@@ -68,7 +76,9 @@ return {
                 local t_screen_row = vim.fn.screenpos(winid, t.pos[1], t.pos[2])["row"]
                 return math.abs(cur_screen_row - t_screen_row)
             end
-            table.sort(targets, function(t1, t2) return screen_rows_from_cur(t1) < screen_rows_from_cur(t2) end)
+            table.sort(targets, function(t1, t2)
+                return screen_rows_from_cur(t1) < screen_rows_from_cur(t2)
+            end)
 
             if #targets >= 1 then
                 return targets
@@ -84,8 +94,12 @@ return {
             })
         end
 
-        vim.keymap.set("n", "<leader>k", function() leap_to_line(false) end, { desc = "Leap downward" })
-        vim.keymap.set("n", "<leader>h", function() leap_to_line(true) end, { desc = "Leap upward" })
+        vim.keymap.set("n", "<leader>k", function()
+            leap_to_line(false)
+        end, { desc = "Leap downward" })
+        vim.keymap.set("n", "<leader>h", function()
+            leap_to_line(true)
+        end, { desc = "Leap upward" })
 
         -- local nord = require("utils.nord")
         -- vim.api.nvim_set_hl(0, "LeapLabelPrimary", { fg = nord.c00_blk, bg = nord.c13_ylw, bold = true })

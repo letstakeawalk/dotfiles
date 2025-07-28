@@ -15,18 +15,13 @@ return {
             enable_autosnippets = false, -- default false
             ext_opts = {
                 [types.choiceNode] = {
-                    active = { virt_text = { { " ", "DiagnosticHint" } } },
-                    -- active = { virt_text = { { "⚫", "DiagnosticHint" } } },
+                    active = { virt_text = { { "⟳ ", "DiagnosticHint" } } },
                 },
             },
         })
 
-        -- stylua: ignore start
-        vim.keymap.set({ "i", "s" }, "<C-t>", function() if ls.expand_or_locally_jumpable() then ls.jump(1) end end, { silent = true })
-        vim.keymap.set({ "i", "s" }, "<C-s>", function() if ls.locally_jumpable(-1) then ls.jump(-1) end end, { silent = true })
-        vim.keymap.set({ "i", "s" }, "<C-r>", function() if ls.choice_active() then ls.change_choice(1) end end)
-        -- vim.keymap.set("n", "<leader>dS", "<cmd>LuaSnipUnlinkCurrent<cr>", { desc = "LuaSnip Unlink" })
-        -- stylua: ignore end
+        -- stylua: ignore
+        vim.keymap.set({ "i", "s" }, "<C-_>", function() if ls.choice_active() then ls.change_choice(1) end end)
 
         require("luasnip.loaders.from_lua").load({ paths = { vim.fn.stdpath("config") .. "/lua/snippets" } })
     end,

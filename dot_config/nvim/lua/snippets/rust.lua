@@ -657,6 +657,28 @@ local function crudhandlers_mongo()
     )
 end
 
+-- Etc
+local function leetcode_docstring()
+    return fmta(
+        [[
+        //! [<title>](<link>)
+        //!
+        //! tags: <tags>
+        //! companies: <companies>
+
+        pub struct Solution;
+
+        ]],
+        {
+            title = i(1, "XX. Title of the Problem"),
+            link = i(2, "https://leetcode.com"),
+            tags = i(3, "#todo"),
+            companies = i(4, "#none"),
+        },
+        { repeat_duplicates = true }
+    )
+end
+
 -- stylua: ignore
 return {
     -- abbrs
@@ -736,4 +758,7 @@ return {
     s("use_prelude", t("use crate::prelude::*;")),
     s("stderror",    box_dyn_error(1)),
     s("reserr",      result_box_dyn_error(1)),
+
+    -- etc
+    s("lcode_doc", leetcode_docstring())
 }

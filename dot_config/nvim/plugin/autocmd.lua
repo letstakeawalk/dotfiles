@@ -53,7 +53,6 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("BufWritePost", {
     group = utils.augroup("ChezmoiAdd", { clear = true }),
     pattern = {
-        string.format("%s/**/*", os.getenv("XDG_CONFIG_HOME")),
         string.format("%s/*", os.getenv("XDG_CONFIG_HOME")),
     },
     ---@param ev { buf: integer, file: string, match: string }

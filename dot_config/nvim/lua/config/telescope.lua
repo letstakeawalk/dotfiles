@@ -38,7 +38,9 @@ telescope.setup({
             n = {
                 ["k"] = actions.move_selection_next,
                 ["h"] = actions.move_selection_previous,
+                ["<C-c>"] = actions.close,
             },
+            i = { ["<Esc>"] = actions.close },
         },
     },
     pickers = {
@@ -53,14 +55,8 @@ telescope.setup({
         },
     },
     extensions = {
-        ["ui-select"] = {
-            require("telescope.themes").get_dropdown(),
-        },
-        lazy = {
-            mappings = {
-                change_cwd_to_plugin = "",
-            },
-        },
+        ["ui-select"] = { require("telescope.themes").get_dropdown() },
+        lazy = { mappings = { change_cwd_to_plugin = "" } },
     },
 })
 

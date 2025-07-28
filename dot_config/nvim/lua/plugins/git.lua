@@ -106,11 +106,14 @@ return {
                     vim.keymap.set(mode, lhs, rhs, opts)
                 end
 
-                local next_hunk, prev_hunk =
-                    require("nvim-treesitter.textobjects.repeatable_move").make_repeatable_move_pair(
-                        function() gs.nav_hunk("next") end,
-                        function() gs.nav_hunk("prev") end
-                    )
+                local next_hunk, prev_hunk = require("nvim-treesitter.textobjects.repeatable_move").make_repeatable_move_pair(
+                    function()
+                        gs.nav_hunk("next")
+                    end,
+                    function()
+                        gs.nav_hunk("prev")
+                    end
+                )
                 map("n", "]c", function()
                     if vim.wo.diff then
                         return vim.cmd.normal({ "]c", bang = true })

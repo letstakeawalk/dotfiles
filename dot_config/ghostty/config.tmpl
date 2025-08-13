@@ -1,7 +1,8 @@
 theme = nord
 font-family = "RecMonoCasual Nerd Font Mono"
+{{- if eq .chezmoi.hostname "HRBs-MBP"}}
 font-size = 19
-{{- if eq .chezmoi.hostname "HRBs-MBP-Work"}}
+{{- else}}
 font-size = 15
 {{- end}}
 background-opacity = 0.90

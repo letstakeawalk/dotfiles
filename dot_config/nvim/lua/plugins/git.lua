@@ -1,6 +1,6 @@
 return {
     {
-        "bharam/fugitive-ext.nvim",
+        "letstakeawalk/fugitive-ext.nvim",
         dependencies = {
             "tpope/vim-fugitive", -- git interface
             "junegunn/gv.vim", -- git commit browser
@@ -16,6 +16,7 @@ return {
         opts = {
             _debug = false,
             fugitive = {
+                -- TODO: restore default conf when closing (bufdelete/wipe events)
                 line_number = false,
                 relative_number = false,
             },
@@ -106,34 +107,30 @@ return {
                     vim.keymap.set(mode, lhs, rhs, opts)
                 end
 
+                -- stylua: ignore start
                 local next_hunk, prev_hunk = require("nvim-treesitter.textobjects.repeatable_move").make_repeatable_move_pair(
-                    function()
-                        gs.nav_hunk("next")
-                    end,
-                    function()
-                        gs.nav_hunk("prev")
-                    end
+                    function() gs.nav_hunk("next", { wrap = false, preview = true }) end,
+                    function() gs.nav_hunk("prev", { wrap = false, preview = true }) end
                 )
                 map("n", "]c", function()
-                    if vim.wo.diff then
-                        return vim.cmd.normal({ "]c", bang = true })
-                    end
+                    if vim.wo.diff then return vim.cmd.normal({ "]c", bang = true }) end
                     vim.schedule(next_hunk)
                     return "<Ignore>"
                 end, { desc = "Goto next hunk", expr = true, silent = true })
 
                 map("n", "[c", function()
-                    if vim.wo.diff then
-                        return vim.cmd.normal({ "[c", bang = true })
-                    end
+                    if vim.wo.diff then return vim.cmd.normal({ "[c", bang = true }) end
                     vim.schedule(prev_hunk)
                     return "<Ignore>"
                 end, { desc = "Goto previous hunk", expr = true, silent = true })
 
                 local function toggle_blame_buf()
-                    local bufs = vim.tbl_filter(function(b)
-                        return vim.api.nvim_get_option_value("filetype", { buf = b }) == "gitsigns.blame"
-                    end, vim.api.nvim_list_bufs())
+                    local bufs = vim.tbl_filter(
+                        function(buf)
+                            return vim.api.nvim_get_option_value("filetype", { buf = buf }) == "gitsigns.blame"
+                        end,
+                        vim.api.nvim_list_bufs()
+                    )
                     if #bufs == 0 then
                         gs.blame()
                     else
@@ -141,7 +138,6 @@ return {
                     end
                 end
 
-                -- stylua: ignore start
                 map("v", "<leader>gs", function() gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") }) end, { desc = "Stage hunk" })
                 map("v", "<leader>gr", function() gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") }) end, { desc = "Reset hunk" })
                 map("n", "<leader>gs", gs.stage_hunk,                   { desc = "Stage hunk" })
@@ -157,8 +153,10 @@ return {
                 -- map("n", "<leader>gB", gs.toggle_current_line_blame, { desc = "Blame toggle" })
 
                 -- Text object
-                map({ "o", "x" }, "ih", "<cmd><C-U>Gitsigns select_hunk<CR>", { desc = "Select hunk" })
-                map({ "o", "x" }, "ah", "<cmd><C-U>Gitsigns select_hunk<CR>", { desc = "Select hunk" })
+                map({ "o", "x" }, "ih", gs.select_hunk, { desc = "Select hunk" })
+                map({ "o", "x" }, "ah", gs.select_hunk, { desc = "Select hunk" })
+                -- map({ "o", "x" }, "ih", "<cmd><C-U>Gitsigns select_hunk<CR>", { desc = "Select hunk" })
+                -- map({ "o", "x" }, "ah", "<cmd><C-U>Gitsigns select_hunk<CR>", { desc = "Select hunk" })
                 -- stylua: ignore end
             end,
         },

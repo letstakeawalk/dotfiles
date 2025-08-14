@@ -30,6 +30,13 @@ return {
         { "<leader>tr", "<cmd>Telescope resume<cr>",                                desc = "Resume" },
         { "<leader>ts", "<cmd>Telescope spell_suggest<cr>",                         desc = "Spell Suggest" },
         { "<leader>tt", "<cmd>Telescope treesitter<cr>",                            desc = "Treesitter" },
+
+        { "<leader>gff", "<cmd>Telescope git_files<cr>",                             desc = "Git Files" },
+        { "<leader>gfz", "<cmd>Telescope git_stash<cr>",                             desc = "Git Stash" },
+        { "<leader>gfs", "<cmd>Telescope git_status<cr>",                            desc = "Git Status" },
+        { "<leader>gfc", "<cmd>Telescope git_commits<cr>",                           desc = "Git Commits" },
+        { "<leader>gfC", "<cmd>Telescope git_bcommits<cr>",                          desc = "Git BufCommits" },
+        { "<leader>gfb", "<cmd>Telescope git_branches<cr>",                          desc = "Git Branches" },
         -- extensions
         { "<leader>ta", "<cmd>Telescope aerial<cr>",                                desc = "Aerial" },
         { "<leader>tz", "<cmd>Telescope lazy<cr>",                                  desc = "Lazy" },

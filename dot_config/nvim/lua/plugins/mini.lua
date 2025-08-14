@@ -57,18 +57,20 @@ return {
                     miniclue.gen_clues.windows(),
                     miniclue.gen_clues.z(),
 
-                    { mode = "n", keys = "<leader>a", desc = "Avante" },
-                    { mode = "x", keys = "<leader>a", desc = "Avante" },
-                    { mode = "n", keys = "<leader>C", desc = "Commands" },
-                    { mode = "n", keys = "<leader>d", desc = "Display" },
-                    { mode = "n", keys = "<leader>g", desc = "Git" },
-                    { mode = "x", keys = "<leader>g", desc = "Git" },
-                    { mode = "n", keys = "<leader>i", desc = "Info" },
-                    { mode = "n", keys = "<leader>q", desc = "Buffer Management" },
-                    { mode = "n", keys = "<leader>r", desc = "Refactor" },
-                    { mode = "x", keys = "<leader>r", desc = "Refactor" },
-                    { mode = "n", keys = "<leader>t", desc = "Telescope" },
-                    { mode = "n", keys = "<leader>x", desc = "Trouble" },
+                    { mode = "n", keys = "<leader>a",  desc = "Avante" },
+                    { mode = "x", keys = "<leader>a",  desc = "Avante" },
+                    { mode = "n", keys = "<leader>c",  desc = "Copilot & ChatGPT" },
+                    { mode = "n", keys = "<leader>C",  desc = "Commands" },
+                    { mode = "n", keys = "<leader>d",  desc = "Display" },
+                    { mode = "n", keys = "<leader>g",  desc = "Git" },
+                    { mode = "x", keys = "<leader>g",  desc = "Git" },
+                    { mode = "n", keys = "<leader>gf", desc = "Telescope (Git)" },
+                    { mode = "n", keys = "<leader>i",  desc = "Info" },
+                    { mode = "n", keys = "<leader>q",  desc = "Buffer Management" },
+                    { mode = "n", keys = "<leader>r",  desc = "Refactor" },
+                    { mode = "x", keys = "<leader>r",  desc = "Refactor" },
+                    { mode = "n", keys = "<leader>t",  desc = "Telescope" },
+                    { mode = "n", keys = "<leader>x",  desc = "Trouble" },
                 },
                 window = { delay = 300, config = { width = "auto" } },
             })
@@ -82,13 +84,15 @@ return {
                 group = require("utils").augroup("MiniClueFugitive", { clear = true }),
                 ---@diagnostic disable-next-line: unused-local
                 callback = function(data)
+                    -- nav maps
                     miniclue.set_mapping_desc("n", "g?", "Help")
-                    miniclue.set_mapping_desc("n", "gu", "Jump to Untracked/Unstaged")
-                    miniclue.set_mapping_desc("n", "gU", "Jump to Unstaged")
+                    miniclue.set_mapping_desc("n", "gu", "Jump to Unstaged")
+                    miniclue.set_mapping_desc("n", "gU", "Jump to Untracked")
                     miniclue.set_mapping_desc("n", "gs", "Jump to Staged")
                     miniclue.set_mapping_desc("n", "gp", "Jump to Unpushed")
                     miniclue.set_mapping_desc("n", "gP", "Jump to Unpulled")
                     miniclue.set_mapping_desc("n", "gr", "Jump to Rebasing")
+                    miniclue.set_mapping_desc("n", "gi", ".git/info/exlude | .gitignore")
                     miniclue.set_mapping_desc("n", "]]", "Jump to Next Section")
                     miniclue.set_mapping_desc("n", "][", "Jump to Next Section (end)")
                     miniclue.set_mapping_desc("n", "[[", "Jump to Prev Section")

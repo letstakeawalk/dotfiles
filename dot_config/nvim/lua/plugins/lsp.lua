@@ -248,14 +248,14 @@ return {
         vim.api.nvim_create_autocmd("LspAttach", {
             callback = function(args)
                 local bufnr = args.buf
-                vim.keymap.set("n", "H",                   vim.lsp.buf.signature_help,                                                      { desc = "Display Signature Help", buffer = bufnr })
-                vim.keymap.set("n", "K",                   vim.lsp.buf.hover,                                                               { desc = "Display Hover Info",     buffer = bufnr })
-                vim.keymap.set("n", "<leader>ra",          vim.lsp.buf.code_action,                                                         { desc = "Code Action",            buffer = bufnr })
-                vim.keymap.set("n", "<leader>rn",          vim.lsp.buf.rename,                                                              { desc = "Rename",                 buffer = bufnr })
+                vim.keymap.set("n",          "H",          vim.lsp.buf.signature_help,                                                      { desc = "Display Signature Help", buffer = bufnr })
+                vim.keymap.set("n",          "K",          vim.lsp.buf.hover,                                                               { desc = "Display Hover Info",     buffer = bufnr })
+                vim.keymap.set({ "n", "v" }, "<leader>ra", vim.lsp.buf.code_action,                                                         { desc = "Code Action",            buffer = bufnr })
                 vim.keymap.set({ "n", "v" }, "<leader>rf", function() vim.lsp.buf.format({ async = true }) end,                             { desc = "Format File",            buffer = bufnr })
-                vim.keymap.set("n", "<leader>dd",          function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end,           { desc = "Diagnostic Toggle",      buffer = bufnr })
-                vim.keymap.set("n", "<leader>dh",          function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end,   { desc = "InlayHint Toggle",       buffer = bufnr })
-                vim.keymap.set("n", "E",                   vim.diagnostic.open_float,                                                       { desc = "Open Float",             buffer = bufnr })
+                vim.keymap.set("n",          "<leader>rn", vim.lsp.buf.rename,                                                              { desc = "Rename",                 buffer = bufnr })
+                vim.keymap.set("n",          "<leader>dd", function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end,           { desc = "Diagnostic Toggle",      buffer = bufnr })
+                vim.keymap.set("n",          "<leader>dh", function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({})) end, { desc = "InlayHint Toggle",       buffer = bufnr })
+                vim.keymap.set("n",          "E",          vim.diagnostic.open_float,                                                       { desc = "Open Float",             buffer = bufnr })
                 require("lsp_signature").on_attach({ hint_enable = true }, bufnr)
             end,
         })

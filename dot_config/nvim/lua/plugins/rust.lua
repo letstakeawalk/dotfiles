@@ -2,7 +2,7 @@ return {
     {
         "mrcjkb/rustaceanvim",
         dependencies = { "akinsho/toggleterm.nvim" },
-        version = "^5",
+        version = "^6",
         ft = { "rust" },
         lazy = false, -- this plugin is already lazy
         config = function()
@@ -45,7 +45,7 @@ return {
                     default_settings = {
                         ["rust-analyzer"] = {
                             inlayHints = {
-                                parameterHints = { enable = false },
+                                -- parameterHints = { enable = false },
                             },
                         },
                     },

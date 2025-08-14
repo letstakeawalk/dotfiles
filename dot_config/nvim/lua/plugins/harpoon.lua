@@ -7,6 +7,8 @@ return {
         local harpoon = require("harpoon")
         harpoon:setup()
 
+        -- TODO: Telescope
+
         -- stylua: ignore start
         vim.keymap.set("n", "g1", function() harpoon:list():select(1) end, { desc = "Harpoon 1" })
         vim.keymap.set("n", "g2", function() harpoon:list():select(2) end, { desc = "Harpoon 2" })

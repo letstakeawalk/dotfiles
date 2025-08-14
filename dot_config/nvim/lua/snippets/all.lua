@@ -37,50 +37,50 @@ return {
     s(
         "today",
         c(1, {
-            p(os.date, "%Y.%m.%d"),
             p(os.date, "%Y.%m.%d.%a"),
-            p(os.date, "%Y-%m-%d"),
+            p(os.date, "%Y.%m.%d"),
             p(os.date, "%Y-%m-%d-%a"),
+            p(os.date, "%Y-%m-%d"),
             p(os.date, "%A, %B %d, %Y"),
         })
     ),
     s(
         "yesterday",
         c(1, {
-            p(from_today, "%Y.%m.%d", -1),
             p(from_today, "%Y.%m.%d.%a", -1),
-            p(from_today, "%Y-%m-%d", -1),
+            p(from_today, "%Y.%m.%d", -1),
             p(from_today, "%Y-%m-%d-%a", -1),
+            p(from_today, "%Y-%m-%d", -1),
             p(from_today, "%A, %B %d, %Y", -1),
         })
     ),
     s(
         "tomorrow",
         c(1, {
-            p(from_today, "%Y.%m.%d", 1),
             p(from_today, "%Y.%m.%d.%a", 1),
-            p(from_today, "%Y-%m-%d", 1),
+            p(from_today, "%Y.%m.%d", 1),
             p(from_today, "%Y-%m-%d-%a", 1),
+            p(from_today, "%Y-%m-%d", 1),
             p(from_today, "%A, %B %d, %Y", 1),
         })
     ),
     s(
         "nextweek",
         c(1, {
-            p(from_today, "%Y.%m.%d", 7),
             p(from_today, "%Y.%m.%d.%a", 7),
-            p(from_today, "%Y-%m-%d", 7),
+            p(from_today, "%Y.%m.%d", 7),
             p(from_today, "%Y-%m-%d-%a", 7),
+            p(from_today, "%Y-%m-%d", 7),
             p(from_today, "%A, %B %d, %Y", 7),
         })
     ),
     s(
         "lastweek",
         c(1, {
-            p(from_today, "%Y.%m.%d", -7),
             p(from_today, "%Y.%m.%d.%a", -7),
-            p(from_today, "%Y-%m-%d", -7),
+            p(from_today, "%Y.%m.%d", -7),
             p(from_today, "%Y-%m-%d-%a", -7),
+            p(from_today, "%Y-%m-%d", -7),
             p(from_today, "%A, %B %d, %Y", -7),
         })
     ),

@@ -121,6 +121,7 @@ set("n", "<leader>rl", [[<cmd>s!\v(https://)?(www\.)?(leetcode\.com/problems/)([
 ---    - open A, B, C* -> `:bwip` (B*) -> trigger (A*) -> trigger (B*)
 ---    - open A, B, C* -> `:bdel` (B*) -> trigger (C*) -> trigger (B*)
 local function better_alt_buf()
+    -- TODO: filter fugitive and git filetypes from alt bufs
     local success, _ = pcall(vim.cmd.e, "#")
     if success then
         return
@@ -136,6 +137,8 @@ local function better_alt_buf()
     end
 end
 set("n", "<C-t>", better_alt_buf, { desc = "Open alternate buffer" })
+
+-- TODO: delete unnecessary buffers (noname, git, fugitive, etc)
 
 local function remove_trailing_whitespace()
     local cursor = vim.api.nvim_win_get_cursor(0)

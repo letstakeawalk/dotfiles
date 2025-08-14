@@ -29,6 +29,7 @@ return {
                     vim.keymap.set("i", "<s-cr>",         "<cr>",                            { buffer = true, noremap = true })
                     vim.keymap.set("n", "o",              "<Plug>(bullets-newline)",         { buffer = true })
                     vim.keymap.set({ "n", "v" }, "gN",    "<Plug>(bullets-renumber)",        { buffer = true, desc = "Re-number ordered-list" })
+                    -- TODO: use custom timestamp appender
                     vim.keymap.set("n", "<leader>nx",     "<Plug>(bullets-toggle-checkbox)", { buffer = true, desc = "Toggle checkbox"})
                     vim.keymap.set("n", ">>",             "<Plug>(bullets-demote)",          { buffer = true, desc = "Demote bullet" })
                     vim.keymap.set("n", "<<",             "<Plug>(bullets-promote)",         { buffer = true, desc = "Promote bullet" })

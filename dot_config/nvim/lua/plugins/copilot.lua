@@ -1,7 +1,6 @@
 return {
     {
         "zbirenbaum/copilot.lua",
-        enabled = false,
         dependencies = { "hrsh7th/nvim-cmp" },
         event = "InsertEnter",
         cmd = { "Copilot" },
@@ -39,9 +38,9 @@ return {
             vim.keymap.set("n", "<leader>cT", "<cmd>Copilot toggle<cr>", { desc = "Copilot Toggle" })
             vim.keymap.set("n", "<leader>cs", toggle_auto_trigger,       { desc = "Copilot Suggestion Toggle" })
             vim.keymap.set("i", "<C-e>",      toggle_auto_trigger,       { desc = "Copilot Suggestion Toggle" })
-            vim.keymap.set("i", "<C-a>",      suggestion.accept,         { desc = "Copilot Suggestion Accept" })
+            -- vim.keymap.set("i", "<C-a>",      suggestion.accept,         { desc = "Copilot Suggestion Accept" })
             -- check cmp keymaps
-            -- vim.keymap.set("i", "<C-y>",      suggestion.accept,         { desc = "Copilot Suggestion Accept" })
+            vim.keymap.set("i", "<C-y>",      suggestion.accept,         { desc = "Copilot Suggestion Accept" })
             -- vim.keymap.set("i", "<C-n>",      suggestion.next,           { desc = "Copilot Next" })
             -- vim.keymap.set("i", "<C-p>",      suggestion.prev,           { desc = "Copilot Previous" })
             -- stylua: ignore end
@@ -49,7 +48,7 @@ return {
     },
     {
         "CopilotC-Nvim/CopilotChat.nvim",
-        enabled = false,
+        -- enabled = false,
         dependencies = {
             { "zbirenbaum/copilot.lua" },
             { "nvim-lua/plenary.nvim" },

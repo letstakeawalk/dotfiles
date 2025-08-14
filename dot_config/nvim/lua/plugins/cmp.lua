@@ -12,6 +12,7 @@ return {
         "onsails/lspkind.nvim",
         "L3MON4D3/LuaSnip",
         "saadparwaiz1/cmp_luasnip",
+        "zbirenbaum/copilot.lua",
         -- https://github.com/hrsh7th/nvim-cmp/wiki/List-of-sources
     },
     event = { "InsertEnter", "CmdlineEnter" },
@@ -19,6 +20,7 @@ return {
         local cmp = require("cmp")
         local lspkind = require("lspkind")
         local luasnip = require("luasnip")
+        local copilot = require("copilot.suggestion")
 
         local function has_words_before()
             local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -36,7 +38,6 @@ return {
             end
         end
 
-
         ---Jump luasnips, select cmp next/prev items
         ---@param forward boolean
         local function snip_jump_cmp_select(forward)
@@ -52,6 +53,12 @@ return {
                         cmp.select_next_item()
                     else
                         cmp.select_prev_item()
+                    end
+                elseif copilot.is_visible() then
+                    if forward then
+                        copilot.next()
+                    else
+                        copilot.prev()
                     end
                 end
             end

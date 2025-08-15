@@ -181,6 +181,8 @@ set(0, "@lsp.type.string.rust",                {}) -- needed for treesitter inje
 set(0, "@lsp.type.macro.rust",                 { link = "Function" })
 set(0, "@lsp.type.typeAlias.rust",             { link = "Type" })
 set(0, "@lsp.typemod.enumMember.library.rust", { link = "Constant" })
+set(0, "@lsp.typemod.macro.library.rust",      { link = "Function"})
+set(0, "@lsp.typemod.namespace.library.rust",  { link = "Type"})
 -- set(0, "@unit.rust",                                { fg = nord.c04_wht_dk, italic = true })
 
 -- telescope.nvim

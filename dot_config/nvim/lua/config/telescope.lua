@@ -4,15 +4,16 @@ local actions = require("telescope.actions")
 local function open_vertical_if_wide_enough(prompt_bufnr)
     local action_set = require("telescope.actions.set")
 
+    ---@type integer[][] list of winnr, bufnr tuples
     local winbufs = vim.tbl_map(function(win)
         return { win, vim.api.nvim_win_get_buf(win) }
     end, vim.api.nvim_tabpage_list_wins(0))
 
-    local listed_winbufs = vim.tbl_filter(function(winbuf)
+    winbufs = vim.tbl_filter(function(winbuf)
         return vim.api.nvim_get_option_value("buflisted", { buf = winbuf[2] })
     end, winbufs)
 
-    if #listed_winbufs == 1 and vim.api.nvim_win_get_width(listed_winbufs[1][1]) > 160 then
+    if #winbufs == 1 and vim.api.nvim_win_get_width(winbufs[1][1]) > 160 then
         return action_set.select(prompt_bufnr, "vertical")
     end
     return action_set.select(prompt_bufnr, "horizontal")
@@ -28,7 +29,7 @@ telescope.setup({
         --     results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
         --     preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
         -- },
-        layout_config = { width = 166, height = { padding = 5 } },
+        layout_config = { width = { padding = 5 }, height = { padding = 5 } },
         prompt_prefix = "   ",
         selection_caret = " >> ",
         multi_icon = "   ",

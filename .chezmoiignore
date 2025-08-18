@@ -3,6 +3,3 @@ LICENSE
 pycache/
 mypy_cache/
 node_modules/
-
-# neovim
-lazy-lock.json

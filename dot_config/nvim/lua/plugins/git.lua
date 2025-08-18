@@ -1,3 +1,4 @@
+---@diagnostic disable: param-type-mismatch
 return {
     {
         "letstakeawalk/fugitive-ext.nvim",

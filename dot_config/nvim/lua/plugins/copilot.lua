@@ -1,7 +1,6 @@
 return {
     {
         "zbirenbaum/copilot.lua",
-        dependencies = { "hrsh7th/nvim-cmp" },
         event = "InsertEnter",
         cmd = { "Copilot" },
         opts = {
@@ -25,7 +24,7 @@ return {
             local suggestion = require("copilot.suggestion")
             local function toggle_auto_trigger()
                 local auto_trigg = vim.b.copilot_suggestion_auto_trigger
-                if auto_trigg == nil or auto_trigg == true then
+                if (auto_trigg == nil and opts.suggestion.auto_trigger) or auto_trigg == true then
                     vim.notify("Copilot auto-suggestion disabled")
                     suggestion.dismiss()
                 else
@@ -38,12 +37,25 @@ return {
             vim.keymap.set("n", "<leader>cT", "<cmd>Copilot toggle<cr>", { desc = "Copilot Toggle" })
             vim.keymap.set("n", "<leader>cs", toggle_auto_trigger,       { desc = "Copilot Suggestion Toggle" })
             vim.keymap.set("i", "<C-e>",      toggle_auto_trigger,       { desc = "Copilot Suggestion Toggle" })
-            -- vim.keymap.set("i", "<C-a>",      suggestion.accept,         { desc = "Copilot Suggestion Accept" })
-            -- check cmp keymaps
             vim.keymap.set("i", "<C-y>",      suggestion.accept,         { desc = "Copilot Suggestion Accept" })
-            -- vim.keymap.set("i", "<C-n>",      suggestion.next,           { desc = "Copilot Next" })
-            -- vim.keymap.set("i", "<C-p>",      suggestion.prev,           { desc = "Copilot Previous" })
+            vim.keymap.set("i", "<C-a>",      suggestion.accept_word,    { desc = "Copilot Suggestion Accept (word)" })
+            vim.keymap.set("i", "<C-n>",      suggestion.next,           { desc = "Copilot Next" })
+            vim.keymap.set("i", "<C-p>",      suggestion.prev,           { desc = "Copilot Previous" })
             -- stylua: ignore end
+
+            vim.api.nvim_create_autocmd("User", {
+                pattern = "BlinkCmpMenuOpen",
+                callback = function()
+                    require("copilot.suggestion").dismiss()
+                    vim.b.copilot_suggestion_hidden = true
+                end,
+            })
+            vim.api.nvim_create_autocmd("User", {
+                pattern = "BlinkCmpMenuClose",
+                callback = function()
+                    vim.b.copilot_suggestion_hidden = false
+                end,
+            })
         end,
     },
     {

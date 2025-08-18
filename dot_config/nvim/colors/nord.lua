@@ -15,16 +15,23 @@ set(0, "Underline", { underline = true })
 set(0, "Undercurl", { undercurl = true })
 
 -- Editor
-set(0, "Normal",       { fg = nord.c04_wht })
-set(0, "NormalFloat",  { fg = nord.c04_wht })
-set(0, "NormalNC",     { fg = nord.c04_wht_dk })
-set(0, "FloatBorder",  { fg = nord.c03_gry_br })
-set(0, "FloatTitle",   { fg = nord.c09_glcr })
-set(0, "FloatFooter",  { fg = nord.c09_glcr })
-set(0, "Pmenu",        { fg = nord.c04_wht, bg = nord.c01_gry })
-set(0, "PmenuSel",     { bg = nord.visual })
-set(0, "PmenuSbar",    { bg = nord.c03_gry_br })
-set(0, "PmenuThumb",   { bg = nord.c03_gry_br })
+set(0, "Normal",        { fg = nord.c04_wht })
+set(0, "NormalFloat",   { fg = nord.c04_wht })
+set(0, "NormalNC",      { fg = nord.c04_wht_dk })
+set(0, "FloatBorder",   { fg = nord.c03_gry_br })
+set(0, "FloatTitle",    { fg = nord.c09_glcr })
+set(0, "FloatFooter",   { fg = nord.c09_glcr })
+set(0, "Pmenu",         { fg = nord.c04_wht })
+set(0, "PmenuSel",      { bg = nord.visual })
+set(0, "PmenuKind",     { link = "Pmenu" })
+set(0, "PmenuKindSel",  { link = "PmenuSel" })
+set(0, "PmenuExtra",    { fg = nord.c04_wht_dk })
+set(0, "PmenuExtraSel", { link = "PmenuSel" })
+set(0, "PmenuSbar",     { bg = nord.c03_gry_dk })
+set(0, "PmenuThumb",    { bg = nord.c03_gry_br })
+set(0, "PmenuMatch",    { fg = "#74C0FC", bold = true })
+set(0, "PmenuMatchSel", { fg = nord.c09_glcr, bold = true })
+
 set(0, "ColorColumn",  { bg = nord.c01_gry }) -- used for the columns set with 'colorcolumn'
 set(0, "Conceal",      { fg = nord.c03_gry_br }) -- placeholder characters substituted for concealed text (see 'conceallevel')
 set(0, "Cursor",       { fg = nord.bg, bg = nord.fg }) -- the character under the cursor
@@ -50,7 +57,7 @@ set(0, "SpellRare",  { undercurl = true })
 set(0, "Directory", { fg = nord.c08_teal }) -- directory names (and other special names in listings)
 
 -- Search
-set(0, "CurSearch",  { fg = nord.c06_wht, bg = nord.c10_blue })
+set(0, "CurSearch",  { fg = nord.c06_wht, bg = nord.c10_blue, bold = true })
 set(0, "IncSearch",  { fg = nord.c06_wht, bg = nord.c10_blue })
 set(0, "Search",     { fg = nord.c06_wht, bg = nord.c10_blue })
 set(0, "Substitute", { fg = nord.c06_wht, bg = nord.c10_blue })
@@ -132,18 +139,25 @@ set(0, "Annotation",     { fg = nord.c12_orng }) -- same as Decorator
 set(0, "Variable",       { fg = nord.fg }) -- same as Identifier
 
 -- LSP
-set(0, "DiagnosticError",          { fg = nord.error })
-set(0, "DiagnosticWarn",           { fg = nord.warn })
-set(0, "DiagnosticInfo",           { fg = nord.info })
-set(0, "DiagnosticHint",           { fg = nord.hint })
-set(0, "DiagnosticOk",             { fg = nord.ok })
-set(0, "DiagnosticUnderlineWarn",  { fg = nord.warn,  undercurl = true })
-set(0, "DiagnosticUnderlineError", { fg = nord.error, undercurl = true })
-set(0, "DiagnosticUnderlineInfo",  { fg = nord.info,  undercurl = true })
-set(0, "DiagnosticUnderlineHint",  { fg = nord.hint,  undercurl = true })
-set(0, "DiagnosticUnderlineOk",    { fg = nord.ok,    undercurl = true })
-set(0, "DiagnosticDeprecated",     { strikethrough = true })
-set(0, "LspInlayHint",             { link = "Comment" })
+set(0, "DiagnosticError",             { fg = nord.error })
+set(0, "DiagnosticWarn",              { fg = nord.warn })
+set(0, "DiagnosticInfo",              { fg = nord.info })
+set(0, "DiagnosticHint",              { fg = nord.hint })
+set(0, "DiagnosticOk",                { fg = nord.ok })
+set(0, "DiagnosticUnderlineWarn",     { fg = nord.warn,  undercurl = true })
+set(0, "DiagnosticUnderlineError",    { fg = nord.error, undercurl = true })
+set(0, "DiagnosticUnderlineInfo",     { fg = nord.info,  undercurl = true })
+set(0, "DiagnosticUnderlineHint",     { fg = nord.hint,  undercurl = true })
+set(0, "DiagnosticUnderlineOk",       { fg = nord.ok,    undercurl = true })
+set(0, "DiagnosticDeprecated",        { strikethrough = true })
+set(0, "LspSignatureActiveParameter", { link = "Visual" })
+set(0, "LspInlayHint",                { link = "NonText" })
+set(0, "LspReferenceText",            { link = "Visual" })
+set(0, "LspReferenceRead",            { link = "LspReferenceText" })
+set(0, "LspReferenceWrite",           { link = "LspReferenceText" })
+set(0, "LspReferenceTarget",          { link = "LspReferenceText" })
+set(0, "LspCodeLens",                 { link = "NonText" })
+set(0, "LspCodeLensSeparator",        { link = "LspCodeLens" })
 
 --------------------------------------------------------------------------------
 -- Treesitter
@@ -173,7 +187,6 @@ set(0, "@keyword.gitcommit",            { fg = nord.c09_glcr, bold = true })
 -- Extensions
 --------------------------------------------------------------------------------
 -- lsp
-set(0, "LspInfoBorder",           { link = "FloatBorder" })
 set(0, "NullLsInfoBorder",        { link = "FloatBorder" })
 
 -- rust
@@ -206,27 +219,40 @@ set(0, "HarpoonNumberInactive", { fg = "#496194",       bg = nord.c00_blk_br })
 -- treesitter
 set(0, "TreesitterContext", { link = "CursorLine" })
 
--- Cmp
-set(0, "CmpItemAbbr",           { fg = nord.c04_wht }) -- unmatched chars of completion field
-set(0, "CmpItemAbbrDeprecated", { fg = "#808080", strikethrough = true }) -- unmatched chars of depr field
-set(0, "CmpItemAbbrMatch",      { fg = "#74C0FC", bold = true }) --"#569CD6" }) -- matched chars of completion field
-set(0, "CmpItemAbbrMatchFuzzy", { link = "CmpItemAbbrMatch" }) -- fuzzy-matched chars
-set(0, "CmpItemKind",           { fg = nord.c04_wht_dk }) -- kind of fields
-set(0, "CmpItemKindVariable",   { fg = "#9CDCFE" })
-set(0, "CmpItemKindInterface",  { link = "CmpItemKindVariable" })
-set(0, "CmpItemKindText",       { link = "CmpItemKindVariable" })
-set(0, "CmpItemKindFunction",   { fg = "#C586C0" })
-set(0, "CmpItemKindMethod",     { link = "CmpItemKindFunction" })
-set(0, "CmpItemKindClass",      { fg = "#C586C0" })
-set(0, "CmpItemKindModule",     { link = "CmpItemKindClass" })
-set(0, "CmpItemKindStruct",     { link = "CmpItemKindClass" })
-set(0, "CmpItemKindEnum",       { link = "CmpItemKindClass" })
-set(0, "CmpItemKindKeyword",    { fg = "#D4D4D4" })
-set(0, "CmpItemKindProperty",   { link = "CmpItemKindKeyword" })
-set(0, "CmpItemKindUnit",       { link = "CmpItemKindKeyword" })
-set(0, "CmpItemKindSnippet",    { fg = "#D0BFFF" })
-set(0, "CmpItemMenu",           { link = "Comment" })
-set(0, "CmpItemKindCopilot",    { fg = "#20C997" })
+-- Blink.cmp
+set(0, "BlinkCmpMenu",                         { link = "Pmenu" })
+set(0, "BlinkCmpMenuBorder",                   { link = "FloatBorder" })
+set(0, "BlinkCmpMenuSelection",                { link = "PmenuSel" })
+set(0, "BlinkCmpScrollBarThumb",               { link = "PmenuThumb" })
+set(0, "BlinkCmpScrollBarGutter",              { link = "PmenuSbar" })
+set(0, "BlinkCmpLabel",                        { link = "Pmenu" })
+set(0, "BlinkCmpLabelDetail",                  { link = "PmenuExtra" })
+set(0, "BlinkCmpLabelDescription",             { link = "PmenuExtra" })
+set(0, "BlinkCmpLabelMatch",                   { link = "PmenuMatch" })
+set(0, "BlinkCmpLabelDeprecated",              { fg = "#808080", strikethrough = true })
+set(0, "BlinkCmpKind",                         { link = "PmenuKind" })
+set(0, "BlinkCmpKindModule",                   { fg = nord.c09_glcr })
+set(0, "BlinkCmpKindClass",                    { fg = nord.c08_teal })
+set(0, "BlinkCmpKindFunction",                 { fg = "#C586C0" })
+set(0, "BlinkCmpKindKeyword",                  { fg = "#D4D4D4" })
+set(0, "BlinkCmpKindConstant",                 { link = "PmenuKind" })
+set(0, "BlinkCmpKindVariable",                 { link = "PmenuKind" })
+set(0, "BlinkCmpKindProperty",                 { link = "PmenuKind" })
+set(0, "BlinkCmpKindText",                     { link = "PmenuExtra" })
+set(0, "BlinkCmpKindSnippet",                  { fg = "#D0BFFF" })
+set(0, "BlinkCmpKindCopilot",                  { fg = "#20C997" })
+set(0, "BlinkCmpSource",                       { link = "PmenuExtra" })
+set(0, "BlinkCmpGhostText",                    { link = "NonText" })
+set(0, "BlinkCmpDoc",                          { link = "NormalFloat" })
+set(0, "BlinkCmpDocBorder",                    { link = "FloatBorder" })
+set(0, "BlinkCmpDocSeparator",                 { link = "FloatBorder" })
+set(0, "BlinkCmpDocCursorLine",                { link = "CursorLine" })
+set(0, "BlinkCmpSignatureHelp",                { link = "NormalFloat" })
+set(0, "BlinkCmpSignatureHelpBorder",          { link = "FloatBorder" })
+set(0, "BlinkCmpSignatureHelpActiveParameter", { link = "LspSignatureActiveParameter" })
+
+-- avante
+set(0, "AvanteSidebarWinSeparator", { link = "WinSeparator" })
 
 -- indent-blankline.nvim
 set(0, "IblIndent", { fg = nord.c01_gry })

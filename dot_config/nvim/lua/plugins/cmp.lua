@@ -26,19 +26,16 @@ return {
                 ["<Down>"] = { "select_next", "fallback" },
                 ["<C-n>"] = { "snippet_forward", "select_next", "fallback_to_mappings" },
                 ["<C-p>"] = { "snippet_backward", "select_prev", "fallback_to_mappings" },
-                ["<C-u>"] = { "scroll_documentation_up" },
-                ["<C-d>"] = { "scroll_documentation_down" },
-                ["<C-o>"] = { "show_documentation", "hide_documentation" },
-                ["<C-k>"] = { "show_signature", "hide_signature", "fallback_to_mappings" },
+                ["<C-u>"] = { "scroll_documentation_up", "fallback" },
+                ["<C-d>"] = { "scroll_documentation_down", "fallback" },
+                ["<C-o>"] = { "show_documentation", "hide_documentation", "fallback" },
                 ["<Esc>"] = { "cancel", "fallback" },
                 ["<Tab>"] = { show_if_words_before, "select_and_accept", "fallback_to_mappings" },
             },
             snippets = { preset = "luasnip" },
             completion = {
                 list = { selection = { auto_insert = false } },
-                ghost_text = {
-                    enabled = true,
-                },
+                ghost_text = { enabled = false },
                 documentation = {
                     auto_show = true,
                     auto_show_delay_ms = 000,
@@ -65,6 +62,9 @@ return {
                                         "Variable",
                                         "Snippet",
                                         "Property",
+                                        "Text",
+                                        "Field",
+                                        "Enum",
                                     }
                                     if not vim.tbl_contains(kinds, ctx.kind, {}) then
                                         vim.notify(

@@ -30,27 +30,19 @@ vim.keymap.set("n",          "<leader>rn", vim.lsp.buf.rename,                  
 vim.keymap.set("n",          "<leader>dd", function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end,           { desc = "Diagnostic Toggle" })
 vim.keymap.set("n",          "<leader>dh", function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({})) end, { desc = "InlayHint Toggle" })
 vim.keymap.set("n",          "E",          vim.diagnostic.open_float,                                                       { desc = "Open Float" })
+vim.keymap.set("i",          "<C-k>",      require("lsp_signature").toggle_float_win,                                       { desc = "Signature Toggle" })
+vim.keymap.set("i",          "<C-s>",      require("lsp_signature").toggle_float_win,                                       { desc = "Signature Toggle" })
 
 vim.keymap.set("n", "<leader>il", "<cmd>LspInfo<cr>",    { desc = "Lsp Info" })
 vim.keymap.set("n", "<leader>im", "<cmd>Mason<cr>",      { desc = "Mason Info" })
 vim.keymap.set("n", "<leader>in", "<cmd>NullLsInfo<cr>", { desc = "Null-ls Info" })
 
-local diag_nav = {
-    next = function() vim.diagnostic.jump({ count = 1, float = true }) end,
-    prev = function() vim.diagnostic.jump({ count = -1, float = true }) end,
-}
-local ok, repeatable_move = pcall(require, "nvim-treesitter.textobjects.repeatable_move")
-if ok then
-    local next, prev = repeatable_move.make_repeatable_move_pair(
-        function() vim.diagnostic.jump({ count = 1,  float = true }) end,
-        function() vim.diagnostic.jump({ count = -1, float = true }) end
-    )
-    diag_nav.next = next
-    diag_nav.prev = prev
-end
-vim.keymap.set("n", "[d", diag_nav.prev, { desc = "Goto previous diagnostic" })
-vim.keymap.set("n", "]d", diag_nav.next, { desc = "Goto next diagnostic" })
-
+local next_diag, prev_diag = require("nvim-treesitter.textobjects.repeatable_move").make_repeatable_move_pair(
+    function() vim.diagnostic.jump({ count = 1,  float = true }) end,
+    function() vim.diagnostic.jump({ count = -1, float = true }) end
+)
+vim.keymap.set("n", "[d", prev_diag, { desc = "Goto previous diagnostic" })
+vim.keymap.set("n", "]d", next_diag, { desc = "Goto next diagnostic" })
 -- stylua: ignore end
 
 --------------------------------------------------------------------------------
@@ -58,11 +50,7 @@ vim.keymap.set("n", "]d", diag_nav.next, { desc = "Goto next diagnostic" })
 --------------------------------------------------------------------------------
 vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(ev)
-        local ok, lsp_signature = pcall(require, "lsp_signature")
-        if not ok then
-            return
-        end
-        lsp_signature.on_attach({ hint_enable = true }, ev.buf)
+        require("lsp_signature").on_attach({}, ev.buf)
     end,
 })
 

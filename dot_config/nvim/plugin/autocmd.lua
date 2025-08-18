@@ -38,17 +38,6 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     end,
 })
 
--- Tab width: 2
-vim.api.nvim_create_autocmd("FileType", {
-    group = utils.augroup("TabTwo", { clear = true }),
-    pattern = { "json", "yaml", "css" }, -- { "html", "typescript", "javascript", "svelte", "vue" },
-    callback = function()
-        vim.opt_local.tabstop = 2
-        vim.opt_local.softtabstop = 2
-        vim.opt_local.shiftwidth = 2
-    end,
-})
-
 -- Chezmoi: auto add config files to chezmoi source
 vim.api.nvim_create_autocmd("BufWritePost", {
     group = utils.augroup("ChezmoiAdd", { clear = true }),

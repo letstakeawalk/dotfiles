@@ -5,15 +5,18 @@ return {
         opts = {
             ui = {
                 border = "double",
-                icons = { package_installed = "✓", package_pending = "", package_uninstalled = "✗" },
+                icons = {
+                    package_installed = "✓",
+                    package_pending = "",
+                    package_uninstalled = "✗",
+                },
             },
         },
     },
     {
         "nvimtools/none-ls.nvim",
         event = "VeryLazy",
-        ---@diagnostic disable-next-line: unused-local
-        config = function(opts)
+        config = function()
             local nls = require("null-ls")
             nls.setup({
                 debug = false,
@@ -46,7 +49,10 @@ return {
             })
         end,
     },
-    { "ray-x/lsp_signature.nvim" },
+    {
+        "ray-x/lsp_signature.nvim",
+        opts = { hint_enable = false },
+    },
     {
         "folke/lazydev.nvim",
         ft = "lua", -- only on `lua` files

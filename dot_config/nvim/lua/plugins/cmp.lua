@@ -1,187 +1,138 @@
+local has_words_before = function()
+    local col = vim.api.nvim_win_get_cursor(0)[2]
+    if col == 0 then
+        return false
+    end
+    local line = vim.api.nvim_get_current_line()
+    return line:sub(col, col):match("%s") == nil
+end
+
+local show_if_words_before = function(cmp)
+    if has_words_before() then
+        return cmp.show()
+    end
+end
+
 return {
-    "hrsh7th/nvim-cmp",
-    dependencies = {
-        "neovim/nvim-lspconfig",
-        "nvim-lua/plenary.nvim",
-        "hrsh7th/cmp-nvim-lsp",
-        "hrsh7th/cmp-buffer",
-        "hrsh7th/cmp-path",
-        "hrsh7th/cmp-cmdline",
-        "hrsh7th/cmp-nvim-lua",
-        "petertriho/cmp-git",
-        "onsails/lspkind.nvim",
-        "L3MON4D3/LuaSnip",
-        "saadparwaiz1/cmp_luasnip",
-        "zbirenbaum/copilot.lua",
-        -- https://github.com/hrsh7th/nvim-cmp/wiki/List-of-sources
-    },
+    "Saghen/blink.cmp",
+    version = "1.*",
     event = { "InsertEnter", "CmdlineEnter" },
     config = function()
-        local cmp = require("cmp")
-        local lspkind = require("lspkind")
-        local luasnip = require("luasnip")
-        local copilot = require("copilot.suggestion")
-
-        local function has_words_before()
-            local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-            return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-        end
-
-        ---@param fallback function
-        local function confirm_complete(fallback)
-            if cmp.visible() then
-                cmp.confirm({ select = true, behavior = cmp.ConfirmBehavior.Select })
-            elseif has_words_before() then
-                cmp.complete()
-            else
-                fallback()
-            end
-        end
-
-        ---Jump luasnips, select cmp next/prev items
-        ---@param forward boolean
-        local function snip_jump_cmp_select(forward)
-            ---@param fallback function
-            ---@diagnostic disable-next-line: unused-local
-            return function(fallback)
-                if forward and luasnip.locally_jumpable(1) then
-                    luasnip.jump(1)
-                elseif not forward and luasnip.locally_jumpable(-1) then
-                    luasnip.jump(-1)
-                elseif cmp.visible() then
-                    if forward then
-                        cmp.select_next_item()
-                    else
-                        cmp.select_prev_item()
-                    end
-                elseif copilot.is_visible() then
-                    if forward then
-                        copilot.next()
-                    else
-                        copilot.prev()
-                    end
-                end
-            end
-        end
-
-        ---@param callback? function
-        local function close_or(callback)
-            ---@param fallback function
-            return function(fallback)
-                if cmp.visible() then
-                    cmp.close()
-                elseif callback ~= nil then
-                    callback()
-                else
-                    fallback()
-                end
-            end
-        end
-
-        ---@param item string
-        ---@param max_len number
-        local function truncate(item, max_len)
-            if #item > max_len then
-                return string.sub(item, 1, max_len - 1) .. "…"
-            else
-                return item
-            end
-        end
-
-        local lspkind_formatter = lspkind.cmp_format({
-            mode = "symbol_text",
-        })
-
-        cmp.setup({
-            snippet = {
-                expand = function(args)
-                    luasnip.lsp_expand(args.body)
-                end,
+        local blink = require("blink.cmp")
+        local opts = {
+            keymap = {
+                preset = "none",
+                ["<Up>"] = { "select_prev", "fallback" },
+                ["<Down>"] = { "select_next", "fallback" },
+                ["<C-n>"] = { "snippet_forward", "select_next", "fallback_to_mappings" },
+                ["<C-p>"] = { "snippet_backward", "select_prev", "fallback_to_mappings" },
+                ["<C-u>"] = { "scroll_documentation_up" },
+                ["<C-d>"] = { "scroll_documentation_down" },
+                ["<C-o>"] = { "show_documentation", "hide_documentation" },
+                ["<C-k>"] = { "show_signature", "hide_signature", "fallback_to_mappings" },
+                ["<Esc>"] = { "cancel", "fallback" },
+                ["<Tab>"] = { show_if_words_before, "select_and_accept", "fallback_to_mappings" },
             },
-            preselect = cmp.PreselectMode.Item, -- preselect entry respect to LSP
-            ---@diagnostic disable-next-line: missing-fields
-            -- performance = { max_view_entries = 8 },
-            -- automatically select first item OR preselected item from the LSP
-            completion = { completeopt = "menu,menuone" }, -- default 'menu,menuone,noselect'
-            formatting = {
-                fields = { "abbr", "kind", "menu" },
-                format = function(entry, vim_item)
-                    vim_item.abbr = truncate(vim_item.abbr, 25)
-                    vim_item.abbr = " " .. vim_item.abbr .. "  "
-                    if vim_item.menu ~= nil then
-                        vim_item.menu = truncate(vim_item.menu, 40)
-                    end
-                    return lspkind_formatter(entry, vim_item)
-                end,
-                expandable_indicator = true,
-            },
-            window = {
-                completion = cmp.config.window.bordered(),
-                documentation = cmp.config.window.bordered(),
-            },
-            mapping = {
-                ["<Down>"] = cmp.mapping.select_next_item(),
-                ["<Up>"] = cmp.mapping.select_prev_item(),
-                ["<C-n>"] = cmp.mapping(snip_jump_cmp_select(true), { "i", "s" }),
-                ["<C-p>"] = cmp.mapping(snip_jump_cmp_select(false), { "i", "s" }),
-                ["<C-u>"] = cmp.mapping.scroll_docs(-4),
-                ["<C-d>"] = cmp.mapping.scroll_docs(4),
-                ["<Esc>"] = close_or(nil),
-                ["<Tab>"] = cmp.mapping(confirm_complete, { "i", "s" }),
-            },
-            sources = cmp.config.sources({
-                { name = "luasnip" },
-                {
-                    name = "nvim_lsp",
-                    option = {
-                        markdown_oxide = { keyword_pattern = [[\(\k\| \|\/\|#\)\+]] },
+            snippets = { preset = "luasnip" },
+            completion = {
+                list = { selection = { auto_insert = false } },
+                ghost_text = {
+                    enabled = true,
+                },
+                documentation = {
+                    auto_show = true,
+                    auto_show_delay_ms = 000,
+                },
+                menu = {
+                    draw = {
+                        padding = { 2, 1 },
+                        gap = 1,
+                        cursorline_priority = 0,
+                        columns = {
+                            { "label", "label_description", gap = 1 },
+                            { "kind_icon", "kind", gap = 1 },
+                            -- { "source_name" },
+                        },
+                        components = {
+                            kind = {
+                                text = function(ctx)
+                                    local kinds = {
+                                        "Constant",
+                                        "Module",
+                                        "Keyword",
+                                        "Class",
+                                        "Function",
+                                        "Variable",
+                                        "Snippet",
+                                        "Property",
+                                    }
+                                    if not vim.tbl_contains(kinds, ctx.kind, {}) then
+                                        vim.notify(
+                                            "highlight group kind " .. ctx.kind .. " has not been setup yet",
+                                            vim.log.levels.WARN
+                                        )
+                                    end
+                                    return ctx.kind
+                                end,
+                            },
+                        },
                     },
                 },
-                { name = "nvim_lua" },
-            }, {
-                { name = "buffer" },
-            }),
-            -- sorting = {},
-        })
-
-        local cmdline_mapping = {
-            ["<Down>"] = { c = cmp.mapping.select_next_item() },
-            ["<Up>"] = { c = cmp.mapping.select_prev_item() },
-            ["<Tab>"] = { c = confirm_complete },
-            ["<Esc>"] = {
-                c = close_or(function()
-                    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-c>", true, false, true), "c", true)
-                end),
+            },
+            signature = {},
+            cmdline = {
+                keymap = {
+                    preset = "inherit",
+                    ["<Tab>"] = { "show", "select_and_accept" },
+                },
+                completion = { menu = { auto_show = true } },
+            },
+            sources = {
+                default = {
+                    "lsp",
+                    "path",
+                    "buffer",
+                    "snippets",
+                    "avante",
+                    "lazydev",
+                    "conventional_commits",
+                },
+                providers = {
+                    lazydev = {
+                        name = "LazyDev",
+                        module = "lazydev.integrations.blink",
+                        -- make lazydev completions top priority (see `:h blink.cmp`)
+                        score_offset = 100,
+                    },
+                    avante = {
+                        module = "blink-cmp-avante",
+                        name = "Avante",
+                        opts = {
+                            -- options for blink-cmp-avante
+                        },
+                    },
+                    conventional_commits = {
+                        name = "ConventionalCommits",
+                        module = "blink-cmp-conventional-commits",
+                        enabled = function()
+                            return vim.bo.filetype == "gitcommit"
+                        end,
+                        ---@module 'blink-cmp-conventional-commits'
+                        ---@type blink-cmp-conventional-commits.Options
+                        opts = {}, -- none so far
+                    },
+                },
             },
         }
-
-        cmp.setup.cmdline(":", {
-            mapping = cmdline_mapping,
-            sources = cmp.config.sources({
-                { name = "path" },
-            }, {
-                { name = "cmdline" },
-            }),
-        })
-
-        cmp.setup.cmdline({ "/", "?" }, {
-            mapping = cmdline_mapping,
-            sources = {
-                { name = "buffer" },
-            },
-        })
-
-        -- To use git you need to install the plugin petertriho/cmp-git and uncomment lines below
-        -- Set configuration for specific filetype.
-        cmp.setup.filetype("gitcommit", {
-            sources = cmp.config.sources({
-                { name = "git" },
-            }, {
-                { name = "buffer" },
-            }),
-        })
-
-        ---@diagnostic disable-next-line: missing-parameter
-        require("cmp_git").setup()
+        blink.setup(opts)
     end,
+    dependencies = {
+        { "L3MON4D3/LuaSnip", version = "v2.*" },
+        "Kaiser-Yang/blink-cmp-avante",
+        "disrupted/blink-cmp-conventional-commits",
+        "folke/lazydev.nvim",
+        --  "Kaiser-Yang/blink-cmp-git"
+        -- "archie-judd/blink-cmp-words"
+        -- "bydlw98/blink-cmp-env"
+    },
 }

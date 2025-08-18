@@ -44,9 +44,18 @@ set(0, "NonText",      { fg = nord.c03_gry })
 set(0, "SpecialKey",   { fg = nord.c09_glcr })
 set(0, "Title",        { fg = nord.fg, bold = true })
 set(0, "Visual",       { bg = nord.visual })
-set(0, "QuickFixLine", { bg = nord.c02_gry })
 set(0, "WinSeparator", { fg = nord.c02_gry })
 set(0, "SpellBad",     { fg = nord.error, undercurl = true })
+
+set(0, "QuickFixLine",            { bg = nord.c02_gry })
+set(0, "QuickFixText",            { link = "Normal" })
+set(0, "QuickFixTextInvalid",     { link = "QuickFixText" })
+set(0, "QuickFixHeaderHard",      { link = "Delimiter" })
+set(0, "QuickFixHeaderSoft",      { link = "Comment" })
+set(0, "QuickFixLineNr",          { link = "Comment" })
+set(0, "QuickFixFilename",        { link = "Directory" })
+set(0, "QuickFixFilenameInvalid", { link = "Comment" })
+-- DiagnosticSign* 
 
 -- Spell
 set(0, "SpellLocal", { undercurl = true })
@@ -108,7 +117,7 @@ set(0, "Constant",       { fg = nord.fg }) -- any constant
 set(0, "Decorator",      { fg = nord.c12_orng }) -- ??
 set(0, "Debug",          { fg = nord.error }) -- debugging statements
 set(0, "Define",         { fg = nord.c09_glcr }) -- preprocessor #define
-set(0, "Delimiter",      { fg = nord.c06_wht }) -- character that needs attention like, or .
+set(0, "Delimiter",      { fg = nord.c04_wht_dk }) -- character that needs attention like `,` and `.`
 set(0, "Error",          { fg = nord.error }) -- any erroneous construct
 set(0, "Exception",      { fg = nord.c09_glcr }) -- try, catch, throw
 set(0, "Float",          { fg = nord.c15_prpl }) -- a floating point constant: 2.3e10

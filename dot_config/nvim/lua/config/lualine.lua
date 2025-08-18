@@ -24,7 +24,7 @@ local function harpoon_files()
             "index.jsx",
             "index.ts",
             "index.tsx",
-            "index.html"
+            "index.html",
         }
         if vim.tbl_contains(filters, fname) then
             fname = parent .. "/" .. fname
@@ -95,7 +95,7 @@ lualine.setup({
     sections = {
         lualine_a = { mode },
         lualine_b = {
-            { "branch", icon = " 󰘬", separator = "" },
+            { "branch", icon = " 󰘬", separator = "", padding = 1 },
             {
                 "diff",
                 symbols = { added = "+", modified = "~", removed = "-" },
@@ -105,15 +105,20 @@ lualine.setup({
                     modified = { fg = nord.c13_ylw },
                     removed = { fg = nord.c11_red },
                 },
-                padding = { left = 1, right = 1 },
+                padding = { right = 1 },
+            },
+            {
+                "diagnostics",
+                symbols = { error = "E", warn = "W", hint = "H", info = "I" },
+                padding = 1,
             },
         },
         lualine_c = {
-            { "filetype", icon_only = true, separator = "", padding = { left = 2, right = 1 } },
-            { "filename", path = 1 }, -- 1: rel, 2: abs, 3:abs(~), 4: filename
+            { "filetype", icon_only = true, separator = "", padding = { left = 2 } },
+            { "filename", path = 1, padding = 0 }, -- 1: rel, 2: abs, 3:abs(~), 4: filename
         },
         lualine_x = {
-            { "diagnostics", symbols = { error = " ", warn = " ", hint = " ", info = " " } },
+            -- { "diagnostics", symbols = { error = " ", warn = " ", hint = " ", info = " " } },
             "filetype",
         },
         lualine_y = { "progress" },

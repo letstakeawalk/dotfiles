@@ -15,6 +15,7 @@ end
 return {
     "folke/trouble.nvim",
     cmd = "Trouble",
+    enabled = false,
     -- stylua: ignore
     keys = {
         { "<leader>xc", function() require("trouble").close() end, desc = "Close Trouble" },

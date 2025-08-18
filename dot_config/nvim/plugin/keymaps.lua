@@ -176,6 +176,76 @@ local function yank_location()
 end
 set("n", "<leader>y", yank_location, { desc = "Yank current location" })
 
+-- quickfix & loclist
+local toggle_buffer_diag = function()
+    local quicker = require("quicker")
+    if quicker.is_open(0) then
+        return quicker.close({ loclist = true })
+    end
+    if quicker.is_open() then
+        quicker.close()
+    end
+    vim.diagnostic.setloclist({ title = "Buffer Diagnostics", open = false })
+    quicker.open({ loclist = true })
+end
+local toggle_workspace_diag = function()
+    local quicker = require("quicker")
+    if quicker.is_open() then -- qflist open
+        return quicker.close()
+    end
+    if quicker.is_open(0) then
+        quicker.close({ loclist = true })
+    end
+    vim.diagnostic.setqflist({ title = "Workspace Diagnostics", open = false })
+    quicker.open()
+end
+local close_qfloclist = function()
+    local quicker = require("quicker")
+    quicker.close()
+    quicker.close({ loclist = true })
+end
+-- stylua: ignore start
+set("n", "<leader>xx", toggle_workspace_diag, { desc = "Workspace diagnostics" })
+set("n", "<leader>xd", toggle_buffer_diag,    { desc = "Buffer diagnostics" })
+set("n", "<leader>xc", close_qfloclist,       { desc = "Close qfloclist" })
+set("n", "<leader>xq", vim.cmd.copen,         { desc = "Open qflist" })
+set("n", "<leader>xl", vim.cmd.lopen,         { desc = "Open loclist" })
+-- stylua: ignore end
+
+local make_repeatable_move_pair = require("nvim-treesitter.textobjects.repeatable_move").make_repeatable_move_pair
+local with_warning = function(cmd)
+    return function()
+        local ok, _ = pcall(cmd)
+        if not ok then
+            vim.notify("No more items", vim.log.levels.WARN)
+        end
+    end
+end
+local cnext, cprev = make_repeatable_move_pair(with_warning(vim.cmd.cnext), with_warning(vim.cmd.cprevious))
+local lnext, lprev = make_repeatable_move_pair(with_warning(vim.cmd.lnext), with_warning(vim.cmd.lprevious))
+local xnext = function()
+    local quicker = require("quicker")
+    if quicker.is_open() then -- qflist
+        cnext()
+    elseif quicker.is_open(0) then -- loclist
+        lnext()
+    end
+end
+local xprev = function()
+    local quicker = require("quicker")
+    if quicker.is_open() then -- qflist
+        cprev()
+    elseif quicker.is_open(0) then -- loclist
+        lprev()
+    end
+end
+set("n", "]x", xnext, { desc = "Goto next qfloclist item" })
+set("n", "[x", xprev, { desc = "Goto previous qfloclist item" })
+set("n", "]q", cnext, { desc = "Goto next qflist" })
+set("n", "[q", cprev, { desc = "Goto previous qflist" })
+set("n", "]l", lnext, { desc = "Goto next loclist" })
+set("n", "[l", lprev, { desc = "Goto previous loclist" })
+
 -- disable defaults
 del("n", "grn")
 del("n", "gra")
@@ -190,8 +260,11 @@ del("n", "[b")
 del("n", "]b")
 del("n", "[B")
 del("n", "]B")
-
--- TODO
--- local function better_yank()
---     local cursor = vim.api.nvim_win_get_cursor(0)
--- end
+del("n", "[A")
+del("n", "]A")
+del("n", "[<C-q>")
+del("n", "]<C-q>")
+del("n", "[<C-l>")
+del("n", "]<C-l>")
+del("n", "[<C-t>")
+del("n", "]<C-t>")

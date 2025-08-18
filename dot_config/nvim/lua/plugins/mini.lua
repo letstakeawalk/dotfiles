@@ -50,6 +50,7 @@ return {
                     -- { mode = "c", keys = "<C-r>" },
                 },
                 clues = {
+                    -- miniclue.gen_clues.square_brackets(),
                     miniclue.gen_clues.builtin_completion(),
                     miniclue.gen_clues.g(),
                     miniclue.gen_clues.marks(),
@@ -78,12 +79,24 @@ return {
             miniclue.set_mapping_desc("n", "ga", "Align")
             miniclue.set_mapping_desc("n", "<leader>k", "Leap downward")
             miniclue.set_mapping_desc("n", "<leader>h", "Leap upward")
+            miniclue.set_mapping_desc("n", "]m", "Goto next method")
+            miniclue.set_mapping_desc("n", "[m", "Goto previous method")
+            miniclue.set_mapping_desc("n", "]M", "Goto next method")
+            miniclue.set_mapping_desc("n", "[M", "Goto previous method")
+            miniclue.set_mapping_desc("n", "]Q", "Goto last qf")
+            miniclue.set_mapping_desc("n", "[Q", "Goto first qf")
+            miniclue.set_mapping_desc("n", "]L", "Goto last loclist")
+            miniclue.set_mapping_desc("n", "[L", "Goto first loclist")
+            miniclue.set_mapping_desc("n", "]D", "Goto last diagnostic")
+            miniclue.set_mapping_desc("n", "[D", "Goto first diagnostic")
+            miniclue.set_mapping_desc("n", "]%", "Goto next unmatched group")
+            miniclue.set_mapping_desc("n", "[%", "Goto previous unmatched group")
 
             vim.api.nvim_create_autocmd("FileType", {
                 pattern = "fugitive",
                 group = require("utils").augroup("MiniClueFugitive", { clear = true }),
                 ---@diagnostic disable-next-line: unused-local
-                callback = function(data)
+                callback = function(ev)
                     -- nav maps
                     miniclue.set_mapping_desc("n", "g?", "Help")
                     miniclue.set_mapping_desc("n", "gu", "Jump to Unstaged")

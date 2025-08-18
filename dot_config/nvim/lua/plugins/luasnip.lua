@@ -15,7 +15,7 @@ return {
             enable_autosnippets = false, -- default false
             ext_opts = {
                 [types.choiceNode] = {
-                    active = { virt_text = { { "⟳ ", "DiagnosticHint" } } },
+                    active = { virt_text = { { "⟳ ", "Type" } } },
                 },
             },
         })

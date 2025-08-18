@@ -1,13 +1,15 @@
 return {
     "gbprod/yanky.nvim",
     event = "BufRead",
-    enabled = false,
+    -- stylua: ignore
     keys = {
-        { "y", "<Plug>(YankyYank)", { "n", "x" }, desc = "Yank" },
-        { "p", "<Plug>(YankyPutAfter)", desc = "Paste After" },
-        { "P", "<Plug>(YankyPutBefore)", desc = "Paste Before" },
-        { "]p", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Paste Below" },
-        { "[p", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Paste Above" },
+        { "y", "<Plug>(YankyYank)",               { "n", "x" }, desc = "Yank" },
+        { "p", "<Plug>(YankyPutAfter)",           { "n", "x" }, desc = "Paste After" },
+        { "P", "<Plug>(YankyPutBefore)",          { "n", "x" }, desc = "Paste Before" },
+        { "gp", "<Plug>(YankyGPutAfter)",         { "n", "x" }, desc = "Paste After" },
+        { "gP", "<Plug>(YankyGPutBefore)",        { "n", "x" }, desc = "Paste Before" },
+        { "]p", "<Plug>(YankyPutAfterLinewise)",  { "n", "x" }, desc = "Paste Below" },
+        { "[p", "<Plug>(YankyPutBeforeLinewise)", { "n", "x" }, desc = "Paste Above" },
     },
     opts = {
         ring = {
@@ -17,5 +19,8 @@ return {
             on_put = false,
             on_yank = false,
         },
+    },
+    preserve_cursor_position = {
+        enabled = false,
     },
 }

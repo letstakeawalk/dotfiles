@@ -114,8 +114,8 @@ lualine.setup({
             },
         },
         lualine_c = {
-            { "filetype", icon_only = true, separator = "", padding = { left = 2 } },
-            { "filename", path = 1, padding = 0 }, -- 1: rel, 2: abs, 3:abs(~), 4: filename
+            -- { "filetype", icon_only = true, separator = "", padding = { left = 2 } },
+            { "filename", path = 1, padding = { left = 2 } }, -- 1: rel, 2: abs, 3:abs(~), 4: filename
         },
         lualine_x = {
             -- { "diagnostics", symbols = { error = " ", warn = " ", hint = " ", info = " " } },

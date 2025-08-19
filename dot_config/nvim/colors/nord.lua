@@ -1,5 +1,5 @@
 vim.opt.bg = "dark"
-vim.cmd([[highlight clear]])
+vim.cmd.highlight("clear")
 vim.highlight.priorities.semantic_tokens = 99
 
 -- stylua: ignore start
@@ -279,7 +279,7 @@ set(0, "MiniClueSeparator",  { link = "MiniClueBorder" })
 -- illuminate
 set(0, "IlluminatedWordText",  { bg = nord.c02_gry })
 set(0, "IlluminatedWordRead",  { bg = nord.c02_gry })
-set(0, "IlluminatedWordWrite", { bg = nord.c02_gry })
+set(0, "IlluminatedWordWrite", { bg = nord.c10_blue_dr })
 
 -- trouble
 set(0, "TroublePreview", { link = "Search" })
@@ -288,6 +288,6 @@ set(0, "TroublePreview", { link = "Search" })
 set(0, "ZenBg", { bg = nord.c00_blk_dk })
 
 -- fugitive
-vim.api.nvim_set_hl(0, "FugitiveExtSection", { fg = nord.c09_glcr, bold = true })
-vim.api.nvim_set_hl(0, "FugitiveExtKey",     { fg = nord.c08_teal, bold = true })
-vim.api.nvim_set_hl(0, "FugitiveExtDesc",    { fg = nord.c04_wht_dk })
+set(0, "FugitiveExtSection", { fg = nord.c09_glcr, bold = true })
+set(0, "FugitiveExtKey",     { fg = nord.c08_teal, bold = true })
+set(0, "FugitiveExtDesc",    { fg = nord.c04_wht_dk })

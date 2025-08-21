@@ -15,11 +15,19 @@ return {
             ts_config = {},
             fast_wrap = {
                 map = "<C-f>",
-                chars = { "{", "[", "(", "<", '"', "'" },
-                pattern = [=[[%'%"%>%]%)%}%,%?;]]=],
+                chars = { "{", "[", "(", "<", '"', "'", "`" },
+                pattern = [=[[%'%"%>%]%)%}%,%?%;]]=],
+                keys = "qwfpluyzxcdvkharstgmneio",
                 before_key = "k",
                 after_key = "h",
+                end_key = "$",
+                -- manually decide where (before/after) to insert the endpair
+                manual_position = false, -- default: true
+                -- cursor position to be before/after the endpair when moving with capital key
                 cursor_pos_before = false,
+                -- when `manual_position` is false, whether to move cursor when `end_key` is pressed
+                avoid_move_to_end = true, -- stay for direct end_key use
+                highlight = "CurSearch", -- default: "Search"
             },
             enable_check_bracket_line = false,
             enable_abbr = true,
@@ -168,27 +176,27 @@ return {
 
         -- Rust: raw string
         ap.add_rules({
-            Rule('r#"', '"#', { "rust" })
+            Rule([[r#"]], [["#]], { "rust" })
                 :with_move(function(opts)
-                    return opts.char == '"'
+                    return opts.char == [["]]
                 end)
                 :with_del(conds.none())
                 :with_cr(conds.none())
-                :use_key('"'),
-            Rule('b"', '"', { "rust" })
+                :use_key([["]]),
+            Rule([[b"]], [["]], { "rust" })
                 :with_move(function(opts)
-                    return opts.char == '"'
+                    return opts.char == [["]]
                 end)
                 :with_del(conds.none())
                 :with_cr(conds.none())
-                :use_key('"'),
-            Rule("b'", "'", { "rust" })
+                :use_key([["]]),
+            Rule([[b']], [[']], { "rust" })
                 :with_move(function(opts)
-                    return opts.char == "'"
+                    return opts.char == [[']]
                 end)
                 :with_del(conds.none())
                 :with_cr(conds.none())
-                :use_key("'"),
+                :use_key([[']]),
         })
 
         -- Rust: closure pipe

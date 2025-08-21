@@ -50,18 +50,14 @@ vim.api.nvim_create_autocmd("BufWritePost", {
         local managed = #vim.fn.system({ "chezmoi", "managed", ev.match }) ~= 0
         if not managed then
             vim.ui.input({
-                prompt = string.format(" Do you want to add %s to chezmoi? [y/n] ", fname),
+                prompt = string.format(" Do you want to add `%s` to chezmoi? [Y/n] ", fname),
             }, function(input)
-                if input and vim.trim(input) == "y" then
+                if input and vim.trim(input) == "Y" then
                     managed = true
                 end
             end)
         end
-        local notify = vim.notify
-        local ok, fidget = pcall(require, "fidget")
-        if ok then
-            notify = fidget.notify
-        end
+        local notify = require("fidget").notify
         if managed then
             local result = vim.fn.system({ "chezmoi", "add", ev.match })
             if vim.v.shell_error == 0 then
@@ -85,11 +81,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
         if vim.tbl_contains(excluded_fts, vim.bo.filetype) then
             return
         end
-        local notify = vim.notify
-        local ok, fidget = pcall(require, "fidget")
-        if ok then
-            notify = fidget.notify
-        end
+        local notify = require("fidget").notify
         local result = vim.fn.system({ "chezmoi", "apply", "--source-path", ev.match })
         if vim.v.shell_error == 0 then
             local fname = string.gsub(ev.match, os.getenv("CHEZMOI_SOURCE") .. "/" or "", "")

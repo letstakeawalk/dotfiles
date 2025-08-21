@@ -98,16 +98,30 @@ set("v", "<A-up>",   ":m '<-2<CR>gv=gv",    { desc = "Move line up" })
 set("n", "<A-h>",    ":m .-2<CR>==",        { desc = "Move line up" })
 set("i", "<A-h>",    "<Esc>:m .-2<CR>==gi", { desc = "Move line up" })
 set("v", "<A-h>",    ":m '<-2<CR>gv=gv",    { desc = "Move line up" })
+-- stylua: ignore end
 
 -- Display/Toggle: <leader>d
-set("n", "<leader>dm", "<cmd>message<cr>",         { desc = "Messages" })
-set("n", "<leader>dM", "<cmd>Redir message<cr>",   { desc = "Redir Messages" })
-set("n", "<leader>dn", function() vim.wo.relativenumber = not vim.wo.relativenumber; vim.wo.number = not vim.wo.number; end,   { desc = "Display numbers" })
-set("n", "<leader>dc", function() vim.wo.conceallevel = vim.wo.conceallevel == 0 and 2 or 0; vim.notify("Conceal ".. (vim.wo.conceallevel == 2 and "Enabled" or "Disabled")) end, { desc = "Conceal Toggle" })
-set("n", "<leader>ds", function() vim.wo.spell = not vim.wo.spell; vim.notify("Spelling ".. (vim.wo.spell and "Enabled" or "Disabled")) end,                                                                                                                                         { desc = "Spelling Toggle" })
-set("n", "<leader>dw", function() vim.wo.wrap = not vim.wo.wrap; vim.notify("Wrap " .. (vim.wo.wrap and "Enabled" or "Disabled")) end,                                                                                                                                               { desc = "Wrap Line Toggle" })
+set("n", "<leader>dm", "<cmd>message<cr>", { desc = "Messages" })
+set("n", "<leader>dM", "<cmd>Redir message<cr>", { desc = "Redir Messages" })
+set("n", "<leader>dn", function()
+    vim.wo.relativenumber = not vim.wo.relativenumber
+    vim.wo.number = not vim.wo.number
+end, { desc = "Display Numbers" })
+set("n", "<leader>dc", function()
+    vim.wo.conceallevel = vim.wo.conceallevel == 0 and 2 or 0
+    vim.notify("Conceal " .. (vim.wo.conceallevel == 2 and "Enabled" or "Disabled"))
+end, { desc = "Conceal Toggle" })
+set("n", "<leader>ds", function()
+    vim.wo.spell = not vim.wo.spell
+    vim.notify("Spelling " .. (vim.wo.spell and "Enabled" or "Disabled"))
+end, { desc = "Spelling Toggle" })
+set("n", "<leader>dw", function()
+    vim.wo.wrap = not vim.wo.wrap
+    vim.notify("Wrap " .. (vim.wo.wrap and "Enabled" or "Disabled"))
+end, { desc = "Wrap Line Toggle" })
 
 -- etc
+-- stylua: ignore start
 set("n",        "<leader><leader>s", "<cmd>source<cr>", { desc = "Source" })
 set({"n", "v"}, "<leader><leader>x", "<cmd>.lua<cr>",   { desc = "Execute current line" })
 set("n", "<leader>rz", [[<cmd>s!\v(https://)?(www\.)?github.com/([^/]+/[^/]+).*!\3<cr><cmd>noh<cr>]], { desc = "Clean GitHub url for Lazy" })
@@ -178,7 +192,7 @@ end
 set("n", "<leader>y", yank_location, { desc = "Yank current location" })
 
 -- quickfix & loclist
-local toggle_buffer_diag = function()
+local function toggle_buffer_diagostic()
     local quicker = require("quicker")
     if quicker.is_open(0) then
         return quicker.close({ loclist = true })
@@ -186,10 +200,14 @@ local toggle_buffer_diag = function()
     if quicker.is_open() then
         quicker.close()
     end
-    vim.diagnostic.setloclist({ title = "Buffer Diagnostics", open = false })
+    vim.diagnostic.setloclist({
+        severity = { min = vim.diagnostic.severity.WARN },
+        title = "Buffer Diagnostics",
+        open = false,
+    })
     quicker.open({ loclist = true })
 end
-local toggle_workspace_diag = function()
+local function toggle_workspace_diagnostic()
     local quicker = require("quicker")
     if quicker.is_open() then -- qflist open
         return quicker.close()
@@ -197,24 +215,28 @@ local toggle_workspace_diag = function()
     if quicker.is_open(0) then
         quicker.close({ loclist = true })
     end
-    vim.diagnostic.setqflist({ title = "Workspace Diagnostics", open = false })
+    vim.diagnostic.setqflist({
+        severity = { min = vim.diagnostic.severity.WARN },
+        title = "Workspace Diagnostics",
+        open = false,
+    })
     quicker.open()
 end
-local close_qfloclist = function()
+local function close_qfloclist()
     local quicker = require("quicker")
     quicker.close()
     quicker.close({ loclist = true })
 end
 -- stylua: ignore start
-set("n", "<leader>xx", toggle_workspace_diag, { desc = "Workspace diagnostics" })
-set("n", "<leader>xd", toggle_buffer_diag,    { desc = "Buffer diagnostics" })
+set("n", "<leader>xx", toggle_workspace_diagnostic, { desc = "Workspace diagnostics" })
+set("n", "<leader>xd", toggle_buffer_diagostic,    { desc = "Buffer diagnostics" })
 set("n", "<leader>xc", close_qfloclist,       { desc = "Close qfloclist" })
 set("n", "<leader>xq", vim.cmd.copen,         { desc = "Open qflist" })
 set("n", "<leader>xl", vim.cmd.lopen,         { desc = "Open loclist" })
 -- stylua: ignore end
 
 local make_repeatable_move_pair = require("nvim-treesitter.textobjects.repeatable_move").make_repeatable_move_pair
-local with_warning = function(cmd)
+local function with_warning(cmd)
     return function()
         local ok, _ = pcall(cmd)
         if not ok then
@@ -224,7 +246,7 @@ local with_warning = function(cmd)
 end
 local cnext, cprev = make_repeatable_move_pair(with_warning(vim.cmd.cnext), with_warning(vim.cmd.cprevious))
 local lnext, lprev = make_repeatable_move_pair(with_warning(vim.cmd.lnext), with_warning(vim.cmd.lprevious))
-local xnext = function()
+local function xnext()
     local quicker = require("quicker")
     if quicker.is_open() then -- qflist
         cnext()
@@ -232,7 +254,7 @@ local xnext = function()
         lnext()
     end
 end
-local xprev = function()
+local function xprev()
     local quicker = require("quicker")
     if quicker.is_open() then -- qflist
         cprev()

@@ -101,6 +101,7 @@ return {
             on_attach = function(bufnr)
                 -- local gs = package.loaded.gitsigns
                 local gs = require("gitsigns")
+                local api = vim.api
 
                 local function map(mode, lhs, rhs, opts)
                     opts = opts or {}
@@ -124,21 +125,45 @@ return {
                     vim.schedule(prev_hunk)
                     return "<Ignore>"
                 end, { desc = "Goto previous hunk", expr = true, silent = true })
+                -- stylua: ignore end
 
                 local function toggle_blame_buf()
-                    local bufs = vim.tbl_filter(
-                        function(buf)
-                            return vim.api.nvim_get_option_value("filetype", { buf = buf }) == "gitsigns.blame"
-                        end,
-                        vim.api.nvim_list_bufs()
-                    )
-                    if #bufs == 0 then
+                    local blame_bufs = vim.tbl_filter(function(buf)
+                        return api.nvim_get_option_value("filetype", { buf = buf }) == "gitsigns.blame"
+                    end, api.nvim_list_bufs())
+                    if #blame_bufs == 0 then
                         gs.blame()
                     else
-                        vim.api.nvim_buf_delete(bufs[1], { force = true })
+                        api.nvim_buf_delete(blame_bufs[1], { force = true })
                     end
                 end
 
+                local function diffthis()
+                    local current_window = api.nvim_get_current_win()
+                    if not api.nvim_get_option_value("diff", { win = current_window }) then
+                        return gs.diffthis()
+                    end
+
+                    local current_tabpage = api.nvim_get_current_tabpage()
+                    for _, win in api.nvim_tabpage_list_wins(current_tabpage) do
+                        if api.nvim_get_option_value("diff", { win = win }) then
+                            api.nvim_set_option_value("diff", false, { win = win })
+                            local buf = api.nvim_win_get_buf(win)
+                            if api.nvim_buf_get_name(buf):match("^gitsigns") then
+                                api.nvim_buf_delete(buf, {})
+                                api.nvim_win_close(win, true)
+                            end
+                        end
+                    end
+                end
+
+                local function diff()
+                    vim.ui.input({ prompt = "Diff against: " }, function(input)
+                        gs.diffthis(input)
+                    end)
+                end
+
+                -- stylua: ignore start
                 map("v", "<leader>gs", function() gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") }) end, { desc = "Stage hunk" })
                 map("v", "<leader>gr", function() gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") }) end, { desc = "Reset hunk" })
                 map("n", "<leader>gs", gs.stage_hunk,                   { desc = "Stage hunk" })
@@ -147,8 +172,8 @@ return {
                 map("n", "<leader>gR", gs.reset_buffer,                 { desc = "Reset buffer" })
                 map("n", "<leader>gp", gs.preview_hunk,                 { desc = "Preview hunk" })
                 map("n", "<leader>gb", toggle_blame_buf,                { desc = "Blame" })
-                map("n", "<leader>gd", gs.diffthis,                     { desc = "Diff" })
-                map("n", "<leader>gD", function() gs.diffthis("~") end, { desc = "Diff" })
+                map("n", "<leader>gd", diffthis,                        { desc = "Diff this" })
+                map("n", "<leader>gD", diff,                            { desc = "Diff" })
                 map("n", "<leader>gx", gs.preview_hunk_inline,          { desc = "Toggle deleted" })
                 -- map("n", "<leader>gb", function() gs.blame_line({ full = true }) end, { desc = "Blame line" })
                 -- map("n", "<leader>gB", gs.toggle_current_line_blame, { desc = "Blame toggle" })
@@ -165,8 +190,16 @@ return {
     {
         "akinsho/git-conflict.nvim",
         version = "*",
+        event = "BufRead",
         opts = {
-            default_mappings = true, -- disable buffer local mapping created by this plugin
+            default_mappings = {
+                ours = "co",
+                theirs = "ct",
+                none = "c0",
+                both = "cb",
+                next = "]g",
+                prev = "[g",
+            },
             default_commands = true, -- disable commands created by this plugin
             disable_diagnostics = false, -- This will disable the diagnostics in a buffer whilst it is conflicted
             list_opener = "copen", -- command or function to open the conflicts list

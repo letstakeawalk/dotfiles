@@ -1,6 +1,6 @@
 ---@diagnostic disable: unused-local, unused-function
 -- prefil edit window with common scenarios to avoid repeating query and submit immediately
-local prefill_edit_window = function(request)
+local function prefill_edit_window(request)
     require("avante.api").edit()
     local code_bufnr = vim.api.nvim_get_current_buf()
     local code_winid = vim.api.nvim_get_current_win()
@@ -191,9 +191,6 @@ return {
         "MunifTanjim/nui.nvim",
         --- The below dependencies are optional,
         "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
-        "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
-        -- "stevearc/dressing.nvim", -- for input provider dressing
-        -- "folke/snacks.nvim", -- for input provider snacks
         "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
         -- "zbirenbaum/copilot.lua", -- for providers='copilot'
         -- {

@@ -7,6 +7,7 @@ opt.formatoptions = "cqnlj" -- default tcqj  :help fo-table
 opt.history = 2000 -- num history to cache
 opt.laststatus = 3 -- always show one statusline
 opt.linebreak = true -- wrap text by words rather than char
+opt.more = false
 opt.mouse = "nv" -- enable mouse on normal and visual mode
 opt.number = true -- show line numbers
 opt.relativenumber = true -- number relatively

@@ -226,6 +226,9 @@ set(0, "HarpoonInactive",       { fg = nord.c03_gry_br, bg = nord.c00_blk_br })
 set(0, "HarpoonNumberActive",   { fg = "#7aa2f7",       bold = true })
 set(0, "HarpoonNumberInactive", { fg = "#496194",       bg = nord.c00_blk_br })
 
+set(0, "LualineTabsActive",   { fg = "#7aa2f7", bold = true })
+set(0, "LualineTabsInactive", { fg = "#496194" })
+
 -- treesitter
 set(0, "TreesitterContext", { link = "CursorLine" })
 

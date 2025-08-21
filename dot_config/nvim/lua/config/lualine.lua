@@ -1,3 +1,10 @@
+---@alias label string label to be displayed on tabline
+---@alias parent string parents of label (path)
+---@alias fullpath string fullpath of the harpoon item
+---@alias index integer index of the harpoon item
+---@alias value {[1]: parent, [2]: fullpath, [3]: index}[]
+---@alias hmap {[label]: value}
+
 local lualine = require("lualine")
 
 local function location()
@@ -8,36 +15,84 @@ local function mode()
     return " " .. require("lualine.utils.mode").get_mode()
 end
 
-local function harpoon_files()
-    local harpoon = require("harpoon")
-    local contents = {}
-    local current_file_path = vim.fn.fnamemodify(vim.fn.expand("%:p"), ":.")
-    for index = 1, harpoon:list():length() do
-        local fpath = harpoon:list():get(index).value
-        local fname = fpath == "" and "(empty)" or vim.fn.fnamemodify(fpath, ":t")
-        local parent = vim.fn.fnamemodify(fpath, ":h:t")
-        local filters = {
-            "mod.rs",
-            "init.lua",
-            "__init__.py",
-            "index.js",
-            "index.jsx",
-            "index.ts",
-            "index.tsx",
-            "index.html",
-        }
-        if vim.tbl_contains(filters, fname) then
-            fname = parent .. "/" .. fname
-        end
-
-        if current_file_path == fpath then
-            contents[index] = string.format("%%#HarpoonNumberActive#  %s. %%#HarpoonActive#%s  ", index, fname)
-        else
-            contents[index] = string.format("%%#HarpoonNumberInactive#  %s. %%#HarpoonInactive#%s  ", index, fname)
+---@param hmap hmap
+---@return hmap
+local function resolve_duplicate_labels(hmap)
+    for label, items in pairs(hmap) do
+        if #items > 1 then
+            for _, item in ipairs(items) do
+                local new_label = label
+                local parent, fpath, index = unpack(item)
+                if parent ~= "." then
+                    new_label = vim.fn.fnamemodify(parent, ":t") .. "/" .. label
+                    parent = vim.fn.fnamemodify(parent, ":h")
+                end
+                hmap[new_label] = hmap[new_label] or {}
+                table.insert(hmap[new_label], { parent, fpath, index })
+            end
+            hmap[label] = nil -- Remove the old label
         end
     end
+    for _, items in pairs(hmap) do
+        if #items > 1 then
+            return resolve_duplicate_labels(hmap)
+        end
+    end
+    return hmap
+end
 
-    return table.concat(contents)
+local function harpoon_files()
+    local harpoon = require("harpoon")
+    local current_fpath = vim.fn.expand("%")
+
+    -- stylua: ignore
+    local filters = {
+        "mod.rs", "Cargo.toml",
+        "init.lua",
+        "__init__.py",
+        "index.js", "index.jsx", "index.ts", "index.tsx",
+        "+page.svelte", "+page.server.js", "+page.server.ts", "+layout.svelte", "+layout.server.js", "+layout.server.ts", "+error.svelte",
+        "index.html",
+    }
+
+    local hmap = {} ---@type hmap
+    for index = 1, harpoon:list():length() do
+        local fpath = harpoon:list():get(index).value
+        if #fpath == 0 then
+            goto continue
+        end
+        local label = vim.fn.fnamemodify(fpath, ":t")
+        if vim.tbl_contains(filters, label, {}) then
+            label = string.format("%s/%s", vim.fn.fnamemodify(fpath, ":h:t"), label)
+        end
+        local parent = vim.fn.fnamemodify(fpath, ":h")
+        hmap[label] = hmap[label] or {}
+        table.insert(hmap[label], { parent, fpath, index })
+        ::continue::
+    end
+
+    local temp = {} ---@type {[integer]: string}
+    hmap = resolve_duplicate_labels(hmap)
+    for label, items in pairs(hmap) do
+        assert(#items == 1, "unexpected duplicate harpoon labels found")
+        local _, fpath, index = unpack(items[1])
+        if current_fpath == fpath then
+            table.insert(temp, index, string.format("%%#HarpoonNumberActive#  %d. %%#HarpoonActive#%s  ", index, label))
+        else
+            table.insert(
+                temp,
+                index,
+                string.format("%%#HarpoonNumberInactive#  %d. %%#HarpoonInactive#%s  ", index, label)
+            )
+        end
+    end
+    -- transform array into list
+    local harpoons = {} ---@type string[]
+    for index = 1, #temp do
+        table.insert(harpoons, temp[index])
+    end
+
+    return table.concat(harpoons)
 end
 
 local nord = require("utils.nord")
@@ -135,5 +190,18 @@ lualine.setup({
     extensions = {},
     tabline = {
         lualine_a = { { harpoon_files, separator = { "" }, padding = 0 } },
+        lualine_x = {
+            {
+                "tabs",
+                tabs_color = {
+                    active = "LualineTabsActive",
+                    inactive = "LualineTabsInactive",
+                },
+                separator = { "" },
+                symbols = {
+                    modified = "+",
+                },
+            },
+        },
     },
 })

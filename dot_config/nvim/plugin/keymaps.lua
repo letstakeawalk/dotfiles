@@ -68,7 +68,8 @@ set("n", "z2", "zM2zr",    { desc = "Fold level: 2" })
 set("n", "z3", "zM3zr",    { desc = "Fold level: 3" })
 set("n", "z4", "zM4zr",    { desc = "Fold level: 4" })
 set("n", "z5", "zM5zr",    { desc = "Fold level: 5" })
-set("n", "zv", "zMzvzczO", { desc = "Open enough fold" })
+set("n", "zv", "zMzx",     { desc = "Open enough fold" }) -- zMzvzczO
+set("n", "zx", "zMzx",     { desc = "Open enough fold" })
 
 -- Editing
 set("i", "<C-d>", "<C-d>", { desc = "Indent -1 level" })

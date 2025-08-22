@@ -281,8 +281,10 @@ set(0, "IblIndent", { fg = nord.c01_gry })
 set(0, "IblScope",  { fg = nord.c09_glcr })
 
 -- leap
-set(0, "LeapMatch",        { fg = "#ccff88", bold = true,    underline = true })
-set(0, "LeapLabelPrimary", { fg = "black",   bg = "#ccff88", bold = true })
+set(0, "LeapLabel",        { fg = "black", bg = "#ccff88", bold = true, underline = true })
+set(0, "LeapMatch",        { fg = "black", bg = "#ccff88", bold = true, underline = true })
+set(0, "LeapLabelPrimary", { fg = "black", bg = "#ccff88", bold = true })
+set(0, "LeapLabelDimmed",  { fg = "black", bg = "#88aa33" })
 
 -- mini
 set(0, "MiniClueFloatTitle", { fg = nord.c09_glcr, bold = true })

@@ -1,16 +1,18 @@
 return {
     "ggandor/leap.nvim",
     dependencies = { "ggandor/leap-spooky.nvim", "ggandor/flit.nvim" },
-    keys = { "s", "S", "f", "F", "t", "T", "<leader>k", "<leader>h" },
-    event = "BufRead",
+    lazy = false, -- pluging lazyloads itself
     config = function()
         local leap = require("leap")
-        leap.setup({})
+        leap.setup({
+            labels = "stfneiokhldwmbuyvrgaqpcxzj/STFNEIOKHLDWMBUYVRGAQPCXZJ?",
+        })
 
-        vim.keymap.set({ "n", "o" }, "s", "<Plug>(leap-forward)", { desc = "Leap forward" })
-        vim.keymap.set({ "n", "o" }, "S", "<Plug>(leap-backward)", { desc = "Leap backward" })
-        vim.keymap.set({ "x" }, "s", "<Plug>(leap-from-window)", { desc = "Leap backward" })
+        -- stylua: ignore start
+        vim.keymap.set({ "n", "x", "o" }, "s",  "<Plug>(leap-forward)",     { desc = "Leap forward" })
+        vim.keymap.set({ "n", "x", "o" }, "S",  "<Plug>(leap-backward)",    { desc = "Leap backward" })
         vim.keymap.set({ "n", "x", "o" }, "gs", "<Plug>(leap-from-window)", { desc = "Leap window" })
+        -- stylua: ignore end
 
         require("leap.user").set_repeat_keys("<enter>", "<backspace>", {
             -- If set to true, the keys will work like the native
@@ -27,21 +29,26 @@ return {
 
         local spooky = require("leap-spooky")
         spooky.setup({
+            -- Mappings will be generated corresponding to all native text objects,
+            -- like: (ir|ar|iR|aR|im|am|iM|aM){obj}.
+            -- Special line objects will also be added, by repeating the affixes.
+            -- E.g.
+            --   `yrr<leap>` and `ymm<leap>` will yank a line in the current window.
+            --   `drr<leap>` and `dmm<leap>` will delete a line in the current window.
+            -- window.
             affixes = {
-                -- These will generate mappings for all native text objects, like:
-                -- (ir|ar|iR|aR|im|am|iM|aM){obj}.
-                -- Special line objects will also be added, by repeating the affixes.
-                -- E.g.
-                --   `yrr<leap>` and `ymm<leap>` will yank a line in the current window.
-                --   `drr<leap>` and `dmm<leap>` will delete a line in the current window.
                 -- You can also use 'rest' & 'move' as mnemonics.
                 remote = { window = "r", cross_window = "R" },
                 magnetic = { window = "m", cross_window = "M" },
             },
             -- Defines text objects like `riw`, `raw`, etc., instead of targets.vim-style `irw`, `arw`.
+            -- E.g.
+            --  yriw<leap> to yank word remotely,
+            --  drip<leap> to delete paragraph remotely
+            --  ysriw<leap><surround> to surround word remotely
             prefix = true,
-            -- If this option is set to true, the yanked text will automatically be pasted
-            -- at the cursor position if the unnamed register is in use.
+            -- The yanked text will automatically be pasted at the cursor position
+            -- if the unnamed register is in use.
             paste_on_remote_yank = false,
         })
 

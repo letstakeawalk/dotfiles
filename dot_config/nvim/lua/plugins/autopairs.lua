@@ -17,7 +17,7 @@ return {
                 map = "<C-f>",
                 chars = { "{", "[", "(", "<", '"', "'", "`" },
                 pattern = [=[[%'%"%>%]%)%}%,%?%;]]=],
-                keys = "qwfpluyzxcdvkharstgmneio",
+                keys = "wftmneiokhluyrpsgdzxacv", -- no b,j,q
                 before_key = "k",
                 after_key = "h",
                 end_key = "$",

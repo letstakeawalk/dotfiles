@@ -56,50 +56,56 @@ return {
     },
     {
         "Saecki/crates.nvim",
-        dependencies = { "hrsh7th/nvim-cmp" },
         tag = "stable",
         event = "BufRead Cargo.toml",
         config = function()
             local crates = require("crates")
 
             crates.setup({
+                lsp = {
+                    enabled = true,
+                    actions = true,
+                    completion = true,
+                    hover = true,
+                },
                 -- null_ls = { enabled = true },
                 popup = {
                     autofocus = false,
                     border = "rounded",
                 },
-                src = {
-                    cmp = { enabled = true },
+                completion = {
+                    blink = {
+                        enabled = true
+                    }
                 },
             })
 
-            -- lazy load cmp source, and buffer specific keymaps
             vim.api.nvim_create_autocmd("BufRead", {
-                group = vim.api.nvim_create_augroup("CargoCrates", { clear = true }),
+                group = require("utils").augroup("CargoCrates", { clear = true }),
                 pattern = "Cargo.toml",
                 callback = function(ev)
                     local bufopts = function(desc)
                         return { noremap = true, silent = true, buffer = ev.buf, desc = desc }
                     end
                     -- vim.keymap.set("n", "<leader>ct", crates.toggle, bufopts("Toggle"))
-                    vim.keymap.set("n", "<leader>cr", crates.reload, bufopts("Reload"))
+                    vim.keymap.set("n", "<leader>Cr", crates.reload, bufopts("Reload"))
 
-                    vim.keymap.set("n", "<leader>cp", crates.show_popup, bufopts("Show popup"))
-                    vim.keymap.set("n", "<leader>cv", crates.show_versions_popup, bufopts("Show versions"))
-                    vim.keymap.set("n", "<leader>cf", crates.show_features_popup, bufopts("Show features"))
-                    vim.keymap.set("n", "<leader>cd", crates.show_dependencies_popup, bufopts("Show dependencies"))
+                    vim.keymap.set("n", "<leader>Cp", crates.show_popup, bufopts("Show popup"))
+                    vim.keymap.set("n", "<leader>Cv", crates.show_versions_popup, bufopts("Show versions"))
+                    vim.keymap.set("n", "<leader>Cf", crates.show_features_popup, bufopts("Show features"))
+                    vim.keymap.set("n", "<leader>Cd", crates.show_dependencies_popup, bufopts("Show dependencies"))
 
-                    vim.keymap.set("n", "<leader>cu", crates.update_crate, bufopts("Update crate"))
-                    vim.keymap.set("v", "<leader>cu", crates.update_crates, bufopts("Update selected crates"))
-                    vim.keymap.set("n", "<leader>ca", crates.update_all_crates, bufopts("Update all crates"))
-                    vim.keymap.set("n", "<leader>cU", crates.upgrade_crate, bufopts("Upgrade crate"))
-                    vim.keymap.set("v", "<leader>cU", crates.upgrade_crates, bufopts("Upgrade selected crates"))
-                    vim.keymap.set("n", "<leader>cA", crates.upgrade_all_crates, bufopts("Upgrade all crates"))
+                    vim.keymap.set("n", "<leader>Cu", crates.update_crate, bufopts("Update crate"))
+                    vim.keymap.set("v", "<leader>Cu", crates.update_crates, bufopts("Update selected crates"))
+                    vim.keymap.set("n", "<leader>Ca", crates.update_all_crates, bufopts("Update all crates"))
+                    vim.keymap.set("n", "<leader>CU", crates.upgrade_crate, bufopts("Upgrade crate"))
+                    vim.keymap.set("v", "<leader>CU", crates.upgrade_crates, bufopts("Upgrade selected crates"))
+                    vim.keymap.set("n", "<leader>CA", crates.upgrade_all_crates, bufopts("Upgrade all crates"))
 
-                    vim.keymap.set("n", "<leader>cH", crates.open_homepage, bufopts("Open homepage"))
-                    vim.keymap.set("n", "<leader>cR", crates.open_repository, bufopts("Open repository"))
-                    vim.keymap.set("n", "<leader>cD", crates.open_documentation, bufopts("Open documentation"))
-                    vim.keymap.set("n", "<leader>cC", crates.open_crates_io, bufopts("Open crate.io"))
+                    vim.keymap.set("n", "<leader>CH", crates.open_homepage, bufopts("Open homepage"))
+                    vim.keymap.set("n", "<leader>CR", crates.open_repository, bufopts("Open repository"))
+                    vim.keymap.set("n", "<leader>CD", crates.open_documentation, bufopts("Open documentation"))
+                    vim.keymap.set("n", "<leader>CC", crates.open_crates_io, bufopts("Open crate.io"))
                 end,
             })
         end,

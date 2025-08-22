@@ -1,4 +1,4 @@
-local has_words_before = function()
+local function has_words_before()
     local col = vim.api.nvim_win_get_cursor(0)[2]
     if col == 0 then
         return false
@@ -7,11 +7,33 @@ local has_words_before = function()
     return line:sub(col, col):match("%s") == nil
 end
 
-local show_if_words_before = function(cmp)
+local function show_if_words_before(cmp)
     if has_words_before() then
         return cmp.show()
     end
 end
+
+local configured_kinds = {
+    "Module",
+    "Class",
+    "Function",
+    "Method",
+    "Keyword",
+    "Constant",
+    "Variable",
+    "Value",
+    "Property",
+    "Field",
+    "Enum",
+    "EnumMember",
+    "Struct",
+    "Interface",
+    "Reference",
+    "TypeParameter",
+    "Snippet",
+    "Text",
+    "Avante",
+}
 
 return {
     "Saghen/blink.cmp",
@@ -61,6 +83,10 @@ return {
                     components = {
                         kind = {
                             text = function(ctx)
+                                if not vim.tbl_contains(configured_kinds, ctx.kind, {}) then
+                                    configured_kinds[#configured_kinds + 1] = ctx.kind
+                                    vim.notify("No highlight: " .. ctx.kind, vim.log.levels.WARN)
+                                end
                                 return ctx.kind
                             end,
                         },

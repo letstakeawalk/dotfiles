@@ -67,9 +67,9 @@ set(0, "Directory", { fg = nord.c08_teal }) -- directory names (and other specia
 
 -- Search
 set(0, "CurSearch",  { fg = nord.c06_wht, bg = nord.c10_blue, bold = true })
-set(0, "IncSearch",  { fg = nord.c06_wht, bg = nord.c10_blue })
-set(0, "Search",     { fg = nord.c06_wht, bg = nord.c10_blue })
-set(0, "Substitute", { fg = nord.c06_wht, bg = nord.c10_blue })
+set(0, "IncSearch",  { fg = nord.c06_wht, bg = nord.c10_blue_dk })
+set(0, "Search",     { fg = nord.c06_wht, bg = nord.c10_blue_dk })
+set(0, "Substitute", { fg = nord.c06_wht, bg = nord.c10_blue_dk })
 
 -- Prompt
 set(0, "ModeMsg",     { fg = nord.c04_wht,  bold = true })

@@ -49,6 +49,7 @@ return {
                     -- { mode = "i", keys = "<C-r>" },
                     -- { mode = "c", keys = "<C-r>" },
                 },
+                -- stylua: ignore
                 clues = {
                     -- miniclue.gen_clues.square_brackets(),
                     miniclue.gen_clues.builtin_completion(),

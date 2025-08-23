@@ -1,5 +1,6 @@
 return {
     "windwp/nvim-autopairs",
+    dir = "~/Workspace/projects/contribute/nvim-autopairs",
     event = "InsertEnter",
     config = function()
         local ap = require("nvim-autopairs")
@@ -29,177 +30,161 @@ return {
                 avoid_move_to_end = true, -- stay for direct end_key use
                 highlight = "CurSearch", -- default: "Search"
             },
-            enable_check_bracket_line = false,
+            enable_check_bracket_line = false, -- dont change
+            enable_moveright = true, -- (|) press ) ()|
             enable_abbr = true,
         })
 
-        -- Add spaces between parentheses and brackets
-        ap.add_rules({
-            Rule(" ", " ")
-                :with_pair(conds.done())
-                :replace_endpair(function(opts)
-                    local pair = opts.line:sub(opts.col - 1, opts.col)
-                    if vim.tbl_contains({ "()", "{}", "[]" }, pair) then
-                        return " " -- it return space here
-                    end
-                    return "" -- return empty
-                end)
-                :with_move(conds.none())
-                :with_cr(conds.none())
-                :with_del(function(opts)
-                    local col = vim.api.nvim_win_get_cursor(0)[2]
-                    local context = opts.line:sub(col - 1, col + 2)
-                    return vim.tbl_contains({ "(  )", "{  }", "[  ]" }, context)
-                end),
-        })
-        ap.get_rule(" ").not_filetypes = { "markdown" }
+        local brackets = { { "(", ")" }, { "[", "]" }, { "{", "}" } } ---@type string[][] `{ { "(", ")" }, { "[", "]" }, { "{", "}" } }`
 
-        -- `( | )` press ) at | --> `(  )|`
-        local brackets = { { "(", ")" }, { "[", "]" }, { "{", "}" } }
-        for _, bracket in pairs(brackets) do
-            ap.add_rules({
-                Rule("", " " .. bracket[2])
-                    :with_pair(conds.none())
-                    :with_move(function(opts)
-                        return opts.char == bracket[2]
-                        -- for backslash escape
-                        -- local prev = opts.line:sub(opts.col - 1, opts.col - 1)
-                        -- return not prev:match(ap.config.ignored_prev_char) and opts.char == bracket[2]
-                    end)
-                    :with_del(conds.none())
-                    :use_key(bracket[2]),
-            })
-        end
+        ---@diagnostic disable-next-line: unused-local, unused-function
+        local function is_balanced_before_cursor(line, open, close, cursor)
+            if cursor == nil or cursor < 1 then
+                return true
+            end
 
-        -- Ignore auto pair when prev char is \
-        ap.get_rule("("):with_pair(conds.not_before_regex("\\")):with_move(conds.not_before_regex("\\"))
-        ap.get_rule("["):with_pair(conds.not_before_regex("\\")):with_move(conds.not_before_regex("\\"))
-        ap.get_rule("{"):with_pair(conds.not_before_regex("\\")):with_move(conds.not_before_regex("\\"))
-        ap.get_rule("'")[1]:with_pair(conds.not_before_regex("\\")):with_move(conds.not_before_regex("\\"))
-        ap.get_rule("'")[2]:with_pair(conds.not_before_regex("\\")):with_move(conds.not_before_regex("\\"))
-        ap.get_rule('"')[1]:with_pair(conds.not_before_regex("\\")):with_move(conds.not_before_regex("\\"))
-        ap.get_rule('"')[2]:with_pair(conds.not_before_regex("\\")):with_move(conds.not_before_regex("\\"))
-
-        -- Move past commas, semicolons, and colons
-        for _, punct in pairs({ ",", ";", ":" }) do
-            ap.add_rules({
-                Rule("", punct)
-                    :with_move(function(opts)
-                        return opts.char == punct
-                    end)
-                    :with_pair(conds.none())
-                    :with_del(conds.none())
-                    :with_cr(conds.none())
-                    :use_key(punct),
-            })
-        end
-
-        ---Fly Mode: multiline jump close bracket [(reference)](https://github.com/windwp/nvim-autopairs/issues/167#issuecomment-1502559849)
-        local function multiline_close_jump(open, close)
-            return Rule(close, "")
-                :with_pair(function()
-                    local row, col = utils.get_cursor(0)
-                    local line = utils.text_get_current_line(0)
-
-                    if #line ~= col then -- cursor not at EOL
-                        return false
-                    end
-
-                    -- check if the line starts with the opening pair
-                    local unclosed_count = 0
-                    for c in line:gmatch("[\\" .. open .. "\\" .. close .. "]") do
-                        if c == open then
-                            unclosed_count = unclosed_count + 1
-                        end
-                        if unclosed_count > 0 and c == close then
-                            unclosed_count = unclosed_count - 1
-                        end
-                    end
-                    if unclosed_count > 0 then
-                        return false
-                    end
-
-                    local nextrow = row + 1
-                    if -- if the next line exists and it starts with the closing pair
-                        nextrow < vim.api.nvim_buf_line_count(0)
-                        and vim.regex("^\\s*" .. close):match_line(0, nextrow)
-                    then
-                        return true
-                    end
-                    return false
-                end)
-                :with_move(conds.none())
-                :with_cr(conds.none())
-                :with_del(conds.none())
-                :set_end_pair_length(0)
-                :replace_endpair(function(opts)
-                    -- local cleanup = "" == opts.line:match("^%s*(.-)%s*$") and "dd" or "xj" -- delete current line if emptly else delete closing pair
-                    local cleanup = "xj"
-                    local row, _ = utils.get_cursor(0)
-                    local action = vim.regex("^" .. close):match_line(0, row + 1) and "0a"
-                        or ("0f%sa"):format(opts.char)
-                    return ("<esc>%s%s"):format(cleanup, action)
-                end)
-        end
-        ap.add_rules({
-            multiline_close_jump("(", ")"),
-            multiline_close_jump("[", "]"),
-            multiline_close_jump("{", "}"),
-        })
-
-        ---Checks if bracket chars are balanced around specific postion.
-        local function is_brackets_balanced_around_position(line, open_char, close_char, col)
             local balance = 0
-            for i = 1, #line, 1 do
-                local c = line:sub(i, i)
-                if c == open_char then
+            for i = 1, cursor - 1, 1 do
+                local char = line:sub(i, i)
+                if char == open then
                     balance = balance + 1
-                elseif balance > 0 and c == close_char then
+                elseif balance > 0 and char == close then
                     balance = balance - 1
-                    if col <= i and balance == 0 then
-                        break
-                    end
                 end
             end
             return balance == 0
         end
-        -- Autopair '<' angle bracket after a word for generic and lifetime (Rust).
+
+        --- Fly Mode:
+        --- When closing pair, if the next character(s) is the same closing pair 
+        --- character with optional leading whitespaces (including newlines),
+        --- move the cursor to the right of the existing closing pair.
+        ---@param open string opening pair character
+        ---@param close string closing pair character
+        ---@return function(table): string -- keycodes mimicking user input in insert mode to be fed to nvim_feedkeys
+        ---@diagnostic disable-next-line: unused-local
+        local function fly_mode(open, close)
+            return function(opts)
+                -- inline-fly: the current line has closing pair with optional leading spaces
+                local padded_close = opts.line:sub(opts.col, #opts.line):match("^%s*%" .. close) ---@type string?
+                if padded_close then
+                    -- vim.print("inline_fly: replacing_with: `" .. tostring(padded_close) .. "`")
+                    local keys = "<bs>" -- delete inserted closing char
+                    if #padded_close > 1 then -- has leading spaces
+                        keys = keys .. string.rep("<right>", #padded_close - 1)
+                    end
+                    keys = keys .. "<right>"
+                    -- vim.print("inline_fly: replacing_with: `" .. tostring(keys) .. "`")
+                    return keys
+                end
+
+                -- nextline-fly: the next line has closing pair with optional leading spaces
+                local row, _ = unpack(vim.api.nvim_win_get_cursor(0))
+                local nextline_first_nonblank = vim.fn.getline(row + 1):match("^%s*%S") or ""
+                -- vim.print("nextline_first_nonblank: `" .. tostring(nextline_first_nonblank) .. "`")
+                if vim.trim(nextline_first_nonblank) == close then
+                    -- vim.print("nextline_fly: matched padded close on next line")
+                    local keys = "<bs>" -- delete inserted closing char
+                    if vim.trim(opts.line) == "" then
+                        keys = keys .. "<bs>" -- delete current line if empty
+                    end
+                    keys = keys .. "<down><home>" -- go to next line
+                    if #nextline_first_nonblank > 1 then -- has leading spaces
+                        keys = keys .. string.rep("<right>", #nextline_first_nonblank - 1)
+                    end
+                    keys = keys .. "<right>"
+                    -- vim.print("nextline_fly: replacing_with: `" .. tostring(keys) .. "`")
+                    return keys
+                end
+
+                -- nextnextline-fly:
+                -- the next line is empty and the following line has closing pair with optional leading spaces
+                local nextnextline_first_nonblank = vim.fn.getline(row + 2):match("^%s*%S") or ""
+                if vim.trim(nextline_first_nonblank) == "" and vim.trim(nextnextline_first_nonblank) == close then
+                    -- vim.print("nextnextline_fly: matched padded close on next next line")
+                    local keys = "<bs>" -- delete inserted closing char
+                    if vim.trim(opts.line) == "" then
+                        keys = keys .. "<bs>" -- delete current line if empty
+                    end
+                    keys = keys .. "<down><home><bs><down><home>" -- delete blank line and go to next line
+                    if #nextnextline_first_nonblank > 1 then -- has leading spaces
+                        keys = keys .. string.rep("<right>", #nextnextline_first_nonblank - 1)
+                    end
+                    keys = keys .. "<right>"
+                    -- vim.print("nextnextline_fly: replacing_with: `" .. tostring(keys) .. "`")
+                    return keys
+                end
+
+                return "" -- no replacement
+            end
+        end
+
+        --- Fly Mode
+        --- ( | )     press ) -> (  )|
+        --- ( |  )    press ) -> (    )|
+        --- [ |     ] press ) -> [       ]|
+        --- { |       press ) -> {
+        --- }                    }|
+        for _, bracket in pairs(brackets) do
+            ---@diagnostic disable-next-line: unused-local
+            local open, close = unpack(bracket)
+            ap.add_rules({
+                Rule(close, "")
+                    :set_end_pair_length(0) -- important
+                    :replace_endpair(fly_mode(open, close))
+                    :with_move(conds.none()),
+            })
+        end
+
+        -- Add spaces between parentheses and brackets
+        -- (|) press space -> ( | )
         ap.add_rules({
-            Rule("<", ">", { "rust", "typescript", "typescriptreact" })
-                :with_pair(conds.before_regex("[%w:<]+"))
-                :with_cr(conds.none())
-                :with_move(function(opts)
-                    return opts.char == opts.rule.end_pair
-                        and is_brackets_balanced_around_position(opts.line, opts.rule.start_pair, opts.char, opts.col)
-                end),
+            Rule(" ", " ")
+                :replace_endpair(function(opts)
+                    local pair = opts.line:sub(opts.col - 1, opts.col) -- `x|x`
+                    if -- don't add space if in markdown task list
+                        vim.bo[opts.bufnr].filetype == "markdown"
+                        and pair == "[]"
+                        and opts.line:sub(opts.col - 3, opts.col) == "- []"
+                    then
+                        return ""
+                    end
+                    -- only add space if cursor is within a pair
+                    local pairs = vim.tbl_map(table.concat, brackets)
+                    local cursor_within_pair = vim.tbl_contains(pairs, pair)
+                    return cursor_within_pair and " " or ""
+                end)
+                :with_del(function(opts)
+                    local context = opts.line:sub(opts.col - 2, opts.col + 1) -- `xx|xx`
+                    local pairs = vim.tbl_map(function(pair) --  "(  )", "{  }", "[  ]" 
+                        return pair[1] .. "  " .. pair[2]
+                    end, brackets)
+                    return vim.tbl_contains(pairs, context)
+                end)
+                :with_pair(conds.done())
+                :with_move(conds.none())
+                :with_cr(conds.done()),
         })
 
-        -- Rust: raw string
-        ap.add_rules({
-            Rule([[r#"]], [["#]], { "rust" })
-                :with_move(function(opts)
-                    return opts.char == [["]]
-                end)
-                :with_del(conds.none())
-                :with_cr(conds.none())
-                :use_key([["]]),
-            Rule([[b"]], [["]], { "rust" })
-                :with_move(function(opts)
-                    return opts.char == [["]]
-                end)
-                :with_del(conds.none())
-                :with_cr(conds.none())
-                :use_key([["]]),
-            Rule([[b']], [[']], { "rust" })
-                :with_move(function(opts)
-                    return opts.char == [[']]
-                end)
-                :with_del(conds.none())
-                :with_cr(conds.none())
-                :use_key([[']]),
-        })
+        -- Move past period, commas, semicolons, and colons.
+        -- inserting these will expand abbreviations if applicable, and set the undo break
+        for _, punct in pairs({ ".", ",", ";", ":" }) do
+            -- stylua: ignore
+            ap.add_rules({
+                Rule(punct, punct)
+                    :with_move(function(opts) return opts.char == punct end)
+                    :replace_endpair(function(opts)
+                        local next_char = opts.line:sub(opts.col, opts.col)
+                        return next_char == punct and punct or ""
+                    end)
+                    :with_pair(conds.done())
+                    :with_del(conds.none())
+                    :with_cr(conds.none())
+                    :use_undo(true),
+            })
+        end
 
-        -- Rust: closure pipe
+        -- Closure pipe
         ap.add_rules({
             Rule("|", "|", { "rust" })
                 :with_pair(conds.before_regex("%w+%(") and conds.after_text(")"))
@@ -207,7 +192,39 @@ return {
                 :with_cr(conds.none()),
         })
 
-        -- Askama, django, and jinja2: curly braces
+        -- Autopair angle bracket `<>` for generics and lifetimes
+        -- `Struct<|>`, `impl<|>`, `Vec<|>`, `collect::<|>`, `fn foo<|>()`
+        ap.add_rules({
+            Rule("<", ">", { "rust", "typescript", "typescriptreact" })
+                :with_pair(conds.before_regex("[%w:]+") and conds.not_before_char("<"))
+                :with_cr(conds.none())
+                :with_move(function(opts)
+                    return opts.char == opts.next_char
+                end)
+                :with_del(function(opts)
+                    return opts.line:sub(opts.col - 1, opts.col) ~= "<<"
+                end),
+        })
+
+        -- Rust: raw string
+        local rust_raw_byte_prefixes = { "r", "b", "br" } ---@type string[]
+        local rust_special_strings = { { "b'", "'" } } ---@type string[][]
+        for _, prefix in pairs(rust_raw_byte_prefixes) do
+            for i = 0, 6 do
+                local hashes = string.rep("#", i)
+                table.insert(rust_special_strings, { prefix .. hashes .. '"', '"' .. hashes })
+            end
+        end
+        ap.add_rules(vim.tbl_map(function(pair)
+            local open, close = unpack(pair)
+            -- stylua: ignore
+            return Rule(open, close, { "rust" })
+                :with_move(function(opts) return opts.char == close:sub(1, 1) end)
+                :with_del(function(opts) return opts.line:sub(opts.col - #close, opts.col - 1) ~= close end)
+                :with_cr(conds.none())
+        end, rust_special_strings))
+
+        -- Askama, django, and jinja2
         ap.add_rules({
             Rule("%", "%", { "html", "htmldjango" })
                 :with_pair(conds.before_text("{"))

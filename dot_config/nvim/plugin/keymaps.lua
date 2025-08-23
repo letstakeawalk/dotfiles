@@ -79,9 +79,6 @@ set("n", "<<", "<h",       { desc = "Indent -1 level" })
 set("n", ">>", ">l",       { desc = "Indent +1 level" })
 set("v", "<", "<gv",       { desc = "Indent -1 level" })
 set("v", ">", ">gv",       { desc = "Indent +1 level" })
-set("i", ",", ",<c-g>u")  -- add undo break-points
-set("i", ".", ".<c-g>u")  -- add undo break-points
-set("i", ";", ";<c-g>u")  -- add undo break-points
 set("s",          "<BS>",   "<BS>i") -- delete selection and stay in INSERT
 set({ "i", "c" }, "<A-BS>", "<C-w>") -- delete word
 set("n", "J", "mzJ`z", { desc = "Join lines" }) -- join lines while preservig cursor pos

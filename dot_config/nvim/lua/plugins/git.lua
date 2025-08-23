@@ -145,12 +145,12 @@ return {
                     end
 
                     local current_tabpage = api.nvim_get_current_tabpage()
-                    for _, win in api.nvim_tabpage_list_wins(current_tabpage) do
+                    for _, win in ipairs(api.nvim_tabpage_list_wins(current_tabpage)) do
                         if api.nvim_get_option_value("diff", { win = win }) then
                             api.nvim_set_option_value("diff", false, { win = win })
                             local buf = api.nvim_win_get_buf(win)
                             if api.nvim_buf_get_name(buf):match("^gitsigns") then
-                                api.nvim_buf_delete(buf, {})
+                                -- api.nvim_buf_delete(buf, {})
                                 api.nvim_win_close(win, true)
                             end
                         end
@@ -175,8 +175,6 @@ return {
                 map("n", "<leader>gd", diffthis,                        { desc = "Diff this" })
                 map("n", "<leader>gD", diff,                            { desc = "Diff" })
                 map("n", "<leader>gx", gs.preview_hunk_inline,          { desc = "Toggle deleted" })
-                -- map("n", "<leader>gb", function() gs.blame_line({ full = true }) end, { desc = "Blame line" })
-                -- map("n", "<leader>gB", gs.toggle_current_line_blame, { desc = "Blame toggle" })
 
                 -- Text object
                 map({ "o", "x" }, "ih", gs.select_hunk, { desc = "Select hunk" })
@@ -189,6 +187,7 @@ return {
     },
     {
         "akinsho/git-conflict.nvim",
+        dir = "~/Workspace/projects/contribute/git-conflict.nvim",
         version = "*",
         event = "BufRead",
         opts = {

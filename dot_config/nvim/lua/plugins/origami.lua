@@ -3,8 +3,8 @@ return {
     event = "VeryLazy",
     -- stylua: ignore
     keys = {
-        { "<Left>",  function() require("origami").h() end },
-        { "<Right>", function() require("origami").l() end },
+        -- { "<Left>",  function() require("origami").h() end },
+        -- { "<Right>", function() require("origami").l() end },
         { "j",       function() require("origami").h() end },
         { "l",       function() require("origami").l() end },
         { "$",       function() require("origami").dollar() end },

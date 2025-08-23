@@ -2,7 +2,7 @@
 ---@alias parent string parents of label (path)
 ---@alias fullpath string fullpath of the harpoon item
 ---@alias index integer index of the harpoon item
----@alias value {[1]: parent, [2]: fullpath, [3]: index}[]
+---@alias value {[1]: parent, [2]: fullpath, [3]: index}[] -- {parent, fullpath, index}
 ---@alias hmap {[label]: value}
 
 local lualine = require("lualine")
@@ -73,9 +73,13 @@ local function harpoon_files()
 
     local temp = {} ---@type {[integer]: string}
     hmap = resolve_duplicate_labels(hmap)
+    -- vim.notify_once("after resolve:" .. vim.inspect(hmap))
     for label, items in pairs(hmap) do
-        assert(#items == 1, "unexpected duplicate harpoon labels found")
-        local _, fpath, index = unpack(items[1])
+        -- assert(#items == 1, "unexpected duplicate harpoon labels found")
+        ---@diagnostic disable-next-line: unused-local
+        local _parent, fpath, index = unpack(items[1])
+        -- stylua: ignore
+        if #items > 1 then vim.notify("harpoon duplicate resolve unexpectedly failed", vim.log.levels.WARN) end
         if current_fpath == fpath then
             table.insert(temp, index, string.format("%%#HarpoonNumberActive#  %d. %%#HarpoonActive#%s  ", index, label))
         else
@@ -86,11 +90,13 @@ local function harpoon_files()
             )
         end
     end
+    -- vim.notify_once("temp" .. vim.inspect(temp))
     -- transform array into list
     local harpoons = {} ---@type string[]
     for index = 1, #temp do
         table.insert(harpoons, temp[index])
     end
+    -- vim.notify_once("harpoons" .. vim.inspect(harpoons))
 
     return table.concat(harpoons)
 end

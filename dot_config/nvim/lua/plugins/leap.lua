@@ -14,15 +14,15 @@ return {
         vim.keymap.set({ "n", "x", "o" }, "gs", "<Plug>(leap-from-window)", { desc = "Leap window" })
         -- stylua: ignore end
 
-        require("leap.user").set_repeat_keys("<enter>", "<backspace>", {
-            -- If set to true, the keys will work like the native
-            -- semicolon/comma, i.e., forward/backward is understood in
-            -- relation to the last motion.
-            relative_directions = false,
-            modes = { "n", "x", "o" },
-        })
-
-        leap.opts.special_keys.prev_target = { "<s-cr>", "," }
+        -- require("leap.user").set_repeat_keys("<enter>", "<backspace>", {
+        --     -- If set to true, the keys will work like the native
+        --     -- semicolon/comma, i.e., forward/backward is understood in
+        --     -- relation to the last motion.
+        --     relative_directions = false,
+        --     modes = { "n", "x", "o" },
+        -- })
+        --
+        -- leap.opts.special_keys.prev_target = { "<s-cr>", "," }
 
         local flit = require("flit")
         flit.setup({})

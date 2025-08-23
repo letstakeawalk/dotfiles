@@ -44,13 +44,16 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     pattern = {
         string.format("%s/*", os.getenv("XDG_CONFIG_HOME")),
     },
-    ---@param ev { buf: integer, file: string, match: string }
-    callback = function(ev)
-        local fname = string.gsub(ev.match, os.getenv("HOME") or "", "~")
-        local managed = #vim.fn.system({ "chezmoi", "managed", ev.match }) ~= 0
+    ---@param args { buf: integer, file: string, match: string }
+    callback = function(args)
+        if args.file:gmatch("COMMIT_EDITMSG$") or args.file:gmatch("git-rebase-merge$") then
+            return
+        end
+        local fname = args.match:gsub(os.getenv("HOME") or "", "~")
+        local managed = #vim.fn.system({ "chezmoi", "managed", args.match }) ~= 0
         if not managed then
             vim.ui.input({
-                prompt = string.format(" Do you want to add `%s` to chezmoi? [Y/n] ", fname),
+                prompt = string.format("Do you want to add `%s` to chezmoi? [Y/n] ", fname),
             }, function(input)
                 if input and vim.trim(input) == "Y" then
                     managed = true
@@ -59,7 +62,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
         end
         local notify = require("fidget").notify
         if managed then
-            local result = vim.fn.system({ "chezmoi", "add", ev.match })
+            local result = vim.fn.system({ "chezmoi", "add", args.match })
             if vim.v.shell_error == 0 then
                 notify(fname, vim.log.levels.INFO, { key = "Chezmoi", annote = "Chezmoi added" })
             else
@@ -75,16 +78,16 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 vim.api.nvim_create_autocmd("BufWritePost", {
     group = utils.augroup("ChezmoiApply", { clear = true }),
     pattern = string.format("%s/**/*", os.getenv("CHEZMOI_SOURCE")),
-    ---@param ev { buf: integer, file: string, match: string }
-    callback = function(ev)
+    ---@param args { buf: integer, file: string, match: string }
+    callback = function(args)
         local excluded_fts = { "gitcommit", "gitrebase" }
         if vim.tbl_contains(excluded_fts, vim.bo.filetype) then
             return
         end
         local notify = require("fidget").notify
-        local result = vim.fn.system({ "chezmoi", "apply", "--source-path", ev.match })
+        local result = vim.fn.system({ "chezmoi", "apply", "--source-path", args.match })
         if vim.v.shell_error == 0 then
-            local fname = string.gsub(ev.match, os.getenv("CHEZMOI_SOURCE") .. "/" or "", "")
+            local fname = args.match:gsub(os.getenv("CHEZMOI_SOURCE") .. "/" or "", "")
             notify(fname, vim.log.levels.INFO, { key = "Chezmoi", annote = "Chezmoi applied" })
         else
             notify(result, vim.log.levels.ERROR, { key = "Chezmoi", annote = "Chezmoi apply failed" })

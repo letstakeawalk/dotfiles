@@ -4,7 +4,6 @@ return {
         "nvim-tree/nvim-web-devicons",
         "ThePrimeagen/harpoon",
     },
-    -- enabled=false,
     event = "VeryLazy",
     config = function()
         require("config.lualine")

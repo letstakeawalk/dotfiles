@@ -2,8 +2,8 @@
 ---@alias parent string parents of label (path)
 ---@alias fullpath string fullpath of the harpoon item
 ---@alias index integer index of the harpoon item
----@alias value {[1]: parent, [2]: fullpath, [3]: index}[] -- {parent, fullpath, index}
----@alias hmap {[label]: value}
+---@alias LualineHarpoonItem {[1]: index, [2]: label, [3]: parent, [4]: fullpath} -- {index, label, parent, fullpath}
+---@alias LualineLabelHarpoonMap {[label]: LualineHarpoonItem[]}
 
 local lualine = require("lualine")
 
@@ -15,20 +15,31 @@ local function mode()
     return " " .. require("lualine.utils.mode").get_mode()
 end
 
----@param hmap hmap
----@return hmap
+-- stylua: ignore
+local harpoon_filters = {
+    "Cargo.toml", "mod.rs", "lib.rs", "main.rs",
+    "init.lua",
+    "__init__.py",
+    "index.js", "index.jsx", "index.ts", "index.tsx",
+    "+page.svelte", "+page.server.js", "+page.server.ts", "+layout.svelte", "+layout.server.js", "+layout.server.ts", "+error.svelte",
+    "index.html",
+}
+
+---@param hmap LualineLabelHarpoonMap
+---@return LualineLabelHarpoonMap
 local function resolve_duplicate_labels(hmap)
     for label, items in pairs(hmap) do
         if #items > 1 then
+            local new_label ---@type string
             for _, item in ipairs(items) do
-                local new_label = label
-                local parent, fpath, index = unpack(item)
+                new_label = label
+                local index, _, parent, fpath = unpack(item)
                 if parent ~= "." then
                     new_label = vim.fn.fnamemodify(parent, ":t") .. "/" .. label
                     parent = vim.fn.fnamemodify(parent, ":h")
                 end
                 hmap[new_label] = hmap[new_label] or {}
-                table.insert(hmap[new_label], { parent, fpath, index })
+                table.insert(hmap[new_label], { index, new_label, parent, fpath })
             end
             hmap[label] = nil -- Remove the old label
         end
@@ -45,60 +56,48 @@ local function harpoon_files()
     local harpoon = require("harpoon")
     local current_fpath = vim.fn.expand("%")
 
-    -- stylua: ignore
-    local filters = {
-        "mod.rs", "Cargo.toml",
-        "init.lua",
-        "__init__.py",
-        "index.js", "index.jsx", "index.ts", "index.tsx",
-        "+page.svelte", "+page.server.js", "+page.server.ts", "+layout.svelte", "+layout.server.js", "+layout.server.ts", "+error.svelte",
-        "index.html",
-    }
-
-    local hmap = {} ---@type hmap
+    local hmap = {} ---@type LualineLabelHarpoonMap
     for index = 1, harpoon:list():length() do
         local fpath = harpoon:list():get(index).value
         if #fpath == 0 then
             goto continue
         end
         local label = vim.fn.fnamemodify(fpath, ":t")
-        if vim.tbl_contains(filters, label, {}) then
+        if vim.tbl_contains(harpoon_filters, label, {}) then
             label = string.format("%s/%s", vim.fn.fnamemodify(fpath, ":h:t"), label)
         end
         local parent = vim.fn.fnamemodify(fpath, ":h")
         hmap[label] = hmap[label] or {}
-        table.insert(hmap[label], { parent, fpath, index })
+        table.insert(hmap[label], { index, label, parent, fpath })
         ::continue::
     end
 
-    local temp = {} ---@type {[integer]: string}
     hmap = resolve_duplicate_labels(hmap)
-    -- vim.notify_once("after resolve:" .. vim.inspect(hmap))
-    for label, items in pairs(hmap) do
-        -- assert(#items == 1, "unexpected duplicate harpoon labels found")
-        ---@diagnostic disable-next-line: unused-local
-        local _parent, fpath, index = unpack(items[1])
-        -- stylua: ignore
-        if #items > 1 then vim.notify("harpoon duplicate resolve unexpectedly failed", vim.log.levels.WARN) end
-        if current_fpath == fpath then
-            table.insert(temp, index, string.format("%%#HarpoonNumberActive#  %d. %%#HarpoonActive#%s  ", index, label))
-        else
-            table.insert(
-                temp,
-                index,
-                string.format("%%#HarpoonNumberInactive#  %d. %%#HarpoonInactive#%s  ", index, label)
-            )
-        end
-    end
-    -- vim.notify_once("temp" .. vim.inspect(temp))
-    -- transform array into list
-    local harpoons = {} ---@type string[]
-    for index = 1, #temp do
-        table.insert(harpoons, temp[index])
-    end
-    -- vim.notify_once("harpoons" .. vim.inspect(harpoons))
 
-    return table.concat(harpoons)
+    local list = {} ---@type LualineHarpoonItem[]
+    for _, items in pairs(hmap) do
+        if #items > 1 then
+            vim.notify("harpoon duplicate resolve unexpectedly failed", vim.log.levels.WARN)
+        end
+        list[#list + 1] = items[1]
+    end
+
+    table.sort(list, function(a, b)
+        -- sort by index
+        return a[1] < b[1]
+    end)
+
+    local items = vim.tbl_map(function(item)
+        ---@diagnostic disable-next-line: unused-local
+        local index, label, parent, fullpath = unpack(item)
+        if current_fpath == fullpath then
+            return string.format("%%#HarpoonNumberActive#  %d. %%#HarpoonActive#%s  ", index, label)
+        else
+            return string.format("%%#HarpoonNumberInactive#  %d. %%#HarpoonInactive#%s  ", index, label)
+        end
+    end, list)
+
+    return table.concat(items)
 end
 
 local nord = require("utils.nord")

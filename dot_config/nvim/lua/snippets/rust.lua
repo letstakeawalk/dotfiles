@@ -460,6 +460,20 @@ local function tokio_main()
         { body = i(1, "todo!();") }
     )
 end
+local function tokio_test_fn()
+    return fmta(
+        [[
+        #[tokio::test]
+        async fn <>() {
+            <>
+        }
+        ]],
+        {
+            i(1, "feature"),
+            i(2, "todo!()"),
+        }
+    )
+end
 local function incl_proto()
     return fmt(
         [[
@@ -744,15 +758,16 @@ return {
     s("terror", fmta("tracing::error!(<>)", { i(1) })),
 
     -- tokio
-    s("tokiomain",  tokio_main()), -- choice node for main function or just attribute
+    s({ trig = "tmain", desc = "Tokio main" },  tokio_main()), -- choice node for main function or just attribute
+    s({ trig = "ttfn", desc = "Tokio test fn" }, tokio_test_fn()),
 
     -- gRPC + Protobuf snippets
     s("incl_proto", incl_proto()), -- choice node to include server/client imports
     s("tonicasync", tonic_async()),
 
     -- Axum + Mongodb
-    s("mongomodel",         mongo_model()),
-    s("crudhandlers_mongo", crudhandlers_mongo()),
+    -- s("mongomodel",         mongo_model()),
+    -- s("crudhandlers_mongo", crudhandlers_mongo()),
 
     -- other
     s("use_prelude", t("use crate::prelude::*;")),

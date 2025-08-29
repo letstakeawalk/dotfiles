@@ -101,6 +101,7 @@ set("v", "<A-h>",    ":m '<-2<CR>gv=gv",    { desc = "Move line up" })
 set("n", "<leader>dm", "<cmd>message<cr>", { desc = "Messages" })
 set("n", "<leader>dM", "<cmd>Redir message<cr>", { desc = "Redir Messages" })
 set("n", "<leader>dn", function()
+    vim.wo.signcolumn = "yes"
     vim.wo.relativenumber = not vim.wo.relativenumber
     vim.wo.number = not vim.wo.number
 end, { desc = "Display Numbers" })

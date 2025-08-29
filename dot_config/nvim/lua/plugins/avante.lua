@@ -182,7 +182,10 @@ return {
                 name = "commit",
                 description = "Write commit message",
                 details = "Generates concise commit message",
-                prompt = "Write me commit message for staged changes with commitzen convention. Keep the title under 50 characters and wrap message at 72 characters. Format as a gitcommit code block. I only want the commit message. Do not attempt to run git commit command.",
+                prompt = [[ Write me commit message for staged changes with commitzen convention.
+                            Keep the title under 50 characters and wrap message at 72 characters. 
+                            Format as a gitcommit code block. I only want the commit message. Do not attempt to run git commit command. 
+                            Wrap the whole message in code block with language gitcommit. ]],
             },
         },
     },

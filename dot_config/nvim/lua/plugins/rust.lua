@@ -20,11 +20,16 @@ return {
                         local bufopts = function(desc)
                             return { noremap = true, silent = true, buffer = bufnr, desc = desc }
                         end
-                        vim.keymap.set("n", "<leader>cr", "<cmd>RustLsp runnables<cr>", bufopts("Runnable"))
-                        vim.keymap.set("n", "<leader>cm", "<cmd>RustLsp expandMacro<cr>", bufopts("Expand macro"))
+                        vim.keymap.set("n", "<leader>rr", "<cmd>RustLsp runnables<cr>", bufopts("Runnable (RustLsp)"))
+                        vim.keymap.set(
+                            "n",
+                            "<leader>rm",
+                            "<cmd>RustLsp expandMacro<cr>",
+                            bufopts("Expand macro (RustLsp)")
+                        )
                         vim.keymap.set("n", "<leader>og", "<cmd>RustLsp crateGraph<cr>", bufopts("Crate graph"))
                         vim.keymap.set("n", "<leader>od", "<cmd>RustLsp openDocs<cr>", bufopts("Open docs.rs"))
-                        vim.keymap.set("n", "<leader>oc", "<cmd>RuspLsp openCargo<cr>", bufopts("Open Cargo.toml"))
+                        vim.keymap.set("n", "<leader>oc", "<cmd>RustLsp openCargo<cr>", bufopts("Open Cargo.toml"))
                         vim.keymap.set("n", "gm", "<cmd>RustLsp parentModule<cr>", bufopts("Open parent module"))
                         vim.keymap.set(
                             "n",
@@ -32,8 +37,13 @@ return {
                             "<cmd>RustLsp ssr<cr>",
                             bufopts("Search & Replace (rustaceanvim)")
                         )
-                        vim.keymap.set("n", "<leader>rh", "<cmd>RustLsp moveItem up<cr>", bufopts("Move item up"))
-                        vim.keymap.set("n", "<leader>rk", "<cmd>RustLsp moveItem down<cr>", bufopts("Move item down"))
+                        vim.keymap.set("n", "<leader>rH", "<cmd>RustLsp moveItem up<cr>", bufopts("Move item up"))
+                        vim.keymap.set("n", "<leader>rK", "<cmd>RustLsp moveItem down<cr>", bufopts("Move item down"))
+                        table.insert(
+                            ---@diagnostic disable-next-line: undefined-field
+                            _G.MiniClue.config.clues,
+                            { desc = "Open (RustLsp)", keys = "<leader>o", mode = "n" }
+                        )
                     end,
                     capabilities = {
                         offsetEncoding = { "utf-16" },
@@ -75,8 +85,8 @@ return {
                 },
                 completion = {
                     blink = {
-                        enabled = true
-                    }
+                        enabled = true,
+                    },
                 },
             })
 

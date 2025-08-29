@@ -106,31 +106,31 @@ vim.keymap.set("n", "<leader>in", "<cmd>NullLsInfo<cr>", { desc = "Null-ls Info"
 vim.api.nvim_create_autocmd("LspAttach", {
     desc = "Keymaps for LSP",
     -- stylua: ignore
-    callback = function()
-        vim.keymap.set("n",          "H",          vim.lsp.buf.signature_help, { desc = "Display Signature Help" })
-        vim.keymap.set("n",          "K",          vim.lsp.buf.hover,          { desc = "Display Hover Info" })
-        vim.keymap.set({ "n", "v" }, "<leader>ra", vim.lsp.buf.code_action,    { desc = "Code Action" })
-        vim.keymap.set({ "n", "v" }, "<leader>rf", async_format,               { desc = "Format File" })
-        vim.keymap.set("n",          "<leader>rn", vim.lsp.buf.rename,         { desc = "Rename" })
-        vim.keymap.set("n",          "<leader>dD", toggle_diagnostic,          { desc = "Diagnostic Toggle" })
-        vim.keymap.set("n",          "<leader>dd", toggle_virt_diagnostic,     { desc = "Diagnostic (virtual) Toggle" })
-        vim.keymap.set("n",          "<leader>dh", toggle_inlay_hint,          { desc = "InlayHint Toggle" })
-        vim.keymap.set("n",          "E",          vim.diagnostic.open_float,  { desc = "Open Float" })
-        vim.keymap.set("i",          "<C-k>",      toggle_signature_float,     { desc = "Signature Toggle" })
-        vim.keymap.set("i",          "<C-s>",      toggle_signature_float,     { desc = "Signature Toggle" })
+    callback = function(args)
+        vim.keymap.set("n",          "H",          vim.lsp.buf.signature_help, { desc = "Display Signature Help",      buffer = args.buf })
+        vim.keymap.set("n",          "K",          vim.lsp.buf.hover,          { desc = "Display Hover Info",          buffer = args.buf })
+        vim.keymap.set({ "n", "v" }, "<leader>ra", vim.lsp.buf.code_action,    { desc = "Code Action",                 buffer = args.buf })
+        vim.keymap.set({ "n", "v" }, "<leader>rf", async_format,               { desc = "Format File",                 buffer = args.buf })
+        vim.keymap.set("n",          "<leader>rn", vim.lsp.buf.rename,         { desc = "Rename",                      buffer = args.buf })
+        vim.keymap.set("n",          "<leader>dD", toggle_diagnostic,          { desc = "Diagnostic Toggle",           buffer = args.buf })
+        vim.keymap.set("n",          "<leader>dd", toggle_virt_diagnostic,     { desc = "Diagnostic (virtual) Toggle", buffer = args.buf })
+        vim.keymap.set("n",          "<leader>dh", toggle_inlay_hint,          { desc = "InlayHint Toggle",            buffer = args.buf })
+        vim.keymap.set("n",          "E",          vim.diagnostic.open_float,  { desc = "Open Float",                  buffer = args.buf })
+        vim.keymap.set("i",          "<C-k>",      toggle_signature_float,     { desc = "Signature Toggle",            buffer = args.buf })
+        vim.keymap.set("i",          "<C-s>",      toggle_signature_float,     { desc = "Signature Toggle",            buffer = args.buf })
 
-        vim.keymap.set("n", "gd", vim.lsp.buf.definition,      { desc = "Goto Definition" })
-        vim.keymap.set("n", "gD", vim.lsp.buf.declaration,     { desc = "Goto Declaration" })
-        vim.keymap.set("n", "gi", vim.lsp.buf.implementation,  { desc = "Goto Implementation" })
-        vim.keymap.set("n", "gr", vim_lsp_buf_references,      { desc = "Goto References" })
-        vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { desc = "Goto Type Definition" })
+        vim.keymap.set("n", "gd", vim.lsp.buf.definition,      { desc = "Goto Definition",      buffer = args.buf })
+        vim.keymap.set("n", "gD", vim.lsp.buf.declaration,     { desc = "Goto Declaration",     buffer = args.buf })
+        vim.keymap.set("n", "gi", vim.lsp.buf.implementation,  { desc = "Goto Implementation",  buffer = args.buf })
+        vim.keymap.set("n", "gr", vim_lsp_buf_references,      { desc = "Goto References",      buffer = args.buf })
+        vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { desc = "Goto Type Definition", buffer = args.buf })
 
         local next_diag, prev_diag = require("nvim-treesitter.textobjects.repeatable_move").make_repeatable_move_pair(
-            function() vim.diagnostic.jump({ count = 1,  float = true }) end,
-            function() vim.diagnostic.jump({ count = -1, float = true }) end
+            function() vim.diagnostic.jump({ count = 1,  severity = { min = vim.diagnostic.severity.WARN }, float = true }) end,
+            function() vim.diagnostic.jump({ count = -1, severity = { min = vim.diagnostic.severity.WARN }, float = true }) end
         )
-        vim.keymap.set("n", "[d", prev_diag, { desc = "Goto previous diagnostic" })
-        vim.keymap.set("n", "]d", next_diag, { desc = "Goto next diagnostic" })
+        vim.keymap.set("n", "[d", prev_diag, { desc = "Goto previous diagnostic", buffer = args.buf})
+        vim.keymap.set("n", "]d", next_diag, { desc = "Goto next diagnostic",     buffer = args.buf})
     end,
 })
 

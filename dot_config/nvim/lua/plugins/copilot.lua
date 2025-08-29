@@ -34,8 +34,8 @@ return {
                 suggestion.toggle_auto_trigger()
             end
             -- stylua: ignore start
-            vim.keymap.set("n", "<leader>cT", "<cmd>Copilot toggle<cr>", { desc = "Copilot Toggle" })
-            vim.keymap.set("n", "<leader>cs", toggle_auto_trigger,       { desc = "Copilot Suggestion Toggle" })
+            vim.keymap.set("n", "<leader>CT", "<cmd>Copilot toggle<cr>", { desc = "Copilot Toggle" })
+            vim.keymap.set("n", "<leader>Cs", toggle_auto_trigger,       { desc = "Copilot Suggestion Toggle" })
             vim.keymap.set("i", "<C-e>",      toggle_auto_trigger,       { desc = "Copilot Suggestion Toggle" })
             vim.keymap.set("i", "<C-y>",      suggestion.accept,         { desc = "Copilot Suggestion Accept" })
             vim.keymap.set("i", "<C-a>",      suggestion.accept_word,    { desc = "Copilot Suggestion Accept (word)" })
@@ -68,14 +68,14 @@ return {
         -- build = "make tiktoken",
         -- stylua: ignore
         keys = {
-            { "<leader>cc", "<cmd>CopilotChatToggle<cr>",   desc = "CopilotChat toggle",   mode = {"n", "v"} },
-            { "<leader>ce", "<cmd>CopilotChatExplain<cr>",  desc = "CopilotChat explain",  mode = {"n", "v"} },
-            { "<leader>cr", "<cmd>CopilotChatReview<cr>",   desc = "CopilotChat review",   mode = {"n", "v"} },
-            { "<leader>cf", "<cmd>CopilotChatFix<cr>",      desc = "CopilotChat fix",      mode = {"n", "v"} },
-            { "<leader>co", "<cmd>CopilotChatOptimize<cr>", desc = "CopilotChat optimize", mode = {"n", "v"} },
-            { "<leader>cd", "<cmd>CopilotChatDocs<cr>",     desc = "CopilotChat docs",     mode = {"n", "v"} },
-            { "<leader>ct", "<cmd>CopilotChatTests<cr>",    desc = "CopilotChat tests",    mode = {"n", "v"} },
-            { "<leader>cC", "<cmd>CopilotChatCommit<cr>",   desc = "CopilotChat commit" },
+            { "<leader>Cc", "<cmd>CopilotChatToggle<cr>",   desc = "CopilotChat toggle",   mode = {"n", "v"} },
+            { "<leader>Ce", "<cmd>CopilotChatExplain<cr>",  desc = "CopilotChat explain",  mode = {"n", "v"} },
+            { "<leader>Cr", "<cmd>CopilotChatReview<cr>",   desc = "CopilotChat review",   mode = {"n", "v"} },
+            { "<leader>Cf", "<cmd>CopilotChatFix<cr>",      desc = "CopilotChat fix",      mode = {"n", "v"} },
+            { "<leader>Co", "<cmd>CopilotChatOptimize<cr>", desc = "CopilotChat optimize", mode = {"n", "v"} },
+            { "<leader>Cd", "<cmd>CopilotChatDocs<cr>",     desc = "CopilotChat docs",     mode = {"n", "v"} },
+            { "<leader>Ct", "<cmd>CopilotChatTests<cr>",    desc = "CopilotChat tests",    mode = {"n", "v"} },
+            { "<leader>CC", "<cmd>CopilotChatCommit<cr>",   desc = "CopilotChat commit" },
         },
         opts = {
             model = "gemini-2.5-pro",

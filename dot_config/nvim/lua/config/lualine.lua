@@ -16,13 +16,16 @@ local function mode()
 end
 
 -- stylua: ignore
-local harpoon_filters = {
+local harpoon_fname_filters = {
     "Cargo.toml", "mod.rs", "lib.rs", "main.rs",
     "init.lua",
     "__init__.py",
     "index.js", "index.jsx", "index.ts", "index.tsx",
     "+page.svelte", "+page.server.js", "+page.server.ts", "+layout.svelte", "+layout.server.js", "+layout.server.ts", "+error.svelte",
     "index.html",
+}
+local harpoon_ft_filters = {
+    ["rs"] = { "^src", "^tests" },
 }
 
 ---@param hmap LualineLabelHarpoonMap
@@ -37,6 +40,15 @@ local function resolve_duplicate_labels(hmap)
                 if parent ~= "." then
                     new_label = vim.fn.fnamemodify(parent, ":t") .. "/" .. label
                     parent = vim.fn.fnamemodify(parent, ":h")
+                end
+                local ext = vim.fn.fnamemodify(new_label, ":e")
+                if harpoon_ft_filters[ext] then
+                    for _, filter in ipairs(harpoon_ft_filters[ext]) do
+                        if new_label:match(filter) then
+                            new_label = vim.fn.fnamemodify(parent, ":t") .. "/" .. new_label
+                            parent = vim.fn.fnamemodify(parent, ":h")
+                        end
+                    end
                 end
                 hmap[new_label] = hmap[new_label] or {}
                 table.insert(hmap[new_label], { index, new_label, parent, fpath })
@@ -63,7 +75,7 @@ local function harpoon_files()
             goto continue
         end
         local label = vim.fn.fnamemodify(fpath, ":t")
-        if vim.tbl_contains(harpoon_filters, label, {}) then
+        if vim.tbl_contains(harpoon_fname_filters, label, {}) then
             label = string.format("%s/%s", vim.fn.fnamemodify(fpath, ":h:t"), label)
         end
         local parent = vim.fn.fnamemodify(fpath, ":h")
@@ -90,7 +102,7 @@ local function harpoon_files()
     local items = vim.tbl_map(function(item)
         ---@diagnostic disable-next-line: unused-local
         local index, label, parent, fullpath = unpack(item)
-        if current_fpath == fullpath then
+        if current_fpath:match(fullpath) then
             return string.format("%%#HarpoonNumberActive#  %d. %%#HarpoonActive#%s  ", index, label)
         else
             return string.format("%%#HarpoonNumberInactive#  %d. %%#HarpoonInactive#%s  ", index, label)

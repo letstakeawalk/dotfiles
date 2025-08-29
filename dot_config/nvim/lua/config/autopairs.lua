@@ -36,7 +36,7 @@ end
 ---@diagnostic disable-next-line: unused-local
 local function fly_mode(open, close)
     return function(opts)
-        -- inline-fly: the current line has closing pair with optional leading spaces
+        -- inline-fly: the current line has closing pair with optional leading spaces from cursor
         local padded_close = opts.line:sub(opts.col, #opts.line):match("^%s*%" .. close) ---@type string?
         if padded_close then
             -- vim.print("inline_fly: replacing_with: `" .. tostring(padded_close) .. "`")
@@ -47,6 +47,12 @@ local function fly_mode(open, close)
             keys = keys .. "<right>"
             -- vim.print("inline_fly: replacing_with: `" .. tostring(keys) .. "`")
             return keys
+        end
+
+        -- if cursor is not at EOL, don't fly
+        local cursor_at_eol = opts.col > #opts.line
+        if not cursor_at_eol then
+            return ""
         end
 
         -- nextline-fly: the next line has closing pair with optional leading spaces

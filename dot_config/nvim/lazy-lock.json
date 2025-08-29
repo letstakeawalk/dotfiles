@@ -1,6 +1,6 @@
 {
   "Comment.nvim": { "branch": "master", "commit": "e30b7f2008e52442154b66f7c519bfd2f1e32acb" },
-  "CopilotChat.nvim": { "branch": "canary", "commit": "451d365928a994cda3505a84905303f790e28df8" },
+  "CopilotChat.nvim": { "branch": "main", "commit": "a6576949e821e7abf9d0135e87576a51ec0e2e68" },
   "LuaSnip": { "branch": "master", "commit": "458560534a73f7f8d7a11a146c801db00b081df0" },
   "aerial.nvim": { "branch": "master", "commit": "c7cbbad40c2065fccfd1f1863bb2c08180c0533d" },
   "avante.nvim": { "branch": "main", "commit": "751e4c0913485f2a40925279037f7b7bd4dcbf67" },
@@ -37,7 +37,6 @@
   "nvim-bqf": { "branch": "main", "commit": "17680cda3538913e88dd4c6456c837db9ace40ae" },
   "nvim-colorizer.lua": { "branch": "master", "commit": "51cf7c995ed1eb6642aecf19067ee634fa1b6ba2" },
   "nvim-hlslens": { "branch": "main", "commit": "95ced18ebaf19c1bdb64982a614ee8a9d7ee8e51" },
-  "nvim-jdtls": { "branch": "master", "commit": "8eee2302598bad61c5674dc04d7e93cfd85f46f6" },
   "nvim-lspconfig": { "branch": "master", "commit": "52364267cd7edbc0e9b25ab3bfb1c8f45dd58fde" },
   "nvim-origami": { "branch": "main", "commit": "44290197c47801b91ea569f1f6d8de8ce8693adb" },
   "nvim-surround": { "branch": "main", "commit": "a868c256c861044beb9794b4dd126480dcdfbdad" },

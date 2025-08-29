@@ -1,6 +1,6 @@
 return {
     {
-        "echasnovski/mini.ai",
+        "nvim-mini/mini.ai",
         event = "BufRead",
         opts = {
             -- Module mappings. Use `''` (empty string) to disable one.
@@ -25,7 +25,7 @@ return {
     },
 
     {
-        "echasnovski/mini.clue",
+        "nvim-mini/mini.clue",
         event = "VeryLazy",
         config = function()
             local miniclue = require("mini.clue")
@@ -122,7 +122,7 @@ return {
     },
 
     {
-        "echasnovski/mini.splitjoin",
+        "nvim-mini/mini.splitjoin",
         event = "BufRead",
         opts = {
             mappings = { toggle = "<leader>rj", split = "", join = "" },

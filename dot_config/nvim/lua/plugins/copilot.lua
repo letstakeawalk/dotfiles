@@ -68,14 +68,14 @@ return {
         -- build = "make tiktoken",
         -- stylua: ignore
         keys = {
-            { "<leader>Cc", "<cmd>CopilotChatToggle<cr>",   desc = "CopilotChat toggle",   mode = {"n", "v"} },
-            { "<leader>Ce", "<cmd>CopilotChatExplain<cr>",  desc = "CopilotChat explain",  mode = {"n", "v"} },
-            { "<leader>Cr", "<cmd>CopilotChatReview<cr>",   desc = "CopilotChat review",   mode = {"n", "v"} },
-            { "<leader>Cf", "<cmd>CopilotChatFix<cr>",      desc = "CopilotChat fix",      mode = {"n", "v"} },
-            { "<leader>Co", "<cmd>CopilotChatOptimize<cr>", desc = "CopilotChat optimize", mode = {"n", "v"} },
-            { "<leader>Cd", "<cmd>CopilotChatDocs<cr>",     desc = "CopilotChat docs",     mode = {"n", "v"} },
-            { "<leader>Ct", "<cmd>CopilotChatTests<cr>",    desc = "CopilotChat tests",    mode = {"n", "v"} },
-            { "<leader>CC", "<cmd>CopilotChatCommit<cr>",   desc = "CopilotChat commit" },
+            { "<leader>cc", "<cmd>CopilotChatToggle<cr>",   desc = "CopilotChat toggle",   mode = {"n", "v"} },
+            { "<leader>ce", "<cmd>CopilotChatExplain<cr>",  desc = "CopilotChat explain",  mode = {"n", "v"} },
+            { "<leader>cr", "<cmd>CopilotChatReview<cr>",   desc = "CopilotChat review",   mode = {"n", "v"} },
+            { "<leader>cf", "<cmd>CopilotChatFix<cr>",      desc = "CopilotChat fix",      mode = {"n", "v"} },
+            { "<leader>co", "<cmd>CopilotChatOptimize<cr>", desc = "CopilotChat optimize", mode = {"n", "v"} },
+            { "<leader>cd", "<cmd>CopilotChatDocs<cr>",     desc = "CopilotChat docs",     mode = {"n", "v"} },
+            { "<leader>ct", "<cmd>CopilotChatTests<cr>",    desc = "CopilotChat tests",    mode = {"n", "v"} },
+            { "<leader>cC", "<cmd>CopilotChatCommit<cr>",   desc = "CopilotChat commit" },
         },
         opts = {
             model = "gemini-2.5-pro",

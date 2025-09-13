@@ -109,22 +109,16 @@ return {
                     vim.keymap.set(mode, lhs, rhs, opts)
                 end
 
+                local make_repeatable_move_pair =
+                    require("nvim-treesitter.textobjects.repeatable_move").make_repeatable_move_pair
+
                 -- stylua: ignore start
-                local next_hunk, prev_hunk = require("nvim-treesitter.textobjects.repeatable_move").make_repeatable_move_pair(
+                local next_hunk, prev_hunk = make_repeatable_move_pair(
                     function() gs.nav_hunk("next", { wrap = false, preview = true }) end,
                     function() gs.nav_hunk("prev", { wrap = false, preview = true }) end
                 )
-                map("n", "]c", function()
-                    if vim.wo.diff then return vim.cmd.normal({ "]c", bang = true }) end
-                    vim.schedule(next_hunk)
-                    return "<Ignore>"
-                end, { desc = "Goto next hunk", expr = true, silent = true })
-
-                map("n", "[c", function()
-                    if vim.wo.diff then return vim.cmd.normal({ "[c", bang = true }) end
-                    vim.schedule(prev_hunk)
-                    return "<Ignore>"
-                end, { desc = "Goto previous hunk", expr = true, silent = true })
+                map("n", "]c", vim.schedule_wrap(next_hunk), { desc = "Goto next hunk", expr = true, silent = true })
+                map("n", "[c", vim.schedule_wrap(prev_hunk), { desc = "Goto previous hunk", expr = true, silent = true })
                 -- stylua: ignore end
 
                 local function toggle_blame_buf()
@@ -143,7 +137,6 @@ return {
                     if not api.nvim_get_option_value("diff", { win = current_window }) then
                         return gs.diffthis()
                     end
-
                     local current_tabpage = api.nvim_get_current_tabpage()
                     for _, win in ipairs(api.nvim_tabpage_list_wins(current_tabpage)) do
                         if api.nvim_get_option_value("diff", { win = win }) then

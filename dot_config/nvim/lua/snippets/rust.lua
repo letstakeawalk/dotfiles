@@ -707,24 +707,25 @@ return {
     s("bset",       c(1, { t("BTreeSet::new()"),   fmt("BTreeSet::from({})",   { i(1, "iterable") }) })),
     s("bheap",      c(1, { t("BinaryHeap::new()"), fmt("BinaryHeap::from({})", { i(1, "iterable") }) })),
     s("deque",      c(1, { t("VecDeque::new()"),   fmt("VecDeque::from({})",   { i(1, "iterable") }) })),
-    s("collect()",  c(1, { t("collect()"),         fmt("collect::<{}>()",      { i(1, "Type") }) })),
-    s("colvec()",   fmt("collect::<Vec<{}>>()",          { i(1, "_") })),
-    s("colmap()",   fmt("collect::<HashMap<{}, {}>>()",  { i(1, "KeyType"), i(2, "ValueType") })),
-    s("colbmap()",  fmt("collect::<BTreeMap<{}, {}>>()", { i(1, "KeyType"), i(2, "ValueType") })),
-    s("colset()",   fmt("collect::<HashSet<{}>>()",      { i(1, "_") })),
-    s("colbset()",  fmt("collect::<BTreeSet<{}>>()",     { i(1, "_") })),
-    s("colheap()",  fmt("collect::<BinaryHeap<{}>>()",   { i(1, "_") })),
-    s("coldeque()", fmt("collect::<VecDeque<{}>>()",     { i(1, "_") })),
+    -- s("collect()",  c(1, { t("collect()"),         fmt("collect::<{}>()",      { i(1, "Type") }) })),
+    -- s("colvec()",   fmt("collect::<Vec<{}>>()",          { i(1, "_") })),
+    -- s("colmap()",   fmt("collect::<HashMap<{}, {}>>()",  { i(1, "KeyType"), i(2, "ValueType") })),
+    -- s("colbmap()",  fmt("collect::<BTreeMap<{}, {}>>()", { i(1, "KeyType"), i(2, "ValueType") })),
+    -- s("colset()",   fmt("collect::<HashSet<{}>>()",      { i(1, "_") })),
+    -- s("colbset()",  fmt("collect::<BTreeSet<{}>>()",     { i(1, "_") })),
+    -- s("colheap()",  fmt("collect::<BinaryHeap<{}>>()",   { i(1, "_") })),
+    -- s("coldeque()", fmt("collect::<VecDeque<{}>>()",     { i(1, "_") })),
 
     -- attributes
     s("derive",   derive(1)),
     s("serde",    fmt("#[serde({})]",    { i(1, "attributes") })),
     s("strum",    fmt("#[strum({})]",    { i(1, "attrs") })),
     s("validate", fmt("#[validate({})]", { i(1, "validator") })),
-    -- diagnostics
+
+    -- allow
     s("deadcode", c(1, { t("#![allow(dead_code)]"), t("#[allow(dead_code)]") })),
     s("unused",   c(1, { t("#![allow(unused)]"), t("#[allow(unused)]") })),
-    s("freedom",  c(1, { t("#![allow(dead_code, unused)]"), t("#[allow(dead_code, unused)]") })),
+    s("freedom",  c(1, { t("#![allow(dead_code, unused_imports, unused_variables)]"), t("#[allow(dead_code, unused_imports, unused_variables)]") })),
 
     -- struct & enum
     s("enum",             enum()),
@@ -740,12 +741,12 @@ return {
     s("impl_from",        impl_from()),
 
     -- control flow
-    s("for",       for_()),
-    s("match",     match()),
-    s("letmatch",  letmatch()),
-    s("ifelse",    ifelse()),
-    s("iflet",     iflet()),
-    s("ifletelse", ifletelse()),
+    -- s("for",       for_()),
+    -- s("match",     match()),
+    -- s("letmatch",  letmatch()),
+    -- s("ifelse",    ifelse()),
+    -- s("iflet",     iflet()),
+    -- s("ifletelse", ifletelse()),
 
     -- test
     -- s("rstmod", rstmod()),
@@ -770,9 +771,10 @@ return {
     -- s("crudhandlers_mongo", crudhandlers_mongo()),
 
     -- other
-    s("use_prelude", t("use crate::prelude::*;")),
-    s("stderror",    box_dyn_error(1)),
-    s("reserr",      result_box_dyn_error(1)),
+    s("use_prelude",  t("use crate::prelude::*;")),
+    s({ trig = "chronoutcnownaive", desc = "chrono utc now naively" }, t("chrono::Utc::now().naive()")),
+    s("boxdynerr",    box_dyn_error(1)),
+    s("resboxdynerr", result_box_dyn_error(1)),
 
     -- etc
     s("lcode_doc", leetcode_docstring())

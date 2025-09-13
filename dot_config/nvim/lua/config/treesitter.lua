@@ -23,6 +23,8 @@ local textobjects = {
             ["i/"] = "@comment.outer",
             ["a="] = "@assignment.lhs",
             ["i="] = "@assignment.rhs",
+            ["a:"] = "@field.name",
+            ["i:"] = "@field.value",
         },
     },
     move = {

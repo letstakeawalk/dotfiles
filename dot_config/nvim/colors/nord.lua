@@ -207,6 +207,7 @@ set(0, "@lsp.typemod.enumMember.defaultLibrary.rust", { link = "Type" })
 set(0, "@lsp.typemod.macro.library.rust",             { link = "Function"})
 set(0, "@lsp.typemod.namespace.library.rust",         { link = "Type"})
 set(0, "@lsp.typemod.string.macro.rust",              { link = "String" })
+set(0, "@lsp.typemod.keyword.controlFlow.rust",       { link = "Keyword" })
 -- set(0, "@unit.rust",                                { fg = nord.c04_wht_dk, italic = true })
 
 -- telescope.nvim

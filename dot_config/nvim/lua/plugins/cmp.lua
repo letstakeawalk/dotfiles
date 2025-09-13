@@ -59,6 +59,7 @@ return {
             ["<C-u>"]  = { "scroll_documentation_up", "fallback" },
             ["<C-d>"]  = { "scroll_documentation_down", "fallback" },
             ["<C-o>"]  = { "show_documentation", "hide_documentation", "fallback" },
+            ["<C-y>"]  = { "select_and_accept", "fallback_to_mappings" },
             ["<Esc>"]  = { "cancel", "fallback" },
             ["<Tab>"]  = { show_if_words_before, "select_and_accept", "fallback_to_mappings" },
         },

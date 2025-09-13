@@ -19,6 +19,7 @@ vim.api.nvim_create_autocmd("FileType", {
         "help",
         "man",
         "query",
+        "harpoon",
     },
     callback = function(ev)
         vim.keymap.set("n", "q", "<cmd>bwipe<cr>", { buffer = ev.buf, silent = true })

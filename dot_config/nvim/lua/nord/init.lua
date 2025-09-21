@@ -1,0 +1,61 @@
+-- stylua: ignore start
+
+local M = {
+    c00d_black  = "#272C36", -- #272C36 --
+    c00_black   = "#2E3440", -- #2E3440 -- background
+    c00b_black  = "#353C4A", -- #353C4A -- statusline, folded
+    c01_gray    = "#3B4252", -- #3B4252 -- cursor line
+    c02_gray    = "#434C5E", -- #434C5E -- visual selection
+    c03_gray    = "#4C566A", -- #4C566A --
+    c03b_gray   = "#616E88", -- #616E88 -- comment, float border, conceal
+    c04d_white  = "#98A2B5", -- #98A2B5 -- unmatched fuzzy result
+    c04_white   = "#D8DEE9", -- #D8DEE9 -- foreground
+    c05_white   = "#E5E9F0", -- #E5E9F0 --
+    c06_white   = "#ECEFF4", -- #ECEFF4 --
+    c07_teal    = "#8FBCBB", -- #8FBCBB --
+    c08_cyan    = "#88C0D0", -- #88C0D0 -- function
+    c09_glacier = "#81A1C1", -- #81A1C1 -- keyword, info
+    c10_blue    = "#5E81AC", -- #5E81AC -- hint, cursearch
+    c11_red     = "#BF616A", -- #BF616A -- error
+    c12_orange  = "#D08770", -- #D08770 --
+    c13_yellow  = "#EBCB8B", -- #EBCB8B -- warn
+    c14_green   = "#A3BE8C", -- #A3BE8C -- string
+    c15_purple  = "#B48EAD", -- #B48EAD -- number
+
+    c07d_jade    = "#729696", -- #729696
+    c08d_cyan    = "#6D9AA6", -- #6D9AA6
+    c09d_glacier = "#67819A", -- #67819A
+    c10d_blue    = "#4B678A", -- #4B678A -- search
+    c10dd_blue   = "#384D67", -- #384D67
+    c11d_red     = "#994E55", -- #994E55
+    c11dd_red    = "#4C272A", -- #4C272A
+    c12d_orange  = "#A66C5A", -- #A66C5A
+    c13d_yellow  = "#BCA26F", -- #BCA26F
+    c14d_green   = "#829870", -- #829870
+    c15d_purple  = "#90728A", -- #90728A
+
+    c07b_mint    = "#A5C9C9", -- #A5C9C9
+    c08b_aqua    = "#A0CDD9", -- #A0CDD9
+    c09b_glacier = "#9AB4CD", -- #9AB4CD
+    c10b_blue    = "#7E9ABD", -- #7E9ABD
+    c11b_red     = "#CC8188", -- #CC8188
+    c12b_orange  = "#D99F8D", -- #D99F8D
+    c13b_yellow  = "#EFD5A2", -- #EFD5A2
+    c14b_green   = "#B5CBA3", -- #B5CBA3
+    c15b_purple  = "#C3A5BD", -- #C3A5BD
+}
+
+M.bg         = M.c00_black
+M.fg         = M.c04_white
+M.visual     = M.c02_gray
+M.comment    = M.c03b_gray
+M.border     = M.c03b_gray
+M.cursorline = M.c01_gray
+M.nontext    = M.c03_gray
+M.error = M.c10_red     -- #BF616A c11 red
+M.warn  = M.c12_yellow  -- #EBCB8B c13 yellow
+M.info  = M.c08_glacier -- #81A1C1 c09 glacier
+M.hint  = M.c9_blue     -- #5E81AC c10 blue
+M.ok    = M.c13_green   -- #A3BE8C c14 green
+
+return M

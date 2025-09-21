@@ -107,8 +107,5 @@ return {
         vim.keymap.set("n", "<leader>h", function()
             leap_to_line(true)
         end, { desc = "Leap upward" })
-
-        -- local nord = require("utils.nord")
-        -- vim.api.nvim_set_hl(0, "LeapLabelPrimary", { fg = nord.c00_blk, bg = nord.c13_ylw, bold = true })
     end,
 }

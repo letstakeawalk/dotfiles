@@ -112,37 +112,37 @@ local function harpoon_files()
     return table.concat(items)
 end
 
-local nord = require("utils.nord")
+local nord = require("nord")
 local theme = {
     normal = {
-        a = { fg = nord.c01_gry, bg = nord.c09_glcr, gui = "bold" },
-        b = { fg = nord.c04_wht, bg = nord.c02_gry },
-        c = { fg = nord.c04_wht_dk, bg = nord.c00_blk_br },
+        a = { fg = nord.c01_gray, bg = nord.c09_glacier, gui = "bold" },
+        b = { fg = nord.c04_white, bg = nord.c02_gray },
+        c = { fg = nord.c04d_white, bg = nord.c00b_black },
     },
     insert = {
-        a = { fg = nord.c01_gry, bg = nord.c04_wht, gui = "bold" },
-        b = { fg = nord.c04_wht, bg = nord.c02_gry },
-        c = { fg = nord.c04_wht_dk, bg = nord.c00_blk_br },
+        a = { fg = nord.c01_gray, bg = nord.c04_white, gui = "bold" },
+        b = { fg = nord.c04_white, bg = nord.c02_gray },
+        c = { fg = nord.c04d_white, bg = nord.c00b_black },
     },
     visual = {
-        a = { fg = nord.c01_gry, bg = nord.c15_prpl, gui = "bold" },
-        b = { fg = nord.c04_wht, bg = nord.c02_gry },
-        c = { fg = nord.c04_wht_dk, bg = nord.c00_blk_br },
+        a = { fg = nord.c01_gray, bg = nord.c15_purple, gui = "bold" },
+        b = { fg = nord.c04_white, bg = nord.c02_gray },
+        c = { fg = nord.c04d_white, bg = nord.c00b_black },
     },
     replace = {
-        a = { fg = nord.c01_gry, bg = nord.c13_ylw, gui = "bold" },
-        b = { fg = nord.c04_wht, bg = nord.c02_gry },
-        c = { fg = nord.c04_wht_dk, bg = nord.c00_blk_br },
+        a = { fg = nord.c01_gray, bg = nord.c13_yellow, gui = "bold" },
+        b = { fg = nord.c04_white, bg = nord.c02_gray },
+        c = { fg = nord.c04d_white, bg = nord.c00b_black },
     },
     command = {
-        a = { fg = nord.c01_gry, bg = nord.c12_orng_br, gui = "bold" },
-        b = { fg = nord.c04_wht, bg = nord.c02_gry },
-        c = { fg = nord.c04_wht_dk, bg = nord.c00_blk_br },
+        a = { fg = nord.c01_gray, bg = nord.c12b_orange, gui = "bold" },
+        b = { fg = nord.c04_white, bg = nord.c02_gray },
+        c = { fg = nord.c04d_white, bg = nord.c00b_black },
     },
     inactive = {
-        a = { fg = nord.c04_wht, bg = nord.c00_blk_dk, gui = "bold" },
-        b = { fg = nord.c04_wht, bg = nord.c00_blk_dk },
-        c = { fg = nord.c04_wht_dk, bg = nord.c00_blk_br },
+        a = { fg = nord.c04_white, bg = nord.c00d_black, gui = "bold" },
+        b = { fg = nord.c04_white, bg = nord.c00d_black },
+        c = { fg = nord.c04d_white, bg = nord.c00b_black },
     },
 }
 
@@ -173,8 +173,8 @@ lualine.setup({
                 symbols = { added = "+", modified = "~", removed = "-" },
                 colored = true,
                 diff_color = {
-                    added = { fg = nord.c14_grn },
-                    modified = { fg = nord.c13_ylw },
+                    added = { fg = nord.c14_green },
+                    modified = { fg = nord.c13_yellow },
                     removed = { fg = nord.c11_red },
                 },
                 padding = { right = 1 },

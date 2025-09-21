@@ -26,15 +26,7 @@ return {
             winblend = 0,
             zindex = 50,
         },
-        highlights = {
-            -- Normal = { guibg = require("utils.nord").bg },
-            -- NormalFloat = { guifg = require("utils.nord").fg, guibg = require("utils.nord").bg },
-            -- FloatBorder = { link = "FloatBorder" },
-        },
+        highlights = {},
         winbar = { enabled = false },
     },
-    -- init = function()
-    --     vim.api.nvim_set_hl(0, "ToggleTerm1FloatBorder", { link = "FloatBorder" })
-    --     vim.api.nvim_set_hl(0, "ToggleTerm1NormalBorder", { link = "FloatBorder" })
-    -- end,
 }

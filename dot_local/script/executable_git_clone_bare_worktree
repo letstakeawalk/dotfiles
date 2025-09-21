@@ -9,6 +9,19 @@
 # -> Clones to a /my-repo directory
 set -e # exit on error
 
+# Check if URL argument is provided
+if [ "$1" = "" ]; then
+    echo "Usage: git clone-worktree <git-url> [directory-name]"
+    echo ""
+    echo "Examples:"
+    echo "  git clone-worktree git@github.com:name/repo.git"
+    echo "  -> Clones to a /repo directory"
+    echo ""
+    echo "  git clone-worktree git@github.com:name/repo.git my-repo"
+    echo "  -> Clones to a /my-repo directory"
+    exit 1
+fi
+
 url=$1
 basename=${url##*/}
 name=${2:-${basename%.*}}

@@ -61,8 +61,8 @@ return {
 
                     { mode = "n", keys = "<leader>a",  desc = "Avante" },
                     { mode = "x", keys = "<leader>a",  desc = "Avante" },
-                    { mode = "n", keys = "<leader>C",  desc = "Copilot" },
-                    { mode = "x", keys = "<leader>C",  desc = "Copilot" },
+                    { mode = "n", keys = "<leader>c",  desc = "Copilot" },
+                    { mode = "x", keys = "<leader>c",  desc = "Copilot" },
                     -- { mode = "n", keys = "<leader>C",  desc = "Commands" },
                     { mode = "n", keys = "<leader>d",  desc = "Display" },
                     { mode = "n", keys = "<leader>g",  desc = "Git" },

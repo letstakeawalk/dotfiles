@@ -112,14 +112,18 @@ return {
                 local make_repeatable_move_pair =
                     require("nvim-treesitter.textobjects.repeatable_move").make_repeatable_move_pair
 
-                -- stylua: ignore start
-                local next_hunk, prev_hunk = make_repeatable_move_pair(
-                    function() gs.nav_hunk("next", { wrap = false, preview = true }) end,
-                    function() gs.nav_hunk("prev", { wrap = false, preview = true }) end
-                )
-                map("n", "]c", vim.schedule_wrap(next_hunk), { desc = "Goto next hunk", expr = true, silent = true })
-                map("n", "[c", vim.schedule_wrap(prev_hunk), { desc = "Goto previous hunk", expr = true, silent = true })
-                -- stylua: ignore end
+                local next_hunk = function()
+                    gs.nav_hunk("next", { wrap = false, preview = false })
+                    -- gs.preview_hunk_inline()
+                end
+                local prev_hunk = function()
+                    gs.nav_hunk("prev", { wrap = false, preview = false })
+                    -- gs.preview_hunk_inline()
+                end
+                next_hunk, prev_hunk = make_repeatable_move_pair(next_hunk, prev_hunk)
+
+                map("n", "]c", next_hunk, { desc = "Goto next hunk" })
+                map("n", "[c", prev_hunk, { desc = "Goto previous hunk" })
 
                 local function toggle_blame_buf()
                     local blame_bufs = vim.tbl_filter(function(buf)
@@ -150,6 +154,8 @@ return {
                     end
                 end
 
+                -- TODO: change this to selection with options instead of input
+                -- ~1 for last commit
                 local function diff()
                     vim.ui.input({ prompt = "Diff against: " }, function(input)
                         gs.diffthis(input)

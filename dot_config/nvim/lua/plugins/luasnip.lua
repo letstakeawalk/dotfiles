@@ -20,8 +20,12 @@ return {
             },
         })
 
-        -- stylua: ignore
-        vim.keymap.set({ "i", "s" }, "<C-_>", function() if ls.choice_active() then ls.change_choice(1) end end)
+        -- refer to ghostty -- `^/ -> ^_`
+        vim.keymap.set({ "i", "s" }, "<C-_>", function()
+            if ls.choice_active() then
+                ls.change_choice(1)
+            end
+        end, { desc = "LuaSnip next choice" })
 
         require("luasnip.loaders.from_lua").load({ paths = { vim.fn.stdpath("config") .. "/lua/snippets" } })
     end,

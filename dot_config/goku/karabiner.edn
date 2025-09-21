@@ -107,13 +107,11 @@
         [:##i                      :!Sclose_bracket]
         [:##o                      :!Sequal_sign]
         [:##p                      :!Ssemicolon]
-        [:##open_bracket           :delete_forward]
-        [:##close_bracket          :!Tk     :!terminals] ;; non-terminal: delete to EOL
-        [:##close_bracket          :vk_none :terminals]  ;; terminal: none
+        [:##open_bracket           :delete_or_backspace]
+        [:##close_bracket          :!Odelete_or_backspace] ;; del word forward
+        ; [:##close_bracket          :!Tk     :!terminals] ;; non-terminal: delete to EOL
+        ; [:##close_bracket          :vk_none :terminals]  ;; terminal: none
         [:##backslash              :vk_none]
-        ; [:##a                      :vk_none] ;; coding-layer activation key
-        ; [:##a                      ["symbols" 1] ["symbols" 0] {:alone :a}]
-        ; [:##a                      ["symbols" 0] ["symbols" 1] {:alone :a}]
         [:##s                      :!S1]
         [:##d                      :!S2]
         [:##f                      :!S3]
@@ -148,7 +146,7 @@
         [:##0                      :vk_none]
         [:##hyphen                 :vk_none]
         [:##equal_sign             :vk_none]
-        [:##delete_or_backspace    :vk_none]
+        [:##delete_or_backspace    :delete_or_backspace]
         [:##spacebar               :spacebar]
         [:##left_command           :left_command]
         [:##left_control           :left_control]
@@ -239,8 +237,8 @@
         [:##i                      :!Tu]
         [:##o                      :!Ty]
         [:##p                      :!Tsemicolon]
-        [:##open_bracket           :!Topen_bracket]
-        [:##close_bracket          :!Tclose_bracket]
+        [:##open_bracket           :delete_forward]
+        [:##close_bracket          :!Odelete_forward]
         [:##backslash              :!Tbackslash]
         [:##a                      :!Ta]
         [:##s                      :!Tr]
@@ -277,7 +275,7 @@
         [:##0                      :!T0]
         [:##hyphen                 :!Thyphen]
         [:##equal_sign             :!Tequal_sign]
-        [:##delete_or_backspace    :!Tdelete_or_backspace]
+        [:##delete_or_backspace    :delete_forward]
         [:##spacebar               :!Tspacebar]
       ]
     } ;; end of caps lock

@@ -79,8 +79,10 @@ set("n", "<<", "<h",       { desc = "Indent -1 level" })
 set("n", ">>", ">l",       { desc = "Indent +1 level" })
 set("v", "<", "<gv",       { desc = "Indent -1 level" })
 set("v", ">", ">gv",       { desc = "Indent +1 level" })
-set("s",          "<BS>",   "<BS>i") -- delete selection and stay in INSERT
-set({ "i", "c" }, "<A-BS>", "<C-w>") -- delete word
+set({ "i", "c" }, "<A-BS>",  "<C-w>",   { desc = "Delete word" }) -- delete word
+set({ "i", "c" }, "<A-Del>", "<C-o>dw", { desc = "Delete word forward" })
+set("i",          "<C-l>",   "<Del>",   { desc = "Delete forward" })
+set("s",          "<BS>",    "<BS>i",   { desc = "Delete selection and stay in I-mode" })
 set("n", "J", "mzJ`z", { desc = "Join lines" }) -- join lines while preservig cursor pos
 set("x", "p", '"_dP') -- keep copied text in register w/o overriding when pasting/replacing -- "greatest remap ever" by theprimeage
 set("n", "<A-down>", ":m .+1<CR>==",        { desc = "Move line below" })
@@ -225,13 +227,11 @@ local function close_qfloclist()
     quicker.close()
     quicker.close({ loclist = true })
 end
--- stylua: ignore start
 set("n", "<leader>xx", toggle_workspace_diagnostic, { desc = "Workspace diagnostics" })
-set("n", "<leader>xd", toggle_buffer_diagostic,    { desc = "Buffer diagnostics" })
-set("n", "<leader>xc", close_qfloclist,       { desc = "Close qfloclist" })
-set("n", "<leader>xq", vim.cmd.copen,         { desc = "Open qflist" })
-set("n", "<leader>xl", vim.cmd.lopen,         { desc = "Open loclist" })
--- stylua: ignore end
+set("n", "<leader>xd", toggle_buffer_diagostic, { desc = "Buffer diagnostics" })
+set("n", "<leader>xc", close_qfloclist, { desc = "Close qfloclist" })
+set("n", "<leader>xq", vim.cmd.copen, { desc = "Open qflist" })
+set("n", "<leader>xl", vim.cmd.lopen, { desc = "Open loclist" })
 
 local make_repeatable_move_pair = require("nvim-treesitter.textobjects.repeatable_move").make_repeatable_move_pair
 local function with_warning(cmd)
@@ -266,6 +266,24 @@ set("n", "]q", cnext, { desc = "Goto next qflist" })
 set("n", "[q", cprev, { desc = "Goto previous qflist" })
 set("n", "]l", lnext, { desc = "Goto next loclist" })
 set("n", "[l", lprev, { desc = "Goto previous loclist" })
+
+-- Control + Enter
+set("i", "<C-CR>", function()
+    vim.notify("control enter pressed", vim.log.levels.ERROR)
+end, { desc = "Control Enter" })
+-- Shift + Enter  (refer to ghostty config)
+set("i", "<ESC><CR>", function()
+    vim.notify("shift enter pressed", vim.log.levels.ERROR)
+end, { desc = "Shift Enter" })
+set("n", "<C-'>", function()
+    vim.notify("control ' pressed", vim.log.levels.ERROR)
+end)
+set("n", "<C-;>", function()
+    vim.notify("control ; pressed", vim.log.levels.ERROR)
+end)
+set("n", "<C-_>", function()
+    vim.notify("control ; pressed", vim.log.levels.ERROR)
+end)
 
 -- disable defaults
 del("n", "grn")

@@ -52,10 +52,10 @@ M.comment    = M.c03b_gray
 M.border     = M.c03b_gray
 M.cursorline = M.c01_gray
 M.nontext    = M.c03_gray
-M.error = M.c10_red     -- #BF616A c11 red
-M.warn  = M.c12_yellow  -- #EBCB8B c13 yellow
-M.info  = M.c08_glacier -- #81A1C1 c09 glacier
-M.hint  = M.c9_blue     -- #5E81AC c10 blue
-M.ok    = M.c13_green   -- #A3BE8C c14 green
+M.error = M.c11_red     -- #BF616A c11 red
+M.warn  = M.c13_yellow  -- #EBCB8B c13 yellow
+M.info  = M.c09_glacier -- #81A1C1 c09 glacier
+M.hint  = M.c10_blue     -- #5E81AC c10 blue
+M.ok    = M.c14_green   -- #A3BE8C c14 green
 
 return M

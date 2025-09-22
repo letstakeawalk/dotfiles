@@ -114,10 +114,12 @@ return {
 
                 local next_hunk = function()
                     gs.nav_hunk("next", { wrap = false, preview = false })
+                    vim.cmd("normal! zz")
                     -- gs.preview_hunk_inline()
                 end
                 local prev_hunk = function()
                     gs.nav_hunk("prev", { wrap = false, preview = false })
+                    vim.cmd("normal! zz")
                     -- gs.preview_hunk_inline()
                 end
                 next_hunk, prev_hunk = make_repeatable_move_pair(next_hunk, prev_hunk)

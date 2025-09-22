@@ -237,7 +237,9 @@ local make_repeatable_move_pair = require("nvim-treesitter.textobjects.repeatabl
 local function with_warning(cmd)
     return function()
         local ok, _ = pcall(cmd)
-        if not ok then
+        if ok then
+            vim.cmd("normal! zz")
+        else
             vim.notify("No more items", vim.log.levels.WARN)
         end
     end

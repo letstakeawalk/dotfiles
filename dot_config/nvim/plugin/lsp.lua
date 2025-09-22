@@ -98,6 +98,20 @@ end
 local function toggle_signature_float()
     require("lsp_signature").toggle_float_win()
 end
+local function diag_jump(count)
+    return function()
+        local res = vim.diagnostic.jump({
+            count = count,
+            float = true,
+            severity = { min = vim.diagnostic.severity.WARN },
+        })
+        if res ~= nil then
+            vim.cmd("normal! zz")
+        end
+    end
+end
+local next_diag, prev_diag =
+    require("nvim-treesitter.textobjects.repeatable_move").make_repeatable_move_pair(diag_jump(1), diag_jump(-1))
 
 vim.keymap.set("n", "<leader>il", "<cmd>LspInfo<cr>", { desc = "Lsp Info" })
 vim.keymap.set("n", "<leader>im", "<cmd>Mason<cr>", { desc = "Mason Info" })
@@ -125,10 +139,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
         vim.keymap.set("n", "gr", vim_lsp_buf_references,      { desc = "Goto References",      buffer = args.buf })
         vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { desc = "Goto Type Definition", buffer = args.buf })
 
-        local next_diag, prev_diag = require("nvim-treesitter.textobjects.repeatable_move").make_repeatable_move_pair(
-            function() vim.diagnostic.jump({ count = 1,  severity = { min = vim.diagnostic.severity.WARN }, float = true }) end,
-            function() vim.diagnostic.jump({ count = -1, severity = { min = vim.diagnostic.severity.WARN }, float = true }) end
-        )
         vim.keymap.set("n", "[d", prev_diag, { desc = "Goto previous diagnostic", buffer = args.buf})
         vim.keymap.set("n", "]d", next_diag, { desc = "Goto next diagnostic",     buffer = args.buf})
     end,

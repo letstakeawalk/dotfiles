@@ -24,7 +24,7 @@
     :navigation {:key :tab}
     ;; TODO: VIM mode (insert, normal, visual) with `tos`
     ; :testing {
-    ;   :key :some_key 
+    ;   :key :some_key
     ;   :afterup [
     ;     {:set ["condition-foo" 0]} {:set ["condition-bar" 0]}
     ;   ]
@@ -32,12 +32,13 @@
     ; }
   }
   :simlayers {
-    :symbols {:key :a}
-    :numbers {:key :z}
+    :numbers       {:key :q}
+    :symbols_z     {:key :z}
+    :symbols_slash {:key :slash}
+    :textops       {:key :period}
   }
 
   :main [
-
     { :des "Navigation Layer (Tab)"
       :rules [
         :navigation
@@ -51,8 +52,8 @@
         [:##i                      :page_up]
         [:##o                      :end]
         [:##p                      :vk_none]
-        [:##open_bracket           :delete_or_backspace]
-        [:##close_bracket          :!Odelete_or_backspace]
+        [:##open_bracket           :delete_or_backspace  :apple]
+        [:##close_bracket          :!Odelete_or_backspace :apple]
         [:##backslash              :vk_none]
         [:##a                      :left_control]
         [:##s                      :left_option]
@@ -94,24 +95,23 @@
       ]  ;; end of rules
     } ;; end of navigation
 
-    { :des "Symbols Layer (a)"
+    { :des "Symbols Layer (z)"
       :rules [
-        :symbols
+        :symbols_z
         [:##q                      :vk_none]
         [:##w                      :grave_accent_and_tilde]
         [:##e                      :!Sgrave_accent_and_tilde]
         [:##r                      :backslash]
         [:##t                      :!Sbackslash]
-        [:##y                      :vk_none]
+        [:##y                      :grave_accent_and_tilde]
         [:##u                      :!Sopen_bracket]
         [:##i                      :!Sclose_bracket]
         [:##o                      :!Sequal_sign]
         [:##p                      :!Ssemicolon]
-        [:##open_bracket           :delete_or_backspace]
-        [:##close_bracket          :!Odelete_or_backspace] ;; del word forward
-        ; [:##close_bracket          :!Tk     :!terminals] ;; non-terminal: delete to EOL
-        ; [:##close_bracket          :vk_none :terminals]  ;; terminal: none
+        [:##open_bracket           :delete_or_backspace :apple]
+        [:##close_bracket          :!Odelete_or_backspace :apple] ;; del word forward
         [:##backslash              :vk_none]
+        [:##a                      :vk_none]
         [:##s                      :!S1]
         [:##d                      :!S2]
         [:##f                      :!S3]
@@ -123,7 +123,7 @@
         [:##semicolon              :hyphen]
         [:##quote                  :!Squote]
         [:##return_or_enter        :vk_none]
-        [:##z                      :vk_none]
+        ; [:##z                      :vk_none] ;; symbols-layer activation key
         [:##x                      :!S5]
         [:##c                      :!S6]
         [:##v                      :!S7]
@@ -156,35 +156,96 @@
       ]
     } ;; end of coding layer
 
-    { :des "Numbers Layer (z)"
+    { :des "Symbols Layer (slash)"
+      :rules [
+        :symbols_slash
+        [:##q                      :grave_accent_and_tilde]
+        [:##w                      :!Sgrave_accent_and_tilde]
+        [:##e                      :backslash]
+        [:##r                      :!Sbackslash]
+        [:##t                      :vk_none]
+        [:##y                      :grave_accent_and_tilde]
+        [:##u                      :!Sopen_bracket]
+        [:##i                      :!Sclose_bracket]
+        [:##o                      :!Sequal_sign]
+        [:##p                      :!Ssemicolon]
+        [:##open_bracket           :delete_or_backspace :apple]
+        [:##close_bracket          :!Odelete_or_backspace :apple] ;; del word forward
+        [:##backslash              :vk_none]
+        [:##a                      :!S1]
+        [:##s                      :!S2]
+        [:##d                      :!S3]
+        [:##f                      :!S4]
+        [:##g                      :vk_none]
+        [:##h                      :!Shyphen]
+        [:##j                      :!S9]
+        [:##k                      :!S0]
+        [:##l                      :equal_sign]
+        [:##semicolon              :hyphen]
+        [:##quote                  :!Squote]
+        [:##return_or_enter        :vk_none]
+        [:##z                      :!S5]
+        [:##x                      :!S6]
+        [:##c                      :!S7]
+        [:##v                      :!S8]
+        [:##b                      :vk_none]
+        [:##n                      :open_bracket]
+        [:##m                      :close_bracket]
+        [:##comma                  :!Scomma]
+        [:##period                 :!Speriod]
+        ; [:##slash                  :!Sslash]  ;; symbols-layer activation key
+        [:##grave_accent_and_tilde :vk_none]
+        [:##1                      :vk_none]
+        [:##2                      :vk_none]
+        [:##3                      :vk_none]
+        [:##4                      :vk_none]
+        [:##5                      :vk_none]
+        [:##6                      :vk_none]
+        [:##7                      :vk_none]
+        [:##8                      :vk_none]
+        [:##9                      :vk_none]
+        [:##0                      :vk_none]
+        [:##hyphen                 :vk_none]
+        [:##equal_sign             :vk_none]
+        [:##delete_or_backspace    :delete_or_backspace]
+        [:##spacebar               :spacebar]
+        [:##left_command           :left_command]
+        [:##left_control           :left_control]
+        [:##left_option            :left_option]
+        [:##left_shift             :left_shift]
+        [:##caps_lock              :left_control]
+      ]
+    } ;; end of coding layer
+
+    { :des "Numbers Layer (q)"
       :rules [
         :numbers
-        [:##q                      :vk_none]
-        [:##w                      :vk_none]
-        [:##e                      :vk_none]
-        [:##r                      :vk_none]
-        [:##t                      :vk_none]
+        ; [:##q                      :vk_none] ;; number-layer activation key
+        [:##w                      :!Sequal_sign] ;; plus
+        [:##e                      :hyphen] ;; minus
+        [:##r                      :slash] ;; div
+        [:##t                      :!S8] ;; mul
         [:##y                      :vk_none]
         [:##u                      :7]
         [:##i                      :8]
         [:##o                      :9]
-        [:##p                      :vk_none]
-        [:##open_bracket           :delete_or_backspace]
-        [:##close_bracket          :!Odelete_or_backspace]
+        [:##p                      :!Sequal_sign] ;; plus
+        [:##open_bracket           :delete_or_backspace :apple]
+        [:##close_bracket          :!Odelete_or_backspace :apple]
         [:##backslash              :vk_none]
         [:##a                      :vk_none]
         [:##s                      :vk_none]
         [:##d                      :vk_none]
         [:##f                      :vk_none]
-        [:##g                      :vk_none]
+        [:##g                      :equal_sign] ;; equal
         [:##h                      :vk_none]
         [:##j                      :4]
         [:##k                      :5]
         [:##l                      :6]
-        [:##semicolon              :vk_none]
-        [:##quote                  :vk_none]
-        [:##return_or_enter        :vk_none]
-        ; [:##z                      :vk_none] ;; numbers-layer activation key
+        [:##semicolon              :hyphen] ;; minus
+        [:##quote                  :!S8] ;; mul
+        [:##return_or_enter        :return_or_enter]
+        [:##z                      :vk_none]
         [:##x                      :vk_none]
         [:##c                      :vk_none]
         [:##v                      :vk_none]
@@ -193,7 +254,7 @@
         [:##m                      :1]
         [:##comma                  :2]
         [:##period                 :3]
-        [:##slash                  :vk_none]
+        [:##slash                  :slash] ;; div
         [:##grave_accent_and_tilde :vk_none]
         [:##1                      :vk_none]
         [:##2                      :vk_none]
@@ -208,7 +269,7 @@
         [:##hyphen                 :vk_none]
         [:##equal_sign             :vk_none]
         [:##delete_or_backspace    :vk_none]
-        [:##spacebar               :0 :apple]
+        [:##spacebar               :0]
         [:##left_command           :left_command]
         [:##left_control           :left_control]
         [:##left_option            :left_option]
@@ -219,9 +280,8 @@
 
     { :des "CapsLock - Hold: Control, Alone: Escape, With Cmd: Grave Accent"
       :rules [
-        ; [:caps_lock :left_control nil {:alone :escape}] ;; original
-        [:caps_lock ["ctrl" 1] ["ctrl" 0] {:alone :escape :afterup ["ctrl" 0]}]
-        [:caps_lock ["ctrl" 0] ["ctrl" 1] {:alone :escape}]
+        [:#SOcaps_lock ["ctrl" 1] ["ctrl" 0] {:alone :escape :afterup ["ctrl" 0]}]
+        [:#SOcaps_lock ["ctrl" 0] ["ctrl" 1] {:alone :escape}]
         [:!C##caps_lock     :!Cgrave_accent_and_tilde]
         [:##caps_lock       :vk_none]
         :ctrl
@@ -237,8 +297,8 @@
         [:##i                      :!Tu]
         [:##o                      :!Ty]
         [:##p                      :!Tsemicolon]
-        [:##open_bracket           :delete_forward]
-        [:##close_bracket          :!Odelete_forward]
+        [:##open_bracket           :delete_forward :apple]
+        [:##close_bracket          :!Odelete_forward :apple]
         [:##backslash              :!Tbackslash]
         [:##a                      :!Ta]
         [:##s                      :!Tr]
@@ -280,10 +340,30 @@
       ]
     } ;; end of caps lock
 
-    { :des "Colemak-dhm"
+    {
+      :des "Hyper & Meh"
       :rules [
-        [:##open_bracket  :delete_or_backspace]   ;; [ --> delete char
-        [:##close_bracket :!Odelete_or_backspace] ;; ] --> delete word
+        [:##right_command :!CTOleft_shift] ;; hyper (Shift + Control + Option + Command)
+        [:##right_option  :!TOleft_shift]  ;; meh   (Shift + Control + Option)
+      ]
+    }
+
+    {
+      :des "Text Operations -- Copy, Cut, Paste, Undo"
+      :rules [
+        :textops
+        [:z :!Cz]
+        [:x :!Cx]
+        [:c :!Cc]
+        [:d :!Cv]
+        [:v :!Cv]
+      ]
+    }
+
+    { :des "Colemak-dhm  -- this must come last"
+      :rules [
+        [:##open_bracket  :delete_or_backspace :apple]   ;; [ --> delete char
+        [:##close_bracket :!Odelete_or_backspace :apple] ;; ] --> delete word
 
         :!terminals
         [:!Ti :!Cdelete_or_backspace] ;; ^u --> delete BOL
@@ -380,8 +460,5 @@
         [:#CTOSPm         :h]
       ]
     } ;; end of colemak-dhm
-
-    { :des "Right Command - Hyper" :rules [[:##right_command :!CTOleft_shift]] }
-
   ] ;; end of main
 } ;; end of file

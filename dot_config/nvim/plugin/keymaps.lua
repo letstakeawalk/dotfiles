@@ -70,6 +70,7 @@ set("n", "z4", "zM4zr",    { desc = "Fold level: 4" })
 set("n", "z5", "zM5zr",    { desc = "Fold level: 5" })
 set("n", "zv", "zMzx",     { desc = "Open enough fold" }) -- zMzvzczO
 set("n", "zx", "zMzx",     { desc = "Open enough fold" })
+set("n", "z/", function() vim.lsp.foldclose("comment") end, { desc = "Fold comments" })
 
 -- Editing
 set("i", "<C-d>", "<C-d>", { desc = "Indent -1 level" })

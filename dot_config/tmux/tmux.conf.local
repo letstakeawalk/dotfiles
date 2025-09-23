@@ -484,6 +484,8 @@ set -g other-pane-width 40%
 set -g other-pane-height 25%
 
 # use 256 colors
+# set -g  default-terminal "xterm-ghostty"
+# set -ga terminal-overrides ",xterm-ghostty:RGB"# set-option default-terminal "screen-256color"
 # set-option default-terminal "tmux-256color"
 # set-option default-terminal "xterm-256color"
 

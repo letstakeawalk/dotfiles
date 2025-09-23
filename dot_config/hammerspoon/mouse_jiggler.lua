@@ -1,8 +1,8 @@
 -- Random mouse movement with continuous direction
 local interval = 10 -- seconds between movement sessions
 local movementDuration = 2 -- seconds to move the mouse
-local speed = 100 -- pixels per step (increased for faster movement)
-local stepDelay = 0.008 -- seconds between steps (125 steps/second for smoother movement)
+local speed = 150 -- pixels per step (increased for faster movement)
+local stepDelay = 0.005 -- seconds between steps (200 steps/second for smoother movement)
 local totalSteps = movementDuration / stepDelay
 
 -- Current angle (will change slightly with each step)

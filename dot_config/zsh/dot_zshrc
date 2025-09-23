@@ -12,6 +12,7 @@ export CC=gcc
 export CHEZMOI_SOURCE=$XDG_DATA_HOME/chezmoi
 export DOCKER_CONFIG=$XDG_CONFIG_HOME/docker
 export GITLINT_CONFIG=$XDG_CONFIG_HOME/git/gitlintrc
+export EZA_CONFIG_DIR=$XDG_CONFIG_HOME/eza
 export GOKU_EDN_CONFIG_FILE=$XDG_CONFIG_HOME/goku/karabiner.edn
 export GOPATH=$XDG_DATA_HOME/go
 export HOMEBREW_BUNDLE_FILE=$XDG_CONFIG_HOME/brewfile/Brewfile
@@ -52,6 +53,21 @@ export PATH=/opt/homebrew/bin:/opt/homebrew/sbin:$PATH # should be last line
 #### homebrew ####################################
 FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 
+#### colors ######################################
+NORD_TEAL="38;2;143;188;187"
+NORD_CYAN="38;2;136;192;208"
+NORD_GLACIER="38;2;129;161;193"
+NORD_BLUE="38;2;94;129;172"
+NORD_RED="38;2;191;97;106"
+NORD_ORANGE="38;2;208;135;112"
+NORD_YELLOW="38;2;235;203;139"
+NORD_GREEN="38;2;163;190;140"
+NORD_PURPLE="38;2;180;142;173"
+# 1: bold,      2: dim,     3: italic, 4: underline, 5: blinkslow,
+# 6: blinkfast, 7: reverse, 8: hidden, 9: strikethrough
+export LS_COLORS="$(vivid generate nord):Cargo.toml=1;${NORD_ORANGE}"
+# export EZA_COLORS="Cargo.toml=1;${NORD_ORANGE}"
+
 #### zinit #######################################
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
@@ -59,11 +75,6 @@ ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 source "${ZINIT_HOME}/zinit.zsh"
 
 #### syntax, completion, suggestions #############
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
-zstyle ':completion:*' menu select
-zstyle ':completion:*' list-colors 'ma=48;2;67;76;94'
-export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense' # optional
 zinit wait lucid for \
  atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay; source <(carapace _carapace)" \
     zdharma-continuum/fast-syntax-highlighting \
@@ -71,6 +82,12 @@ zinit wait lucid for \
     zsh-users/zsh-completions \
  atload"!_zsh_autosuggest_start" \
     zsh-users/zsh-autosuggestions
+
+zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
+zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
+zstyle ':completion:*' menu select
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} \
+    'ma=48;2;67;76;94'
 
 #### vi-mode ####################################
 zinit ice depth=1

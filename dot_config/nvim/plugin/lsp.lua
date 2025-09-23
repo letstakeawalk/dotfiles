@@ -93,7 +93,18 @@ local function toggle_inlay_hint()
     vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
 end
 local function vim_lsp_buf_references()
-    vim.lsp.buf.references({ includeDeclaration = false })
+    vim.lsp.buf.references({ includeDeclaration = false }, {
+        --- jump to the first reference if only one
+        on_list = function(opts)
+            ---@diagnostic disable-next-line: param-type-mismatch
+            vim.fn.setqflist({}, " ", opts)
+            vim.cmd.copen()
+            if #opts.items == 1 then
+                vim.cmd.cfirst()
+                vim.cmd.cclose()
+            end
+        end,
+    })
 end
 local function toggle_signature_float()
     require("lsp_signature").toggle_float_win()

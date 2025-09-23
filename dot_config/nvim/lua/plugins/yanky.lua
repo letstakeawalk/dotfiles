@@ -3,7 +3,7 @@ return {
     -- stylua: ignore
     keys = {
         { "y", "<Plug>(YankyYank)",                     desc = "Yank",         mode = { "n", "x" } },
-        { "p", "<Plug>(YankyPutAfter)",                 desc = "Paste After",  mode = { "n", "x" } },
+        { "p", "<Plug>(YankyPutAfter)",                 desc = "Paste After",  mode = { "n" } },
         { "P", "<Plug>(YankyPutBefore)",                desc = "Paste Before", mode = { "n", "x" } },
         { "gp", "<Plug>(YankyGPutAfter)",               desc = "Paste After",  mode = { "n", "x" } },
         { "gP", "<Plug>(YankyGPutBefore)",              desc = "Paste Before", mode = { "n", "x" } },

@@ -1,3 +1,14 @@
+local commit_prompt = table.concat({
+    "> #git:staged",
+    "",
+    "Write a commit message following the Commitizen convention.",
+    "- Use a short, descriptive title (<50 chars).",
+    "- Add a blank line after the title.",
+    "- Write the body as a bulleted list, each line wrapped at 72 characters.",
+    "- Focus on what and why, not how.",
+    "- Output only a gitcommit-formatted code block.",
+}, "\n")
+
 return {
     {
         "zbirenbaum/copilot.lua",
@@ -78,11 +89,16 @@ return {
             { "<leader>cC", "<cmd>CopilotChatCommit<cr>",   desc = "CopilotChat commit" },
         },
         opts = {
-            model = "gemini-2.5-pro",
+            model = "gpt-4.1",
             mappings = {
                 close = {
                     normal = "q",
                     insert = "<C-q>",
+                },
+            },
+            prompts = {
+                Commit = {
+                    prompt = commit_prompt,
                 },
             },
         },

@@ -1,1 +1,1 @@
-require("mouse_jiggler")
+require("stay_active")

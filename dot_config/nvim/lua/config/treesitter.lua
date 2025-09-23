@@ -142,9 +142,18 @@ require("treesitter-context").setup()
 
 -- Repeat movement with ; and ,
 -- ensure ; goes forward and , goes backward regardless of the last direction
+local function move_center(move)
+    return function()
+        move()
+        vim.cmd("normal! zz")
+    end
+end
+
 local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
-vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next)
-vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous)
+local repeat_last_move_next = ts_repeat_move.repeat_last_move_next
+local repeat_last_move_prev = ts_repeat_move.repeat_last_move_previous
+vim.keymap.set({ "n", "x", "o" }, ";", move_center(repeat_last_move_next))
+vim.keymap.set({ "n", "x", "o" }, ",", move_center(repeat_last_move_prev))
 
 -- Inspect
 vim.keymap.set("n", "<leader>di", "<cmd>Inspect<cr>", { desc = "Inspect TS node" })

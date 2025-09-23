@@ -4,16 +4,28 @@ return {
     cmd = "Telescope aerial",
     keys = {
         { "<leader>da", "<cmd>AerialToggle!<cr>", desc = "Aerial" },
-        { "]s", "<cmd>AerialNext<cr>", desc = "Goto next aerial symbol" },
-        { "[s", "<cmd>AerialPrev<cr>", desc = "Goto previous aerial symbol" },
+        { "]s", desc = "Goto next aerial symbol" },
+        { "[s", desc = "Goto previous aerial symbol" },
+        { "]S", desc = "Goto next aerial symbol (up)" },
+        { "[S", desc = "Goto previous aerial symbol (up)" },
     },
     opts = {
         backends = { "lsp", "treesitter", "markdown", "man" },
         layout = {
-            default_direction = "prefer_right",
+            default_direction = "prefer_left",
+            placement = "edge", -- edge | window
+            max_width = { 30, 0.2 },
             min_width = 20,
         },
-        on_attach = function()
+        on_attach = function(bufnr)
+            local aerial = require("aerial")
+            local repeat_move = require("nvim-treesitter.textobjects.repeatable_move").make_repeatable_move_pair
+            local next_sym, prev_sym = repeat_move(aerial.next, aerial.prev)
+            local next_sym_up, prev_sym_up = repeat_move(aerial.next_up, aerial.prev_up)
+            vim.keymap.set("n", "]s", next_sym, { desc = "Goto next aerial symbol", buffer = bufnr })
+            vim.keymap.set("n", "[s", prev_sym, { desc = "Goto previous aerial symbol", buffer = bufnr })
+            vim.keymap.set("n", "]S", next_sym_up, { desc = "Goto next aerial symbol (up)", buffer = bufnr })
+            vim.keymap.set("n", "[S", prev_sym_up, { desc = "Goto previous aerial symbol (up)", buffer = bufnr })
             -- vim.keymap.set("n", "{", "<cmd>AerialPrev<cr>", { desc = "AerialPrev" })
             -- vim.keymap.set("n", "}", "<cmd>AerialNext<cr>", { desc = "AerialNext" })
         end,
@@ -80,8 +92,9 @@ return {
                 ["j"] = "actions.left",
                 ["l"] = "actions.right",
                 ["<C-c>"] = "actions.close",
+                ["q"] = "actions.close",
             },
         },
-        post_jump_cmd = "normal! zz10<c-e>",
+        post_jump_cmd = "normal! zz",
     },
 }

@@ -32,10 +32,9 @@
     ; }
   }
   :simlayers {
-    :numbers       {:key :q}
-    :symbols_z     {:key :z}
-    :symbols_slash {:key :slash}
-    :textops       {:key :period}
+    :numbers   {:key :q}
+    :symbols   {:key :a}
+    :symbols_  {:key :semicolon}
   }
 
   :main [
@@ -95,9 +94,9 @@
       ]  ;; end of rules
     } ;; end of navigation
 
-    { :des "Symbols Layer (z)"
+    { :des "Symbols Layer"
       :rules [
-        :symbols_z
+        :symbols
         [:##q                      :vk_none]
         [:##w                      :grave_accent_and_tilde]
         [:##e                      :!Sgrave_accent_and_tilde]
@@ -111,7 +110,7 @@
         [:##open_bracket           :delete_or_backspace :apple]
         [:##close_bracket          :!Odelete_or_backspace :apple] ;; del word forward
         [:##backslash              :vk_none]
-        [:##a                      :vk_none]
+        ; [:##a                      :vk_none] ;; symbols-layer activation key 
         [:##s                      :!S1]
         [:##d                      :!S2]
         [:##f                      :!S3]
@@ -123,7 +122,7 @@
         [:##semicolon              :hyphen]
         [:##quote                  :!Squote]
         [:##return_or_enter        :vk_none]
-        ; [:##z                      :vk_none] ;; symbols-layer activation key
+        [:##z                      :vk_none] 
         [:##x                      :!S5]
         [:##c                      :!S6]
         [:##v                      :!S7]
@@ -153,12 +152,8 @@
         [:##left_option            :left_option]
         [:##left_shift             :left_shift]
         [:##caps_lock              :left_control]
-      ]
-    } ;; end of coding layer
 
-    { :des "Symbols Layer (slash)"
-      :rules [
-        :symbols_slash
+        :symbols_
         [:##q                      :grave_accent_and_tilde]
         [:##w                      :!Sgrave_accent_and_tilde]
         [:##e                      :backslash]
@@ -181,7 +176,7 @@
         [:##j                      :!S9]
         [:##k                      :!S0]
         [:##l                      :equal_sign]
-        [:##semicolon              :hyphen]
+        ; [:##semicolon              :hyphen] ;; symbols-layer activation key
         [:##quote                  :!Squote]
         [:##return_or_enter        :vk_none]
         [:##z                      :!S5]
@@ -193,7 +188,7 @@
         [:##m                      :close_bracket]
         [:##comma                  :!Scomma]
         [:##period                 :!Speriod]
-        ; [:##slash                  :!Sslash]  ;; symbols-layer activation key
+        [:##slash                  :!Sslash]  
         [:##grave_accent_and_tilde :vk_none]
         [:##1                      :vk_none]
         [:##2                      :vk_none]
@@ -345,18 +340,6 @@
       :rules [
         [:##right_command :!CTOleft_shift] ;; hyper (Shift + Control + Option + Command)
         [:##right_option  :!TOleft_shift]  ;; meh   (Shift + Control + Option)
-      ]
-    }
-
-    {
-      :des "Text Operations -- Copy, Cut, Paste, Undo"
-      :rules [
-        :textops
-        [:z :!Cz]
-        [:x :!Cx]
-        [:c :!Cc]
-        [:d :!Cv]
-        [:v :!Cv]
       ]
     }
 

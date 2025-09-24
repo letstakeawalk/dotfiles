@@ -5,6 +5,10 @@ return {
     config = function()
         local utils = require("nvim-surround.config")
         require("nvim-surround").setup({
+            keymaps = {
+                visual = "<leader>s",
+                visual_line = "<leader>s",
+            },
             surrounds = {
                 -- Generic Type
                 ["g"] = {

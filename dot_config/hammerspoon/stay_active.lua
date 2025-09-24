@@ -65,20 +65,20 @@ ActivityTimer:stop() -- Stop it immediately so it starts in stopped state
 local statusAlert = nil
 
 -- Hotkey to toggle on/off
-hs.hotkey.bind({ "shift", "alt", "ctrl" }, "M", function()
+hs.hotkey.bind({ "shift", "alt", "ctrl" }, "A", function()
     if ActivityTimer:running() then
         ActivityTimer:stop()
         if statusAlert then
             hs.alert.closeSpecific(statusAlert)
             statusAlert = nil
         end
-        print("[" .. os.date("%H:%M:%S") .. "] 💼 STAY ACTIVE STOPPED")
+        print("[" .. os.date("%H:%M:%S") .. "] ☕ STAY ACTIVE STOPPED")
         hs.alert.show("Stopping...", 2)
     else
         ActivityTimer:start()
-        statusAlert = hs.alert.show("Stay Active!!!", 99999) -- Show indefinitely
-        print("[" .. os.date("%H:%M:%S") .. "] 💼 STAY ACTIVE STARTED")
+        statusAlert = hs.alert.show("STAY ACTIVE ☕", 99999) -- Show indefinitely
+        print("[" .. os.date("%H:%M:%S") .. "] ☕ STAY ACTIVE STARTED")
     end
 end)
 
-print("[" .. os.date("%H:%M:%S") .. "] 💼 Stay Active automation loaded (STOPPED)")
+print("[" .. os.date("%H:%M:%S") .. "] ☕ Stay Active automation loaded (STOPPED)")

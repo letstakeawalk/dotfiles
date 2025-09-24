@@ -21,7 +21,6 @@
     :input_ko {:input_source_id "com.apple.inputmethod.Korean.2SetKorean" :language "ko"}
   }
   :layers {
-    :navigation {:key :tab}
     ;; TODO: VIM mode (insert, normal, visual) with `tos`
     ; :testing {
     ;   :key :some_key
@@ -34,66 +33,10 @@
   :simlayers {
     :numbers   {:key :q}
     :symbols   {:key :a}
-    :symbols_  {:key :semicolon}
+    :symbols_  {:key :quote}
   }
 
   :main [
-    { :des "Navigation Layer (Tab)"
-      :rules [
-        :navigation
-        [:##q                      :left_shift]
-        [:##w                      :!Oright_arrow]
-        [:##e                      :vk_none]
-        [:##r                      :vk_none]
-        [:##t                      :!Oleft_arrow]
-        [:##y                      :home]
-        [:##u                      :page_down]
-        [:##i                      :page_up]
-        [:##o                      :end]
-        [:##p                      :vk_none]
-        [:##open_bracket           :delete_or_backspace  :apple]
-        [:##close_bracket          :!Odelete_or_backspace :apple]
-        [:##backslash              :vk_none]
-        [:##a                      :left_control]
-        [:##s                      :left_option]
-        [:##d                      :left_command]
-        [:##f                      :vk_none]
-        [:##g                      :vk_none]
-        [:##h                      :left_arrow]
-        [:##j                      :down_arrow]
-        [:##k                      :up_arrow]
-        [:##l                      :right_arrow]
-        [:##semicolon              :vk_none]
-        [:##quote                  :vk_none]
-        [:##return_or_enter        :vk_none]
-        [:##z                      :vk_none]
-        [:##x                      :vk_none]
-        [:##c                      :vk_none]
-        [:##v                      :page_down]
-        [:##b                      :vk_none]
-        [:##n                      :vk_none]
-        [:##m                      :vk_none]
-        [:##comma                  :vk_none]
-        [:##period                 :vk_none]
-        [:##slash                  :vk_none]
-        [:##grave_accent_and_tilde :vk_none]
-        [:##1                      :vk_none]
-        [:##2                      :vk_none]
-        [:##3                      :vk_none]
-        [:##4                      :vk_none]
-        [:##5                      :vk_none]
-        [:##6                      :vk_none]
-        [:##7                      :vk_none]
-        [:##8                      :vk_none]
-        [:##9                      :vk_none]
-        [:##0                      :vk_none]
-        [:##hyphen                 :vk_none]
-        [:##equal_sign             :vk_none]
-        [:##delete_or_backspace    :vk_none]
-        [:##spacebar               :fn]
-      ]  ;; end of rules
-    } ;; end of navigation
-
     { :des "Symbols Layer"
       :rules [
         :symbols
@@ -176,8 +119,8 @@
         [:##j                      :!S9]
         [:##k                      :!S0]
         [:##l                      :equal_sign]
-        ; [:##semicolon              :hyphen] ;; symbols-layer activation key
-        [:##quote                  :!Squote]
+        [:##semicolon              :hyphen]
+        ; [:##quote                  :!Squote] ;; symbols-layer activation key
         [:##return_or_enter        :vk_none]
         [:##z                      :!S5]
         [:##x                      :!S6]
@@ -275,10 +218,9 @@
 
     { :des "CapsLock - Hold: Control, Alone: Escape, With Cmd: Grave Accent"
       :rules [
-        [:#SOcaps_lock ["ctrl" 1] ["ctrl" 0] {:alone :escape :afterup ["ctrl" 0]}]
-        [:#SOcaps_lock ["ctrl" 0] ["ctrl" 1] {:alone :escape}]
-        [:!C##caps_lock     :!Cgrave_accent_and_tilde]
-        [:##caps_lock       :vk_none]
+        [:!C##caps_lock :!Cgrave_accent_and_tilde]
+        [:##caps_lock ["ctrl" 1] ["ctrl" 0] {:alone :escape :afterup ["ctrl" 0]}]
+        [:##caps_lock ["ctrl" 0] ["ctrl" 1] {:alone :escape}]
         :ctrl
         [:##q                      :!Tq]
         [:##w                      :!Odelete_or_backspace :!terminals] ;; ^w --> delete word
@@ -335,6 +277,65 @@
       ]
     } ;; end of caps lock
 
+    { :des "Navigation & Function Layer (Tab)"
+      :rules [
+        [:##tab ["navigation" 1] ["navigation" 0] {:alone :tab :afterup ["navigation" 0]}]
+        [:##tab ["navigation" 0] ["navigation" 1] {:alone :tab}]
+        :navigation
+        [:##q                      :left_shift]
+        [:##w                      :!Oright_arrow]
+        [:##e                      :vk_none]
+        [:##r                      :vk_none]
+        [:##t                      :!Oleft_arrow]
+        [:##y                      :home]
+        [:##u                      :page_down]
+        [:##i                      :page_up]
+        [:##o                      :end]
+        [:##p                      :vk_none]
+        [:##open_bracket           :delete_or_backspace  :apple]
+        [:##close_bracket          :!Odelete_or_backspace :apple]
+        [:##backslash              :vk_none]
+        [:##a                      :left_control]
+        [:##s                      :left_option]
+        [:##d                      :left_command]
+        [:##f                      :vk_none]
+        [:##g                      :vk_none]
+        [:##h                      :left_arrow]
+        [:##j                      :down_arrow]
+        [:##k                      :up_arrow]
+        [:##l                      :right_arrow]
+        [:##semicolon              :vk_none]
+        [:##quote                  :vk_none]
+        [:##return_or_enter        :vk_none]
+        [:##z                      :vk_none]
+        [:##x                      :vk_none]
+        [:##c                      :vk_none]
+        [:##v                      :page_down]
+        [:##b                      :vk_none]
+        [:##n                      :vk_none]
+        [:##m                      :vk_none]
+        [:##comma                  :vk_none]
+        [:##period                 :vk_none]
+        [:##slash                  :vk_none]
+        [:##grave_accent_and_tilde :vk_none]
+        [:##1                      :vk_none]
+        [:##2                      :vk_none]
+        [:##3                      :vk_none]
+        [:##4                      :vk_none]
+        [:##5                      :vk_none]
+        [:##6                      :vk_none]
+        [:##7                      :vk_none]
+        [:##8                      :vk_none]
+        [:##9                      :vk_none]
+        [:##0                      :vk_none]
+        [:##hyphen                 :vk_none]
+        [:##equal_sign             :vk_none]
+        [:##delete_or_backspace    :vk_none]
+        [:##spacebar               :fn]
+        [:##right_shift            :caps_lock]
+      ]  ;; end of rules
+    } ;; end of navigation
+
     {
       :des "Hyper & Meh"
       :rules [
@@ -343,7 +344,7 @@
       ]
     }
 
-    { :des "Colemak-dhm  -- this must come last"
+    { :des "Colemak-dhm - THIS MUST BE PLACED LAST"
       :rules [
         [:##open_bracket  :delete_or_backspace :apple]   ;; [ --> delete char
         [:##close_bracket :!Odelete_or_backspace :apple] ;; ] --> delete word

@@ -211,6 +211,8 @@ set(0, "@lsp.typemod.string.macro.rust",              { link = "String" })
 set(0, "@lsp.typemod.keyword.controlFlow.rust",       { link = "Keyword" })
 -- set(0, "@unit.rust",                                { fg = nord.c04d_white, italic = true })
 
+set(0, "@string.special.symbol.clojure", { link = "Keyword" })
+
 -- telescope.nvim
 set(0, "TelescopeTitle",          { link = "FloatTitle" })
 set(0, "TelescopeBorder",         { link = "FloatBorder" })

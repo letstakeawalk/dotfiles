@@ -12,6 +12,7 @@ local commit_prompt = table.concat({
 return {
     {
         "zbirenbaum/copilot.lua",
+        -- enabled = false,
         event = "InsertEnter",
         cmd = { "Copilot" },
         opts = {
@@ -28,6 +29,7 @@ return {
                     prev = false,
                 },
             },
+            -- copilot_model = "gpt-4.1",
         },
         config = function(_, opts)
             require("copilot").setup(opts)
@@ -77,6 +79,7 @@ return {
             { "nvim-lua/plenary.nvim" },
         },
         -- build = "make tiktoken",
+        cmd = { "CopilotChat", "CopilotChatModels" },
         -- stylua: ignore
         keys = {
             { "<leader>cc", "<cmd>CopilotChatToggle<cr>",   desc = "CopilotChat toggle",   mode = {"n", "v"} },

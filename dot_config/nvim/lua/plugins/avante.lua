@@ -45,6 +45,7 @@ return {
     "yetone/avante.nvim",
     build = "make",
     event = "VeryLazy",
+    enabled = false,
     version = false, -- Never set this value to "*"! Never!
     -- stylua: ignore start
     keys = {

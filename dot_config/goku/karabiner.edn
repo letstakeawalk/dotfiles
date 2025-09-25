@@ -4,7 +4,7 @@
   :profiles {
     :Default {
         :default true
-        :sim     50     ;; simultaneous_threshold_milliseconds (default: 50)
+        :sim     10     ;; simultaneous_threshold_milliseconds (default: 50)
         :delay   500    ;; to_delayed_action_delay_milliseconds (default: 500)
         :alone   500    ;; to_if_alone_timeout_milliseconds (default: 1000)
         :held    250    ;; to_if_held_down_threshold_milliseconds (default: 500)
@@ -31,7 +31,7 @@
     ; }
   }
   :simlayers {
-    :numbers   {:key :q}
+    :numbers   {:key :z}
     :symbols   {:key :a}
     :symbols_  {:key :quote}
   }
@@ -155,10 +155,10 @@
       ]
     } ;; end of coding layer
 
-    { :des "Numbers Layer (q)"
+    { :des "Numbers Layer"
       :rules [
         :numbers
-        ; [:##q                      :vk_none] ;; number-layer activation key
+        [:##q                      :vk_none]
         [:##w                      :!Sequal_sign] ;; plus
         [:##e                      :hyphen] ;; minus
         [:##r                      :slash] ;; div
@@ -183,7 +183,7 @@
         [:##semicolon              :hyphen] ;; minus
         [:##quote                  :!S8] ;; mul
         [:##return_or_enter        :return_or_enter]
-        [:##z                      :vk_none]
+        ; [:##z                      :vk_none]  ;; number-layer activation key
         [:##x                      :vk_none]
         [:##c                      :vk_none]
         [:##v                      :vk_none]

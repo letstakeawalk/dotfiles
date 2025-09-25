@@ -11,17 +11,17 @@ setopt APPEND_HISTORY        # append to history file (Default)
 setopt HIST_NO_STORE         # Don't store history commands
 setopt HIST_REDUCE_BLANKS    # Remove superfluous blanks from each command line being added to the history.
 
-# Vim Aliases
-alias v=nvim
-alias vi=nvim
-alias vim=nvim
-alias vimdiff='nvim -d'
-alias view='nvim -R'
-alias vdiff=vimdiff
-alias vf=nvimf
-alias vif=nvimf
-alias vimf=nvimf
-alias nvimf='fd --type file --hidden | fzf --preview "bat --color=always -n {1}" --preview-window=right,60% | xargs nvim'
+# LS Colors with Nord theme
+NORD_TEAL="38;2;143;188;187"
+NORD_CYAN="38;2;136;192;208"
+NORD_GLACIER="38;2;129;161;193"
+NORD_BLUE="38;2;94;129;172"
+NORD_RED="38;2;191;97;106"
+NORD_ORANGE="38;2;208;135;112"
+NORD_YELLOW="38;2;235;203;139"
+NORD_GREEN="38;2;163;190;140"
+NORD_PURPLE="38;2;180;142;173"
+export LS_COLORS="$(vivid generate nord):Cargo.toml=1;${NORD_ORANGE}"
 
 # General Aliases
 alias so="source $XDG_CONFIG_HOME/zsh/.zshrc"
@@ -33,6 +33,22 @@ alias mkdir='mkdir -pv' # mkdir: create parent directories
 alias py=python3
 alias doco='docker-compose'
 alias doma='docker-machine'
+alias chez=chezmoi
+alias seshf=sesh_fzf.sh
+alias jqf='fd --type file "json$" | fzf --preview "bat --color=always -n {1}" --preview-window=right,60% | xargs cat | jq "."'
+alias tldrf='tldr --list | fzf --preview "tldr --color always {1}" --preview-window=right,70% | xargs tldr'
+
+# Vim Aliases
+alias v=nvim
+alias vi=nvim
+alias vim=nvim
+alias vimdiff='nvim -d'
+alias view='nvim -R'
+alias vdiff=vimdiff
+alias vf=nvimf
+alias vif=nvimf
+alias vimf=nvimf
+alias nvimf='fd --type file --hidden | fzf --preview "bat --color=always -n {1}" --preview-window=right,60% | xargs nvim'
 
 # Modern CLI Alternatives
 alias find=fd
@@ -49,11 +65,6 @@ alias ltd='eza -a --tree --only-dirs'
 alias la='eza -lhga --git --time-style long-iso --group-directories-first'
 alias ll='eza -lhg --git --time-style long-iso --group-directories-first'
 alias l=ll
-alias chez=chezmoi
-
-# FZF Integration
-alias jqf='fd --type file "json$" | fzf --preview "bat --color=always -n {1}" --preview-window=right,60% | xargs cat | jq "."'
-alias tldrf='tldr --list | fzf --preview "tldr --color always {1}" --preview-window=right,70% | xargs tldr'
 
 # Quick Navigation
 alias config="z $XDG_CONFIG_HOME"
@@ -90,3 +101,17 @@ alias gme='git merge'
 alias gcp='git cherry-pick'
 alias gbi='git bisect'
 alias gbl='git blame'
+
+# Functions
+# Always show ls when changing directories
+function chpwd() {
+    pwd
+    eza --group-directories-first
+}
+
+# Benchmark zsh startup time
+timezsh() {
+    echo "\n--- w/ zshrc vs w/o zshrc ---"
+    shell=${1-$SHELL}
+    hyperfine -N --warmup 5 --max-runs 30 "$shell -i -c exit" "$shell -i -f -c exit"
+}

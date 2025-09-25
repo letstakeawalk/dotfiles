@@ -1,11 +1,3 @@
-# XDG Base Directory Specification
-export XDG_CONFIG_HOME=$HOME/.config
-export XDG_CACHE_HOME=$HOME/.cache
-export XDG_DATA_HOME=$HOME/.local/share
-export XDG_STATE_HOME=$HOME/.local/state
-export XDG_RUNTIME_DIR=$HOME/.cache
-export WORKSPACE=$HOME/Workspace
-
 # Application Configuration
 export BOB_CONFIG=$XDG_DATA_HOME/bob/config.json
 export CARGO_HOME=$XDG_DATA_HOME/cargo
@@ -37,6 +29,19 @@ export STARSHIP_CONFIG=$XDG_CONFIG_HOME/starship/starship.toml
 export TEALDEER_CONFIG_DIR=$XDG_CONFIG_HOME/tealdeer
 export _ZO_DATA_DIR=$XDG_DATA_HOME/zoxide
 
+# Path Configuration
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/X11/bin
+export PATH=$HOME/.local/script:$PATH # custom scripts
+export PATH=$HOME/.local/bin:$PATH # custom bins
+export PATH=$MISE_DATA_DIR/shims:$PATH # mise shims
+export PATH=$CARGO_HOME/bin:$PATH # rust
+export PATH=$RUSTUP_HOME/toolchains/stable-aarch64-apple-darwin/bin:$PATH # rust
+export PATH=$XDG_DATA_HOME/bob/nvim-bin:$PATH # neovim
+export PATH=$XDG_DATA_HOME/nvim/mason/bin:$PATH # lsp, linters, formatters
+# export PATH=/opt/homebrew/opt/llvm/bin:$PATH # llvm
+export PATH=/opt/homebrew/opt/libpq/bin:$PATH
+export PATH=/opt/homebrew/bin:/opt/homebrew/sbin:$PATH # should be last line
+
 # Editor Configuration
 if [[ -n $SSH_CONNECTION ]]; then
   export VISUAL='nvim'
@@ -45,37 +50,3 @@ else
   export VISUAL='nvim'
   export EDITOR='nvim'
 fi
-
-# FZF Configuration
-export FZF_CTRL_T_OPTS="
-  --preview 'bat -n --color=always {}'
-  --bind 'ctrl-/:change-preview-window(up|down|hidden|)'"
-export FZF_CTRL_R_OPTS="--layout=reverse"
-export FZF_DEFAULT_COMMAND="fd --type file --hidden --follow"
-export FZF_DEFAULT_OPTS="
-  --color='fg:#98A2B5,fg+:#98A2B5,fg+:regular,bg+:#434C5E'
-  --color='hl:#D8DEE9,hl:bold,hl+:#D8DEE9,info:#434C5E,border:#616E88'
-  --color='gutter:-1,pointer:bright-blue'
-  --prompt=' ' --pointer=' '"
-export FZF_TMUX_OPTS="-p 50%,50% --reverse"
-
-# History Configuration
-HISTFILE="$XDG_DATA_HOME/zsh_history"
-HISTSIZE=1000000
-HISTORY_IGNORE="(ls|cd|z|eza|exit)*"
-HIST_STAMPS="yyyy-mm-dd"
-
-# Evalcache Configuration
-export ZSH_EVALCACHE_DIR="$XDG_CACHE_HOME/zsh-evalcache"
-
-# LS Colors with Nord theme
-NORD_TEAL="38;2;143;188;187"
-NORD_CYAN="38;2;136;192;208"
-NORD_GLACIER="38;2;129;161;193"
-NORD_BLUE="38;2;94;129;172"
-NORD_RED="38;2;191;97;106"
-NORD_ORANGE="38;2;208;135;112"
-NORD_YELLOW="38;2;235;203;139"
-NORD_GREEN="38;2;163;190;140"
-NORD_PURPLE="38;2;180;142;173"
-export LS_COLORS="$(vivid generate nord):Cargo.toml=1;${NORD_ORANGE}"

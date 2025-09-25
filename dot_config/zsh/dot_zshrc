@@ -1,10 +1,16 @@
+# XDG Base Directory Specification
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_CACHE_HOME=$HOME/.cache
+export XDG_DATA_HOME=$HOME/.local/share
+export XDG_STATE_HOME=$HOME/.local/state
+export XDG_RUNTIME_DIR=$HOME/.cache
+export WORKSPACE=$HOME/Workspace
+
 # Modular ZSH Configuration
 # Source configuration modules
 source "$XDG_CONFIG_HOME/zsh/environment.zsh"
-source "$XDG_CONFIG_HOME/zsh/path.zsh"
 source "$XDG_CONFIG_HOME/zsh/plugins.zsh"
-source "$XDG_CONFIG_HOME/zsh/aliases.zsh"
-source "$XDG_CONFIG_HOME/zsh/functions.zsh"
+source "$XDG_CONFIG_HOME/zsh/shell.zsh"
 
 # Load private configuration if it exists
 if [ -f "$ZDOTDIR/.zshrc.private" ]; then

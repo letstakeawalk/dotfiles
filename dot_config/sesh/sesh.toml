@@ -1,0 +1,7 @@
+[[session]]
+name = "Workspace"
+path = "~/Workspace/"
+
+[[session]]
+name = "Chezmoi"
+path = "~/.local/share/chezmoi/"

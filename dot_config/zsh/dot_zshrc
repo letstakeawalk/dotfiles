@@ -38,7 +38,6 @@ export _ZO_DATA_DIR=$XDG_DATA_HOME/zoxide
 
 #### Path ####################
 export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/X11/bin
-export PATH=/Library/TeX/texbin:$PATH # texlive & mactex
 export PATH=$HOME/.local/script:$PATH # custom scripts
 export PATH=$HOME/.local/bin:$PATH # custom bins
 export PATH=$MISE_DATA_DIR/shims:$PATH # mise shims
@@ -50,29 +49,52 @@ export PATH=$XDG_DATA_HOME/nvim/mason/bin:$PATH # lsp, linters, formatters
 export PATH=/opt/homebrew/opt/libpq/bin:$PATH
 export PATH=/opt/homebrew/bin:/opt/homebrew/sbin:$PATH # should be last line
 
-#### homebrew ####################################
-FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
-
-#### colors ######################################
-NORD_TEAL="38;2;143;188;187"
-NORD_CYAN="38;2;136;192;208"
-NORD_GLACIER="38;2;129;161;193"
-NORD_BLUE="38;2;94;129;172"
-NORD_RED="38;2;191;97;106"
-NORD_ORANGE="38;2;208;135;112"
-NORD_YELLOW="38;2;235;203;139"
-NORD_GREEN="38;2;163;190;140"
-NORD_PURPLE="38;2;180;142;173"
-# 1: bold,      2: dim,     3: italic, 4: underline, 5: blinkslow,
-# 6: blinkfast, 7: reverse, 8: hidden, 9: strikethrough
-export LS_COLORS="$(vivid generate nord):Cargo.toml=1;${NORD_ORANGE}"
-# export EZA_COLORS="Cargo.toml=1;${NORD_ORANGE}"
-
 #### zinit #######################################
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
 [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 source "${ZINIT_HOME}/zinit.zsh"
+
+#### vim ########################################
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+  export VISUAL='nvim'
+  export EDITOR='nvim'
+else
+  export VISUAL='nvim'
+  export EDITOR='nvim'
+fi
+# vi-mode
+ZVM_SYSTEM_CLIPBOARD_ENABLED=true
+ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
+ZVM_VI_INSERT_ESCAPE_BINDKEY=kh
+# ZVM_VI_HIGHLIGHT_FOREGROUND=
+# ZVM_VI_HIGHLIGHT_BACKGROUND=#434C5E
+function zvm_after_init() {
+    bindkey -M   vicmd    k    vi-down-line-or-history
+    bindkey -M   vicmd    h    vi-up-line-or-history
+    bindkey -M   vicmd    j    vi-backward-char
+    bindkey -M   vicmd    l    vi-forward-char
+    bindkey -M   visual   k    vi-down-line-or-history
+    bindkey -M   visual   h    vi-up-line-or-history
+    bindkey -M   visual   j    vi-backward-char
+    bindkey -M   visual   l    vi-forward-char
+    bindkey '^[f' vi-forward-word  # alt + right_arrow
+    bindkey '^[b' vi-backward-word # alt + left_arrow
+    # bindkey -M   viins   '^w'  vi-backward-kill-word
+}
+zinit ice depth=1
+zinit light jeffreytse/zsh-vi-mode
+alias v=nvim
+alias vi=nvim
+alias vim=nvim
+alias vimdiff='nvim -d'
+alias view='nvim -R'
+alias vdiff=vimdiff
+alias vf=nvimf
+alias vif=nvimf
+alias vimf=nvimf
+alias nvimf='fd --type file --hidden | fzf --preview "bat --color=always -n {1}" --preview-window=right,60% | xargs nvim'
 
 #### syntax, completion, suggestions #############
 zinit wait lucid for \
@@ -89,23 +111,26 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} \
     'ma=48;2;67;76;94'
 
-#### vi-mode ####################################
-zinit ice depth=1
-zinit light jeffreytse/zsh-vi-mode
-ZVM_VI_INSERT_ESCAPE_BINDKEY=kh
-function zvm_after_init() {
-    bindkey -M   vicmd    k    vi-down-line-or-history
-    bindkey -M   vicmd    h    vi-up-line-or-history
-    bindkey -M   vicmd    j    vi-backward-char
-    bindkey -M   vicmd    l    vi-forward-char
-    bindkey -M   visual   k    vi-down-line-or-history
-    bindkey -M   visual   h    vi-up-line-or-history
-    bindkey -M   visual   j    vi-backward-char
-    bindkey -M   visual   l    vi-forward-char
-    bindkey -M   viins   '^w'  vi-backward-kill-word
-    bindkey '^[f' vi-forward-word
-    bindkey '^[b' vi-backward-word
-}
+#### evalcache ###################################
+export ZSH_EVALCACHE_DIR="$XDG_CACHE_HOME/zsh-evalcache"
+zinit light mroth/evalcache
+_evalcache zoxide init zsh
+_evalcache starship init zsh
+
+#### fzf #########################################
+zinit ice lucid wait
+zinit snippet OMZP::fzf
+export FZF_CTRL_T_OPTS="
+  --preview 'bat -n --color=always {}'
+  --bind 'ctrl-/:change-preview-window(up|down|hidden|)'"
+export FZF_CTRL_R_OPTS="--layout=reverse" # history
+export FZF_DEFAULT_COMMAND="fd --type file --hidden --follow"
+export FZF_DEFAULT_OPTS="
+  --color='fg:#98A2B5,fg+:#98A2B5,fg+:regular,bg+:#434C5E'
+  --color='hl:#D8DEE9,hl:bold,hl+:#D8DEE9,info:#434C5E,border:#616E88'
+  --color='gutter:-1,pointer:bright-blue'
+  --prompt=' ' --pointer=' '" # 
+export FZF_TMUX_OPTS="-p 50%,50% --reverse"
 
 #### history #####################################
 HISTFILE="$XDG_DATA_HOME/zsh_history"
@@ -124,44 +149,32 @@ setopt APPEND_HISTORY        # append to history file (Default)
 setopt HIST_NO_STORE         # Don't store history commands
 setopt HIST_REDUCE_BLANKS    # Remove superfluous blanks from each command line being added to the history.
 
-#### evalcache ###################################
-export ZSH_EVALCACHE_DIR="$XDG_CACHE_HOME/zsh-evalcache"
-zinit light mroth/evalcache
-_evalcache zoxide init zsh
-_evalcache starship init zsh
-
-# Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export VISUAL='nvim'
-  export EDITOR='nvim'
-else
-  export VISUAL='nvim'
-  export EDITOR='nvim'
-fi
-
-#### fzf #########################################
-zinit ice lucid wait
-zinit snippet OMZP::fzf
-export FZF_CTRL_T_OPTS="
-  --preview 'bat -n --color=always {}'
-  --bind 'ctrl-/:change-preview-window(up|down|hidden|)'"
-export FZF_CTRL_R_OPTS="--layout=reverse" # history
-export FZF_DEFAULT_COMMAND="fd --type file --hidden --follow"
-export FZF_DEFAULT_OPTS="
-  --color='fg:#98A2B5,fg+:#98A2B5,fg+:regular,bg+:#434C5E'
-  --color='hl:#D8DEE9,hl:bold,hl+:#D8DEE9,info:#434C5E,border:#616E88'
-  --color='gutter:-1,pointer:bright-blue'
-  --prompt=' ' --pointer=' '" # 
-export FZF_TMUX_OPTS="-p 50%,50% --reverse"
+#### lscolors ######################################
+# 1: bold, 2: dim, 3: italic, 4: underline, 5: blinkslow, 6: blinkfast, 7: reverse, 8: hidden, 9: strikethrough
+NORD_TEAL="38;2;143;188;187"
+NORD_CYAN="38;2;136;192;208"
+NORD_GLACIER="38;2;129;161;193"
+NORD_BLUE="38;2;94;129;172"
+NORD_RED="38;2;191;97;106"
+NORD_ORANGE="38;2;208;135;112"
+NORD_YELLOW="38;2;235;203;139"
+NORD_GREEN="38;2;163;190;140"
+NORD_PURPLE="38;2;180;142;173"
+export LS_COLORS="$(vivid generate nord):Cargo.toml=1;${NORD_ORANGE}"
+# export EZA_COLORS="Cargo.toml=1;${NORD_ORANGE}"
 
 #### General #####################################
+alias so="source $XDG_CONFIG_HOME/zsh/.zshrc"
 alias c=clear           # clear screen
 alias f=open            # open in MacOS finder
+alias ff=openf
+alias openf='fd --type directory --max-depth 3 | fzf | xargs open'
 # alias dirs='dirs -v'    # disp stack w/ index
 # alias jobs='jobs -l'    # list jobs with process id
 alias mkdir='mkdir -pv' # mkdir: create parent directories
-alias so="source $XDG_CONFIG_HOME/zsh/.zshrc"
-alias ssh="TERM=xterm-256color ssh"
+alias py=python3
+alias doco='docker-compose'
+alias doma='docker-machine'
 
 #### Alternatives ################################
 alias find=fd
@@ -175,29 +188,14 @@ alias lt3='eza -a --tree --level 3'
 alias lt4='eza -a --tree --level 4'
 alias lt5='eza -a --tree --level 5'
 alias ltd='eza -a --tree --only-dirs'
-alias l='eza -lhg --git --time-style long-iso --group-directories-first'
-alias ll='eza -lhg --git --time-style long-iso --group-directories-first'
 alias la='eza -lhga --git --time-style long-iso --group-directories-first'
+alias ll='eza -lhg --git --time-style long-iso --group-directories-first'
+alias l=ll
+alias chez=chezmoi
 
 #### fzf integration #############################
-alias nvimf='fd --type file --hidden | fzf --preview "bat --color=always -n {1}" --preview-window=right,60% | xargs nvim'
 alias jqf='fd --type file "json$" | fzf --preview "bat --color=always -n {1}" --preview-window=right,60% | xargs cat | jq "."'
 alias tldrf='tldr --list | fzf --preview "tldr --color always {1}" --preview-window=right,70% | xargs tldr'
-alias openf='fd --type directory --max-depth 3 | fzf | xargs open'
-
-#### quick edit ##################################
-alias config="z $XDG_CONFIG_HOME"
-alias data="z $XDG_DATA_HOME"
-alias state="z $XDG_STATE_HOME"
-alias cache="z $XDG_CACHE_HOME"
-alias notes="z $OBSIDIAN"
-alias chez=chezmoi
-alias note="z $WORKSPACE/Notes && vim"
-
-#### Homebrew ####################################
-alias brewleaves='brew leaves | xargs brew deps --formula --for-each | sed "s/^.*:/$(tput setaf 4)&$(tput sgr0)/"'
-alias brewdeps='brew list -1 --formula | xargs brew deps --formula --for-each | sed "s/^.*:/$(tput setaf 4)&$(tput sgr0)/"'
-alias brewlist='brew info --json=v2 --installed | jq -r ".formulae[]|select(any(.installed[]; .installed_on_request)).full_name"'
 
 #### Git #########################################
 alias gst='git status'
@@ -229,21 +227,6 @@ alias gcp='git cherry-pick'
 alias gbi='git bisect'
 alias gbl='git blame'
 
-#### Python ######################################
-alias py=python3
-
-#### Docker ######################################
-alias doco='docker-compose'
-alias doma='docker-machine'
-
-#### Neovim ######################################
-alias v=nvim
-alias vi=nvim
-alias vim=nvim
-alias view='nvim -R'
-alias vimdiff='nvim -d'
-alias diff='nvim -d'
-
 #### Sensitive data ##############################
 if [ -f "$ZDOTDIR/.zshrc.private" ]; then
   source $ZDOTDIR/.zshrc.private
@@ -256,6 +239,7 @@ fi
 # always show ls when chpwd
 function chpwd() {
     # emulate -L zsh
+    pwd
     eza --group-directories-first
 }
 

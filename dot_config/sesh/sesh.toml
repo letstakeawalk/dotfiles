@@ -5,3 +5,7 @@ path = "~/Workspace/"
 [[session]]
 name = "Chezmoi"
 path = "~/.local/share/chezmoi/"
+
+[[session]]
+name = "Popup"
+path = "~/Workspace/"

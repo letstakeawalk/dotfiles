@@ -2,7 +2,7 @@
 export FZF_CTRL_T_OPTS="
   --preview 'bat -n --color=always {}'
   --bind 'ctrl-/:change-preview-window(up|down|hidden|)'"
-export FZF_CTRL_R_OPTS="" # "--layout=reverse"
+export FZF_CTRL_R_OPTS="--layout=reverse"
 export FZF_DEFAULT_COMMAND="fd --type file --hidden --follow"
 export FZF_DEFAULT_OPTS="
   --color='fg:#98A2B5,fg+:#98A2B5,fg+:regular,bg+:#434C5E'
@@ -66,5 +66,4 @@ function zvm_after_init() {
 }
 
 source <(starship init zsh)
-source <(zoxide init zsh)
-
+source <(zoxide init zsh) # this must come after compinit

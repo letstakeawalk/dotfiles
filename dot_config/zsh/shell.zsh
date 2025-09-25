@@ -22,6 +22,7 @@ NORD_YELLOW="38;2;235;203;139"
 NORD_GREEN="38;2;163;190;140"
 NORD_PURPLE="38;2;180;142;173"
 export LS_COLORS="$(vivid generate nord):Cargo.toml=1;${NORD_ORANGE}"
+zle_highlight=(paste:none region:none)
 
 # General Aliases
 alias so="source $XDG_CONFIG_HOME/zsh/.zshrc"

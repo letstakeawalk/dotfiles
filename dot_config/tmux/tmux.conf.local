@@ -367,8 +367,7 @@ tmux_conf_copy_to_os_clipboard=false
 # -- this is the place to override or undo settings ----------------------------
 # ------------------------------------------------------------------------------
 set-environment -g TMUX_CONF_LOCAL "$XDG_DATA_HOME/chezmoi/dot_config/tmux/tmux.conf.local"
-set-option -sa terminal-overrides ',alacritty:RGB'  # enable truecolor for alacritty
-
+set-option -g cursor-style bar       # block, underline, or bar
 # window navigation/management
 bind Space last-window
 bind Tab next-layout
@@ -472,9 +471,11 @@ set -g other-pane-height 25%
 
 # use 256 colors
 # set -g  default-terminal "xterm-ghostty"
-# set -ga terminal-overrides ",xterm-ghostty:RGB"# set-option default-terminal "screen-256color"
+# set -sa terminal-overrides ",xterm-ghostty:RGB"
+# set-option default-terminal "screen-256color"
 # set-option default-terminal "tmux-256color"
 # set-option default-terminal "xterm-256color"
+# set-option -sa terminal-overrides ',alacritty:RGB'  # enable truecolor for alacritty
 
 # automatic rename
 setw -g automatic-rename on

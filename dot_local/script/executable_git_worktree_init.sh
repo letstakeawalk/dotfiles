@@ -4,11 +4,11 @@ set -e # exit on error
 
 # Check if name argument is provided
 if [ "$1" = "" ]; then
-    echo "Usage: git init-worktree <directory-name>"
+    echo "Usage: git worktree-init <directory-name>"
     echo ""
     echo "Examples:"
-    echo "  git init-worktree my-project"
-    echo "  -> Creates a new bare repository in /my-project directory"
+    echo "  git worktree-init foo"
+    echo "  -> Creates a new bare repository in ./foo directory"
     exit 1
 fi
 

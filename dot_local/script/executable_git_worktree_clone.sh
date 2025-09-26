@@ -2,23 +2,23 @@
 
 # Examples of call:
 #
-# git_clone_bare_worktree git@github.com:name/repo.git
-# -> Clones to a /repo directory
+# git_worktree_clone.sh <repo-url>
+# -> Clones to a <path/to/directory>
 #
-# git_clone_bare_worktree git@github.com:name/repo.git my-repo
-# -> Clones to a /my-repo directory
+# git_worktree_clone.sh <repo-url> <path/to/directory>
+# -> Clones to a <path/to/directory>
 set -e # exit on error
 
 # Check if URL argument is provided
 if [ "$1" = "" ]; then
-    echo "Usage: git clone-worktree <git-url> [directory-name]"
+    echo "Usage: git worktree-clone <repo-url> [path/to/directory]"
     echo ""
     echo "Examples:"
-    echo "  git clone-worktree git@github.com:name/repo.git"
-    echo "  -> Clones to a /repo directory"
+    echo "  git worktree-clone <repo-url>"
+    echo "  -> Clones to a <repo-name>"
     echo ""
-    echo "  git clone-worktree git@github.com:name/repo.git my-repo"
-    echo "  -> Clones to a /my-repo directory"
+    echo "  git worktree-clone <repo-url> <path/to/directory>"
+    echo "  -> Clones to a <path/to/directory>"
     exit 1
 fi
 

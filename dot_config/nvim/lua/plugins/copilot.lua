@@ -47,8 +47,8 @@ return {
                 suggestion.toggle_auto_trigger()
             end
             -- stylua: ignore start
-            vim.keymap.set("n", "<leader>CT", "<cmd>Copilot toggle<cr>", { desc = "Copilot Toggle" })
-            vim.keymap.set("n", "<leader>Cs", toggle_auto_trigger,       { desc = "Copilot Suggestion Toggle" })
+            vim.keymap.set("n", "<leader>cT", "<cmd>Copilot toggle<cr>", { desc = "Copilot Toggle" })
+            vim.keymap.set("n", "<leader>cs", toggle_auto_trigger,       { desc = "Copilot Suggestion Toggle" })
             vim.keymap.set("i", "<C-e>",      toggle_auto_trigger,       { desc = "Copilot Suggestion Toggle" })
             vim.keymap.set("i", "<C-y>",      suggestion.accept,         { desc = "Copilot Suggestion Accept" })
             vim.keymap.set("i", "<C-a>",      suggestion.accept_word,    { desc = "Copilot Suggestion Accept (word)" })

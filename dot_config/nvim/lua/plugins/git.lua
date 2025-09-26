@@ -1,3 +1,15 @@
+local function git_worktrees()
+    require("telescope").extensions.git_worktree.git_worktrees({
+        layout_config = {
+            height = 20,
+            width = 80,
+        },
+    })
+end
+local function git_worktree_create()
+    require("telescope").extensions.git_worktree.create_git_worktree()
+end
+
 ---@diagnostic disable: param-type-mismatch
 return {
     {
@@ -215,8 +227,8 @@ return {
     {
         "ThePrimeagen/git-worktree.nvim",
         keys = {
-            { "<leader>w", "<cmd>Telescope git_worktree git_worktrees<cr>", desc = "Git worktrees (Telescope)" },
-            { "<leader>gW", "<cmd>Telescope git_worktree create_git_worktrees<cr>", desc = "Create worktree" },
+            { "<leader>w", git_worktrees, desc = "Git worktrees (Telescope)" },
+            { "<leader>W", git_worktree_create, desc = "Create worktree" },
         },
         opts = {
             change_directory_command = "cd", -- default: "cd",

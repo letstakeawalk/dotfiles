@@ -58,6 +58,7 @@ telescope.setup({
     extensions = {
         ["ui-select"] = { require("telescope.themes").get_dropdown() },
         lazy = { mappings = { change_cwd_to_plugin = "" } },
+        fidget = { require("telescope").load_extension("fidget") },
         -- TODO: git worktree window resize
     },
 })

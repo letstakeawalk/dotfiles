@@ -104,9 +104,12 @@ set("v", "<A-h>",    ":m '<-2<CR>gv=gv",    { desc = "Move line up" })
 set("n", "<leader>dm", "<cmd>message<cr>", { desc = "Messages" })
 set("n", "<leader>dM", "<cmd>Redir message<cr>", { desc = "Redir Messages" })
 set("n", "<leader>dn", function()
-    vim.wo.signcolumn = "yes"
-    vim.wo.relativenumber = not vim.wo.relativenumber
-    vim.wo.number = not vim.wo.number
+    local enabled = vim.wo.number
+    vim.wo.number = not enabled
+    vim.wo.relativenumber = not enabled
+    vim.wo.signcolumn = enabled and "no" or "yes"
+    vim.wo.scrolloff = enabled and 0 or 10
+    vim.wo.sidescrolloff = enabled and 0 or 10
 end, { desc = "Display Numbers" })
 set("n", "<leader>dc", function()
     vim.wo.conceallevel = vim.wo.conceallevel == 0 and 2 or 0

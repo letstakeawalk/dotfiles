@@ -112,14 +112,16 @@ return {
                 local make_repeatable_move_pair =
                     require("nvim-treesitter.textobjects.repeatable_move").make_repeatable_move_pair
 
-                local next_hunk = function()
-                    gs.nav_hunk("next", { wrap = false, preview = false })
+                local function center_screen()
                     vim.cmd("normal! zz")
+                end
+
+                local next_hunk = function()
+                    gs.nav_hunk("next", { wrap = false, preview = false }, center_screen)
                     -- gs.preview_hunk_inline()
                 end
                 local prev_hunk = function()
-                    gs.nav_hunk("prev", { wrap = false, preview = false })
-                    vim.cmd("normal! zz")
+                    gs.nav_hunk("prev", { wrap = false, preview = false }, center_screen)
                     -- gs.preview_hunk_inline()
                 end
                 next_hunk, prev_hunk = make_repeatable_move_pair(next_hunk, prev_hunk)
@@ -176,6 +178,7 @@ return {
                 map("n", "<leader>gd", diffthis,                        { desc = "Diff this" })
                 map("n", "<leader>gD", diff,                            { desc = "Diff" })
                 map("n", "<leader>gx", gs.preview_hunk_inline,          { desc = "Toggle deleted" })
+                -- TODO: check callback arg with preview hunk inline
 
                 -- Text object
                 map({ "o", "x" }, "ih", gs.select_hunk, { desc = "Select hunk" })

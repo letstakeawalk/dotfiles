@@ -8,8 +8,9 @@ return {
             labels = "stfneiokhldwmbuyvrgaqpcxzj/STFNEIOKHLDWMBUYVRGAQPCXZJ?",
         })
         -- stylua: ignore start
-        vim.keymap.set({ "n", "x", "o" }, "s",  "<Plug>(leap-forward)",     { desc = "Leap forward" })
-        vim.keymap.set({ "n", "x", "o" }, "S",  "<Plug>(leap-backward)",    { desc = "Leap backward" })
+        vim.keymap.set( "n",              "s",  "<Plug>(leap-forward)",     { desc = "Leap forward" })
+        vim.keymap.set( "n",              "S",  "<Plug>(leap-backward)",    { desc = "Leap backward" })
+        vim.keymap.set( { "x", "o" },     "s",  "<Plug>(leap)",             { desc = "Leap backward" })
         vim.keymap.set({ "n", "x", "o" }, "gs", "<Plug>(leap-from-window)", { desc = "Leap window" })
         -- stylua: ignore end
 

@@ -28,6 +28,7 @@ return {
                     nls.builtins.diagnostics.sqlfluff.with({ extra_args = { "--dialect", "postgres" } }),
                     nls.builtins.formatting.sqlfluff.with({ extra_args = { "--dialect", "postgres" } }),
 
+                    -- nls.builtins.code_actions.gitsigns,
                     -- nls.builtins.formatting.yamlfmt, -- use yaml_ls
                     -- nls.builtins.diagnostics.buf, -- protobuf
                     -- nls.builtins.diagnostics.actionlint, -- github action

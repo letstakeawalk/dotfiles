@@ -25,6 +25,8 @@ local textobjects = {
             ["i="] = "@assignment.rhs",
             ["a:"] = "@field.name",
             ["i:"] = "@field.value",
+            ["aC"] = "@block.outer",
+            ["iC"] = "@block.inner",
         },
     },
     move = {

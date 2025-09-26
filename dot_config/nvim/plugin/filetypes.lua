@@ -6,8 +6,8 @@ vim.filetype.add({
     pattern = {
         [".*%.toml%.tmpl"] = "toml",
         [".*/git/config"] = "gitconfig",
-        [".*/ghostty/config.*"] = "config",
+        [".*/ghostty/config%.tmpl"] = "config",
+        [".*/%.ssh/.*%.sshconfig"] = "sshconfig",
         -- ["%.env%..*"] = "sh",
     },
 })
-

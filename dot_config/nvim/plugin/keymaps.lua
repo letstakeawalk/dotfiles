@@ -119,7 +119,7 @@ set("n", "<leader>ds", function()
     vim.wo.spell = not vim.wo.spell
     vim.notify("Spelling " .. (vim.wo.spell and "Enabled" or "Disabled"))
 end, { desc = "Spelling Toggle" })
-set("n", "<leader>dw", function()
+set("n", "<leader>dW", function()
     vim.wo.wrap = not vim.wo.wrap
     vim.notify("Wrap " .. (vim.wo.wrap and "Enabled" or "Disabled"))
 end, { desc = "Wrap Line Toggle" })

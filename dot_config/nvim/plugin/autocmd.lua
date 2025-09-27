@@ -39,6 +39,21 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     end,
 })
 
+---@diagnostic disable-next-line: param-type-mismatch
+vim.api.nvim_create_autocmd("VimEnter", {
+    desc = "Open Oil file explorer if nvim is started with a directory as the argument.",
+    group = utils.augroup("VimEnter", { clear = true }),
+    callback = function()
+        ---@diagnostic disable-next-line: assign-type-mismatch
+        local dir = vim.fn.argv(0) ---@type string
+        if dir and vim.fn.isdirectory(dir) == 1 then
+            require("oil").open(dir)
+            -- pcall(vim.cmd([[bdelete #]])) -- optional: close the default 'No Name' buffer
+        end
+    end,
+    once = true,
+})
+
 -- Chezmoi: auto add config files to chezmoi source
 vim.api.nvim_create_autocmd("BufWritePost", {
     group = utils.augroup("ChezmoiAdd", { clear = true }),

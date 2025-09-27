@@ -1,5 +1,5 @@
 local function git_worktrees()
-    require("telescope").extensions.git_worktree.git_worktrees({
+    require("telescope").extensions.git_worktree.git_worktree({
         layout_config = {
             height = 20,
             width = 80,
@@ -225,17 +225,35 @@ return {
         },
     },
     {
-        "ThePrimeagen/git-worktree.nvim",
+        "polarmutex/git-worktree.nvim", -- "ThePrimeagen/git-worktree.nvim",
+        version = "^2",
         keys = {
             { "<leader>w", git_worktrees, desc = "Git worktrees (Telescope)" },
             { "<leader>W", git_worktree_create, desc = "Create worktree" },
         },
-        opts = {
-            change_directory_command = "cd", -- default: "cd",
-            update_on_change = true, -- default: true,
-            update_on_change_command = "e .", -- default: "e .",
-            clearjumps_on_change = true, -- default: true,
-            autopush = false, -- default: false,
-        },
+        init = function()
+            vim.g.git_worktree = {
+                change_directory_command = "cd", -- default: "cd",
+                update_on_change = true, -- default: true,
+                update_on_change_command = "e .", -- default: "e .",
+                clearjumps_on_change = true, -- default: true,
+                confirm_telescope_deletions = true,
+                autopush = false, -- default: false,
+            }
+        end,
+        config = function()
+            local Hooks = require("git-worktree.hooks")
+            local config = require("git-worktree.config")
+            local update_on_switch = Hooks.builtins.update_current_buffer_on_switch
+
+            Hooks.register(Hooks.type.SWITCH, function(path, prev_path)
+                vim.notify("Moved from " .. prev_path .. " to " .. path)
+                update_on_switch(path, prev_path)
+            end)
+
+            Hooks.register(Hooks.type.DELETE, function()
+                vim.cmd(config.update_on_change_command)
+            end)
+        end,
     },
 }

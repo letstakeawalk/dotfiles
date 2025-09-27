@@ -76,16 +76,15 @@ vim.api.nvim_create_autocmd("BufWritePost", {
                 end
             end)
         end
-        local notify = require("fidget").notify
         if managed then
             local result = vim.fn.system({ "chezmoi", "add", args.match })
             if vim.v.shell_error == 0 then
-                notify(fname, vim.log.levels.INFO, { key = "Chezmoi", annote = "Chezmoi added" })
+                vim.notify(fname, vim.log.levels.INFO, { key = "Chezmoi", annote = "Chezmoi added" })
             else
-                notify(result, vim.log.levels.ERROR, { key = "Chezmoi", annote = "Chezmoi add failed" })
+                vim.notify(result, vim.log.levels.ERROR, { key = "Chezmoi", annote = "Chezmoi add failed" })
             end
         else
-            notify(fname, vim.log.levels.INFO, { key = "Chezmoi", annote = "Chezmoi add skipped" })
+            vim.notify(fname, vim.log.levels.INFO, { key = "Chezmoi", annote = "Chezmoi add skipped" })
         end
     end,
 })
@@ -100,13 +99,12 @@ vim.api.nvim_create_autocmd("BufWritePost", {
         if vim.tbl_contains(excluded_fts, vim.bo.filetype) then
             return
         end
-        local notify = require("fidget").notify
         local result = vim.fn.system({ "chezmoi", "apply", "--source-path", args.match })
         if vim.v.shell_error == 0 then
             local fname = args.match:gsub(os.getenv("CHEZMOI_SOURCE") .. "/" or "", "")
-            notify(fname, vim.log.levels.INFO, { key = "Chezmoi", annote = "Chezmoi applied" })
+            vim.notify(fname, vim.log.levels.INFO, { key = "Chezmoi", annote = "Chezmoi applied" })
         else
-            notify(result, vim.log.levels.ERROR, { key = "Chezmoi", annote = "Chezmoi apply failed" })
+            vim.notify(result, vim.log.levels.ERROR, { key = "Chezmoi", annote = "Chezmoi apply failed" })
         end
     end,
 })

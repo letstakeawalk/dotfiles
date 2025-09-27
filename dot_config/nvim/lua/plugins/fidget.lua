@@ -11,9 +11,8 @@ return {
             },
         },
         notification = {
-            override_vim_notify = false,
+            override_vim_notify = true,
             window = { winblend = 0, border = "single", x_padding = 0 },
         },
     },
 }
-

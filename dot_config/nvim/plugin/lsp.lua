@@ -1,6 +1,10 @@
 ---@diagnostic disable: redefined-local
 vim.lsp.enable({
+    "ast_grep",
     "biome",
+    "codebook",
+    "docker_language_server",
+    "harper_ls",
     "html",
     "htmx",
     "jsonls",
@@ -14,8 +18,6 @@ vim.lsp.enable({
     "ts_ls",
     "yamlls",
     -- "cssls"
-    -- "docker_compose_language_service"
-    -- "dockerls"
 })
 
 --------------------------------------------------------------------------------

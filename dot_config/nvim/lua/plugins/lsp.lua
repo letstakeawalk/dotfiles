@@ -1,4 +1,5 @@
 return {
+    { "neovim/nvim-lspconfig" },
     {
         "williamboman/mason.nvim",
         cmd = { "Mason" },
@@ -15,36 +16,35 @@ return {
     },
     {
         "nvimtools/none-ls.nvim",
+        dependencies = { "nvimtools/none-ls-extras.nvim" },
         event = "VeryLazy",
         config = function()
             local nls = require("null-ls")
+            local formatting = nls.builtins.formatting
+            local diagnostics = nls.builtins.diagnostics
             nls.setup({
                 debug = false,
                 border = "double",
                 sources = {
-                    nls.builtins.formatting.stylua,
-                    nls.builtins.diagnostics.gitlint,
-                    nls.builtins.formatting.shellharden,
-                    nls.builtins.diagnostics.sqlfluff.with({ extra_args = { "--dialect", "postgres" } }),
-                    nls.builtins.formatting.sqlfluff.with({ extra_args = { "--dialect", "postgres" } }),
+                    require("none-ls.formatting.mdsf"), -- markdown code block
+                    -- require("none-ls.formatting.mdslw"), -- markdown line wrapper
+                    formatting.mdformat, -- markdown
+                    formatting.stylua, -- lua
+                    formatting.shellharden, -- bash
+                    formatting.sqlfluff.with({ extra_args = { "--dialect", "postgres" } }),
+                    diagnostics.sqlfluff.with({ extra_args = { "--dialect", "postgres" } }),
+                    diagnostics.trivy, -- misconfig & vulnerability
+                    -- diagnostics.todo_comments,
+                    -- diagnostics.gitlint,
 
-                    -- nls.builtins.code_actions.gitsigns,
-                    -- nls.builtins.formatting.yamlfmt, -- use yaml_ls
-                    -- nls.builtins.diagnostics.buf, -- protobuf
-                    -- nls.builtins.diagnostics.actionlint, -- github action
-                    -- nls.builtins.diagnostics.ansiblelint, -- ansible
-                    -- nls.builtins.diagnostics.hadolint, -- docker
-                    -- nls.builtins.diagnostics.mypy, -- python
-                    -- nls.builtins.diagnostics.bandit, -- python
-                    -- nls.builtins.formatting.prettier.with({
-                    --     filetypes = { "javascrpit", "typescript", "javascriptreact", "typescriptreact" },
-                    -- }),
-                    -- nls.builtins.formatting.markdownlint.with({
-                    --     extra_args = { "-c", vim.fn.expand("$XDG_CONFIG_HOME") .. "/markdownlint/markdownlint.yaml" },
-                    -- }),
-                    -- mdformat
+                    -- code_actions.gitsigns,
+                    -- diagnostics.buf, -- protobuf
+                    -- diagnostics.actionlint, -- github action
+                    -- diagnostics.ansiblelint, -- ansible
+                    -- diagnostics.hadolint, -- docker
+                    -- diagnostics.mypy, -- python
+                    -- diagnostics.bandit, -- python
                     -- mdslw
-                    -- cbfmt
                     -- hadolint
                 },
             })
@@ -64,5 +64,4 @@ return {
             },
         },
     },
-    { "neovim/nvim-lspconfig" },
 }

@@ -1,3 +1,9 @@
+# Zinit Installation and Setup
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+source "${ZINIT_HOME}/zinit.zsh"
+
 # FZF Configuration
 export FZF_CTRL_T_OPTS="
   --preview 'bat -n --color=always {}'
@@ -10,18 +16,7 @@ export FZF_DEFAULT_OPTS="
   --color='gutter:-1,pointer:bright-blue'
   --prompt=' ' --pointer=' '"
 export FZF_TMUX_OPTS="-p 50%,50%" # "--reverse"
-
-# History Configuration
-HISTFILE="$XDG_DATA_HOME/zsh_history"
-HISTSIZE=1000000
-HISTORY_IGNORE="(ls|cd|z|eza|exit)*"
-HIST_STAMPS="yyyy-mm-dd"
-
-# Zinit Installation and Setup
-ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
-[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
-[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
-source "${ZINIT_HOME}/zinit.zsh"
+zinit light Aloxaf/fzf-tab
 
 # Load plugins with proper wait for performance
 zinit wait lucid for \
@@ -33,11 +28,34 @@ zinit wait lucid for \
     zsh-users/zsh-autosuggestions
 
 # Completion styling
-zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
-zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
-zstyle ':completion:*' menu select
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} \
-    'ma=48;2;67;76;94'
+# disable sort when completing `git checkout`
+zstyle ':completion:*:git-checkout:*' sort false
+# set descriptions format to enable group support
+# NOTE: don't use escape sequences (like '%F{red}%d%f') here, fzf-tab will ignore them
+zstyle ':completion:*:descriptions' format '[%d]'
+# set list-colors to enable filename colorizing
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
+zstyle ':completion:*' menu no
+# preview directory's content with eza when completing cd
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+# custom fzf flags
+# To make fzf-tab follow FZF_DEFAULT_OPTS.
+# NOTE: This may lead to unexpected behavior since some flags break this plugin. See Aloxaf/fzf-tab#455.
+zstyle ':fzf-tab:*' use-fzf-default-opts yes
+zstyle ':fzf-tab:*' default-color ""
+# NOTE: fzf-tab does not follow FZF_DEFAULT_OPTS by default
+zstyle ':fzf-tab:*' fzf-flags --bind=tab:accept 
+# switch group using `<` and `>`
+zstyle ':fzf-tab:*' switch-group '<' '>'
+# # tmux popup
+zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+
+# zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
+# zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
+# zstyle ':completion:*' menu select
+# zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} \
+#     'ma=48;2;67;76;94'
 
 # Vim Mode Configuration
 zinit ice depth=1
@@ -64,6 +82,12 @@ function zvm_after_init() {
     # https://github.com/jeffreytse/zsh-vi-mode?tab=readme-ov-file#execute-extra-commands
     source <(fzf --zsh)
 }
+
+# History Configuration
+HISTFILE="$XDG_DATA_HOME/zsh_history"
+HISTSIZE=1000000
+HISTORY_IGNORE="(ls|cd|z|eza|exit)*"
+HIST_STAMPS="yyyy-mm-dd"
 
 source <(starship init zsh)
 source <(zoxide init zsh) # this must come after compinit

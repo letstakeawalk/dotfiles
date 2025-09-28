@@ -428,6 +428,7 @@ bind -T root  l if -F "#{==:#{pane_mode},tree-mode}" "send l" "send l"  # Right 
 #     "bind -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\\\'  'select-pane -l'"
 
 # popup windows
+set -g popup-border-style fg="#616E88"
 bind n popup -h 90% -w 95% -E -b rounded -S fg='#5E81AC' # temparary popup
 # detach if current session is popup, forward the key if in nvim, do nothing otherwise
 bind -n 'C-\' if-shell "test $(tmux display-message -p '#{session_name}') = 'popup'" { detach-client -s popup } { if-shell "$is_vim" { send-keys 'C-\' } }

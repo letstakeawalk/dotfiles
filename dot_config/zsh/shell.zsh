@@ -35,8 +35,8 @@ alias py=python3
 alias doco='docker-compose'
 alias doma='docker-machine'
 alias chez=chezmoi
-alias seshf=sesh_fzf.sh
-alias tf=sesh_fzf.sh # mnemonic: tmux-fzy
+alias seshf=sesh_fzf
+alias tf=sesh_fzf # mnemonic: tmux-fzy
 alias jqf='fd --type file "json$" | fzf --preview "bat --color=always -n {1}" --preview-window=right,60% | xargs cat | jq "."'
 alias tldrf='tldr --list | fzf --preview "tldr --color always {1}" --preview-window=right,70% | xargs tldr'
 

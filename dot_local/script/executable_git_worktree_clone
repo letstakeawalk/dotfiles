@@ -1,12 +1,5 @@
 #!/usr/bin/env bash
 
-# Examples of call:
-#
-# git_worktree_clone.sh <repo-url>
-# -> Clones to a <path/to/directory>
-#
-# git_worktree_clone.sh <repo-url> <path/to/directory>
-# -> Clones to a <path/to/directory>
 set -e # exit on error
 
 # Check if URL argument is provided

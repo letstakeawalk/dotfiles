@@ -4,7 +4,7 @@ set -e # exit on error
 
 # Check if branch name argument is provided
 if [ "$1" = "" ]; then
-    echo "Usage: git_worktree_add.sh <branch-name> [worktree-path]"
+    echo "Usage: git_worktree_add <branch-name> [worktree-path]"
     echo ""
     echo "Examples:"
     echo "  git worktree-add feature/foo"

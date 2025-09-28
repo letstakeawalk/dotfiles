@@ -436,7 +436,7 @@ bind -n 'C-\' if-shell "test $(tmux display-message -p '#{session_name}') = 'pop
 
 # tmuxessionizer
 # bind s run-shell 'tmux display-popup -w 80 -h 40% -BE tmx session'
-bind s run-shell sesh_fzf.sh
+bind s run-shell sesh_fzf
 
 # sync panes
 bind C-s setw synchronize-panes

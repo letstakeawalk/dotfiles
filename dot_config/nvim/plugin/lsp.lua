@@ -1,3 +1,4 @@
+require("lspconfig")
 ---@diagnostic disable: redefined-local
 vim.lsp.enable({
     "ast_grep",

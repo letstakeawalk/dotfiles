@@ -132,7 +132,7 @@ ap.add_rules({
             return cursor_within_pair and " " or ""
         end)
         :with_del(function(opts)
-            local context = opts.line:sub(opts.col - 2, opts.col + 1) -- `xx|xx`
+            local context = opts.line:sub(opts.col - 2, opts.col + 2) -- `xx|xx`
             local pairs = vim.tbl_map(function(pair) --  "(  )", "{  }", "[  ]"
                 return pair[1] .. "  " .. pair[2]
             end, brackets)

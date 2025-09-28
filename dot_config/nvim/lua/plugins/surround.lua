@@ -39,7 +39,7 @@ return {
                         if ft == "lua" then
                             return { { "function() " }, { " end" } }
                         else
-                            vim.notify("No function-surround defined for " .. ft)
+                            vim.notify("No function-surround defined for " .. ft, vim.log.levels.WARN)
                         end
                     end,
                     -- find = function() return utils.get_selection({ motion = "af" }) end,
@@ -48,7 +48,7 @@ return {
                         if ft == "lua" then
                             return utils.get_selection({ pattern = "function%(.-%).-end" })
                         else
-                            vim.notify("No function-surround defined for " .. ft)
+                            vim.notify("No function-surround defined for " .. ft, vim.log.levels.WARN)
                         end
                     end,
                     delete = function()
@@ -57,7 +57,7 @@ return {
                         if ft == "lua" then
                             pattern = "^(function%(.-%)%s*)().-(%s*end)()$"
                         else
-                            vim.notify("No function-surround defined for " .. ft)
+                            vim.notify("No function-surround defined for " .. ft, vim.log.levels.WARN)
                             pattern = "()()()()"
                         end
                         return utils.get_selections({

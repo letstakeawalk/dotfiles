@@ -162,7 +162,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 local auto_format = true
 vim.keymap.set("n", "<leader>df", function()
     auto_format = not auto_format
-    vim.notify("AutoFormat " .. (auto_format and "Enabled" or "Disabled"))
+    vim.notify("AutoFormat " .. (auto_format and "Enabled" or "Disabled"), vim.log.levels.INFO)
 end, { desc = "AutoFormat Toggle" })
 
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -204,12 +204,12 @@ local function toggle_non_essential_ls()
         local clients = vim.lsp.get_clients({ name = ls })
         if #clients > 0 then
             for _, client in ipairs(clients) do
-                vim.notify(client.name .. " stopped")
+                vim.notify("Spell & Grammar check stopped", vim.log.levels.INFO)
                 client:stop(true)
             end
         else
             vim.cmd("LspStart " .. ls)
-            vim.notify(ls .. " started")
+            vim.notify("Spell & Grammar check started", vim.log.levels.INFO)
         end
     end
 end

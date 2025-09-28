@@ -2,9 +2,7 @@
 vim.lsp.enable({
     "ast_grep",
     "biome",
-    "codebook",
     "docker_language_server",
-    "harper_ls",
     "html",
     "htmx",
     "jsonls",
@@ -19,6 +17,10 @@ vim.lsp.enable({
     "yamlls",
     -- "cssls"
 })
+vim.lsp.enable({
+    "codebook",
+    "harper_ls",
+}, false)
 
 --------------------------------------------------------------------------------
 -- UI config -------------------------------------------------------------------
@@ -87,7 +89,7 @@ end
 local function toggle_diagnostic()
     vim.diagnostic.enable(not vim.diagnostic.is_enabled())
 end
-local function toggle_virt_diagnostic()
+local function toggle_diagnostic_virtual()
     vim.diagnostic.config({ virtual_lines = not diagnostic_virtual_lines })
     diagnostic_virtual_lines = not diagnostic_virtual_lines
 end
@@ -140,7 +142,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         vim.keymap.set({ "n", "v" }, "<leader>rf", async_format,               { desc = "Format File",                 buffer = args.buf })
         vim.keymap.set("n",          "<leader>rn", vim.lsp.buf.rename,         { desc = "Rename",                      buffer = args.buf })
         vim.keymap.set("n",          "<leader>dD", toggle_diagnostic,          { desc = "Diagnostic Toggle",           buffer = args.buf })
-        vim.keymap.set("n",          "<leader>dd", toggle_virt_diagnostic,     { desc = "Diagnostic (virtual) Toggle", buffer = args.buf })
+        vim.keymap.set("n",          "<leader>dd", toggle_diagnostic_virtual,     { desc = "Diagnostic (virtual) Toggle", buffer = args.buf })
         vim.keymap.set("n",          "<leader>dh", toggle_inlay_hint,          { desc = "InlayHint Toggle",            buffer = args.buf })
         vim.keymap.set("n",          "E",          vim.diagnostic.open_float,  { desc = "Open Float",                  buffer = args.buf })
         vim.keymap.set("i",          "<C-k>",      toggle_signature_float,     { desc = "Signature Toggle",            buffer = args.buf })
@@ -181,3 +183,24 @@ vim.api.nvim_create_autocmd("LspAttach", {
         end
     end,
 })
+
+local none_essential_ls = {
+    "harper_ls",
+    "codebook",
+}
+local function toggle_non_essential_ls()
+    for _, ls in ipairs(none_essential_ls) do
+        ---@type vim.lsp.Client[]
+        local clients = vim.lsp.get_clients({ name = ls })
+        if #clients > 0 then
+            for _, client in ipairs(clients) do
+                vim.notify(client.name .. " stopped")
+                client:stop(true)
+            end
+        else
+            vim.cmd("LspStart " .. ls)
+            vim.notify(ls .. " started")
+        end
+    end
+end
+vim.keymap.set("n", "<leader>ds", toggle_non_essential_ls, { desc = "Toggle Grammar/Spelling LS" })

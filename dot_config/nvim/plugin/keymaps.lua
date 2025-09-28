@@ -115,11 +115,11 @@ set("n", "<leader>dc", function()
     vim.wo.conceallevel = vim.wo.conceallevel == 0 and 2 or 0
     vim.notify("Conceal " .. (vim.wo.conceallevel == 2 and "Enabled" or "Disabled"))
 end, { desc = "Conceal Toggle" })
-set("n", "<leader>ds", function()
-    vim.wo.spell = not vim.wo.spell
-    vim.notify("Spelling " .. (vim.wo.spell and "Enabled" or "Disabled"))
-end, { desc = "Spelling Toggle" })
-set("n", "<leader>dW", function()
+-- set("n", "<leader>ds", function()
+--     vim.wo.spell = not vim.wo.spell
+--     vim.notify("Spelling " .. (vim.wo.spell and "Enabled" or "Disabled"))
+-- end, { desc = "Spelling Toggle" })
+set("n", "<leader>dw", function()
     vim.wo.wrap = not vim.wo.wrap
     vim.notify("Wrap " .. (vim.wo.wrap and "Enabled" or "Disabled"))
 end, { desc = "Wrap Line Toggle" })
@@ -226,6 +226,21 @@ local function toggle_workspace_diagnostic()
     })
     quicker.open()
 end
+local function toggle_hint_info_diagnostic()
+    local quicker = require("quicker")
+    if quicker.is_open() then -- qflist open
+        return quicker.close()
+    end
+    if quicker.is_open(0) then
+        quicker.close({ loclist = true })
+    end
+    vim.diagnostic.setqflist({
+        severity = { vim.diagnostic.severity.INFO, vim.diagnostic.severity.HINT },
+        title = "Hint & Info Diagnostics",
+        open = false,
+    })
+    quicker.open()
+end
 local function close_qfloclist()
     local quicker = require("quicker")
     quicker.close()
@@ -233,6 +248,7 @@ local function close_qfloclist()
 end
 set("n", "<leader>xx", toggle_workspace_diagnostic, { desc = "Workspace diagnostics" })
 set("n", "<leader>xd", toggle_buffer_diagostic, { desc = "Buffer diagnostics" })
+set("n", "<leader>xh", toggle_hint_info_diagnostic, { desc = "Hint & Info diagnostics" })
 set("n", "<leader>xc", close_qfloclist, { desc = "Close qfloclist" })
 set("n", "<leader>xq", vim.cmd.copen, { desc = "Open qflist" })
 set("n", "<leader>xl", vim.cmd.lopen, { desc = "Open loclist" })

@@ -95,8 +95,8 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     pattern = string.format("%s/**/*", os.getenv("CHEZMOI_SOURCE")),
     ---@param args { buf: integer, file: string, match: string }
     callback = function(args)
-        local excluded_fts = { "gitcommit", "gitrebase" }
-        if vim.tbl_contains(excluded_fts, vim.bo.filetype) then
+        local excluded_filetypes = { "gitcommit", "gitrebase" }
+        if vim.tbl_contains(excluded_filetypes, vim.bo.filetype) then
             return
         end
         local result = vim.fn.system({ "chezmoi", "apply", "--source-path", args.match })

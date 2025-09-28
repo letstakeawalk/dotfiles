@@ -84,8 +84,8 @@ set({ "i", "c" }, "<A-BS>",  "<C-w>",   { desc = "Delete word" }) -- delete word
 set({ "i", "c" }, "<A-Del>", "<C-o>dw", { desc = "Delete word forward" })
 set("i",          "<C-l>",   "<Del>",   { desc = "Delete forward" })
 set("s",          "<BS>",    "<BS>i",   { desc = "Delete selection and stay in I-mode" })
-set("n", "J", "mzJ`z", { desc = "Join lines" }) -- join lines while preservig cursor pos
-set("x", "p", '"_dP') -- keep copied text in register w/o overriding when pasting/replacing -- "greatest remap ever" by theprimeage
+set("n", "J", "mzJ`z", { desc = "Join lines" }) -- join lines while preserving cursor pos
+set("x", "p", '"_dP') -- keep copied text in register without overriding when pasting/replacing -- "greatest remap ever" by thePrimeagen
 set("n", "<A-down>", ":m .+1<CR>==",        { desc = "Move line below" })
 set("i", "<A-down>", "<Esc>:m .+1<CR>==gi", { desc = "Move line below" })
 set("v", "<A-down>", ":m '>+1<CR>gv=gv",    { desc = "Move line below" })
@@ -130,7 +130,7 @@ set("n",        "<leader><leader>s", "<cmd>source<cr>", { desc = "Source" })
 set({"n", "v"}, "<leader><leader>x", "<cmd>.lua<cr>",   { desc = "Execute current line" })
 set("n", "<leader>rz", [[<cmd>s!\v(https://)?(www\.)?github.com/([^/]+/[^/]+).*!\3<cr><cmd>noh<cr>]], { desc = "Clean GitHub url for Lazy" })
 set("n", "<leader>rg", [[<cmd>s!\v(https://)?(www\.)?(github\.com/[^/]+/[^/]+).*!\1\2\3!<cr><cmd>noh<cr>]], { desc = "Clean GitHub url" })
-set("n", "<leader>rl", [[<cmd>s!\v(https://)?(www\.)?(leetcode\.com/problems/)([^/]+).*!\1\2\3\4!<cr><cmd>noh<cr>]], { desc = "Clean Leetcode url" })
+set("n", "<leader>rl", [[<cmd>s!\v(https://)?(www\.)?(leetcode\.com/problems/)([^/]+).*!\1\2\3\4!<cr><cmd>noh<cr>]], { desc = "Clean LeetCode url" })
 -- stylua: ignore end
 
 --- `<C-^>`, `<C-6>`, `:e #` work great, but two issues: (* means active buffer)
@@ -176,11 +176,11 @@ local function remove_eof_blanklines()
         vim.api.nvim_buf_set_lines(0, last_nonblank, n_lines, true, {})
     end
 end
-local function remove_unneccessary_whitespace()
+local function remove_unnecessary_whitespace()
     remove_trailing_whitespace()
     remove_eof_blanklines()
 end
-set("n", "<leader>rw", remove_unneccessary_whitespace, { desc = "Remove unnecessary whitespace" })
+set("n", "<leader>rw", remove_unnecessary_whitespace, { desc = "Remove unnecessary whitespace" })
 
 -- stylua: ignore
 set("n", "yA", "<cmd>%yank<cr>",   { desc = "Yank all" })
@@ -232,7 +232,7 @@ local function toggle_hint_info_diagnostic()
     vim.cmd("cc")
 end
 set("n", "<leader>xx", toggle_workspace_diagnostic, { desc = "Workspace diagnostics" })
-set("n", "<leader>xd", toggle_buffer_diagostic, { desc = "Buffer diagnostics" })
+set("n", "<leader>xd", toggle_buffer_diagnostic, { desc = "Buffer diagnostics" })
 set("n", "<leader>xh", toggle_hint_info_diagnostic, { desc = "Hint & Info diagnostics" })
 set("n", "<leader>xc", close_qfloclist, { desc = "Close qfloclist" })
 set("n", "<leader>xq", vim.cmd.copen, { desc = "Open qflist" })

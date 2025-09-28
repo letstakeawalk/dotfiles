@@ -36,12 +36,12 @@ return {
 
             local suggestion = require("copilot.suggestion")
             local function toggle_auto_trigger()
-                local auto_trigg = vim.b.copilot_suggestion_auto_trigger
-                if (auto_trigg == nil and opts.suggestion.auto_trigger) or auto_trigg == true then
-                    vim.notify("Copilot auto-suggestion disabled")
+                local auto_trigger = vim.b.copilot_suggestion_auto_trigger
+                if (auto_trigger == nil and opts.suggestion.auto_trigger) or auto_trigger == true then
+                    vim.notify("Copilot auto-suggestion disabled", vim.log.levels.INFO)
                     suggestion.dismiss()
                 else
-                    vim.notify("Copilot auto-suggestion enabled")
+                    vim.notify("Copilot auto-suggestion enabled", vim.log.levels.INFO)
                     suggestion.next()
                 end
                 suggestion.toggle_auto_trigger()

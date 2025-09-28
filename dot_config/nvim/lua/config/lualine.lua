@@ -89,7 +89,7 @@ local function harpoon_files()
     local list = {} ---@type LualineHarpoonItem[]
     for _, items in pairs(hmap) do
         if #items > 1 then
-            vim.notify("harpoon duplicate resolve unexpectedly failed", vim.log.levels.WARN)
+            vim.notify("harpoon duplicate resolve unexpectedly failed", vim.log.levels.ERROR)
         end
         list[#list + 1] = items[1]
     end

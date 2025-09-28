@@ -3,3 +3,4 @@ LICENSE
 pycache/
 mypy_cache/
 node_modules/
+codebook.toml

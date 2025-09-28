@@ -31,8 +31,9 @@ return {
         { "<leader>ts", "<cmd>Telescope spell_suggest<cr>",          desc = "Spell Suggest" },
         { "<leader>tt", "<cmd>Telescope treesitter<cr>",             desc = "Treesitter" },
 
-        { "<leader>dw",  "<cmd>Telescope diagnostics severity_limit=warn<cr>", desc = "Diagnostics" },
-        { "<leader>de",  "<cmd>Telescope diagnostics severity=error<cr>",      desc = "Diagnostics (errors)" },
+        { "<leader>tw", "<cmd>Telescope diagnostics severity_limit=warn<cr>", desc = "Diagnostics" },
+        { "<leader>te", "<cmd>Telescope diagnostics severity=error<cr>",      desc = "Diagnostics (errors)" },
+        { "<leader>td", "<cmd>Telescope diagnostics<cr>",                     desc = "Diagnostics (errors)" },
 
         { "<leader>tgr", "<cmd>Telescope lsp_references<cr>",       desc = "References" },
         { "<leader>tgd", "<cmd>Telescope lsp_definitions<cr>",      desc = "Definition" },

@@ -170,6 +170,12 @@ return {
                     end
                 end
 
+                local function setqflist(this)
+                    return function()
+                        gs.setqflist(this, { open = false }, require("quicker").open())
+                    end
+                end
+
                 -- TODO: change this to selection with options instead of input
                 -- ~1 for last commit
                 local function diff()
@@ -190,6 +196,8 @@ return {
                 map("n", "<leader>gd", diffthis,                        { desc = "Diff this" })
                 map("n", "<leader>gD", diff,                            { desc = "Diff" })
                 map("n", "<leader>gx", gs.preview_hunk_inline,          { desc = "Toggle deleted" })
+                map("n", "<leader>gq", setqflist(0),                    { desc = "Qflist (buffer)" })
+                map("n", "<leader>gw", setqflist('all'),                { desc = "Qflist (all)" })
                 -- TODO: check callback arg with preview hunk inline
 
                 -- Text object

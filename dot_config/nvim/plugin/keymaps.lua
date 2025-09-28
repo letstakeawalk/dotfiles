@@ -196,55 +196,40 @@ end
 set("n", "<leader>y", yank_location, { desc = "Yank current location" })
 
 -- quickfix & loclist
-local function toggle_buffer_diagostic()
+local function close_qfloclist()
     local quicker = require("quicker")
-    if quicker.is_open(0) then
-        return quicker.close({ loclist = true })
-    end
-    if quicker.is_open() then
-        quicker.close()
-    end
+    quicker.close()
+    quicker.close({ loclist = true })
+end
+local function toggle_buffer_diagnostic()
+    close_qfloclist()
     vim.diagnostic.setloclist({
         severity = { min = vim.diagnostic.severity.WARN },
         title = "Buffer Diagnostics",
         open = false,
     })
-    quicker.open({ loclist = true })
+    require("quicker").open({ loclist = true })
+    vim.cmd("cc")
 end
 local function toggle_workspace_diagnostic()
-    local quicker = require("quicker")
-    if quicker.is_open() then -- qflist open
-        return quicker.close()
-    end
-    if quicker.is_open(0) then
-        quicker.close({ loclist = true })
-    end
+    close_qfloclist()
     vim.diagnostic.setqflist({
         severity = { min = vim.diagnostic.severity.WARN },
         title = "Workspace Diagnostics",
         open = false,
     })
-    quicker.open()
+    require("quicker").open()
+    vim.cmd("cc")
 end
 local function toggle_hint_info_diagnostic()
-    local quicker = require("quicker")
-    if quicker.is_open() then -- qflist open
-        return quicker.close()
-    end
-    if quicker.is_open(0) then
-        quicker.close({ loclist = true })
-    end
+    close_qfloclist()
     vim.diagnostic.setqflist({
         severity = { vim.diagnostic.severity.INFO, vim.diagnostic.severity.HINT },
         title = "Hint & Info Diagnostics",
         open = false,
     })
-    quicker.open()
-end
-local function close_qfloclist()
-    local quicker = require("quicker")
-    quicker.close()
-    quicker.close({ loclist = true })
+    require("quicker").open()
+    vim.cmd("cc")
 end
 set("n", "<leader>xx", toggle_workspace_diagnostic, { desc = "Workspace diagnostics" })
 set("n", "<leader>xd", toggle_buffer_diagostic, { desc = "Buffer diagnostics" })

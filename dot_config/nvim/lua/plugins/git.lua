@@ -172,7 +172,9 @@ return {
 
                 local function setqflist(this)
                     return function()
-                        gs.setqflist(this, { open = false }, require("quicker").open())
+                        gs.setqflist(this, { open = true }, function()
+                            vim.cmd("cc")
+                        end)
                     end
                 end
 

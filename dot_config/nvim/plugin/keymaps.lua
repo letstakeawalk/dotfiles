@@ -20,8 +20,33 @@ set("x", "j",  "h",                          { desc = "Left",  silent = true })
 set("x", "l",  "l",                          { desc = "Right", silent = true })
 set("n", "gk", "j",                          { desc = "Down" })
 set("n", "gh", "k",                          { desc = "Up" })
-set({ "i", "n", "c" }, "<A-f>", "<C-Right>", { desc = "Next word" }) -- ^[f
-set({ "i", "n", "c" }, "<A-b>", "<C-Left>",  { desc = "Prev word" }) -- ^[b
+set({ "i", "n" }, "<A-f>", "<C-Right>",      { desc = "Next word" }) -- ^[f (A-right)
+set({ "i", "n" }, "<A-b>", "<C-Left>",       { desc = "Prev word" }) -- ^[b (A-left)
+vim.keymap.set("c", "<A-f>", function()
+    local cmd, pos = vim.fn.getcmdline(), vim.fn.getcmdpos()
+    if pos > #cmd then return "" end
+    local after = cmd:sub(pos)
+    local offset = 1
+    if after:match("^[%w_]") then -- word
+        offset = after:match("^[%w_]+()")
+    elseif after:match("^[^%w_%s]") then -- special chars
+        offset = after:match("^[^%w_%s]+()")
+    end
+    local ws_offset = after:sub(offset):match("^%s+()") or 1 -- skip whitespace
+    return string.rep("<Right>", offset + ws_offset - 2)
+end, { desc = "Next word", expr = true })
+vim.keymap.set("c", "<A-b>", function()
+    local cmd, pos = vim.fn.getcmdline(), vim.fn.getcmdpos()
+    if pos == 1 then return "" end
+    local before = cmd:sub(1, pos - 1)
+    local trimmed = before:gsub("%s+$", "") -- Skip trailing whitespace
+    if trimmed:match("[%w_]$") then -- word
+        trimmed = trimmed:gsub("[%w_]+$", "")
+    elseif #trimmed > 0 then -- special chars
+        trimmed = trimmed:gsub("[^%w_%s]+$", "")
+    end
+    return string.rep("<Left>", #before - #trimmed)
+end, { desc = "Prev word", expr = true })
 set("c", "<C-a>", "<Home>",                  { desc = "BoL" })
 set("c", "<C-e>", "<End>",                   { desc = "EoL" })
 set("n", "ge", "gi",                         { desc = "Goto last edited" }) -- go to last INSERT pos and insert
@@ -83,6 +108,7 @@ set("v", ">", ">gv",       { desc = "Indent +1 level" })
 set({ "i", "c" }, "<A-BS>",  "<C-w>",   { desc = "Delete word" }) -- delete word
 set({ "i", "c" }, "<A-Del>", "<C-o>dw", { desc = "Delete word forward" })
 set("i",          "<C-l>",   "<Del>",   { desc = "Delete forward" })
+-- set("c",          "<C-k>",   "<Del>",   { desc = "Delete line from cursor" })
 set("s",          "<BS>",    "<BS>i",   { desc = "Delete selection and stay in I-mode" })
 set("n", "J", "mzJ`z", { desc = "Join lines" }) -- join lines while preserving cursor pos
 set("x", "p", '"_dP') -- keep copied text in register without overriding when pasting/replacing -- "greatest remap ever" by thePrimeagen

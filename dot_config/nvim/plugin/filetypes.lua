@@ -8,6 +8,7 @@ vim.filetype.add({
         [".*/git/config"] = "gitconfig",
         [".*/ghostty/config%.tmpl"] = "config",
         [".*/%.ssh/.*%.sshconfig"] = "sshconfig",
+        [".*/git/ignore"] = "gitignore",
         -- ["%.env%..*"] = "sh",
     },
 })

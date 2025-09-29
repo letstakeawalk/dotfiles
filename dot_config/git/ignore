@@ -16,3 +16,6 @@ build/
 dist/
 package/
 node_modules/
+
+# claude code
+**/.claude/settings.local.json

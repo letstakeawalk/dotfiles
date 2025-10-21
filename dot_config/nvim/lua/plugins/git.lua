@@ -170,9 +170,9 @@ return {
                     end
                 end
 
-                local function setqflist(this)
+                local function setqflist(target)
                     return function()
-                        gs.setqflist(this, { open = true }, function()
+                        gs.setqflist(target, { open = true }, function()
                             vim.cmd("cc")
                         end)
                     end

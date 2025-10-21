@@ -31,9 +31,9 @@ return {
         { "<leader>ts", "<cmd>Telescope spell_suggest<cr>",          desc = "Spell Suggest" },
         { "<leader>tt", "<cmd>Telescope treesitter<cr>",             desc = "Treesitter" },
 
-        { "<leader>tw", "<cmd>Telescope diagnostics severity_limit=warn<cr>", desc = "Diagnostics" },
-        { "<leader>te", "<cmd>Telescope diagnostics severity=error<cr>",      desc = "Diagnostics (errors)" },
-        { "<leader>td", "<cmd>Telescope diagnostics<cr>",                     desc = "Diagnostics (errors)" },
+        { "<leader>tw", "<cmd>Telescope diagnostics severity_limit=warn<cr>", desc = "Diagnostics (warn+)" },
+        { "<leader>te", "<cmd>Telescope diagnostics severity=error<cr>",      desc = "Diagnostics (error)" },
+        { "<leader>td", "<cmd>Telescope diagnostics<cr>",                     desc = "Diagnostics (all)" },
 
         { "<leader>tgr", "<cmd>Telescope lsp_references<cr>",       desc = "References" },
         { "<leader>tgd", "<cmd>Telescope lsp_definitions<cr>",      desc = "Definition" },
@@ -47,14 +47,8 @@ return {
         { "<leader>gfC", "<cmd>Telescope git_bcommits<cr>", desc = "Git BufCommits" },
         { "<leader>gfb", "<cmd>Telescope git_branches<cr>", desc = "Git Branches" },
         -- extensions
-        { "<leader>ta",  "<cmd>Telescope aerial<cr>",                                desc = "Aerial" },
-        { "<leader>tz",  "<cmd>Telescope lazy<cr>",                                  desc = "Lazy" },
-
-        -- { "<leader>td", "<cmd>Telescope diagnostics<cr>",            desc = "Diagnostic" },
-        -- { "<leader>tm", "<cmd>Telescope man_pages<cr>",              desc = "Man Pages" },
-        -- { "<leader>tS", "<cmd>Telescope symbols<cr>",                desc = "Symbols" },
-        -- { "<leader>tO", "<cmd>Telescope vim_options<cr>",            desc = "Vim Options" },
-        -- { "<A-s>",      "<cmd>Telescope symbols<cr>",                desc = "Symbols", mode = "i" },
+        { "<leader>ta", "<cmd>Telescope aerial<cr>", desc = "Aerial" },
+        { "<leader>tz", "<cmd>Telescope lazy<cr>",   desc = "Lazy" },
 
     },
     config = function()

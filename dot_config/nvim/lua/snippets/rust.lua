@@ -772,7 +772,7 @@ return {
 
     -- other
     s("use_prelude",  t("use crate::prelude::*;")),
-    s({ trig = "chronoutcnownaive", desc = "chrono utc now naively" }, t("chrono::Utc::now().naive()")),
+    s({ trig = "chronoutcnownaive", desc = "chrono utc now naively" }, t("chrono::Utc::now().naive_utc()")),
     s("boxdynerr",    box_dyn_error(1)),
     s("resboxdynerr", result_box_dyn_error(1)),
 

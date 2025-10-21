@@ -367,7 +367,7 @@ tmux_conf_copy_to_os_clipboard=false
 # -- this is the place to override or undo settings ----------------------------
 # ------------------------------------------------------------------------------
 set-environment -g TMUX_CONF_LOCAL "$XDG_DATA_HOME/chezmoi/dot_config/tmux/tmux.conf.local"
-set-option -g cursor-style bar       # block, underline, or bar
+set-option -g cursor-style block       # block, underline, or bar
 # window navigation/management
 bind Space last-window
 bind Tab next-layout

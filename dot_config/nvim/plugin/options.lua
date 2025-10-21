@@ -47,6 +47,7 @@ opt.breakindent = true -- Indent wrapped lines
 opt.expandtab = true -- expand tabs into spaces
 opt.shiftround = true -- Round indent to multiple of 'shiftwidth'
 opt.shiftwidth = 4 -- Number of spaces to use in auto(indent)
+opt.tabstop = 8
 
 -- TODO: LessInitFunc :h less
 -- TODO: comment continuation -> discontinue on empty comment

@@ -8,7 +8,7 @@ return {
         fast_wrap = {
             map = "<C-f>",
             chars = { "{", "[", "(", "<", '"', "'", "`" },
-            pattern = [=[[%'%"%>%]%)%}%,%?%;]]=],
+            pattern = [=[[%'%"%>%]%)%}%,%?%;:]]=],
             keys = "wftmneiokhluyrpsgdzxacv", -- no b,j,q
             before_key = "k",
             after_key = "h",

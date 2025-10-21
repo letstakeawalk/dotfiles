@@ -34,8 +34,8 @@ return {
                     formatting.sqlfluff.with({ extra_args = { "--dialect", "postgres" } }),
                     diagnostics.sqlfluff.with({ extra_args = { "--dialect", "postgres" } }),
                     diagnostics.trivy, -- misconfig & vulnerability
+                    diagnostics.gitlint,
                     -- diagnostics.todo_comments,
-                    -- diagnostics.gitlint,
 
                     -- code_actions.gitsigns,
                     -- diagnostics.buf, -- protobuf

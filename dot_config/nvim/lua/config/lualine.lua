@@ -95,16 +95,17 @@ local function harpoon_files()
     end
 
     table.sort(list, function(a, b)
-        -- sort by index
-        return a[1] < b[1]
+        return a[1] < b[1] -- sort by index
     end)
 
     local items = vim.tbl_map(function(item)
         ---@diagnostic disable-next-line: unused-local
         local index, label, parent, fullpath = unpack(item)
-        if current_fpath:match(fullpath) then
+        if current_fpath == fullpath then
+            -- vim.notify("matching -- " .. current_fpath .. ":" .. fullpath)
             return string.format("%%#HarpoonNumberActive#  %d. %%#HarpoonActive#%s  ", index, label)
         else
+            -- vim.notify("not matching -- " .. current_fpath .. ":" .. fullpath)
             return string.format("%%#HarpoonNumberInactive#  %d. %%#HarpoonInactive#%s  ", index, label)
         end
     end, list)

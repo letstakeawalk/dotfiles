@@ -12,7 +12,7 @@ local commit_prompt = table.concat({
 return {
     {
         "zbirenbaum/copilot.lua",
-        -- enabled = false,
+        enabled = false,
         event = "InsertEnter",
         cmd = { "Copilot" },
         opts = {
@@ -73,7 +73,7 @@ return {
     },
     {
         "CopilotC-Nvim/CopilotChat.nvim",
-        -- enabled = false,
+        enabled = false,
         dependencies = {
             { "zbirenbaum/copilot.lua" },
             { "nvim-lua/plenary.nvim" },

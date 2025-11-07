@@ -66,7 +66,7 @@ end
 
 local function harpoon_files()
     local harpoon = require("harpoon")
-    local current_fpath = vim.fn.expand("%")
+    local current_fpath = vim.fn.fnamemodify(vim.fn.expand("%"), ":.")
 
     local hmap = {} ---@type LualineLabelHarpoonMap
     for index = 1, harpoon:list():length() do

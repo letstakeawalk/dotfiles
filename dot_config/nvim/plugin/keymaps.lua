@@ -87,15 +87,25 @@ set("n", "<C-Left>",  "<cmd>vertical resize -2<cr>", { desc = "Decrease window w
 set("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
 
 -- Fold
-set("n", "z0", "zM",       { desc = "Fold level: 0" })
-set("n", "z1", "zMzr",     { desc = "Fold level: 1" })
-set("n", "z2", "zM2zr",    { desc = "Fold level: 2" })
-set("n", "z3", "zM3zr",    { desc = "Fold level: 3" })
-set("n", "z4", "zM4zr",    { desc = "Fold level: 4" })
-set("n", "z5", "zM5zr",    { desc = "Fold level: 5" })
-set("n", "zv", "zMzx",     { desc = "Open enough fold" }) -- zMzvzczO
-set("n", "zx", "zMzx",     { desc = "Open enough fold" })
-set("n", "z/", function() vim.lsp.foldclose("comment") end, { desc = "Fold comments" })
+local function fold_ic()
+    vim.lsp.foldclose("comment")
+    vim.lsp.foldclose("imports")
+end
+local function fold(level)
+    return function()
+        vim.wo.foldlevel = level
+        if level > 0 then fold_ic() end
+    end
+end
+set("n", "z0", fold(0), { desc = "Fold level: 0" })
+set("n", "z1", fold(1), { desc = "Fold level: 1" })
+set("n", "z2", fold(2), { desc = "Fold level: 2" })
+set("n", "z3", fold(3), { desc = "Fold level: 3" })
+set("n", "z4", fold(4), { desc = "Fold level: 4" })
+set("n", "z5", fold(5), { desc = "Fold level: 5" })
+set("n", "zv", "zMzx",  { desc = "Open enough fold" }) -- zMzvzczO
+set("n", "zx", "zMzx",  { desc = "Open enough fold" })
+set("n", "z/", fold_ic, { desc = "Fold imports & comments" })
 
 -- Editing
 set("i", "<C-d>", "<C-d>", { desc = "Indent -1 level" })

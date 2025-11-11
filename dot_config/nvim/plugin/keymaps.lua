@@ -224,12 +224,20 @@ set("n", "dA", "<cmd>%delete<cr>", { desc = "Delete all" })
 
 local function yank_location()
     local path = string.sub(vim.fn.expand("%:p"), #vim.fn.getcwd() + 2)
+    local linenr = vim.api.nvim_win_get_cursor(0)[1]
+    local location = string.format("%s:%d", path, linenr)
+    vim.fn.setreg("+", location)
+end
+---@diagnostic disable-next-line: unused-local, unused-function
+local function yank_location_and_line()
+    local path = string.sub(vim.fn.expand("%:p"), #vim.fn.getcwd() + 2)
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     local cursor = string.format("%d:%d", row, col)
     local line = vim.trim(vim.api.nvim_get_current_line())
     vim.fn.setreg("+", path .. ":" .. cursor .. "\n" .. line)
 end
 set("n", "<leader>y", yank_location, { desc = "Yank current location" })
+set("n", "<leader>Y", yank_location_and_line, { desc = "Yank current location and content" })
 
 -- quickfix & loclist
 local function close_qfloclist()

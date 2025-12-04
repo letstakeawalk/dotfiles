@@ -94,7 +94,7 @@ end
 local function fold(level)
     return function()
         vim.wo.foldlevel = level
-        if level > 0 then fold_ic() end
+        -- if level > 0 then fold_ic() end
     end
 end
 set("n", "z0", fold(0), { desc = "Fold level: 0" })

@@ -2,6 +2,7 @@ require("lspconfig")
 ---@diagnostic disable: redefined-local
 vim.lsp.enable({
     "ast_grep",
+    "basedpyright", -- "pyright",
     "biome",
     "docker_language_server",
     "html",
@@ -9,7 +10,6 @@ vim.lsp.enable({
     "jsonls",
     "lua_ls",
     "markdown_oxide",
-    "pyright",
     "ruff",
     "svelte",
     "tailwindcss",

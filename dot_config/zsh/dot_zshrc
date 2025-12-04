@@ -13,6 +13,9 @@ source "$XDG_CONFIG_HOME/zsh/plugins.zsh"
 source "$XDG_CONFIG_HOME/zsh/shell.zsh"
 
 # Load private configuration if it exists
-if [ -f "$ZDOTDIR/.zshrc.private" ]; then
-  source "$ZDOTDIR/.zshrc.private"
+if [ -f "$ZDOTDIR/private.zsh" ]; then
+  source "$ZDOTDIR/private.zsh"
+fi
+if [ -f "$ZDOTDIR/secrets.zsh" ]; then
+  source "$ZDOTDIR/secrets.zsh"
 fi

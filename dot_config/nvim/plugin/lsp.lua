@@ -2,7 +2,6 @@ require("lspconfig")
 ---@diagnostic disable: redefined-local
 vim.lsp.enable({
     "ast_grep",
-    "basedpyright", -- "pyright",
     "biome",
     "docker_language_server",
     "html",
@@ -15,6 +14,7 @@ vim.lsp.enable({
     "tailwindcss",
     "taplo",
     "ts_ls",
+    "ty", -- "pyright", "basedpyright"
     "yamlls",
     -- "cssls"
 })

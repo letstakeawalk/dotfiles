@@ -1,6 +1,7 @@
 local utils = require("utils")
 
 -- resize splits on vim resize
+---@diagnostic disable-next-line: param-type-mismatch
 vim.api.nvim_create_autocmd("VimResized", {
     group = utils.augroup("ResizeSplits", { clear = true }),
     callback = function()
@@ -12,7 +13,7 @@ vim.api.nvim_create_autocmd("VimResized", {
 vim.api.nvim_create_autocmd("FileType", {
     group = utils.augroup("EasyClose", { clear = true }),
     pattern = {
-        "git",
+        -- "git",
         "gitsigns-blame",
         "fugitive",
         "qf",

@@ -1,0 +1,14 @@
+gui:
+  theme:
+    selectedLineBgColor:
+      - "#4C566A"
+keybinding:
+  universal:
+    prevItem-alt: h
+    nextItem-alt: k
+    prevBlock-alt: j
+    nextBlock-alt: l
+    scrollUpMain-alt1: H
+    scrollDownMain-alt1: K
+    scrollLeft: J
+    scrollRight: L

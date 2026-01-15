@@ -5,6 +5,7 @@ return {
     config = function()
         local leap = require("leap")
         leap.setup({
+            safe_labels = "stfnu/SNTGMFLHUZ?",
             labels = "stfneiokhldwmbuyvrgaqpcxzj/STFNEIOKHLDWMBUYVRGAQPCXZJ?",
         })
         -- stylua: ignore start

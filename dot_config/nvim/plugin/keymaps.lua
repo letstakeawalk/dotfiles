@@ -5,6 +5,7 @@ local del = vim.keymap.del
 --- General
 set("n", "<C-c>", vim.cmd.noh, { desc = "Clear highlights" })
 set("n", "<Esc>", vim.cmd.noh, { desc = "Clear highlights" })
+set("c", "<Esc>", "<C-c>")
 -- set("i", "<C-c>", function() return vim.api.nvim_win_get_cursor(0)[2] > 1 and "<esc>l" or "<esc>" end, { expr = true })
 set("i", "<C-c>", "<Esc>")
 -- set("i", "<Esc>", "<Nop>")
@@ -52,15 +53,17 @@ set("c", "<C-e>", "<End>",                   { desc = "EoL" })
 set("n", "ge", "gi",                         { desc = "Goto last edited" }) -- go to last INSERT pos and insert
 set("n", "gg", "gg",                         { desc = "Goto BoF" }) -- jump to bof, center cursor
 set("n", "G",  "Gzz",                        { desc = "Goto EoF" })  -- jump to eof, center cursor
-set("n", "zj", "10zh",                       { desc = "Scroll left" })
-set("n", "zl", "10zl",                       { desc = "Scroll left" })
+set("n", "zj", "4zh",                        { desc = "Scroll left" })
+set("n", "zl", "4zl",                        { desc = "Scroll right" })
 set("n", "zJ", "10zh",                       { desc = "Scroll left" })
-set("n", "zL", "10zl",                       { desc = "Scroll left" })
+set("n", "zL", "10zl",                       { desc = "Scroll right" })
 set("n", "zh", "<Nop>",                      { desc = "NOP"})
 set("n", "zH", "<Nop>",                      { desc = "NOP"})
 set("n", "}",  "}zz",                        { desc = "Next Paragraph" })
 set("n", "{",  "{zz",                        { desc = "Prev Paragraph" })
 set("n", "'",  "g`",                         { desc = "Jump to mark" })
+set("n", "zt", "zt10<C-y>",                  { desc = "Redraw window (top)" })
+set("n", "zb", "zb10<C-e>",                  { desc = "Redraw window (bottom)" })
 set("n", "<C-d>",      "<C-d>zz",            { desc = "Scroll down" })
 set("n", "<C-u>",      "<C-u>zz",            { desc = "Scroll up" })
 set("n", "<PageDown>", "<C-d>zz",            { desc = "Scroll down" })
@@ -87,10 +90,6 @@ set("n", "<C-Left>",  "<cmd>vertical resize -2<cr>", { desc = "Decrease window w
 set("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
 
 -- Fold
-local function fold_ic()
-    vim.lsp.foldclose("comment")
-    vim.lsp.foldclose("imports")
-end
 local function fold(level)
     return function()
         vim.wo.foldlevel = level
@@ -105,7 +104,8 @@ set("n", "z4", fold(4), { desc = "Fold level: 4" })
 set("n", "z5", fold(5), { desc = "Fold level: 5" })
 set("n", "zv", "zMzx",  { desc = "Open enough fold" }) -- zMzvzczO
 set("n", "zx", "zMzx",  { desc = "Open enough fold" })
-set("n", "z/", fold_ic, { desc = "Fold imports & comments" })
+set("n", "zi", function() vim.lsp.foldclose("imports") end, { desc = "Fold imports" })
+set("n", "z/", function() vim.lsp.foldclose("comment") end, { desc = "Fold comments" })
 
 -- Editing
 set("i", "<C-d>", "<C-d>", { desc = "Indent -1 level" })
@@ -144,8 +144,8 @@ set("n", "<leader>dn", function()
     vim.wo.number = not enabled
     vim.wo.relativenumber = not enabled
     vim.wo.signcolumn = enabled and "no" or "yes"
-    vim.wo.scrolloff = enabled and 0 or 10
-    vim.wo.sidescrolloff = enabled and 0 or 10
+    vim.wo.scrolloff = 10
+    vim.wo.sidescrolloff = 10
 end, { desc = "Display Numbers" })
 set("n", "<leader>dc", function()
     vim.wo.conceallevel = vim.wo.conceallevel == 0 and 2 or 0

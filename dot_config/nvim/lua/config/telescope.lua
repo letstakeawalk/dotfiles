@@ -34,7 +34,7 @@ telescope.setup({
         selection_caret = " >> ",
         multi_icon = "   ",
         entry_prefix = "    ",
-        file_ignore_patterns = { "%.lock", "%lock.json" },
+        file_ignore_patterns = { "%.lock", "%lock.json", "%__pycache__/" },
         mappings = {
             n = {
                 ["k"] = actions.move_selection_next,
@@ -72,3 +72,20 @@ pcall(telescope.load_extension("aerial")) -- aerial.nvim
 pcall(telescope.load_extension("lazy")) -- lazy.nvim
 -- pcall(telescope.load_extension("persisted")) -- persisted.nvim
 pcall(telescope.load_extension("ui-select")) -- ui-select
+
+-- HACK: result items keep being folded
+vim.api.nvim_create_autocmd("FileType", {
+    desc = "TelescopeResults.foldlevel is always 99",
+    group = require("utils").augroup("TelescopeResultFoldHack", { clear = true }),
+    pattern = "TelescopeResults",
+    ---@diagnostic disable-next-line: unused-local
+    callback = function(_evt)
+        local winid = vim.fn.win_getid()
+        local curr_foldlvl = vim.api.nvim_get_option_value("foldlevel", { win = winid })
+        if curr_foldlvl < 1 then
+            vim.notify("TelescopeResults.foldlevel is " .. curr_foldlvl, vim.log.levels.WARN)
+            vim.api.nvim_set_option_value("foldlevel", 99, { win = winid })
+            vim.notify("TelescopeResults.foldlevel set to 99")
+        end
+    end,
+})

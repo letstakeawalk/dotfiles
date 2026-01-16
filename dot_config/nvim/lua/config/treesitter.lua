@@ -159,5 +159,6 @@ vim.keymap.set({ "n", "x", "o" }, ";", move_center(repeat_last_move_next))
 vim.keymap.set({ "n", "x", "o" }, ",", move_center(repeat_last_move_prev))
 
 -- Inspect
+vim.keymap.set("n", "<leader>dc", "<cmd>TSContext toggle<cr>", { desc = "TS Context Toggle" })
 vim.keymap.set("n", "<leader>di", "<cmd>Inspect<cr>", { desc = "Inspect TS node" })
 vim.keymap.set("n", "<leader>dI", "<cmd>InspectTree<cr>", { desc = "Inspect TS tree" })

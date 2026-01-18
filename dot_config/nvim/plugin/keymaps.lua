@@ -149,7 +149,7 @@ set("n", "<leader>dn", function()
     vim.wo.scrolloff = 10
     vim.wo.sidescrolloff = 10
 end, { desc = "Display Numbers" })
-set("n", "<leader>dc", function()
+set("n", "<leader>dC", function()
     vim.wo.conceallevel = vim.wo.conceallevel == 0 and 2 or 0
     vim.notify("Conceal " .. (vim.wo.conceallevel == 2 and "Enabled" or "Disabled"), vim.log.levels.INFO)
 end, { desc = "Conceal Toggle" })

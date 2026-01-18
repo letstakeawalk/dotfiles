@@ -23,7 +23,7 @@ set("n", "gk", "j",                          { desc = "Down" })
 set("n", "gh", "k",                          { desc = "Up" })
 set({ "i", "n" }, "<A-f>", "<C-Right>",      { desc = "Next word" }) -- ^[f (A-right)
 set({ "i", "n" }, "<A-b>", "<C-Left>",       { desc = "Prev word" }) -- ^[b (A-left)
-vim.keymap.set("c", "<A-f>", function()
+local function next_word()
     local cmd, pos = vim.fn.getcmdline(), vim.fn.getcmdpos()
     if pos > #cmd then return "" end
     local after = cmd:sub(pos)
@@ -35,8 +35,8 @@ vim.keymap.set("c", "<A-f>", function()
     end
     local ws_offset = after:sub(offset):match("^%s+()") or 1 -- skip whitespace
     return string.rep("<Right>", offset + ws_offset - 2)
-end, { desc = "Next word", expr = true })
-vim.keymap.set("c", "<A-b>", function()
+end
+local function prev_word()
     local cmd, pos = vim.fn.getcmdline(), vim.fn.getcmdpos()
     if pos == 1 then return "" end
     local before = cmd:sub(1, pos - 1)
@@ -47,29 +47,31 @@ vim.keymap.set("c", "<A-b>", function()
         trimmed = trimmed:gsub("[^%w_%s]+$", "")
     end
     return string.rep("<Left>", #before - #trimmed)
-end, { desc = "Prev word", expr = true })
-set("c", "<C-a>", "<Home>",                  { desc = "BoL" })
-set("c", "<C-e>", "<End>",                   { desc = "EoL" })
-set("n", "ge", "gi",                         { desc = "Goto last edited" }) -- go to last INSERT pos and insert
-set("n", "gg", "gg",                         { desc = "Goto BoF" }) -- jump to bof, center cursor
-set("n", "G",  "Gzz",                        { desc = "Goto EoF" })  -- jump to eof, center cursor
-set("n", "zj", "4zh",                        { desc = "Scroll left" })
-set("n", "zl", "4zl",                        { desc = "Scroll right" })
-set("n", "zJ", "10zh",                       { desc = "Scroll left" })
-set("n", "zL", "10zl",                       { desc = "Scroll right" })
-set("n", "zh", "<Nop>",                      { desc = "NOP"})
-set("n", "zH", "<Nop>",                      { desc = "NOP"})
-set("n", "}",  "}zz",                        { desc = "Next Paragraph" })
-set("n", "{",  "{zz",                        { desc = "Prev Paragraph" })
-set("n", "'",  "g`",                         { desc = "Jump to mark" })
-set("n", "zt", "zt10<C-y>",                  { desc = "Redraw window (top)" })
-set("n", "zb", "zb10<C-e>",                  { desc = "Redraw window (bottom)" })
-set("n", "<C-d>",      "<C-d>zz",            { desc = "Scroll down" })
-set("n", "<C-u>",      "<C-u>zz",            { desc = "Scroll up" })
-set("n", "<PageDown>", "<C-d>zz",            { desc = "Scroll down" })
-set("n", "<PageUp>",   "<C-u>zz",            { desc = "Scroll up" })
-set("n", "<C-e>",      "10<C-e>",            { desc = "Scroll down" })
-set("n", "<C-y>",      "10<C-y>",            { desc = "Scroll up" })
+end
+set("c", "<A-f>",      next_word,  { desc = "Next word", expr = true })
+set("c", "<A-b>",      prev_word,  { desc = "Prev word", expr = true })
+set("c", "<C-a>",      "<Home>",   { desc = "BoL" })
+set("c", "<C-e>",      "<End>",    { desc = "EoL" })
+set("n", "ge",         "gi",       { desc = "Goto last edited" }) -- go to last INSERT pos and insert
+set("n", "gg",         "gg",       { desc = "Goto BoF" }) -- jump to bof, center cursor
+set("n", "G",          "Gzz",      { desc = "Goto EoF" })  -- jump to eof, center cursor
+set("n", "zj",         "4zh",      { desc = "Scroll left" })
+set("n", "zl",         "4zl",      { desc = "Scroll right" })
+set("n", "zJ",         "10zh",     { desc = "Scroll left" })
+set("n", "zL",         "10zl",     { desc = "Scroll right" })
+set("n", "zh",         "<Nop>",    { desc = "NOP"})
+set("n", "zH",         "<Nop>",    { desc = "NOP"})
+set("n", "}",          "}zz",      { desc = "Next Paragraph" })
+set("n", "{",          "{zz",      { desc = "Prev Paragraph" })
+set("n", "'",          "g`",       { desc = "Jump to mark" })
+set("n", "zt",         "zt8<C-y>", { desc = "Redraw window (top)" })
+set("n", "zb",         "zb8<C-e>", { desc = "Redraw window (bottom)" })
+set("n", "<C-d>",      "<C-d>zz",  { desc = "Scroll down" })
+set("n", "<C-u>",      "<C-u>zz",  { desc = "Scroll up" })
+set("n", "<PageDown>", "<C-d>zz",  { desc = "Scroll down" })
+set("n", "<PageUp>",   "<C-u>zz",  { desc = "Scroll up" })
+set("n", "<C-e>",      "10<C-e>",  { desc = "Scroll down" })
+set("n", "<C-y>",      "10<C-y>",  { desc = "Scroll up" })
 
 -- Buffer/Tab/Pane Navigation & Management
 set("n", "<C-q>",     "<cmd>q<cr>",                  { desc = "Close buffer"  })

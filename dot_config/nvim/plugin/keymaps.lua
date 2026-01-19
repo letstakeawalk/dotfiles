@@ -54,7 +54,7 @@ set("c", "<C-a>",      "<Home>",   { desc = "BoL" })
 set("c", "<C-e>",      "<End>",    { desc = "EoL" })
 set("n", "ge",         "gi",       { desc = "Goto last edited" }) -- go to last INSERT pos and insert
 set("n", "gg",         "gg",       { desc = "Goto BoF" }) -- jump to bof, center cursor
-set("n", "G",          "Gzz",      { desc = "Goto EoF" })  -- jump to eof, center cursor
+set("n", "G",          "Gzb",      { desc = "Goto EoF" })  -- jump to eof, center cursor
 set("n", "zj",         "8zh",      { desc = "Scroll left" })
 set("n", "zl",         "8zl",      { desc = "Scroll right" })
 set("n", "zJ",         "16zh",     { desc = "Scroll left" })
@@ -70,8 +70,8 @@ set("n", "<C-d>",      "<C-d>zz",  { desc = "Scroll down" })
 set("n", "<C-u>",      "<C-u>zz",  { desc = "Scroll up" })
 set("n", "<PageDown>", "<C-d>zz",  { desc = "Scroll down" })
 set("n", "<PageUp>",   "<C-u>zz",  { desc = "Scroll up" })
-set("n", "<C-e>",      "10<C-e>",  { desc = "Scroll down" })
-set("n", "<C-y>",      "10<C-y>",  { desc = "Scroll up" })
+set("n", "<C-e>",      "8<C-e>",   { desc = "Scroll down" })
+set("n", "<C-y>",      "8<C-y>",   { desc = "Scroll up" })
 
 -- Buffer/Tab/Pane Navigation & Management
 set("n", "<C-q>",     "<cmd>q<cr>",                  { desc = "Close buffer"  })

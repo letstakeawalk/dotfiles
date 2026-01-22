@@ -28,6 +28,7 @@ zinit wait lucid for \
     zsh-users/zsh-autosuggestions
 
 # Completion styling
+zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
 # disable sort when completing `git checkout`
 zstyle ':completion:*:git-checkout:*' sort false
 # set descriptions format to enable group support
@@ -45,17 +46,11 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 zstyle ':fzf-tab:*' use-fzf-default-opts yes
 zstyle ':fzf-tab:*' default-color ""
 # NOTE: fzf-tab does not follow FZF_DEFAULT_OPTS by default
-zstyle ':fzf-tab:*' fzf-flags --bind=tab:accept 
+zstyle ':fzf-tab:*' fzf-flags --bind='tab:accept'
 # switch group using `<` and `>`
 zstyle ':fzf-tab:*' switch-group '<' '>'
 # # tmux popup
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
-
-# zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
-# zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
-# zstyle ':completion:*' menu select
-# zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} \
-#     'ma=48;2;67;76;94'
 
 # Vim Mode Configuration
 zinit ice depth=1

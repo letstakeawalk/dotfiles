@@ -8,7 +8,9 @@ return {
         { "$", function() require("origami").dollar() end },
     },
     opts = {
-        useLspFoldsWithTreesitterFallback = true,
+        useLspFoldsWithTreesitterFallback = {
+            enabled = true,
+        },
         pauseFoldsOnSearch = true,
         foldtext = {
             enabled = true,
@@ -19,6 +21,10 @@ return {
             },
             diagnosticsCount = true, -- uses hlgroups and icons from `vim.diagnostic.config().signs`
             gitsignsCount = true, -- requires `gitsigns.nvim`
+            disableOnFt = {
+                "fugitive",
+                "TelescopeResults",
+            },
         },
         autoFold = {
             enabled = true,
@@ -27,6 +33,7 @@ return {
         foldKeymaps = {
             setup = false, -- modifies `h`, `l`, and `$`
             hOnlyOpensOnFirstColumn = false,
+            scrollLeftOnCaret = false,
         },
     },
 }

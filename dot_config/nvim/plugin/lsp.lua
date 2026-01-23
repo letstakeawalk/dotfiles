@@ -18,10 +18,10 @@ vim.lsp.enable({
     "yamlls",
     -- "cssls"
 })
-vim.lsp.enable({
-    "codebook",
-    "harper_ls",
-}, false)
+-- vim.lsp.enable({
+--     "codebook",
+--     "harper_ls",
+-- }, false)
 
 --------------------------------------------------------------------------------
 -- UI config -------------------------------------------------------------------
@@ -195,23 +195,26 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end,
 })
 
-local none_essential_ls = {
-    "harper_ls",
-    "codebook",
-}
-local function toggle_non_essential_ls()
-    for _, ls in ipairs(none_essential_ls) do
-        ---@type vim.lsp.Client[]
-        local clients = vim.lsp.get_clients({ name = ls })
-        if #clients > 0 then
-            for _, client in ipairs(clients) do
-                vim.notify("Spell & Grammar check stopped", vim.log.levels.INFO)
-                client:stop(true)
-            end
-        else
-            vim.cmd("LspStart " .. ls)
-            vim.notify("Spell & Grammar check started", vim.log.levels.INFO)
-        end
-    end
-end
-vim.keymap.set("n", "<leader>ds", toggle_non_essential_ls, { desc = "Toggle Grammar/Spelling LS" })
+-- local none_essential_ls = {
+--     "harper_ls",
+--     "codebook",
+-- }
+-- local function toggle_non_essential_ls()
+--     for _, ls in ipairs(none_essential_ls) do
+--         ---@type vim.lsp.Client[]
+--         local clients = vim.lsp.get_clients({ name = ls })
+--         if #clients > 0 then
+--             ---@diagnostic disable-next-line: unused-local
+--             for _, client in ipairs(clients) do
+--                 vim.notify("Spell & Grammar check stopped", vim.log.levels.INFO)
+--                 -- client:stop(true)
+--                 vim.lsp.enable(ls, false)
+--             end
+--         else
+--             -- vim.cmd("LspStart " .. ls)
+--             vim.lsp.enable(ls)
+--             vim.notify("Spell & Grammar check started", vim.log.levels.INFO)
+--         end
+--     end
+-- end
+-- vim.keymap.set("n", "<leader>ds", toggle_non_essential_ls, { desc = "Toggle Grammar/Spelling LS" })

@@ -86,3 +86,12 @@ HIST_STAMPS="yyyy-mm-dd"
 
 source <(starship init zsh)
 source <(zoxide init zsh) # this must come after compinit
+
+
+# edit-command-line
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^g' edit-command-line
+
+# magic space
+bindkey ' ' magic-space

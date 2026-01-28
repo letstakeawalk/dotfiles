@@ -108,11 +108,37 @@ alias gbi='git bisect'
 alias gbl='git blame'
 
 # Functions
-# Always show ls when changing directories
-function chpwd() {
+function pwd_ls() {
+    # Always show ls when changing directories
     pwd
     eza --group-directories-first
 }
+
+function auto_venv() {
+  # If already in a virtualenv, do nothing
+  if [[ -n "$VIRTUAL_ENV" && "$PWD" != *"${VIRTUAL_ENV:h}"* ]]; then
+    deactivate
+    return  
+  fi
+
+  [[ -n "$VIRTUAL_ENV" ]] && return
+
+  local dir="$PWD"
+  while [[ "$dir" != "/" ]]; do
+    if [[ -f "$dir/.venv/bin/activate" ]]; then
+      source "$dir/.venv/bin/activate"
+      return
+    fi
+    dir="${dir:h}"
+  done
+}
+
+# Hooks
+autoload -Uz add-zsh-hook
+add-zsh-hook chpwd pwd_ls
+add-zsh-hook chpwd auto_venv
+
+
 
 # Benchmark zsh startup time
 timezsh() {

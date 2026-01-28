@@ -79,8 +79,6 @@ return {
             })
 
             miniclue.set_mapping_desc("n", "ga", "Align")
-            miniclue.set_mapping_desc("n", "<leader>k", "Leap downward")
-            miniclue.set_mapping_desc("n", "<leader>h", "Leap upward")
             pcall(miniclue.set_mapping_desc, "n", "]m", "Goto next method")
             pcall(miniclue.set_mapping_desc, "n", "[m", "Goto previous method")
             pcall(miniclue.set_mapping_desc, "n", "]M", "Goto next method")

@@ -1,6 +1,5 @@
 return {
-    "ggandor/leap.nvim",
-    dependencies = { "ggandor/leap-spooky.nvim", "ggandor/flit.nvim" },
+    url = "https://codeberg.org/andyg/leap.nvim",
     lazy = false, -- pluging lazyloads itself
     config = function()
         local leap = require("leap")
@@ -9,104 +8,99 @@ return {
             labels = "stfneiokhldwmbuyvrgaqpcxzj/STFNEIOKHLDWMBUYVRGAQPCXZJ?",
         })
         -- stylua: ignore start
-        vim.keymap.set( "n",              "s",  "<Plug>(leap-forward)",     { desc = "Leap forward" })
-        vim.keymap.set( "n",              "S",  "<Plug>(leap-backward)",    { desc = "Leap backward" })
-        vim.keymap.set( { "x", "o" },     "s",  "<Plug>(leap)",             { desc = "Leap backward" })
-        vim.keymap.set({ "n", "x", "o" }, "gs", "<Plug>(leap-from-window)", { desc = "Leap window" })
+        vim.keymap.set( {"n","x","o"}, "s",  "<Plug>(leap)",             { desc = "Leap" })
+        vim.keymap.set( "n",           "S",  "<Plug>(leap-from-window)", { desc = "Leap window" })
         -- stylua: ignore end
 
-        -- require("leap.user").set_repeat_keys("<enter>", "<backspace>", {
-        --     -- If set to true, the keys will work like the native
-        --     -- semicolon/comma, i.e., forward/backward is understood in
-        --     -- relation to the last motion.
-        --     relative_directions = false,
-        --     modes = { "n", "x", "o" },
-        -- })
-        --
-        -- leap.opts.special_keys.prev_target = { "<s-cr>", "," }
+        -- Highly recommended: define a preview filter to reduce visual noise
+        -- and the blinking effect after the first keypress
+        -- (see `:h leap.opts.preview`).
+        -- For example, skip preview if the first character of the match is
+        -- whitespace or is in the middle of an alphabetic word:
+        leap.opts.preview = function(ch0, ch1, ch2)
+            return not (ch1:match("%s") or (ch0:match("%a") and ch1:match("%a") and ch2:match("%a")))
+        end
 
-        local flit = require("flit")
-        flit.setup({})
+        -- Define equivalence classes for brackets and quotes, in addition to
+        -- the default whitespace group:
+        leap.opts.equivalence_classes = { " \t\r\n", "([{", ")]}", "'\"`" }
 
-        local spooky = require("leap-spooky")
-        spooky.setup({
-            -- Mappings will be generated corresponding to all native text objects,
-            -- like: (ir|ar|iR|aR|im|am|iM|aM){obj}.
-            -- Special line objects will also be added, by repeating the affixes.
-            -- E.g.
-            --   `yrr<leap>` and `ymm<leap>` will yank a line in the current window.
-            --   `drr<leap>` and `dmm<leap>` will delete a line in the current window.
-            -- window.
-            affixes = {
-                -- You can also use 'rest' & 'move' as mnemonics.
-                remote = { window = "r", cross_window = "R" },
-                magnetic = { window = "m", cross_window = "M" },
-            },
-            -- Defines text objects like `riw`, `raw`, etc., instead of targets.vim-style `irw`, `arw`.
-            -- E.g.
-            --  yriw<leap> to yank word remotely,
-            --  drip<leap> to delete paragraph remotely
-            --  ysriw<leap><surround> to surround word remotely
-            prefix = true,
-            -- The yanked text will automatically be pasted at the cursor position
-            -- if the unnamed register is in use.
-            paste_on_remote_yank = false,
-        })
+        -- Use the traversal keys to repeat the previous motion without
+        -- explicitly invoking Leap:
+        require("leap.user").set_repeat_keys("<enter>", "<backspace>")
 
-        ---linewise leap motion in one direction
-        ---@param winid integer
-        ---@param upward boolean
-        ---@return table|nil
-        local function get_line_starts(winid, upward)
-            local wininfo = vim.fn.getwininfo(winid)[1]
-            local cur_line = vim.fn.line(".") ---@cast cur_line integer
+        -- Return an argument table for `leap()`, tailored for f/t-motions.
+        local function as_ft(key_specific_args)
+            local common_args = {
+                inputlen = 1,
+                inclusive = true,
+                -- To limit search scope to the current line:
+                -- pattern = function (pat) return '\\%.l'..pat end,
+                opts = {
+                    labels = "", -- force autojump
+                    safe_labels = vim.fn.mode(1):match("[no]") and "" or nil, -- [1]
+                },
+            }
+            return vim.tbl_deep_extend("keep", common_args, key_specific_args)
+        end
 
-            -- Get targets.
-            local targets = {}
-            local lnum = upward and wininfo.topline or cur_line ---@cast lnum integer
+        local clever = require("leap.user").with_traversal_keys -- [2]
+        local clever_f = clever("f", "F")
+        local clever_t = clever("t", "T")
 
-            local end_line = upward and cur_line or wininfo.botline
-            while lnum <= end_line do
-                local fold_end = vim.fn.foldclosedend(lnum)
-                -- Skip folded ranges.
-                if fold_end ~= -1 then
-                    lnum = fold_end + 1
-                else
-                    if lnum ~= cur_line then
-                        table.insert(targets, { pos = { lnum, 1 } })
-                    end
-                    lnum = lnum + 1
-                end
-            end
-            -- Sort them by vertical screen distance from cursor.
-            local cur_screen_row = vim.fn.screenpos(winid, cur_line, 1)["row"]
-            local function screen_rows_from_cur(t)
-                local t_screen_row = vim.fn.screenpos(winid, t.pos[1], t.pos[2])["row"]
-                return math.abs(cur_screen_row - t_screen_row)
-            end
-            table.sort(targets, function(t1, t2)
-                return screen_rows_from_cur(t1) < screen_rows_from_cur(t2)
+        for key, key_specific_args in pairs({
+            f = { opts = clever_f },
+            F = { backward = true, opts = clever_f },
+            t = { offset = -1, opts = clever_t },
+            T = { backward = true, offset = 1, opts = clever_t },
+        }) do
+            vim.keymap.set({ "n", "x", "o" }, key, function()
+                require("leap").leap(as_ft(key_specific_args))
             end)
-
-            if #targets >= 1 then
-                return targets
-            end
         end
 
-        ---@param upward boolean
-        local function leap_to_line(upward)
-            local winid = vim.api.nvim_get_current_win()
-            leap.leap({
-                target_windows = { winid },
-                targets = get_line_starts(winid, upward),
+        -- jump to lines
+        vim.keymap.set({ "n", "x", "o" }, "|", function()
+            local line = vim.fn.line(".")
+            -- Skip 3-3 lines around the cursor.
+            local top, bot = unpack({ math.max(1, line - 3), line + 3 })
+            require("leap").leap({
+                pattern = "\\v(%<" .. top .. "l|%>" .. bot .. "l)$",
+                windows = { vim.fn.win_getid() },
+                opts = { safe_labels = "" },
             })
-        end
+        end)
 
-        vim.keymap.set("n", "<leader>k", function()
-            leap_to_line(false)
-        end, { desc = "Leap downward" })
-        vim.keymap.set("n", "<leader>h", function()
-            leap_to_line(true)
-        end, { desc = "Leap upward" })
+        -- remote actions
+        vim.keymap.set({ "n", "x", "o" }, "gs", function()
+            require("leap.remote").action({
+                -- start visual mode by default
+                -- input = vim.fn.mode(true):match("o") and "" or "v",
+            })
+        end)
+
+        -- Create remote versions of all a/i text objects by prepending `r` (`iw` becomes `riw`, etc.).
+        --  yriw<leap> to yank word remotely,
+        --  drip<leap> to delete paragraph remotely
+        --  ysriw<leap><surround> to surround word remotely
+        for _, ai in ipairs({ "a", "i" }) do
+            vim.keymap.set({ "x", "o" }, "r" .. ai, function()
+                -- A trick to avoid having to create separate mappings for each text
+                -- object: when entering `ra`/`ri`, consume the next character, and
+                -- create the input from that character concatenated to `a`/`i`.
+                local ok, ch = pcall(vim.fn.getcharstr) -- pcall for handling <C-c>
+                if not ok or (ch == vim.keycode("<esc>")) then
+                    return
+                end
+                -- example ch: `w`, `p` text-objs
+                require("leap.remote").action({ input = ai .. ch })
+            end)
+        end
+        -- linewise operations:
+        -- `yrr<leap>` to yank line,
+        -- `drr<leap>` to delete line
+        vim.keymap.set("o", "rr", function()
+            require("leap.remote").action({ input = vim.v.operator })
+        end)
     end,
 }

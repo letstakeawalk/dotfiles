@@ -66,3 +66,6 @@
     wtclone = "!sh $HOME/.local/script/git_worktree_clone"
     wtadd   = "!sh $HOME/.local/script/git_worktree_add"
     wtrm    = "!sh $HOME/.local/script/git_worktree_remove"
+
+[credential]
+    helper = osxkeychain

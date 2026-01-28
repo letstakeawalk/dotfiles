@@ -4,7 +4,7 @@ vim.lsp.enable({
     "ast_grep",
     "biome",
     "docker_language_server",
-    "html",
+    -- "html",
     "htmx",
     "jsonls",
     "lua_ls",

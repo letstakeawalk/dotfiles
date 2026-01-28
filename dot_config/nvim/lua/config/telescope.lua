@@ -34,7 +34,7 @@ telescope.setup({
         selection_caret = " >> ",
         multi_icon = "   ",
         entry_prefix = "    ",
-        file_ignore_patterns = { "%.lock", "%lock.json", "%__pycache__/" },
+        file_ignore_patterns = { "%.lock", "%lock.json", "%__pycache__/", "^target/", "node_modules/" },
         mappings = {
             n = {
                 ["k"] = actions.move_selection_next,

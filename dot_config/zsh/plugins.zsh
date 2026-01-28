@@ -4,6 +4,9 @@ ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 source "${ZINIT_HOME}/zinit.zsh"
 
+# Homebrew completions (must be before compinit)
+FPATH="/opt/homebrew/share/zsh/site-functions:${FPATH}"
+
 # FZF Configuration
 export FZF_CTRL_T_OPTS="
   --preview 'bat -n --color=always {}'
@@ -13,8 +16,8 @@ export FZF_DEFAULT_COMMAND="fd --type file --hidden --follow"
 export FZF_DEFAULT_OPTS="
   --color='fg:#98A2B5,fg+:#98A2B5,fg+:regular,bg+:#434C5E'
   --color='hl:#D8DEE9,hl:bold,hl+:#D8DEE9,info:#434C5E,border:#616E88'
-  --color='gutter:-1,pointer:bright-blue'
-  --prompt=' ' --pointer=' '"
+  --color='gutter:0,pointer:bright-blue'
+  --prompt='  ' --pointer='>>'"
 export FZF_TMUX_OPTS="-p 50%,50%" # "--reverse"
 zinit light Aloxaf/fzf-tab
 
@@ -50,7 +53,7 @@ zstyle ':fzf-tab:*' fzf-flags --bind='tab:accept'
 # switch group using `<` and `>`
 zstyle ':fzf-tab:*' switch-group '<' '>'
 # # tmux popup
-zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+zstyle ':fzf-tab:*' fzf-command fzf # fzf or ftb-tmux-popup
 
 # Vim Mode Configuration
 zinit ice depth=1

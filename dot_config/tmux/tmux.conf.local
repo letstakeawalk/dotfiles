@@ -522,10 +522,18 @@ tmux_conf_uninstall_plugins_on_reload=true
 # visit https://github.com/tmux-plugins for available plugins
 #set -g @plugin 'tmux-plugins/tmux-copycat'
 #set -g @plugin 'tmux-plugins/tmux-cpu'
-#set -g @plugin 'tmux-plugins/tmux-resurrect'
-#set -g @plugin 'tmux-plugins/tmux-continuum'
-#set -g @continuum-restore 'on'
+set -g @plugin 'fcsonline/tmux-thumbs'
+run-shell ~/.tmux/plugins/tmux-thumbs/tmux-thumbs.tmux
+set -g @thumbs-key f
+set -g @thumbs-command 'echo -n {} | pbcopy'
+set -g @thumbs-alphabet colemak
 
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @resurrect-save 'S'
+set -g @resurrect-restore 'R'
+
+set -g @plugin 'tmux-plugins/tmux-continuum'
+set -g @continuum-restore 'on'
 
 # -- custom variables ----------------------------------------------------------
 

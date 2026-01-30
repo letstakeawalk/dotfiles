@@ -1,5 +1,4 @@
 return {
-    { "neovim/nvim-lspconfig" },
     {
         "williamboman/mason.nvim",
         cmd = { "Mason" },
@@ -56,8 +55,7 @@ return {
     },
     {
         "folke/lazydev.nvim",
-        ft = "lua", -- only on `lua` files
-        -- enabled = false,
+        ft = "lua",
         opts = {
             library = {
                 { path = "${3rd}/luv/library", words = { "vim%.uv" } },

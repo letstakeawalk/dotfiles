@@ -1,3 +1,9 @@
+vim.g.oil_columns = { "icon" }
+local function toggle_cols()
+    vim.g.oil_columns = #vim.g.oil_columns == 1 and { "icon", "size", "mtime" } or { "icon" }
+    require("oil").set_columns(vim.g.oil_columns)
+end
+
 return {
     "stevearc/oil.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -9,6 +15,8 @@ return {
     },
     cmd = { "Oil" },
     opts = {
+        default_file_explorer = true,
+        columns = { "icon" },
         -- Window-local options to use for oil buffers
         win_options = {
             cursorline = true,
@@ -30,16 +38,19 @@ return {
         keymaps = {
             ["g?"] = "actions.show_help",
             ["<CR>"] = "actions.select",
-            ["<C-v>"] = "actions.select_vsplit",
-            ["<C-x>"] = "actions.select_split",
-            ["<C-t>"] = "actions.select_tab",
-            ["<C-p>"] = "actions.preview",
-            ["K"] = "actions.preview",
+            ["<C-v>"] = { "actions.select", opts = { close = true, vertical = true } },
+            ["<C-x>"] = { "actions.select", opts = { close = true, horizontal = true } },
+            ["<C-t>"] = { "actions.select", opts = { close = true, tab = true } },
             ["<C-c>"] = "actions.close",
             ["<C-q>"] = "actions.close",
+            ["<C-p>"] = "actions.preview",
+            ["<C-u>"] = "actions.preview_scroll_up",
+            ["<C-d>"] = "actions.preview_scroll_down",
+            ["<C-l>"] = "actions.refresh",
+            ["<c-g>"] = toggle_cols,
+            ["K"] = "actions.preview",
             ["<leader>e"] = "actions.close",
             ["<leader>o"] = "actions.close",
-            ["<C-l>"] = "actions.refresh",
             ["<BS>"] = "actions.parent",
             ["-"] = "actions.parent",
             ["_"] = "actions.open_cwd",

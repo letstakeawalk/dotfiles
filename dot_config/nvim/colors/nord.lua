@@ -277,9 +277,6 @@ set(0, "BlinkCmpSignatureHelp",                { link = "NormalFloat" })
 set(0, "BlinkCmpSignatureHelpBorder",          { link = "FloatBorder" })
 set(0, "BlinkCmpSignatureHelpActiveParameter", { link = "LspSignatureActiveParameter" })
 
--- avante
-set(0, "AvanteSidebarWinSeparator", { link = "WinSeparator" })
-
 -- indent-blankline.nvim
 set(0, "IblIndent", { fg = nord.c01_gray })
 set(0, "IblScope",  { fg = nord.c09_glacier })

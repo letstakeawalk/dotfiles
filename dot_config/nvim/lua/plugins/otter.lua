@@ -1,7 +1,8 @@
 return {
-    'jmbuhr/otter.nvim',
+    "jmbuhr/otter.nvim",
+    event = "VeryLazy",
     dependencies = {
-      'nvim-treesitter/nvim-treesitter',
+        "nvim-treesitter/nvim-treesitter",
     },
     opts = {},
 }

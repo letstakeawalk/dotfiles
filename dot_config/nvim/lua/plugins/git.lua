@@ -212,8 +212,7 @@ return {
         },
     },
     {
-        "akinsho/git-conflict.nvim",
-        -- dir = "~/Workspace/projects/contribute/git-conflict.nvim",
+        "letstakeawalk/git-conflict.nvim", -- "akinsho/git-conflict.nvim"
         version = "*",
         event = "BufRead",
         opts = {

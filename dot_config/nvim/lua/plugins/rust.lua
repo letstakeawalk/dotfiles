@@ -2,7 +2,7 @@ return {
     {
         "mrcjkb/rustaceanvim",
         dependencies = { "akinsho/toggleterm.nvim" },
-        version = "^6",
+        version = "^7",
         ft = { "rust" },
         lazy = false, -- this plugin is already lazy
         config = function()

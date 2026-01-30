@@ -32,7 +32,6 @@ local configured_kinds = {
     "TypeParameter",
     "Snippet",
     "Text",
-    "Avante",
 }
 
 return {
@@ -41,7 +40,6 @@ return {
     event = { "InsertEnter", "CmdlineEnter" },
     dependencies = {
         { "L3MON4D3/LuaSnip", version = "v2.*" },
-        "Kaiser-Yang/blink-cmp-avante",
         "disrupted/blink-cmp-conventional-commits",
         "folke/lazydev.nvim",
         --  "Kaiser-Yang/blink-cmp-git",
@@ -109,7 +107,6 @@ return {
                 "path",
                 "buffer",
                 "snippets",
-                "avante",
                 "lazydev",
                 "conventional_commits",
             },
@@ -119,13 +116,6 @@ return {
                     module = "lazydev.integrations.blink",
                     -- make lazydev completions top priority (see `:h blink.cmp`)
                     score_offset = 100,
-                },
-                avante = {
-                    module = "blink-cmp-avante",
-                    name = "Avante",
-                    opts = {
-                        -- options for blink-cmp-avante
-                    },
                 },
                 conventional_commits = {
                     name = "ConventionalCommits",

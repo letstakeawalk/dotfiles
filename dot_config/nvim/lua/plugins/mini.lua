@@ -59,11 +59,6 @@ return {
                     miniclue.gen_clues.windows(),
                     miniclue.gen_clues.z(),
 
-                    { mode = "n", keys = "<leader>a",  desc = "Avante" },
-                    { mode = "x", keys = "<leader>a",  desc = "Avante" },
-                    { mode = "n", keys = "<leader>c",  desc = "Copilot" },
-                    { mode = "x", keys = "<leader>c",  desc = "Copilot" },
-                    -- { mode = "n", keys = "<leader>C",  desc = "Commands" },
                     { mode = "n", keys = "<leader>d",  desc = "Display" },
                     { mode = "n", keys = "<leader>g",  desc = "Git" },
                     { mode = "x", keys = "<leader>g",  desc = "Git" },
@@ -73,7 +68,8 @@ return {
                     { mode = "n", keys = "<leader>r",  desc = "Refactor & Run" },
                     { mode = "x", keys = "<leader>r",  desc = "Refactor & Run" },
                     { mode = "n", keys = "<leader>t",  desc = "Telescope" },
-                    { mode = "n", keys = "<leader>x",  desc = "Trouble" },
+                    { mode = "n", keys = "<leader>x",  desc = "Qf" },
+                    { mode = "n", keys = "<leader>rj", desc = "SplitJoin" },
                 },
                 window = { delay = 300, config = { width = "auto" } },
             })

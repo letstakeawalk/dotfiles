@@ -48,7 +48,7 @@ return {
         vim.cmd("Abolish LI{fe,st,sts}                  Li{}")
         vim.cmd("Abolish IMplement{,ation,ed,s}         Implement{}")
         vim.cmd("Abolish INs{tant,pect}                 Ins{}")
-        vim.cmd("Abolish INt{eger,erface,ernet}         Int{}")
+        vim.cmd("Abolish INt{eger,erface,ernet,o}       Int{}")
         vim.cmd("Abolish NE{ovim,w,ver}                 Ne{}")
         vim.cmd("Abolish NO{de,ne,pe,te,thing}          No{}")
         vim.cmd("Abolish NU{ll,mber}                    Nu{}")

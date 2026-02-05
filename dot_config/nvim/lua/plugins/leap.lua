@@ -21,9 +21,9 @@ return {
             return not (ch1:match("%s") or (ch0:match("%a") and ch1:match("%a") and ch2:match("%a")))
         end
 
-        -- Define equivalence classes for brackets and quotes, in addition to
-        -- the default whitespace group:
-        leap.opts.equivalence_classes = { " \t\r\n", "([{", ")]}", "'\"`" }
+        -- Define equivalence classes for brackets and quotes,
+        -- in addition to -- the default whitespace group:
+        leap.opts.equivalence_classes = { " \t\r\n", "'\"`" } --  "([{", ")]}"
 
         -- Use the traversal keys to repeat the previous motion without
         -- explicitly invoking Leap:

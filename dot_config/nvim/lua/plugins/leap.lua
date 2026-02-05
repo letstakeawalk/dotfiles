@@ -8,8 +8,9 @@ return {
             labels = "stfneiokhldwmbuyvrgaqpcxzj/STFNEIOKHLDWMBUYVRGAQPCXZJ?",
         })
         -- stylua: ignore start
-        vim.keymap.set( {"n","x","o"}, "s",  "<Plug>(leap)",             { desc = "Leap" })
-        vim.keymap.set( "n",           "S",  "<Plug>(leap-from-window)", { desc = "Leap window" })
+        vim.keymap.set( {"n", "x"}, "s", "<Plug>(leap-forward)",  { desc = "Leap Forward" })
+        vim.keymap.set( {"n", "x"}, "S", "<Plug>(leap-backward)", { desc = "Leap window" })
+        vim.keymap.set( {"o"},      "s", "<Plug>(leap)",          { desc = "Leap window" })
         -- stylua: ignore end
 
         -- Highly recommended: define a preview filter to reduce visual noise
@@ -71,7 +72,7 @@ return {
             })
         end)
 
-        -- remote actions
+        -- remote actions: `gs<leap>yiw`
         vim.keymap.set({ "n", "x", "o" }, "gs", function()
             require("leap.remote").action({
                 -- start visual mode by default

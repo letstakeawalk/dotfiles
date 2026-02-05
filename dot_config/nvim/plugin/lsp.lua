@@ -145,7 +145,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         vim.keymap.set("n",          "<leader>dD", toggle_diagnostic,          { desc = "Diagnostic Toggle",           buffer = args.buf })
         vim.keymap.set("n",          "<leader>dd", toggle_diagnostic_virtual,     { desc = "Diagnostic (virtual) Toggle", buffer = args.buf })
         vim.keymap.set("n",          "<leader>dh", toggle_inlay_hint,          { desc = "InlayHint Toggle",            buffer = args.buf })
-        vim.keymap.set("n",          "E",          vim.diagnostic.open_float,  { desc = "Open Float",                  buffer = args.buf })
+        vim.keymap.set("n",          "<leader>de", vim.diagnostic.open_float,  { desc = "Open Float",                  buffer = args.buf })
         vim.keymap.set("i",          "<C-k>",      toggle_signature_float,     { desc = "Signature Toggle",            buffer = args.buf })
         vim.keymap.set("i",          "<C-s>",      toggle_signature_float,     { desc = "Signature Toggle",            buffer = args.buf })
 

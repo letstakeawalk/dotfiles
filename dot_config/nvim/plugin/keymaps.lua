@@ -256,7 +256,7 @@ local function toggle_workspace_diagnostic()
         open = false,
     })
     require("quicker").open()
-    vim.cmd("cc")
+    vim.cmd.cfirst()
 end
 local function toggle_hint_info_diagnostic()
     close_qfloclist()
@@ -266,7 +266,7 @@ local function toggle_hint_info_diagnostic()
         open = false,
     })
     require("quicker").open()
-    vim.cmd("cc")
+    vim.cmd.cfirst()
 end
 set("n", "<leader>xx", toggle_workspace_diagnostic, { desc = "Workspace diagnostics" })
 set("n", "<leader>xd", toggle_buffer_diagnostic, { desc = "Buffer diagnostics" })

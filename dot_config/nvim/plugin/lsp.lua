@@ -114,20 +114,26 @@ end
 local function toggle_signature_float()
     require("lsp_signature").toggle_float_win()
 end
-local function diag_jump(count)
+local function diag_jump(count, severity)
     return function()
         local res = vim.diagnostic.jump({
             count = count,
+            severity = severity,
             float = true,
-            severity = { min = vim.diagnostic.severity.WARN },
         })
         if res ~= nil then
             vim.cmd("normal! zz")
         end
     end
 end
-local next_diag, prev_diag =
-    require("nvim-treesitter.textobjects.repeatable_move").make_repeatable_move_pair(diag_jump(1), diag_jump(-1))
+local next_diag, prev_diag = require("nvim-treesitter.textobjects.repeatable_move").make_repeatable_move_pair(
+    diag_jump(1, { vim.diagnostic.severity.WARN, vim.diagnostic.severity.ERROR }),
+    diag_jump(-1, { vim.diagnostic.severity.WARN, vim.diagnostic.severity.ERROR })
+)
+local next_hint, prev_hint = require("nvim-treesitter.textobjects.repeatable_move").make_repeatable_move_pair(
+    diag_jump(1, { vim.diagnostic.severity.INFO, vim.diagnostic.severity.HINT }),
+    diag_jump(-1, { vim.diagnostic.severity.INFO, vim.diagnostic.severity.HINT })
+)
 
 vim.keymap.set("n", "<leader>il", "<cmd>LspInfo<cr>", { desc = "Lsp Info" })
 vim.keymap.set("n", "<leader>im", "<cmd>Mason<cr>", { desc = "Mason Info" })
@@ -137,15 +143,15 @@ vim.api.nvim_create_autocmd("LspAttach", {
     desc = "Keymaps for LSP",
     -- stylua: ignore
     callback = function(args)
+        vim.keymap.set("n",          "E",          vim.diagnostic.open_float,  { desc = "Display Dianostic",           buffer = args.buf })
         vim.keymap.set("n",          "H",          vim.lsp.buf.signature_help, { desc = "Display Signature Help",      buffer = args.buf })
         vim.keymap.set("n",          "K",          vim.lsp.buf.hover,          { desc = "Display Hover Info",          buffer = args.buf })
         vim.keymap.set({ "n", "v" }, "<leader>ra", vim.lsp.buf.code_action,    { desc = "Code Action",                 buffer = args.buf })
         vim.keymap.set({ "n", "v" }, "<leader>rf", async_format,               { desc = "Format File",                 buffer = args.buf })
         vim.keymap.set("n",          "<leader>rn", vim.lsp.buf.rename,         { desc = "Rename",                      buffer = args.buf })
         vim.keymap.set("n",          "<leader>dD", toggle_diagnostic,          { desc = "Diagnostic Toggle",           buffer = args.buf })
-        vim.keymap.set("n",          "<leader>dd", toggle_diagnostic_virtual,     { desc = "Diagnostic (virtual) Toggle", buffer = args.buf })
+        vim.keymap.set("n",          "<leader>dd", toggle_diagnostic_virtual,  { desc = "Diagnostic (virtual) Toggle", buffer = args.buf })
         vim.keymap.set("n",          "<leader>dh", toggle_inlay_hint,          { desc = "InlayHint Toggle",            buffer = args.buf })
-        vim.keymap.set("n",          "<leader>de", vim.diagnostic.open_float,  { desc = "Open Float",                  buffer = args.buf })
         vim.keymap.set("i",          "<C-k>",      toggle_signature_float,     { desc = "Signature Toggle",            buffer = args.buf })
         vim.keymap.set("i",          "<C-s>",      toggle_signature_float,     { desc = "Signature Toggle",            buffer = args.buf })
 
@@ -157,6 +163,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
         vim.keymap.set("n", "[d", prev_diag, { desc = "Goto previous diagnostic", buffer = args.buf})
         vim.keymap.set("n", "]d", next_diag, { desc = "Goto next diagnostic",     buffer = args.buf})
+        vim.keymap.set("n", "[h", prev_hint, { desc = "Goto previous hint/info",  buffer = args.buf})
+        vim.keymap.set("n", "]h", next_hint, { desc = "Goto next hink/info",      buffer = args.buf})
     end,
 })
 

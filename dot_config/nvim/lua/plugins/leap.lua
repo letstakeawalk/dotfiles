@@ -4,8 +4,8 @@ return {
     config = function()
         local leap = require("leap")
         leap.setup({
-            safe_labels = "stfnu/SNTGMFLHUZ?",
-            labels = "stfneiokhldwmbuyvrgaqpcxzj/STFNEIOKHLDWMBUYVRGAQPCXZJ?",
+            safe_labels = "", -- skip auto-jump
+            labels = "stneioarulyfpwmg,h.cdxz/kvq;bjSTNEIOARULYFPWMG<H>CDXZ?KVQ:BJ",
         })
         -- stylua: ignore start
         vim.keymap.set( {"n", "x"}, "s", "<Plug>(leap-forward)",  { desc = "Leap Forward" })

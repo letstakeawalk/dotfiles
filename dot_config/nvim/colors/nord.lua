@@ -32,6 +32,7 @@ set(0, "PmenuSbar",     { bg = nord.c02_gray })
 set(0, "PmenuThumb",    { bg = nord.c03b_gray })
 set(0, "PmenuMatch",    { fg = "#74C0FC", bold = true })
 set(0, "PmenuMatchSel", { fg = nord.c09_glacier, bold = true })
+set(0, "ComplHint",     { fg = nord.c04d_white })
 
 set(0, "ColorColumn",  { bg = nord.c01_gray }) -- used for the columns set with 'colorcolumn'
 set(0, "Conceal",      { fg = nord.c03b_gray }) -- placeholder characters substituted for concealed text (see 'conceallevel')
@@ -46,7 +47,6 @@ set(0, "SpecialKey",   { fg = nord.c09_glacier })
 set(0, "Title",        { fg = nord.fg, bold = true })
 set(0, "Visual",       { bg = nord.visual })
 set(0, "WinSeparator", { fg = nord.c02_gray })
-set(0, "SpellBad",     { fg = nord.error, undercurl = true })
 
 set(0, "QuickFixLine",            { bg = nord.c02_gray })
 set(0, "QuickFixText",            { link = "Normal" })
@@ -59,9 +59,10 @@ set(0, "QuickFixFilenameInvalid", { link = "Comment" })
 -- DiagnosticSign* 
 
 -- Spell
-set(0, "SpellLocal", { undercurl = true })
-set(0, "SpellCap",   { undercurl = true })
-set(0, "SpellRare",  { undercurl = true })
+set(0, "SpellBad",   { fg = nord.error, undercurl = true })
+set(0, "SpellLocal", { fg = nord.error, undercurl = true })
+set(0, "SpellCap",   { fg = nord.error, undercurl = true })
+set(0, "SpellRare",  { fg = nord.error, undercurl = true })
 
 -- File Navigation
 set(0, "Directory", { fg = nord.c08_cyan }) -- directory names (and other special names in listings)
@@ -232,10 +233,10 @@ set(0, "TelescopeSelection",      { link = "Visual" })
 set(0, "TelescopeSelectionCaret", { link = "TelescopeSelection" })
 
 -- harpoon & lualine
-set(0, "HarpoonActive",         { fg = nord.c04_white,    bold = true })
+set(0, "HarpoonActive",         { fg = nord.c04_white, bold = true })
 set(0, "HarpoonInactive",       { fg = nord.c03b_gray, bg = nord.c00b_black })
-set(0, "HarpoonNumberActive",   { fg = "#7aa2f7",       bold = true })
-set(0, "HarpoonNumberInactive", { fg = "#496194",       bg = nord.c00b_black })
+set(0, "HarpoonNumberActive",   { fg = "#7aa2f7", bold = true })
+set(0, "HarpoonNumberInactive", { fg = "#496194", bg = nord.c00b_black })
 set(0, "LualineTabsActive",     { fg = "#7aa2f7", bold = true })
 set(0, "LualineTabsInactive",   { fg = "#496194" })
 
@@ -250,7 +251,7 @@ set(0, "BlinkCmpScrollBarThumb",               { link = "PmenuThumb" })
 set(0, "BlinkCmpScrollBarGutter",              { link = "PmenuSbar" })
 set(0, "BlinkCmpLabel",                        { link = "Pmenu" })
 set(0, "BlinkCmpLabelDetail",                  { fg = nord.c03b_gray })
-set(0, "BlinkCmpLabelDescription",             { fg = nord.c03_gray })
+set(0, "BlinkCmpLabelDescription",             { fg = nord.c03b_gray })
 set(0, "BlinkCmpLabelMatch",                   { link = "PmenuMatch" })
 set(0, "BlinkCmpLabelDeprecated",              { fg = "#808080", strikethrough = true })
 set(0, "BlinkCmpKind",                         { link = "PmenuKind" })
@@ -295,7 +296,7 @@ set(0, "LeapLabelDimmed",  { fg = "black", bg = "#88aa33" })
 
 -- mini
 set(0, "MiniClueFloatTitle", { fg = nord.c09_glacier, bold = true })
-set(0, "MiniClueNextKey",    { fg = nord.c08_cyan, bold = true })
+set(0, "MiniClueNextKey",    { fg = nord.c08_cyan,    bold = true })
 set(0, "MiniClueSeparator",  { link = "MiniClueBorder" })
 
 -- illuminate

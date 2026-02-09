@@ -1,5 +1,6 @@
 local set = vim.keymap.set
 local del = vim.keymap.del
+local utils = require("utils")
 
 -- stylua: ignore start
 --- General
@@ -62,14 +63,14 @@ set("n", "zH",         "<Nop>",    { desc = "NOP"})
 set("n", "}",          "}zz",      { desc = "Next Paragraph" })
 set("n", "{",          "{zz",      { desc = "Prev Paragraph" })
 set("n", "'",          "g`",       { desc = "Jump to mark" })
-set("n", "zt",         "zt8<C-y>", { desc = "Redraw window (top)" })
-set("n", "zb",         "zb8<C-e>", { desc = "Redraw window (bottom)" })
+set("n", "zt",         "zt",       { desc = "Redraw window (top)" })
+set("n", "zb",         "zb",       { desc = "Redraw window (bottom)" })
 set("n", "<C-d>",      "<C-d>zz",  { desc = "Scroll down" })
 set("n", "<C-u>",      "<C-u>zz",  { desc = "Scroll up" })
 set("n", "<PageDown>", "<C-d>zz",  { desc = "Scroll down" })
 set("n", "<PageUp>",   "<C-u>zz",  { desc = "Scroll up" })
-set("n", "<C-e>",      "8<C-e>",   { desc = "Scroll down" })
-set("n", "<C-y>",      "8<C-y>",   { desc = "Scroll up" })
+set("n", "<C-e>",      "4<C-e>",   { desc = "Scroll down" })
+set("n", "<C-y>",      "4<C-y>",   { desc = "Scroll up" })
 
 -- Buffer/Tab/Pane Navigation & Management
 set("n", "<C-q>",     "<cmd>q<cr>",                  { desc = "Close buffer"  })
@@ -132,15 +133,7 @@ set("v", "<A-h>",    ":m '<-2<CR>gv=gv",    { desc = "Move line up" })
 -- Display/Toggle: <leader>d
 set("n", "<leader>dm", "<cmd>message<cr>", { desc = "Messages" })
 set("n", "<leader>dM", "<cmd>Redir message<cr>", { desc = "Redir Messages" })
-set("n", "<leader>dn", function()
-    local enabled = vim.wo.number
-    vim.wo.number = not enabled
-    vim.wo.relativenumber = not enabled
-    vim.wo.signcolumn = enabled and "no" or "yes"
-    vim.wo.foldcolumn = 0
-    vim.wo.scrolloff = 10
-    vim.wo.sidescrolloff = 10
-end, { desc = "Display Numbers" })
+set("n", "<leader>dn", utils.toggle_gutter, { desc = "Display Numbers" })
 set("n", "<leader>dC", function()
     vim.wo.conceallevel = vim.wo.conceallevel == 0 and 2 or 0
     vim.notify("Conceal " .. (vim.wo.conceallevel == 2 and "Enabled" or "Disabled"), vim.log.levels.INFO)
@@ -281,7 +274,7 @@ local function with_warning(cmd)
     return function()
         local ok, _ = pcall(cmd)
         if ok then
-            vim.cmd("normal! zz")
+            require("utils").centerscreen()
         else
             vim.notify("No more items", vim.log.levels.INFO)
         end

@@ -122,7 +122,7 @@ local function diag_jump(count, severity)
             float = true,
         })
         if res ~= nil then
-            vim.cmd("normal! zz")
+            require("utils").centerscreen()
         end
     end
 end

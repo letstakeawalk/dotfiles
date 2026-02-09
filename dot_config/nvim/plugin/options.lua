@@ -11,8 +11,8 @@ opt.more = false
 opt.mouse = "nv" -- enable mouse on normal and visual mode
 opt.number = true -- show line numbers
 opt.relativenumber = true -- number relatively
-opt.scrolloff = 10 -- num of line to keep above/below the of the cursor
-opt.sidescrolloff = 10 -- num of cols to keep left/right of the cursor
+opt.scrolloff = 8 -- num of line to keep above/below the of the cursor
+opt.sidescrolloff = 8 -- num of cols to keep left/right of the cursor
 opt.signcolumn = "yes" -- Always show the signcolumn, otherwise it would shift the text each time diagnostics appear/become resolved
 opt.splitbelow = true -- always open horizontal split below
 opt.splitright = true -- always open vertical split right
@@ -22,7 +22,7 @@ opt.wrap = false
 opt.pumheight = 8
 opt.showmode = false
 opt.shortmess:append("cS")
-vim.o.scroll = math.floor(vim.o.lines * 0.4) -- scrolling w/ <c-u>, <c-d>
+opt.scroll = math.floor(vim.o.lines * 0.4) -- scrolling w/ <c-u>, <c-d>
 opt.diffopt:append("foldcolumn:0")
 opt.fillchars:append("diff: ")
 

@@ -148,7 +148,7 @@ require("treesitter-context").setup()
 local function move_center(move)
     return function()
         move()
-        vim.cmd("normal! zz")
+        require("utils").centerscreen()
     end
 end
 

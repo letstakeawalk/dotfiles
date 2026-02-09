@@ -1,7 +1,13 @@
 gui:
+  showIcons: true
   theme:
     selectedLineBgColor:
       - "#4C566A"
+    activeBorderColor:
+      - green
+      - bold
+    inactiveBorderColor:
+      - "#616E88"
 keybinding:
   universal:
     prevItem-alt: h

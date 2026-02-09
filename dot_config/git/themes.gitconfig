@@ -5,8 +5,8 @@
   line-numbers-minus-style = "red"
   line-numbers-plus-style = "green"
   line-numbers-zero-style = "#4C566A"
-  plus-style = "green"
-  plus-emph-style = "#2E3440 bold #A3BE8C"
-  minus-style = "red"
-  minus-emph-style = "#2E3440 bold #BF616A"
+  plus-style = "syntax #002420"
+  plus-emph-style = "syntax bold #005D52"
+  minus-style = "syntax #240018"
+  minus-emph-style = "syntax bold #5C003D"
   syntax-theme = Nord

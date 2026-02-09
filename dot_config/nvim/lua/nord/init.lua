@@ -31,10 +31,14 @@ local M = {
     c10d_blue    = "#4B678A", -- #4B678A -- search
     c10dd_blue   = "#384D67", -- #384D67
     c11d_red     = "#994E55", -- #994E55
-    c11dd_red    = "#4C272A", -- #4C272A
+    c11dd_red    = "#733A40", -- #733A40
     c12d_orange  = "#A66C5A", -- #A66C5A
     c13d_yellow  = "#BCA26F", -- #BCA26F
+    c13dd_yellow = "#8D7A53", -- #8D7A53
+    c13vd_yellow = "#5E5138", -- #5E5138
     c14d_green   = "#829870", -- #829870
+    c14dd_green  = "#627254", -- #627254
+    c14vd_green  = "#414C38", -- #414C38
     c15d_purple  = "#90728A", -- #90728A
 
     c07b_mint    = "#A5C9C9", -- #A5C9C9

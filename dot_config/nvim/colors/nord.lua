@@ -305,6 +305,15 @@ set(0, "FugitiveExtSection", { fg = nord.c09_glacier, bold = true })
 set(0, "FugitiveExtKey",     { fg = nord.c08_cyan, bold = true })
 set(0, "FugitiveExtDesc",    { fg = nord.c04d_white })
 
+-- gitsigns
+set(0, "GitSignsAddInline",          { reverse = true })
+set(0, "GitSignsChangeInline",       { reverse = true })
+set(0, "GitSignsDeleteInline",       { reverse = true })
+set(0, "GitSignsDeleteVirtLnInline", { reverse = true })
+set(0, "GitSignsAddLnInline",        { bg = nord.c14dd_green,  fg = nord.c06_white })
+set(0, "GitSignsChangeLnInline",     { bg = nord.c13dd_yellow, fg = nord.c06_white })
+set(0, "GitSignsDeleteLnInline",     { bg = nord.c11d_red,     fg = nord.c06_white })
+
 -- git-conflict
 set(0, "GitConflictCurrentLabel",  { fg = nord.c00_black, bg = nord.c14d_green, bold = true, italic = true })
 set(0, "GitConflictIncomingLabel", { fg = nord.c00_black, bg = nord.c13d_yellow, bold = true, italic = true})

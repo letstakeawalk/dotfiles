@@ -108,7 +108,7 @@ return {
     {
         "lewis6991/gitsigns.nvim",
         dependencies = { "nvim-treesitter/nvim-treesitter" },
-        event = "BufRead",
+        event = "VeryLazy",
         opts = {
             on_attach = function(bufnr)
                 -- local gs = package.loaded.gitsigns
@@ -129,10 +129,12 @@ return {
                 end
 
                 local next_hunk = function()
+                    ---@diagnostic disable-next-line: missing-fields
                     gs.nav_hunk("next", { wrap = false, preview = false }, center_screen)
                     -- gs.preview_hunk_inline()
                 end
                 local prev_hunk = function()
+                    ---@diagnostic disable-next-line: missing-fields
                     gs.nav_hunk("prev", { wrap = false, preview = false }, center_screen)
                     -- gs.preview_hunk_inline()
                 end
@@ -143,7 +145,7 @@ return {
 
                 local function toggle_blame_buf()
                     local blame_bufs = vim.tbl_filter(function(buf)
-                        return api.nvim_get_option_value("filetype", { buf = buf }) == "gitsigns.blame"
+                        return api.nvim_get_option_value("filetype", { buf = buf }) == "gitsigns-blame"
                     end, api.nvim_list_bufs())
                     if #blame_bufs == 0 then
                         gs.blame()
@@ -170,14 +172,6 @@ return {
                     end
                 end
 
-                local function setqflist(target)
-                    return function()
-                        gs.setqflist(target, { open = true }, function()
-                            vim.cmd("cc")
-                        end)
-                    end
-                end
-
                 -- TODO: change this to selection with options instead of input
                 -- ~1 for last commit
                 local function diff()
@@ -185,6 +179,13 @@ return {
                         gs.diffthis(input)
                     end)
                 end
+
+                local function setqflist(target)
+                    return function()
+                        gs.setqflist(target, { open = true }, vim.cmd.cfirst)
+                    end
+                end
+
 
                 -- stylua: ignore start
                 map("v", "<leader>gs", function() gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") }) end, { desc = "Stage hunk" })
@@ -194,10 +195,11 @@ return {
                 map("n", "<leader>ga", gs.stage_buffer,                 { desc = "Stage buffer" })
                 map("n", "<leader>gR", gs.reset_buffer,                 { desc = "Reset buffer" })
                 map("n", "<leader>gp", gs.preview_hunk,                 { desc = "Preview hunk" })
-                map("n", "<leader>gb", toggle_blame_buf,                { desc = "Blame" })
+                map("n", "<leader>gx", gs.preview_hunk_inline,          { desc = "Preview hunk inline" })
+                map("n", "<leader>gb", gs.blame_line,                   { desc = "Blame line" })
+                map("n", "<leader>gB", toggle_blame_buf,                { desc = "Blame" })
                 map("n", "<leader>gd", diffthis,                        { desc = "Diff this" })
                 map("n", "<leader>gD", diff,                            { desc = "Diff" })
-                map("n", "<leader>gx", gs.preview_hunk_inline,          { desc = "Toggle deleted" })
                 map("n", "<leader>gq", setqflist(0),                    { desc = "Qflist (buffer)" })
                 map("n", "<leader>gw", setqflist('all'),                { desc = "Qflist (all)" })
                 -- TODO: check callback arg with preview hunk inline

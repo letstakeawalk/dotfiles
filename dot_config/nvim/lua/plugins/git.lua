@@ -1,3 +1,4 @@
+---@diagnostic disable: missing-fields
 local function git_worktrees()
     require("telescope").extensions.git_worktree.git_worktree({
         layout_config = {
@@ -110,8 +111,8 @@ return {
         dependencies = { "nvim-treesitter/nvim-treesitter" },
         event = "VeryLazy",
         opts = {
+            attach_to_untracked = true,
             on_attach = function(bufnr)
-                -- local gs = package.loaded.gitsigns
                 local gs = require("gitsigns")
                 local api = vim.api
 
@@ -124,24 +125,17 @@ return {
                 local make_repeatable_move_pair =
                     require("nvim-treesitter.textobjects.repeatable_move").make_repeatable_move_pair
 
-                local function center_screen()
-                    vim.cmd("normal! zz")
-                end
-
+                -- stylua: ignore start
                 local next_hunk = function()
-                    ---@diagnostic disable-next-line: missing-fields
-                    gs.nav_hunk("next", { wrap = false, preview = false }, center_screen)
-                    -- gs.preview_hunk_inline()
+                    gs.nav_hunk("next", { wrap = false, preview = false, greedy = false }, require("utils").centerscreen)
                 end
                 local prev_hunk = function()
-                    ---@diagnostic disable-next-line: missing-fields
-                    gs.nav_hunk("prev", { wrap = false, preview = false }, center_screen)
-                    -- gs.preview_hunk_inline()
+                    gs.nav_hunk("prev", { wrap = false, preview = false, greedy = false }, require("utils").centerscreen)
                 end
                 next_hunk, prev_hunk = make_repeatable_move_pair(next_hunk, prev_hunk)
-
                 map("n", "]c", next_hunk, { desc = "Goto next hunk" })
                 map("n", "[c", prev_hunk, { desc = "Goto previous hunk" })
+                -- stylua: ignore end
 
                 local function toggle_blame_buf()
                     local blame_bufs = vim.tbl_filter(function(buf)
@@ -186,12 +180,17 @@ return {
                     end
                 end
 
+                -- stylua: ignore start
+                local function stage_hunk() gs.stage_hunk(nil, { greedy = false }) end
+                local function reset_hunk() gs.reset_hunk(nil, { greedy = false }) end
+                -- stylua: ignore end
+
 
                 -- stylua: ignore start
                 map("v", "<leader>gs", function() gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") }) end, { desc = "Stage hunk" })
                 map("v", "<leader>gr", function() gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") }) end, { desc = "Reset hunk" })
-                map("n", "<leader>gs", gs.stage_hunk,                   { desc = "Stage hunk" })
-                map("n", "<leader>gr", gs.reset_hunk,                   { desc = "Reset hunk" })
+                map("n", "<leader>gs", stage_hunk,                      { desc = "Stage hunk" })
+                map("n", "<leader>gr", reset_hunk,                      { desc = "Reset hunk" })
                 map("n", "<leader>ga", gs.stage_buffer,                 { desc = "Stage buffer" })
                 map("n", "<leader>gR", gs.reset_buffer,                 { desc = "Reset buffer" })
                 map("n", "<leader>gp", gs.preview_hunk,                 { desc = "Preview hunk" })

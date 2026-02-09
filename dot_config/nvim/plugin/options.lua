@@ -23,6 +23,8 @@ opt.pumheight = 8
 opt.showmode = false
 opt.shortmess:append("cS")
 vim.o.scroll = math.floor(vim.o.lines * 0.4) -- scrolling w/ <c-u>, <c-d>
+opt.diffopt:append("foldcolumn:0")
+opt.fillchars:append("diff: ")
 
 opt.undofile = true -- persistent undo
 opt.shada = { "'10", "<0", "s10", "h" }

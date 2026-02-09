@@ -137,6 +137,7 @@ set("n", "<leader>dn", function()
     vim.wo.number = not enabled
     vim.wo.relativenumber = not enabled
     vim.wo.signcolumn = enabled and "no" or "yes"
+    vim.wo.foldcolumn = 0
     vim.wo.scrolloff = 10
     vim.wo.sidescrolloff = 10
 end, { desc = "Display Numbers" })
@@ -246,7 +247,7 @@ local function toggle_buffer_diagnostic()
         open = false,
     })
     require("quicker").open({ loclist = true })
-    vim.cmd("cc")
+    vim.cmd.cfirst()
 end
 local function toggle_workspace_diagnostic()
     close_qfloclist()

@@ -27,9 +27,8 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
--- Auto create dir when saving a file,
--- in case some intermediate directory does not exist
 vim.api.nvim_create_autocmd("BufWritePre", {
+    desc = "Auto create dir when saving a file, in case some intermediate directory does not exist",
     group = utils.augroup("AutoCreateDir", { clear = true }),
     callback = function(event)
         if event.match:match("^%w%w+://") then

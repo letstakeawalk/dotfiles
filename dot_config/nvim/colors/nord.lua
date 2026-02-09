@@ -97,16 +97,10 @@ set(0, "FoldColumn",   { fg = nord.c03_gray })
 set(0, "SignColumn",   { fg = nord.c01_gray })
 
 -- Diff
--- set(0, "DiffAdd",     { fg = nord.c00_black, bg = nord.c14_green })
--- set(0, "DiffChange",  { fg = nord.c00_black, bg = nord.c13_yellow })
--- set(0, "DiffDelete",  { fg = nord.c00_black, bg = nord.c11_red })
--- set(0, "DiffText",    { fg = nord.c00_black, bg = nord.c12_orange, bold = true })
--- set(0, "DiffTextAdd", { fg = nord.c00_black, bg = nord.c14_green,  bold = true })
-set(0, "DiffAdd",     { bg = "#002420" }) -- added line 
-set(0, "DiffDelete",  { bg = "#240018" }) -- deleted line
-set(0, "DiffChange",  {}) -- changed line
-set(0, "DiffText",    { bg = "#463A10" , bold = true }) -- changed text in changed line
-set(0, "DiffTextAdd", { bg = "#12431D",  bold = true }) -- added text in changed line
+set(0, "DiffAdd",     { bg = nord.diff.add_dk }) -- added line 
+set(0, "DiffDelete",  { bg = nord.diff.del_dk }) -- deleted line
+set(0, "DiffChange",  {})                        -- changed line
+set(0, "DiffText",    { bg = nord.diff.change , bold = true }) -- changed text in changed line
 set(0, "Added",       { fg = nord.c14_green })
 set(0, "Changed",     { fg = nord.c13_yellow })
 set(0, "Removed",     { fg = nord.c11_red })
@@ -315,14 +309,10 @@ set(0, "diffLine",           { fg = nord.c09_glacier, italic = true }) -- hunk h
 set(0, "diffSubname",        { fg = nord.c09_glacier })
 
 -- gitsigns
--- set(0, "GitSignsAddInline",          { reverse = true, bold = true }) -- preview
--- set(0, "GitSignsChangeInline",       { reverse = true, bold = true }) -- preview
--- set(0, "GitSignsDeleteInline",       { reverse = true, bold = true }) -- preview
--- set(0, "GitSignsDeleteVirtLnInline", { reverse = true, bold = true }) -- preview-inline-virt
-set(0, "GitSignsAddInline",          { bg = "#12431D", bold = true }) -- preview
-set(0, "GitSignsChangeInline",       { bg = nord.c13d_yellow, bold = true }) -- preview
-set(0, "GitSignsDeleteInline",       { bg = nord.c11d_red, bold = true }) -- preview
-set(0, "GitSignsDeleteVirtLnInline", { bg = nord.c11d_red, bold = true }) -- preview-inline-virt
+set(0, "GitSignsAddInline",          { bg = nord.diff.add_br, bold = true }) -- preview
+set(0, "GitSignsChangeInline",       { bg = nord.diff.add_br, bold = true }) -- preview-inline-virt
+set(0, "GitSignsDeleteInline",       { bg = nord.diff.del_br, bold = true }) -- preview
+set(0, "GitSignsDeleteVirtLnInline", { bg = nord.diff.del_br, bold = true }) -- preview-inline-virt
 set(0, "GitSignsAddLnInline",        { bg = nord.c14dd_green,  fg = nord.c06_white }) -- word_diff
 set(0, "GitSignsChangeLnInline",     { bg = nord.c13dd_yellow, fg = nord.c06_white }) -- word_diff
 set(0, "GitSignsDeleteLnInline",     { bg = nord.c11d_red,     fg = nord.c06_white }) -- word_diff

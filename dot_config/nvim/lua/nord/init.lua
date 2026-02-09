@@ -63,7 +63,14 @@ M.nontext    = M.c03_gray
 M.error = M.c11_red     -- #BF616A c11 red
 M.warn  = M.c13_yellow  -- #EBCB8B c13 yellow
 M.info  = M.c09_glacier -- #81A1C1 c09 glacier
-M.hint  = M.c10_blue     -- #5E81AC c10 blue
+M.hint  = M.c10_blue    -- #5E81AC c10 blue
 M.ok    = M.c14_green   -- #A3BE8C c14 green
+M.diff = {
+    add_br = "#005D52",
+    add_dk = "#002420",
+    del_br = "#5C003D",
+    del_dk = "#240018",
+    change = "#6C5B00"
+}
 
 return M

@@ -127,10 +127,10 @@ return {
 
                 -- stylua: ignore start
                 local next_hunk = function()
-                    gs.nav_hunk("next", { wrap = false, preview = false, greedy = false }, require("utils").centerscreen)
+                    gs.nav_hunk("next", { wrap = false, preview = false }, require("utils").centerscreen)
                 end
                 local prev_hunk = function()
-                    gs.nav_hunk("prev", { wrap = false, preview = false, greedy = false }, require("utils").centerscreen)
+                    gs.nav_hunk("prev", { wrap = false, preview = false }, require("utils").centerscreen)
                 end
                 next_hunk, prev_hunk = make_repeatable_move_pair(next_hunk, prev_hunk)
                 map("n", "]c", next_hunk, { desc = "Goto next hunk" })
@@ -181,26 +181,20 @@ return {
                 end
 
                 -- stylua: ignore start
-                local function stage_hunk() gs.stage_hunk(nil, { greedy = false }) end
-                local function reset_hunk() gs.reset_hunk(nil, { greedy = false }) end
-                -- stylua: ignore end
-
-
-                -- stylua: ignore start
                 map("v", "<leader>gs", function() gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") }) end, { desc = "Stage hunk" })
                 map("v", "<leader>gr", function() gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") }) end, { desc = "Reset hunk" })
-                map("n", "<leader>gs", stage_hunk,                      { desc = "Stage hunk" })
-                map("n", "<leader>gr", reset_hunk,                      { desc = "Reset hunk" })
-                map("n", "<leader>ga", gs.stage_buffer,                 { desc = "Stage buffer" })
-                map("n", "<leader>gR", gs.reset_buffer,                 { desc = "Reset buffer" })
-                map("n", "<leader>gp", gs.preview_hunk,                 { desc = "Preview hunk" })
-                map("n", "<leader>gx", gs.preview_hunk_inline,          { desc = "Preview hunk inline" })
-                map("n", "<leader>gb", gs.blame_line,                   { desc = "Blame line" })
-                map("n", "<leader>gB", toggle_blame_buf,                { desc = "Blame" })
-                map("n", "<leader>gd", diffthis,                        { desc = "Diff this" })
-                map("n", "<leader>gD", diff,                            { desc = "Diff" })
-                map("n", "<leader>gq", setqflist(0),                    { desc = "Qflist (buffer)" })
-                map("n", "<leader>gw", setqflist('all'),                { desc = "Qflist (all)" })
+                map("n", "<leader>gs", gs.stage_hunk,          { desc = "Stage hunk" })
+                map("n", "<leader>gr", gs.reset_hunk,          { desc = "Reset hunk" })
+                map("n", "<leader>ga", gs.stage_buffer,        { desc = "Stage buffer" })
+                map("n", "<leader>gR", gs.reset_buffer,        { desc = "Reset buffer" })
+                map("n", "<leader>gp", gs.preview_hunk,        { desc = "Preview hunk" })
+                map("n", "<leader>gx", gs.preview_hunk_inline, { desc = "Preview hunk inline" })
+                map("n", "<leader>gb", gs.blame_line,          { desc = "Blame line" })
+                map("n", "<leader>gB", toggle_blame_buf,       { desc = "Blame" })
+                map("n", "<leader>gd", diffthis,               { desc = "Diff this" })
+                map("n", "<leader>gD", diff,                   { desc = "Diff" })
+                map("n", "<leader>gq", setqflist(0),           { desc = "Qflist (buffer)" })
+                map("n", "<leader>gw", setqflist('all'),       { desc = "Qflist (all)" })
                 -- TODO: check callback arg with preview hunk inline
 
                 -- Text object

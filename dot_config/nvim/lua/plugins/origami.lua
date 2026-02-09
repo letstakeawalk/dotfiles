@@ -27,7 +27,7 @@ return {
             },
         },
         autoFold = {
-            enabled = true,
+            enabled = false,
             kinds = { "comment", "imports" }, ---@type lsp.FoldingRangeKind[]
         },
         foldKeymaps = {

@@ -6,6 +6,7 @@ vim.filetype.add({
     pattern = {
         [".*%.toml%.tmpl"] = "toml",
         [".*/git/config"] = "gitconfig",
+        [".*gitconfig"] = "gitconfig",
         [".*/ghostty/config%.tmpl"] = "config",
         [".*/%.ssh/.*%.sshconfig"] = "sshconfig",
         [".*/git/ignore"] = "gitignore",

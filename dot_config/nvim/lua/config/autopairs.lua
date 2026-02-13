@@ -165,7 +165,17 @@ end
 -- Closure pipe
 ap.add_rules({
     Rule("|", "|", { "rust" })
-        :with_pair(conds.before_regex("%w+%(") and conds.after_text(")"))
+        :with_pair(function(opts)
+            local col = opts.col
+            local line = opts.line
+            local match = line:sub(1, col - 1):match("%w+%($")
+            if match == nil or vim.trim(match) == "" then
+                return false
+            end
+            local before = match ~= nil or #vim.trim(match) > 0
+            local after = line:sub(col, col) == ")"
+            return before and after
+        end)
         :with_move(conds.done())
         :with_cr(conds.none()),
 })
@@ -174,13 +184,23 @@ ap.add_rules({
 -- `Struct<|>`, `impl<|>`, `Vec<|>`, `collect::<|>`, `fn foo<|>()`
 ap.add_rules({
     Rule("<", ">", { "rust", "typescript", "typescriptreact" })
-        :with_pair(conds.before_regex("[%w:]+") and conds.not_before_char("<"))
+        :with_pair(function(opts)
+            local col = opts.col
+            local line = opts.line
+            if col <= 1 then
+                return false
+            end
+            if not line:sub(1, col - 1):match("[%w:<]+$") then
+                return false
+            end
+            if line:sub(col - 1, col - 1) == "<" and line:sub(col, col) ~= ">" then
+                return false
+            end
+            return true
+        end)
         :with_cr(conds.none())
         :with_move(function(opts)
             return opts.char == opts.next_char
-        end)
-        :with_del(function(opts)
-            return opts.line:sub(opts.col - 1, opts.col) ~= "<<"
         end),
 })
 

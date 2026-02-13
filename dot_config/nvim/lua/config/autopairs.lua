@@ -233,3 +233,17 @@ ap.add_rules({
         :with_del(conds.none())
         :with_cr(conds.none()),
 })
+
+-- Delete empty pair from outside: ()| -> |
+for _, bracket in ipairs(vim.list_extend(brackets, { { "<", ">" } })) do
+    local open, close = unpack(bracket)
+    vim.print(string.format("extending %s, %s", open, close))
+    ap.add_rules({
+        Rule(open .. close, ""):with_pair(conds.none()):with_move(conds.none()):with_cr(conds.none()),
+    })
+end
+for _, pair in ipairs({ "''", '""', "``", "||", "&&" }) do
+    ap.add_rules({
+        Rule(pair, ""):with_pair(conds.none()):with_move(conds.none()):with_cr(conds.none()),
+    })
+end

@@ -27,6 +27,30 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
+vim.api.nvim_create_autocmd("BufWinEnter", {
+    desc = "Smart window position: Open in vertical if screen is wide enough",
+    group = utils.augroup("SmartWinPos", { clear = true }),
+    pattern = { "fugitive://*//", "*COMMIT_EDITMSG", "*/doc/*" },
+    callback = function(ev)
+        local target_fts = { "fugitive", "help", "gitcommit" }
+        local ft = vim.api.nvim_get_option_value("ft", { buf = ev.buf })
+        if not vim.list_contains(target_fts, ft) then
+            return
+        end
+        for _, win in ipairs(vim.api.nvim_list_wins()) do
+            if ev.buf == vim.api.nvim_win_get_buf(win) then
+                local win_w = vim.api.nvim_win_get_width(win)
+                local vim_w = vim.o.columns
+                if vim_w >= 100 and win_w > math.floor(vim_w / 2) then
+                    vim.cmd.wincmd("L")
+                elseif win_w < 50 then
+                    vim.cmd.wincmd("J")
+                end
+            end
+        end
+    end,
+})
+
 vim.api.nvim_create_autocmd("BufWritePre", {
     desc = "Auto create dir when saving a file, in case some intermediate directory does not exist",
     group = utils.augroup("AutoCreateDir", { clear = true }),

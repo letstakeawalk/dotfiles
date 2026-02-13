@@ -86,6 +86,10 @@ return {
         or vim.list_extend(vim.list_extend(root_markers1, root_markers2), { ".git" }),
     settings = {
         Lua = {
+            runtime = {
+                version = "LuaJIT",
+                path = vim.split(package.path, ";"),
+            },
             codelens = { enable = false },
             completion = { callSnippet = "Replace" },
             format = { enable = false }, -- use stylua instead

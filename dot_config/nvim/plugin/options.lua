@@ -38,6 +38,7 @@ opt.foldlevelstart = 99
 opt.foldmethod = "expr"
 opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 opt.foldtext = ""
+opt.foldopen = "block,hor,mark,percent,quickfix,search,tag,undo"
 
 -- search & substitute
 opt.smartcase = true

@@ -10,6 +10,15 @@ end
 local function git_worktree_create()
     require("telescope").extensions.git_worktree.create_git_worktree()
 end
+local function git_conflicts()
+    vim.cmd([[silent grep "^<<<<<<< " .]])
+    vim.cmd.copen()
+end
+local function setqflist(target)
+    return function()
+        require("gitsigns").setqflist(target, { open = true }, vim.cmd.cfirst)
+    end
+end
 
 ---@diagnostic disable: param-type-mismatch
 return {
@@ -22,7 +31,7 @@ return {
         },
         cmd = "Git",
         keys = {
-            { "<leader>gg", "<cmd>vert Git<cr>", desc = "Fugitive" },
+            { "<leader>gg", "<cmd>Git<cr>", desc = "Fugitive" },
             { "<leader>gq", "<cmd>Git<cr><cmd>bd<cr>", desc = "Close Fugitive" },
             { "<leader>gc", "<cmd>GV<cr>", desc = "Commit Browser (GV)" },
             { "<leader>gC", "<cmd>GV!<cr>", desc = "BufCommit Browser (GV!)" },
@@ -108,8 +117,14 @@ return {
     },
     {
         "lewis6991/gitsigns.nvim",
+        dir = "~/Workspace/projects/contribute/gitsigns.nvim",
         dependencies = { "nvim-treesitter/nvim-treesitter" },
         event = "VeryLazy",
+        keys = {
+            { "<leader>gq", setqflist(0), desc = "Buffer Hunks" },
+            { "<leader>gw", setqflist("all"), desc = "Workspace Hunks" },
+            { "<leader>gf", git_conflicts, desc = "Conflicts" },
+        },
         opts = {
             attach_to_untracked = true,
             on_attach = function(bufnr)
@@ -158,8 +173,11 @@ return {
                         if api.nvim_get_option_value("diff", { win = win }) then
                             api.nvim_set_option_value("diff", false, { win = win })
                             local buf = api.nvim_win_get_buf(win)
-                            if api.nvim_buf_get_name(buf):match("^gitsigns") then
-                                -- api.nvim_buf_delete(buf, {})
+                            local bufname = api.nvim_buf_get_name(buf)
+                            if
+                                bufname:match("^gitsigns")
+                                or (bufname:match("^fugitive") and not bufname:match("//$"))
+                            then
                                 api.nvim_win_close(win, true)
                             end
                         end
@@ -172,12 +190,6 @@ return {
                     vim.ui.input({ prompt = "Diff against: " }, function(input)
                         gs.diffthis(input)
                     end)
-                end
-
-                local function setqflist(target)
-                    return function()
-                        gs.setqflist(target, { open = true }, vim.cmd.cfirst)
-                    end
                 end
 
                 -- stylua: ignore start
@@ -193,21 +205,18 @@ return {
                 map("n", "<leader>gB", toggle_blame_buf,       { desc = "Blame" })
                 map("n", "<leader>gd", diffthis,               { desc = "Diff this" })
                 map("n", "<leader>gD", diff,                   { desc = "Diff" })
-                map("n", "<leader>gq", setqflist(0),           { desc = "Qflist (buffer)" })
-                map("n", "<leader>gw", setqflist('all'),       { desc = "Qflist (all)" })
-                -- TODO: check callback arg with preview hunk inline
+                map("n", "<leader>dg", gs.toggle_current_line_blame, { desc = "Git Blame (curr line)" })
+                -- stylua: ignore end
 
                 -- Text object
                 map({ "o", "x" }, "ih", gs.select_hunk, { desc = "Select hunk" })
                 map({ "o", "x" }, "ah", gs.select_hunk, { desc = "Select hunk" })
-                -- map({ "o", "x" }, "ih", "<cmd><C-U>Gitsigns select_hunk<CR>", { desc = "Select hunk" })
-                -- map({ "o", "x" }, "ah", "<cmd><C-U>Gitsigns select_hunk<CR>", { desc = "Select hunk" })
-                -- stylua: ignore end
             end,
         },
     },
     {
         "letstakeawalk/git-conflict.nvim", -- "akinsho/git-conflict.nvim"
+        -- dir = "~/Workspace/projects/contribute/git-conflict.nvim",
         version = "*",
         event = "BufRead",
         opts = {

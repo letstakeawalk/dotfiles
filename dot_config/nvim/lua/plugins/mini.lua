@@ -62,7 +62,6 @@ return {
                     { mode = "n", keys = "<leader>d",  desc = "Display" },
                     { mode = "n", keys = "<leader>g",  desc = "Git" },
                     { mode = "x", keys = "<leader>g",  desc = "Git" },
-                    { mode = "n", keys = "<leader>gf", desc = "Telescope (Git)" },
                     { mode = "n", keys = "<leader>i",  desc = "Info" },
                     { mode = "n", keys = "<leader>q",  desc = "Buffer Management" },
                     { mode = "n", keys = "<leader>r",  desc = "Refactor & Run" },

@@ -1,23 +1,23 @@
 local telescope = require("telescope")
 local actions = require("telescope.actions")
 
-local function open_vertical_if_wide_enough(prompt_bufnr)
-    local action_set = require("telescope.actions.set")
-
-    ---@type integer[][] list of winnr, bufnr tuples
-    local winbufs = vim.tbl_map(function(win)
-        return { win, vim.api.nvim_win_get_buf(win) }
-    end, vim.api.nvim_tabpage_list_wins(0))
-
-    winbufs = vim.tbl_filter(function(winbuf)
-        return vim.api.nvim_get_option_value("buflisted", { buf = winbuf[2] })
-    end, winbufs)
-
-    if #winbufs == 1 and vim.api.nvim_win_get_width(winbufs[1][1]) > 160 then
-        return action_set.select(prompt_bufnr, "vertical")
-    end
-    return action_set.select(prompt_bufnr, "horizontal")
-end
+-- local function open_vertical_if_wide_enough(prompt_bufnr)
+--     local action_set = require("telescope.actions.set")
+--
+--     ---@type integer[][] list of winnr, bufnr tuples
+--     local winbufs = vim.tbl_map(function(win)
+--         return { win, vim.api.nvim_win_get_buf(win) }
+--     end, vim.api.nvim_tabpage_list_wins(0))
+--
+--     winbufs = vim.tbl_filter(function(winbuf)
+--         return vim.api.nvim_get_option_value("buflisted", { buf = winbuf[2] })
+--     end, winbufs)
+--
+--     if #winbufs == 1 and vim.api.nvim_win_get_width(winbufs[1][1]) > 160 then
+--         return action_set.select(prompt_bufnr, "vertical")
+--     end
+--     return action_set.select(prompt_bufnr, "horizontal")
+-- end
 
 telescope.setup({
     defaults = {
@@ -48,12 +48,12 @@ telescope.setup({
         find_files = {
             find_command = { "fd", "--type", "f", "--follow" },
         },
-        help_tags = {
-            mappings = {
-                i = { ["<CR>"] = open_vertical_if_wide_enough },
-                n = { ["<CR>"] = open_vertical_if_wide_enough },
-            },
-        },
+        -- help_tags = {
+        --     mappings = {
+        --         i = { ["<CR>"] = open_vertical_if_wide_enough },
+        --         n = { ["<CR>"] = open_vertical_if_wide_enough },
+        --     },
+        -- },
     },
     extensions = {
         ["ui-select"] = { require("telescope.themes").get_dropdown() },
@@ -70,5 +70,4 @@ pcall(telescope.load_extension("aerial")) -- aerial.nvim
 -- pcall(telescope.load_extension("git_worktree")) -- git-worktree.nvim
 -- pcall(telescope.load_extension("harpoon")) -- harpoon.nvim
 pcall(telescope.load_extension("lazy")) -- lazy.nvim
--- pcall(telescope.load_extension("persisted")) -- persisted.nvim
 pcall(telescope.load_extension("ui-select")) -- ui-select

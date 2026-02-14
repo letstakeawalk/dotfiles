@@ -43,6 +43,20 @@
 --- It is recommended to use the same version of TypeScript in all packages, and therefore have it available in your workspace root. The location of the TypeScript binary will be determined automatically, but only once.
 ---
 
+local settings = {
+    format = { enable = false },
+    inlayHints = {
+        includeInlayParameterNameHints = "none", -- "none" | "literal" | "all"
+        includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+        includeInlayFunctionParameterTypeHints = false,
+        includeInlayVariableTypeHints = false,
+        includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+        includeInlayPropertyDeclarationTypeHints = false,
+        includeInlayFunctionLikeReturnTypeHints = true,
+        includeInlayEnumMemberValueHints = false,
+    },
+}
+
 ---@type vim.lsp.Config
 return {
     init_options = { hostInfo = "neovim" },
@@ -96,32 +110,8 @@ return {
         end,
     },
     settings = {
-        typescript = {
-            -- format = { semicolons = "insert" },
-            inlayHints = {
-                includeInlayParameterNameHints = "none", -- "none" | "literal" | "all"
-                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                includeInlayFunctionParameterTypeHints = false,
-                includeInlayVariableTypeHints = false,
-                includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-                includeInlayPropertyDeclarationTypeHints = false,
-                includeInlayFunctionLikeReturnTypeHints = true,
-                includeInlayEnumMemberValueHints = false,
-            },
-        },
-        javascript = {
-            -- format = { semicolons = "insert" },
-            inlayHints = {
-                includeInlayParameterNameHints = "none",
-                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                includeInlayFunctionParameterTypeHints = false,
-                includeInlayVariableTypeHints = false,
-                includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-                includeInlayPropertyDeclarationTypeHints = false,
-                includeInlayFunctionLikeReturnTypeHints = true,
-                includeInlayEnumMemberValueHints = false,
-            },
-        },
+        typescript = settings,
+        javascript = settings,
     },
     commands = {
         ["editor.action.showReferences"] = function(command, ctx)

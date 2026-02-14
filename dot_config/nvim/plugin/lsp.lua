@@ -9,6 +9,7 @@ vim.lsp.enable({
     "lua_ls",
     "markdown_oxide",
     "oxlint",
+    "oxfmt",
     "ruff",
     "svelte",
     "tailwindcss",

@@ -116,8 +116,8 @@ return {
         },
     },
     {
-        "lewis6991/gitsigns.nvim",
-        dir = "~/Workspace/projects/contribute/gitsigns.nvim",
+        "letstakeawalk/gitsigns.nvim", -- "lewis6991/gitsigns.nvim",
+        -- dir = "~/Workspace/projects/contribute/gitsigns.nvim",
         dependencies = { "nvim-treesitter/nvim-treesitter" },
         event = "VeryLazy",
         keys = {

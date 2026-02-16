@@ -1,0 +1,9 @@
+#!/bin/bash
+# Pull age key from 1Password on first chezmoi init
+KEY_PATH="$HOME/.config/chezmoi/key.txt"
+if [ ! -f "$KEY_PATH" ]; then
+    mkdir -p "$(dirname "$KEY_PATH")"
+    op read "op://Private/chezmoi-age-key/notesPlain" > "$KEY_PATH"
+    chmod 600 "$KEY_PATH"
+    echo "Age key retrieved from 1Password."
+fi

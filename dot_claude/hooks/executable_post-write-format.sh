@@ -11,8 +11,24 @@ PROJECT_DIR=$(echo "$input" | jq -r '.cwd // empty')
 
 case "$FILE_PATH" in
   *.rs)
-    if command -v rustfmt &>/dev/null; then
-      rustfmt --edition 2021 "$FILE_PATH" 2>/dev/null
+    # Use cargo fmt to respect Cargo.toml edition and rustfmt.toml config
+    # This matches rust-analyzer's formatting behavior
+    if command -v cargo &>/dev/null; then
+      MANIFEST_DIR="$PROJECT_DIR"
+      if [ "$MANIFEST_DIR" = "" ]; then
+        MANIFEST_DIR=$(dirname "$FILE_PATH")
+      fi
+      # Walk up to find Cargo.toml
+      while [ "$MANIFEST_DIR" != "/" ] && [ ! -f "$MANIFEST_DIR/Cargo.toml" ]; do
+        MANIFEST_DIR=$(dirname "$MANIFEST_DIR")
+      done
+      if [ -f "$MANIFEST_DIR/Cargo.toml" ]; then
+        (cd "$MANIFEST_DIR" && cargo fmt -- "$FILE_PATH" 2>/dev/null)
+      elif command -v rustfmt &>/dev/null; then
+        rustfmt "$FILE_PATH" 2>/dev/null
+      fi
+    elif command -v rustfmt &>/dev/null; then
+      rustfmt "$FILE_PATH" 2>/dev/null
     fi
     ;;
   *.ts|*.tsx|*.js|*.jsx|*.svelte)

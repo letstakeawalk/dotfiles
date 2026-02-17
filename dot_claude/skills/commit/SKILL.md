@@ -28,6 +28,8 @@ If there are no staged changes (empty diff), say so and stop.
 - No emojis, no "Co-Authored-By" or AI attribution
 - Subject line max 72 characters
 - Add a body after a blank line only if changes are complex enough to warrant it
+- Body should use a bulleted list (`- `) summarizing individual changes, one per line
+- Wrap function names, file names, types, and other code references in backticks (e.g., `verify_token`, `auth.rs`)
 - Match the style of the recent commits shown above
 
 ### Arguments

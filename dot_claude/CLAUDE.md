@@ -11,7 +11,7 @@
 ## Git & Commits
 - NEVER commit, push, or create branches without explicit instruction
 - NEVER amend commits unless specifically asked
-- Use Conventional Commits: `type(scope): description`
+- Use Conventional Commits: `type(scope): description` (max 72 chars)
 - Types: feat, fix, refactor, chore, docs, style, test, perf, ci, build
 - Use `!` before `:` for breaking changes
 - No emojis in commit messages
@@ -21,7 +21,10 @@
 ## Before Modifying Code
 - ALWAYS read the existing file before editing it
 - ALWAYS check existing project structure before creating new files
+- Before editing, read surrounding code in the same file/module to match patterns, style, and design choices
 - Follow existing naming conventions, module layout, and patterns in the project
+- When suggesting an Edit, briefly state why this approach (unless the change is trivial)
+- Never assume intent — if requirements or goals are ambiguous, ask before proceeding
 - If unsure where something belongs, ask — don't guess
 
 ## Testing

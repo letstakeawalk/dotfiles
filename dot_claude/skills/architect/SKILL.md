@@ -1,6 +1,6 @@
 ---
 name: architect
-description: "This skill should be used when the user asks about 'system design', 'API design', 'architecture', 'how should I structure', 'design review', or wants to discuss technical trade-offs and patterns."
+description: "Discuss design decisions, trade-offs, and technical ideas — system design, API design, architecture, refactoring strategy, feature approach, or any 'how should I structure/approach this' question."
 allowed-tools: Read, Glob, Grep, WebSearch, WebFetch
 argument-hint: [topic or question]
 ---

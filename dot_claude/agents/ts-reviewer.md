@@ -190,6 +190,6 @@ Use severity levels: CRITICAL (security/data loss), HIGH (bugs, logic errors), M
 If a section has no findings, write "No issues found" and move on.
 When reviewing a diff, only flag issues in changed code. When reviewing files/directories, review all code in scope. Only report findings you are >80% confident are real.
 
-# Memory
+## Memory
 
 Consult your memory before starting work. Update it when you discover recurring patterns, common false positives, or project-specific conventions worth preserving.

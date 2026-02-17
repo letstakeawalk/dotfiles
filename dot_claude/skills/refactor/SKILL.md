@@ -1,8 +1,8 @@
 ---
 name: refactor
-description: Identify and apply refactoring opportunities — supports full analysis, cleanup, simplify, structure, naming, and DRY focus modes.
+description: "Identify and apply refactoring opportunities — supports full analysis, cleanup, simplify, structure, naming, and DRY focus modes."
 allowed-tools: Bash(git:*)
-argument-hint: [target] [mode: full|cleanup|simplify|structure|naming|dry]
+argument-hint: [file/dir|staged] [full|cleanup|simplify|structure|naming|dry]
 ---
 
 ## Context

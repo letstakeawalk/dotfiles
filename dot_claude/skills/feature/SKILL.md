@@ -1,8 +1,8 @@
 ---
 name: feature
-description: Guided feature development — explores codebase, clarifies requirements, designs approach, implements with review gates. Use for substantial new features.
+description: "Guided feature development — explores codebase, clarifies requirements, designs approach, implements with review gates. Use for substantial new features."
 allowed-tools: Bash(git:*)
-argument-hint: <feature description>
+argument-hint: [feature description]
 ---
 
 ## Context

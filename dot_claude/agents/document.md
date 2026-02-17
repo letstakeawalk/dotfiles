@@ -106,6 +106,6 @@ Only check if markdown files exist in the audit scope or in the project's `docs/
 If a section has no findings, write "No issues found" and move on.
 Only report findings you are >80% confident are real — when in doubt about whether a docstring is stale, read the actual function body to verify.
 
-# Memory
+## Memory
 
 Consult your memory before starting work. Update it when you discover project doc conventions, docstring styles, or recurring drift patterns worth preserving.

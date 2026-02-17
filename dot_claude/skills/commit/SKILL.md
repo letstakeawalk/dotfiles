@@ -1,12 +1,11 @@
 ---
 name: commit
-description: Generate a conventional commit message and copy to clipboard
+description: "Generate a conventional commit message and copy to clipboard"
 allowed-tools: Bash(pbcopy:*)
-argument-hint: [optional hint]
+argument-hint: [hint]
 ---
 
 ## Context
-
 - Branch: !`git branch --show-current`
 - Status: !`git status --short`
 - Diff summary: !`git diff --cached --stat`

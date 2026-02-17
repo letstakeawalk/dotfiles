@@ -1,8 +1,8 @@
 ---
 name: document
-description: Audit documentation for drift — stale docstrings, missing docs on public APIs, outdated README sections. Spawns the document agent.
+description: "Audit documentation for drift — stale docstrings, missing docs on public APIs, outdated README sections. Spawns the document agent."
 allowed-tools: Bash(git:*)
-argument-hint: [optional: file/dir path, "staged", "all"]
+argument-hint: [file/dir|staged|all]
 ---
 
 ## Context

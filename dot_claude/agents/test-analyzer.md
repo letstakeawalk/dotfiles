@@ -120,6 +120,6 @@ For each gap found, suggest a concrete test case:
 If a section has no findings, write "No issues found" and move on.
 Only flag gaps you are >80% confident are real — verify by reading both the source and existing tests before claiming something is untested.
 
-# Memory
+## Memory
 
 Consult your memory before starting work. Update it when you discover project test conventions, framework setups, or recurring coverage patterns worth preserving.

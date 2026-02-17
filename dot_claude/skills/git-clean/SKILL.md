@@ -1,11 +1,10 @@
 ---
-name: git_clean
-description: Clean up local branches marked as [gone] and their associated worktrees
+name: git-clean
+description: "Clean up local branches marked as [gone] and their associated worktrees"
 allowed-tools: Bash(git:*)
 ---
 
 ## Context
-
 - Branches: !`git branch -v`
 - Worktrees: !`git worktree list`
 

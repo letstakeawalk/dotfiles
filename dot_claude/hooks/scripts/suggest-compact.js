@@ -15,7 +15,7 @@
 
 const fs = require("fs");
 const path = require("path");
-const { getTempDir, writeFile, log } = require("./lib/utils");
+const { getTempDir, writeFile, log, output } = require("./lib/utils");
 
 async function main() {
   const sessionId = process.env.CLAUDE_SESSION_ID || "default";
@@ -53,14 +53,14 @@ async function main() {
 
   // Suggest compact after threshold tool calls
   if (count === threshold) {
-    log(
+    output(
       `[StrategicCompact] ${threshold} tool calls reached - consider /compact if transitioning phases`,
     );
   }
 
   // Suggest at regular intervals after threshold (every 25 calls from threshold)
   if (count > threshold && (count - threshold) % 25 === 0) {
-    log(
+    output(
       `[StrategicCompact] ${count} tool calls - good checkpoint for /compact if context is stale`,
     );
   }

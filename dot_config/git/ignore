@@ -1,21 +1,55 @@
 # system and temp files
 .DS_Store
+._*
+Thumbs.db
 
 # editor specific files
-*.swap
+*.swp
+*.swo
+*~
+
+# IDE directories
+.idea/
+.vscode/
 
 # sensitive data
 .env
 .env.*
 !.env.example
 
-# build artifacts
-debug/
+# rust
 target/
-build/
-dist/
-package/
+*.rlib
+
+# js/ts
 node_modules/
+.bun/
+.next/
+.nuxt/
+.svelte-kit/
+.vercel/
+.turbo/
+dist/
+build/
+package/
+out/
+.cache/
+*.tsbuildinfo
+.eslintcache
+
+# python bytecode
+__pycache__/
+*.pyc
+
+# test coverage
+coverage/
+*.lcov
+
+# logs
+*.log
+
+# other build artifacts
+debug/
 
 # claude code
 **/.claude/settings.local.json

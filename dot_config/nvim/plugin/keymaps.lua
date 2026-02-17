@@ -134,7 +134,7 @@ set("v", "<A-h>",    ":m '<-2<CR>gv=gv",    { desc = "Move line up" })
 set("n", "<leader>dm", "<cmd>message<cr>", { desc = "Messages" })
 set("n", "<leader>dM", "<cmd>Redir message<cr>", { desc = "Redir Messages" })
 set("n", "<leader>dn", utils.toggle_gutter, { desc = "Display Numbers" })
-set("n", "<leader>dC", function()
+set("n", "<leader>dl", function()
     vim.wo.conceallevel = vim.wo.conceallevel == 0 and 2 or 0
     vim.notify("Conceal " .. (vim.wo.conceallevel == 2 and "Enabled" or "Disabled"), vim.log.levels.INFO)
 end, { desc = "Conceal Toggle" })

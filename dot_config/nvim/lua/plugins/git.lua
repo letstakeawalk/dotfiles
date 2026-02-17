@@ -142,9 +142,15 @@ return {
 
                 -- stylua: ignore start
                 local next_hunk = function()
+                    if vim.wo.diff then
+                        vim.cmd.normal({']c', bang = true})
+                    end
                     gs.nav_hunk("next", { wrap = false, preview = false }, require("utils").centerscreen)
                 end
                 local prev_hunk = function()
+                    if vim.wo.diff then
+                        vim.cmd.normal({'[c', bang = true})
+                    end
                     gs.nav_hunk("prev", { wrap = false, preview = false }, require("utils").centerscreen)
                 end
                 next_hunk, prev_hunk = make_repeatable_move_pair(next_hunk, prev_hunk)

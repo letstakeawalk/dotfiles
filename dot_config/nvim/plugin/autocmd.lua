@@ -78,13 +78,17 @@ vim.api.nvim_create_autocmd("VimEnter", {
     once = true,
 })
 
--- Chezmoi: auto add config files to chezmoi source
 vim.api.nvim_create_autocmd("BufWritePost", {
+    desc = "Auto add managed files to chezmoi on save",
     group = utils.augroup("ChezmoiAdd", { clear = true }),
     pattern = {
-        string.format("%s/*", os.getenv("XDG_CONFIG_HOME")),
+        string.format("%s/.config/**/*", os.getenv("HOME")),
+        string.format("%s/.local/script/*", os.getenv("HOME")),
+        string.format("%s/.claude/skills/**/*", os.getenv("HOME")),
+        string.format("%s/.claude/rules/**/*", os.getenv("HOME")),
+        string.format("%s/.claude/agents/**/*", os.getenv("HOME")),
+        string.format("%s/.claude/hooks/**/*", os.getenv("HOME")),
     },
-    ---@param args { buf: integer, file: string, match: string }
     callback = function(args)
         if args.file:gmatch("COMMIT_EDITMSG$") or args.file:gmatch("git-rebase-merge$") then
             return
@@ -113,11 +117,10 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     end,
 })
 
--- Chezmoi: auto apply config files to target path
 vim.api.nvim_create_autocmd("BufWritePost", {
+    desc = "Auto apply chezmoi source to target on save",
     group = utils.augroup("ChezmoiApply", { clear = true }),
     pattern = string.format("%s/**/*", os.getenv("CHEZMOI_SOURCE")),
-    ---@param args { buf: integer, file: string, match: string }
     callback = function(args)
         local excluded_filetypes = { "gitcommit", "gitrebase" }
         if vim.tbl_contains(excluded_filetypes, vim.bo.filetype) then

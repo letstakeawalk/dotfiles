@@ -25,9 +25,9 @@ If there are no staged changes (empty diff), say so and stop.
 - Use `!` before `:` for breaking changes
 - Scope: short identifier for the area affected
 - No emojis, no "Co-Authored-By" or AI attribution
-- Subject line max 72 characters
+- Title max 72 characters
 - Add a body after a blank line only if changes are complex enough to warrant it
-- Body should use a bulleted list (`- `) summarizing individual changes, one per line
+- Body should use a bulleted list (`- `) summarizing individual changes
 - Wrap function names, file names, types, and other code references in backticks (e.g., `verify_token`, `auth.rs`)
 - Match the style of the recent commits shown above
 

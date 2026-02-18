@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+    echo "Usage: ssh-init --base|--full <host|group>"
+    echo ""
+    echo "  --base   Provision with base configs only"
+    echo "  --full   Provision with base + full configs"
+    echo ""
+    echo "  If <group> matches ~/.ssh/<group>.sshconfig, all hosts in it are provisioned."
+    echo "  Otherwise, <group> is treated as a single host."
+    exit 1
+}
+
+tier=""
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --base) tier="base"; shift ;;
+        --full) tier="full"; shift ;;
+        --help|-h) usage ;;
+        *) break ;;
+    esac
+done
+
+if [[ -z "$tier" || $# -eq 0 ]]; then
+    usage
+fi
+
+target="$1"
+remote_dir="${CHEZMOI_SOURCE:-$HOME/.local/share/chezmoi}/remote"
+
+provision() {
+    local host="$1"
+    echo "[$host] Provisioning ($tier)..."
+
+    # Sync base configs
+    rsync -q "$remote_dir/base/" "$host":~/ || { echo "[$host] Failed to sync."; return 1; }
+
+    # Layer full configs on top
+    if [[ "$tier" == "full" && -d "$remote_dir/full" ]]; then
+        rsync -q "$remote_dir/full/" "$host":~/ || { echo "[$host] Failed to sync full."; return 1; }
+    fi
+
+    # Append source line to .bashrc if not already present
+    ssh "$host" 'grep -qF ".bashrc.local" ~/.bashrc 2>/dev/null || echo "[ -f ~/.bashrc.local ] && source ~/.bashrc.local" >> ~/.bashrc'
+
+    echo "[$host] Done."
+}
+
+sshconfig="$HOME/.ssh/${target}.sshconfig"
+
+if [[ -f "$sshconfig" ]]; then
+    grep "^Host " "$sshconfig" | awk '{print $2}' | grep -v '*' | while read -r host; do
+        provision "$host"
+    done
+else
+    provision "$target"
+fi

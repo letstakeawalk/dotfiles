@@ -40,9 +40,9 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
             if ev.buf == vim.api.nvim_win_get_buf(win) then
                 local win_w = vim.api.nvim_win_get_width(win)
                 local vim_w = vim.o.columns
-                if vim_w >= 100 and win_w > math.floor(vim_w / 2) then
+                if vim_w >= 160 and win_w > math.floor(vim_w / 2) then
                     vim.cmd.wincmd("L")
-                elseif win_w < 50 then
+                elseif win_w < 80 then
                     vim.cmd.wincmd("J")
                 end
             end

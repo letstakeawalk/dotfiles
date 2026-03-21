@@ -27,11 +27,55 @@ vim.lsp.enable({
 --------------------------------------------------------------------------------
 -- UI config -------------------------------------------------------------------
 --------------------------------------------------------------------------------
--- globally override border of floating window
+-- reflow hard-wrapped markdown paragraphs so they fit the popup width
+local function reflow_markdown_lines(lines)
+    local result = {}
+    local in_code_block = false
+    local paragraph = {}
+
+    local function flush()
+        if #paragraph > 0 then
+            result[#result + 1] = table.concat(paragraph, " ")
+            paragraph = {}
+        end
+    end
+
+    for _, line in ipairs(lines) do
+        if line:match("^%s*```") then -- code fence boundary
+            flush()
+            in_code_block = not in_code_block
+            result[#result + 1] = line
+        elseif in_code_block then -- verbatim inside code block
+            result[#result + 1] = line
+        elseif line:match("^%s*$") then -- blank line (paragraph break)
+            flush()
+            result[#result + 1] = line
+        elseif
+            line:match("^%s*#+%s") -- heading (require space after #)
+            or line:match("^%s*[%-*+]%s") -- unordered list item
+            or line:match("^%s*%d+%.%s") -- ordered list item
+            or line:match("^%s*>") -- blockquote
+            or line:match("^%s*|") -- table row
+            or line:match("^%s*%-%-%-") -- horizontal rule
+        then
+            flush()
+            result[#result + 1] = line
+        else
+            paragraph[#paragraph + 1] = vim.trim(line) -- accumulate paragraph text
+        end
+    end
+    flush()
+    return result
+end
+
+-- globally override border of floating window + reflow markdown
 local original_open_floating_preview = vim.lsp.util.open_floating_preview
 local function open_floating_preview(contents, syntax, opts, ...)
     opts = opts or {}
     opts.border = opts.border or "rounded"
+    if syntax == "markdown" then
+        contents = reflow_markdown_lines(contents)
+    end
     return original_open_floating_preview(contents, syntax, opts, ...)
 end
 vim.lsp.util.open_floating_preview = open_floating_preview

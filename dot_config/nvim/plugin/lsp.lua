@@ -170,7 +170,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 local auto_format = true
-vim.keymap.set("n", "<leader>df", function()
+vim.keymap.set("n", "<leader>dF", function()
     auto_format = not auto_format
     vim.notify("AutoFormat " .. (auto_format and "Enabled" or "Disabled"), vim.log.levels.INFO)
 end, { desc = "AutoFormat Toggle" })

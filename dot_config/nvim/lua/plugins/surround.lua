@@ -3,10 +3,6 @@ return {
     version = "*", -- Use for stability; omit to use `main` branch for the latest features
     event = "VeryLazy",
     opts = {
-        keymaps = {
-            -- visual = "<leader>s",
-            -- visual_line = "<leader>s",
-        },
         move_cursor = false,
         surrounds = {
             -- Generic Type

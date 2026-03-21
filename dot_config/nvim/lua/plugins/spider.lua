@@ -1,12 +1,39 @@
+local function w()
+    require("spider").motion("w", {
+        subwordMovement = false,
+        customPatterns = {
+            patterns = { "%)", "}", "]", ">" },
+            overrideDefault = false,
+        },
+    })
+end
+
+local function e()
+    require("spider").motion("e", {
+        subwordMovement = false,
+        customPatterns = {
+            patterns = { "%)", "}", "]", ">" },
+            overrideDefault = false,
+        },
+    })
+end
+
+local function b()
+    require("spider").motion("b", {
+        subwordMovement = false,
+        customPatterns = {
+            patterns = { "%( ", "{", "%[", "<" },
+            overrideDefault = false,
+        },
+    })
+end
+
 return {
     "chrisgrieser/nvim-spider",
     keys = {
-        -- { "W", "<cmd>lua require('spider').motion('w')<cr>", mode = { "n", "o", "x" } },
-        -- { "E", "<cmd>lua require('spider').motion('e')<cr>", mode = { "n", "o", "x" } },
-        -- { "B", "<cmd>lua require('spider').motion('b')<cr>", mode = { "n", "o", "x" } },
-        { "w", "<cmd>lua require('spider').motion('w', {subwordMovement = false})<cr>", mode = { "n", "o", "x" } },
-        { "e", "<cmd>lua require('spider').motion('e', {subwordMovement = false})<cr>", mode = { "n", "o", "x" } },
-        { "b", "<cmd>lua require('spider').motion('b', {subwordMovement = false})<cr>", mode = { "n", "o", "x" } },
+        { "w", w, mode = { "n", "o", "x" } },
+        { "e", e, mode = { "n", "o", "x" } },
+        { "b", b, mode = { "n", "o", "x" } },
         { "<A-f>", "<cmd>lua require('spider').motion('w')<cr>" },
         { "<A-b>", "<cmd>lua require('spider').motion('b')<cr>" },
         { "<A-f>", "<C-o><cmd>lua require('spider').motion('w')<cr>", mode = "i" },

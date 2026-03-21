@@ -94,6 +94,7 @@ alias gdi='git diff'
 alias gdiff='git diff'
 alias glast='git log -5'
 alias glog="git log --graph --oneline --decorate --date=short --pretty=format:'%C(magenta)%ad %C(auto)%h%d %s'"
+alias gloga="git log --all --graph --oneline --decorate --date=short --pretty=format:'%C(magenta)%ad %C(auto)%h%d %s'"
 alias gbr='git branch'
 alias gsw='git switch'
 alias gswf='git branch --sort=-committerdate | fzf --header "Checkout recent branch" --preview "git diff --color=always {1}" | xargs git switch'

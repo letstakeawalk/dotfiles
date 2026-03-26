@@ -371,6 +371,8 @@ bind Tab next-layout
 # bind -r -T root End  next-window     # navigate to next tmux window
 bind _ split-window -v -l 10   # split current window vertically
 bind - split-window -h         # split current window horizontally
+set -g set-clipboard on
+set -g allow-passthrough on
 
 # pane navigation/management
 is_vim="ps -o state= -o comm= -t '#{pane_tty}' | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?\.?(view|n?vim?x?)(-wrapped)?(diff)?$'"

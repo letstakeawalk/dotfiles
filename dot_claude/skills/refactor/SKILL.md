@@ -1,7 +1,7 @@
 ---
 name: refactor
 description: "Identify and apply refactoring opportunities — supports full analysis, cleanup, simplify, structure, naming, and DRY focus modes."
-allowed-tools: Bash(git:*)
+allowed-tools: Read, Glob, Grep, Edit, Write, Bash(git diff:*), Bash(git branch:*)
 argument-hint: [file/dir|staged] [full|cleanup|simplify|structure|naming|dry]
 ---
 

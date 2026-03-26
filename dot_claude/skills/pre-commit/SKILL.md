@@ -1,7 +1,7 @@
 ---
 name: pre-commit
 description: "Run review + document audit + test coverage analysis on staged changes in one shot. Pre-commit quality gate."
-allowed-tools: Bash(git:*)
+allowed-tools: Read, Glob, Grep, Bash(git diff:*), Bash(git branch:*)
 argument-hint: [focus hint]
 ---
 

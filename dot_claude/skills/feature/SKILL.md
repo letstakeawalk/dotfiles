@@ -1,14 +1,14 @@
 ---
 name: feature
 description: "Guided feature development — explores codebase, clarifies requirements, designs approach, implements with review gates. Use for substantial new features."
-allowed-tools: Bash(git:*)
+allowed-tools: Read, Glob, Grep, Edit, Write, Bash(git diff:*), Bash(git log:*), Bash(git status:*), Bash(git branch:*), Bash(git ls-tree:*)
 argument-hint: [feature description]
 ---
 
 ## Context
 - Branch: !`git branch --show-current`
 - Recent commits: !`git log --oneline -5`
-- Project structure: !`ls -d */ 2>/dev/null | head -20`
+- Project structure: !`git ls-tree --name-only HEAD 2>/dev/null | head -20`
 
 ## Task
 
@@ -34,10 +34,10 @@ If `$ARGUMENTS` is empty, ask what the user wants to build.
 
 ### Phase 3: Design
 
-1. Propose an implementation approach — components, data flow, file changes
-2. For complex features, spawn the `architect` agent for a structured design doc
-3. For simple features, present the approach inline with trade-offs
-4. **Wait for user approval of the approach**
+1. For complex features: spawn the `Plan` agent with the feature description and Explore findings — it returns a step-by-step implementation plan, critical files, and trade-offs
+2. For simple features: propose the approach inline with trade-offs
+3. If the user wants a formal design doc or ADR, spawn the `architect` agent
+4. **Wait for user approval before proceeding**
 
 ### Phase 4: Implement
 

@@ -1,7 +1,7 @@
 ---
 name: remember
 description: "This skill should be used when the user says 'remember this', 'save this for later', 'note this down', 'always do X', 'never do Y', or wants to persist a decision or preference across sessions."
-allowed-tools: Read, Write, Edit, Glob, Bash(git:*)
+allowed-tools: Read, Write, Edit, Glob, Bash(git rev-parse:*)
 argument-hint: [what to remember]
 ---
 

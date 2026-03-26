@@ -1,7 +1,7 @@
 ---
 name: test-coverage
 description: "Analyze test coverage gaps — untested public APIs, missing edge cases, uncovered error paths. Spawns the test-analyzer agent."
-allowed-tools: Bash(git:*)
+allowed-tools: Read, Glob, Grep, Bash(git diff:*), Bash(git branch:*)
 argument-hint: [file/dir|staged|all]
 ---
 

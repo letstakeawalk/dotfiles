@@ -1,7 +1,7 @@
 ---
 name: review
 description: "Code review — detects language and spawns the appropriate reviewer agent. Works with diffs, staged changes, files, or directories."
-allowed-tools: Bash(git:*)
+allowed-tools: Read, Glob, Grep, Bash(git diff:*), Bash(git log:*), Bash(git status:*), Bash(git branch:*)
 argument-hint: [file/dir|staged|lang] [security|performance|idioms|bugs|tests]
 ---
 

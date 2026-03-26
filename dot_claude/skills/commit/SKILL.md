@@ -1,7 +1,7 @@
 ---
 name: commit
 description: "Generate a conventional commit message and copy to clipboard"
-allowed-tools: Bash(pbcopy:*)
+allowed-tools: Bash(pbcopy:*), Bash(git diff:*), Bash(git log:*), Bash(git status:*), Bash(git branch:*)
 argument-hint: [hint]
 ---
 
@@ -37,4 +37,4 @@ If the user provided a hint (`$ARGUMENTS`), incorporate it into the message — 
 
 ### Output
 
-Copy the message to clipboard via `pbcopy`. Do not stage, commit, or modify files. No other output besides the tool call.
+Copy the message to clipboard using a `cat <<'EOF' | pbcopy` heredoc. Do not use `echo`, `printf`, or any other method. Do not stage, commit, or modify files. No other output besides the tool call.

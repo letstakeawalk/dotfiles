@@ -1,7 +1,7 @@
 ---
 name: learn
 description: "Reflect on the current session and extract reusable patterns worth remembering. Use when a session involved mistakes, corrections, debugging breakthroughs, or workarounds that should inform future sessions."
-allowed-tools: Read, Write, Edit, Glob, Bash(git:*)
+allowed-tools: Read, Write, Edit, Glob, Bash(git rev-parse:*)
 argument-hint: [focus area to reflect on]
 ---
 

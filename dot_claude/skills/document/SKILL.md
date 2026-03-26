@@ -1,7 +1,7 @@
 ---
 name: document
 description: "Audit documentation for drift — stale docstrings, missing docs on public APIs, outdated README sections. Spawns the document agent."
-allowed-tools: Bash(git:*)
+allowed-tools: Read, Glob, Grep, Bash(git diff:*), Bash(git branch:*)
 argument-hint: [file/dir|staged|all]
 ---
 

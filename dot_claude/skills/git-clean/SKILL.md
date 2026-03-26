@@ -1,7 +1,7 @@
 ---
 name: git-clean
 description: "Clean up local branches marked as [gone] and their associated worktrees"
-allowed-tools: Bash(git:*)
+allowed-tools: Bash(git branch:*), Bash(git worktree:*)
 ---
 
 ## Context

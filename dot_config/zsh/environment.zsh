@@ -6,6 +6,7 @@ export CHEZMOI_SOURCE=$XDG_DATA_HOME/chezmoi
 export DOCKER_CONFIG=$XDG_CONFIG_HOME/docker
 export GITLINT_CONFIG=$XDG_CONFIG_HOME/git/gitlintrc
 export EZA_CONFIG_DIR=$XDG_CONFIG_HOME/eza
+export GLAB_PAGER=
 export GOKU_EDN_CONFIG_FILE=$XDG_CONFIG_HOME/goku/karabiner.edn
 export GOPATH=$XDG_DATA_HOME/go
 export HOMEBREW_BUNDLE_FILE=$XDG_CONFIG_HOME/brewfile/Brewfile

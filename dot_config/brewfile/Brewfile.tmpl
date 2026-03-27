@@ -65,6 +65,7 @@ brew "zsh"
 {{- if eq .chezmoi.hostname "HRBs-MBP"}}
 brew "qmk/qmk/qmk"
 {{- else if eq .chezmoi.hostname "HRBs-MBP-USC"}}
+brew "glab"
 brew "openjdk"
 brew "postgresql@14", restart_service: :changed
 {{- end}}

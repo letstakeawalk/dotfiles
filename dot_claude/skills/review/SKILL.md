@@ -1,8 +1,8 @@
 ---
 name: review
 description: "Code review — detects language and spawns the appropriate reviewer agent. Works with diffs, staged changes, files, or directories."
-allowed-tools: Read, Glob, Grep, Bash(git diff:*), Bash(git log:*), Bash(git status:*), Bash(git branch:*)
-argument-hint: [file/dir|staged|lang] [security|performance|idioms|bugs|tests]
+allowed-tools: Read, Glob, Grep, Edit, Write, Bash(git diff:*), Bash(git log:*), Bash(git status:*), Bash(git branch:*)
+argument-hint: [file/dir|staged|lang] [security|performance|idioms|bugs|tests] [--fix]
 ---
 
 ## Context
@@ -41,5 +41,17 @@ If `$ARGUMENTS` includes a focus keyword (`security`, `performance`, `idioms`, `
 Spawn the matching reviewer agent(s):
 - Pass the full `$ARGUMENTS` through — the agent handles target, focus, and any other instructions
 - If no arguments, pass the output of `git diff HEAD`
-- Present the agent's report as-is — do NOT auto-fix anything
 - If multiple reviewers ran, present each report under a language header
+
+### Fix Mode
+
+**Default (no `--fix`)**: present the report as-is, do not auto-fix anything.
+
+**With `--fix`**: after presenting the report, automatically fix trivial issues:
+- Debug artifacts: `console.log`, `dbg!()`, `print()`, `debugger`
+- Unused imports, dead variables
+- Missing `await` on async calls
+- Obvious typos in strings/comments
+- Simple lint fixes (formatting, trailing whitespace, missing semicolons)
+
+Leave anything requiring judgment (logic changes, security fixes, API changes, refactors) as remaining items for the user to address.

@@ -70,6 +70,8 @@ Only check if markdown files exist in the audit scope or in the project's `docs/
 
 ## Output Format
 
+Use severity levels: HIGH (stale/wrong docs, missing public API docs), MEDIUM (parameter drift, outdated examples), LOW (style inconsistency, minor comment issues). Number all findings sequentially across sections for easy reference.
+
 ```
 ## Documentation Audit
 
@@ -77,25 +79,25 @@ Only check if markdown files exist in the audit scope or in the project's `docs/
 [What was audited and how target was determined]
 
 ### Missing Documentation
-[HIGH] src/auth/mod.rs:42 — `pub fn verify_token` has no docstring
-  Public API without documentation
+1. [HIGH] src/auth/mod.rs:42 — `pub fn verify_token` has no docstring
+   Public API without documentation
 
-[MEDIUM] src/lib.rs — Module-level doc comment missing
+2. [MEDIUM] src/lib.rs — Module-level doc comment missing
 
 ### Stale Documentation
-[HIGH] src/api/users.rs:15 — Docstring lists `user_id: i32` but param is now `user_id: Uuid`
-  Parameter type mismatch
+3. [HIGH] src/api/users.rs:15 — Docstring lists `user_id: i32` but param is now `user_id: Uuid`
+   Parameter type mismatch
 
-[MEDIUM] src/utils.ts:30 — JSDoc @returns says `string` but function returns `Promise<string>`
+4. [MEDIUM] src/utils.ts:30 — JSDoc @returns says `string` but function returns `Promise<string>`
 
 ### Style Inconsistency
-[LOW] src/handlers/auth.rs:20 — Uses `//` comment style, rest of module uses `///` rustdoc
+5. [LOW] src/handlers/auth.rs:20 — Uses `//` comment style, rest of module uses `///` rustdoc
 
 ### README / Docs
-[MEDIUM] README.md:45 — Example references `create_user()` which was renamed to `register_user()`
+6. [MEDIUM] README.md:45 — Example references `create_user()` which was renamed to `register_user()`
 
 ### Inline Comments
-[LOW] src/db.rs:88 — Comment says "temporary workaround" but code has been stable for 6 months
+7. [LOW] src/db.rs:88 — Comment says "temporary workaround" but code has been stable for 6 months
 
 ### Summary
 - High: [count]

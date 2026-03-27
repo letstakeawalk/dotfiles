@@ -82,6 +82,8 @@ Based on the focus mode, identify opportunities. **Present findings only — do 
 
 ### Step 3: Present
 
+Use severity levels: HIGH (structural issues, large functions, significant duplication), MEDIUM (naming, minor duplication, verbose patterns), LOW (unused imports, dead code, cosmetic). Number all findings sequentially across sections for easy reference.
+
 Present findings grouped by category, ranked by impact:
 
 ```
@@ -91,19 +93,19 @@ Present findings grouped by category, ranked by impact:
 [What was analyzed, which mode]
 
 ### Findings
-[HIGH] src/auth.rs:42 — `validate_and_process_token` is 80 lines, does validation + processing + logging
-  Suggestion: Extract into `validate_token`, `process_token`, `log_auth_event`
+1. [HIGH] src/auth.rs:42 — `validate_and_process_token` is 80 lines, does validation + processing + logging
+   Suggestion: Extract into `validate_token`, `process_token`, `log_auth_event`
 
-[MEDIUM] src/auth.rs:15 — `fn helper` doesn't describe what it helps with
-  Suggestion: Rename to `extract_bearer_token`
+2. [MEDIUM] src/auth.rs:15 — `fn helper` doesn't describe what it helps with
+   Suggestion: Rename to `extract_bearer_token`
 
-[LOW] src/utils.rs:30 — Unused import `std::collections::BTreeMap`
-  Suggestion: Remove
+3. [LOW] src/utils.rs:30 — Unused import `std::collections::BTreeMap`
+   Suggestion: Remove
 
 ### Summary
-- High impact: [count]
-- Medium impact: [count]
-- Low impact: [count]
+- High: [count]
+- Medium: [count]
+- Low: [count]
 ```
 
 **Ask the user which findings to apply** — they may want all, some, or none.
@@ -116,6 +118,10 @@ For each approved refactor:
 3. Verify surrounding code still makes sense (imports, callers, etc.)
 
 After all refactors, summarize what changed.
+
+### Step 5: Verify
+
+After applying refactors, spawn the matching `*-reviewer` agent(s) on the changed files to catch anything the refactoring may have broken. Present the reviewer's findings — if any issues are found, fix trivial ones and flag the rest.
 
 ---
 

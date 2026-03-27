@@ -1,8 +1,8 @@
 ---
 name: pre-commit
 description: "Run review + document audit + test coverage analysis on staged changes in one shot. Pre-commit quality gate."
-allowed-tools: Read, Glob, Grep, Bash(git diff:*), Bash(git branch:*)
-argument-hint: [focus hint]
+allowed-tools: Read, Glob, Grep, Edit, Write, Bash(git diff:*), Bash(git branch:*)
+argument-hint: [focus hint] [--fix]
 ---
 
 ## Context
@@ -12,17 +12,22 @@ argument-hint: [focus hint]
 
 ## Task
 
-Run all quality checks on staged changes before committing. This is a one-shot orchestrator that spawns review, document, and test-coverage agents in parallel.
+Run all quality checks on staged changes before committing.
 
 If there are no staged changes, say so and stop.
 
 ### Execution
 
-Spawn all three in parallel on staged changes:
+Run in two phases:
 
-1. **Review**: Spawn the matching `*-reviewer` agent(s) — detect language from staged files, pass `staged` + any `$ARGUMENTS` as focus hints
-2. **Document audit**: Spawn the `document` agent with `staged`
-3. **Test coverage**: Spawn the `test-analyzer` agent with `staged`
+**Phase 1** — Spawn in parallel:
+1. **Document audit**: Spawn the `document` agent with `staged`
+2. **Test coverage**: Spawn the `test-analyzer` agent with `staged`
+
+**Phase 2** — After Phase 1 completes:
+3. **Code review**: Spawn the matching `*-reviewer` agent(s) — detect language from staged files, pass `staged` + any `$ARGUMENTS` as focus hints
+
+This ordering ensures the reviewer sees the final state if `--fix` was applied in Phase 1.
 
 ### Output
 
@@ -31,17 +36,21 @@ Present each report under a clear header:
 ```
 ## Pre-commit Quality Gate
 
-### Code Review
-[reviewer agent report]
-
 ### Documentation
 [document agent report]
 
 ### Test Coverage
 [test-analyzer agent report]
 
+### Code Review
+[reviewer agent report]
+
 ### Verdict
 [BLOCK / WARN / APPROVE based on worst severity across all reports]
 ```
 
-Do NOT auto-fix anything. Present findings and let the user decide what to address before committing.
+### Fix Mode
+
+**Default (no `--fix`)**: present all findings, do not auto-fix anything.
+
+**With `--fix`**: after each phase, automatically fix trivial issues (same rules as `/review --fix` and `/document --fix`). Phase 2 review then runs against the updated code. Leave non-trivial issues as remaining items for the user to address.

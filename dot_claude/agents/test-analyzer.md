@@ -79,6 +79,8 @@ For each gap found, suggest a concrete test case:
 
 ## Output Format
 
+Use severity levels: HIGH (untested critical paths, zero coverage on public APIs), MEDIUM (missing edge cases, partial coverage), LOW (missing tests on non-critical helpers). Number all findings sequentially across sections for easy reference.
+
 ```
 ## Test Coverage Analysis
 
@@ -93,28 +95,27 @@ For each gap found, suggest a concrete test case:
 | `hash_password` | src/auth.rs:80 | Covered | 3 tests in test_auth.rs |
 
 ### Critical Gaps
-[HIGH] src/auth.rs:42 — `verify_token` is completely untested
-  Risk: Auth bypass bugs would go undetected
-  Suggested tests:
-  - `test_verify_token_valid` — valid token returns Ok(claims)
-  - `test_verify_token_expired` — expired token returns Err
-  - `test_verify_token_malformed` — garbage input returns Err
+1. [HIGH] src/auth.rs:42 — `verify_token` is completely untested
+   Risk: Auth bypass bugs would go undetected
+   Suggested tests:
+   - `test_verify_token_valid` — valid token returns Ok(claims)
+   - `test_verify_token_expired` — expired token returns Err
+   - `test_verify_token_malformed` — garbage input returns Err
 
-[HIGH] src/users.rs:15 — `create_user` error paths untested
-  Missing: duplicate email handling, DB connection failure
-  Suggested tests:
-  - `test_create_user_duplicate_email` — returns conflict error
-  - `test_create_user_db_error` — propagates DB error correctly
+2. [HIGH] src/users.rs:15 — `create_user` error paths untested
+   Missing: duplicate email handling, DB connection failure
+   Suggested tests:
+   - `test_create_user_duplicate_email` — returns conflict error
+   - `test_create_user_db_error` — propagates DB error correctly
 
 ### Edge Cases Missing
-[MEDIUM] src/utils.ts:30 — `parse_config` not tested with empty input
-  Suggested: `test_parse_config_empty_string` — returns default config or error
+3. [MEDIUM] src/utils.ts:30 — `parse_config` not tested with empty input
+   Suggested: `test_parse_config_empty_string` — returns default config or error
 
 ### Summary
-- Uncovered public APIs: [count]
-- Partially covered: [count]
-- Critical gaps: [count]
-- Suggested test cases: [count]
+- High: [count]
+- Medium: [count]
+- Low: [count]
 ```
 
 If a section has no findings, write "No issues found" and move on.

@@ -26,9 +26,11 @@ Any additional natural language in `$ARGUMENTS` (e.g., "focus on reactivity", "c
    - If `bun.lock` or `bun.lockb` exists → use `bun`/`bunx` (default)
    - If `package-lock.json` exists → use `npm`/`npx`
    - Check `package.json` scripts for available lint/check commands
-3. Run diagnostics (skip any that fail — tool may not be installed):
-   - Linter: `bunx oxlint . 2>&1 | head -50` or `npx biome check . 2>&1 | head -50`
-   - Type check: `bun run check 2>&1 | head -30` or `npm run check 2>&1 | head -30`
+3. Run diagnostics using the project's own scripts (skip any that fail):
+   - Read `package.json` `scripts` to find `lint`, `check`, `typecheck`, or similar
+   - Run them via the detected package manager (e.g., `npm run lint`, `bun run check`)
+   - If no lint script exists, fall back to `bunx oxlint . 2>&1 | head -50`
+   - Pipe all output through `| head -50` to avoid noise
 3. For each target `.ts`, `.svelte`, or `.js` file, read the full file for context
 4. Work through ALL sections below (emphasize sections matching any focus instructions)
 5. Combine findings into a single report

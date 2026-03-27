@@ -115,6 +115,19 @@
     "explanatory-output-style@claude-plugins-official": false,
     "learning-output-style@claude-plugins-official": false
   },
+  "permissions": {
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git branch:*)",
+      "Bash(pbcopy:*)",
+      "Bash(which:*)"
+    ]
+  },
   "alwaysThinkingEnabled": true,
   "effortLevel": "medium"
 }

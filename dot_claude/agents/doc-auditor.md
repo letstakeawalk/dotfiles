@@ -1,6 +1,6 @@
 ---
-name: document
-description: "Finds mismatches between code and its documentation — stale docstrings, missing docs on public APIs, outdated README sections, and parameter drift. Reports issues without auto-fixing."
+name: doc-auditor
+description: "Finds mismatches between code and its documentation — stale docstrings, missing docs on public APIs, outdated README sections, and parameter drift."
 tools: Glob, Grep, Read
 model: haiku
 color: cyan

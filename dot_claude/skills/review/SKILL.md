@@ -2,7 +2,7 @@
 name: review
 description: "Code review — detects language and spawns the appropriate reviewer agent. Works with diffs, staged changes, files, or directories."
 allowed-tools: Read, Glob, Grep, Edit, Write, Bash(git diff:*), Bash(git log:*), Bash(git status:*), Bash(git branch:*)
-argument-hint: [file/dir|staged|lang] [security|performance|idioms|bugs|tests] [--fix]
+argument-hint: [file/dir|staged|lang] [security|performance|idioms|bugs|tests] [--fix] [--deep]
 ---
 
 ## Context
@@ -55,3 +55,23 @@ Spawn the matching reviewer agent(s):
 - Simple lint fixes (formatting, trailing whitespace, missing semicolons)
 
 Leave anything requiring judgment (logic changes, security fixes, API changes, refactors) as remaining items for the user to address.
+
+### Thorough Mode
+
+**With `--deep`**: run a full quality gate. In addition to the code review, also spawn the `doc-auditor` and `test-analyzer` agents.
+
+Run in two phases:
+
+**Phase 1** — Spawn in parallel:
+1. **Doc audit**: Spawn the `doc-auditor` agent on the target
+2. **Test coverage**: Spawn the `test-analyzer` agent on the target
+
+**Phase 2** — After Phase 1 completes:
+3. **Code review**: Spawn the matching `*-reviewer` agent(s)
+
+This ordering ensures the reviewer sees the final state if `--fix` was applied in Phase 1.
+
+Present each report under a clear header, ending with a verdict:
+`BLOCK` (any CRITICAL/HIGH), `WARN` (MEDIUM only), or `APPROVE` (no issues).
+
+`--deep` can be combined with `--fix`.

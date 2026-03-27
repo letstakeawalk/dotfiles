@@ -1,5 +1,5 @@
 ---
-name: architect
+name: arch
 description: "Discuss design decisions, trade-offs, and technical ideas — system design, API design, architecture, refactoring strategy, feature approach, or any 'how should I structure/approach this' question."
 allowed-tools: Read, Glob, Grep, WebSearch, WebFetch
 argument-hint: [topic or question]
@@ -24,7 +24,7 @@ This is **conversational mode** — engage in back-and-forth discussion.
 Ask clarifying questions. Challenge assumptions. Explore trade-offs.
 
 For structured deliverables (design docs, ADRs, system overviews), tell
-the user to use the `architect` agent instead (once available).
+the user to use the `architect` agent instead.
 
 ## What You Help With
 

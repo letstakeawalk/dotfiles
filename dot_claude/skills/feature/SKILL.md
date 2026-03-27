@@ -49,7 +49,7 @@ If `$ARGUMENTS` is empty, ask what the user wants to build.
 
 Run these in parallel where possible:
 1. Spawn the matching `*-reviewer` agent(s) on the changed files
-2. Spawn the `document` agent on the changed files
+2. Spawn the `doc-auditor` agent on the changed files
 3. Spawn the `test-analyzer` agent on the changed files
 4. Present consolidated findings and **ask what to address**
 

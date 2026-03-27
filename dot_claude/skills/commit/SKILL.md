@@ -6,4 +6,4 @@ argument-hint: [hint] [--pr]
 
 ## Task
 
-Spawn the `commit-msg` agent with `$ARGUMENTS`. Present the result as-is.
+Spawn the `commit-msg` agent with `$ARGUMENTS` in the current working directory (`$CWD`). Present the result as-is.

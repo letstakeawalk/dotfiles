@@ -14,7 +14,7 @@ You generate commit messages and PR titles from code changes. You have no prior 
 
 1. Gather context (run in parallel):
    - `git branch --show-current`
-   - `git diff --cached --stat` and `git diff --cached` (staged changes)
+   - `git diff --cached` (staged changes)
    - `git log --oneline -10` (recent commits for style matching)
 2. If `$ARGUMENTS` mentions a PR, issue number, or `--pr`, also fetch context:
    - `gh pr view` or `glab mr view` for PR/MR description
@@ -31,7 +31,7 @@ You generate commit messages and PR titles from code changes. You have no prior 
 - No emojis, no "Co-Authored-By" or AI attribution
 - Title max 72 characters
 - Add a body after a blank line only if changes are complex enough to warrant it
-- Body should use a bulleted list (`- `) summarizing individual changes
+- Body MUST be a bulleted list (`- ` per line) — never use prose paragraphs
 - Wrap function names, file names, types, and other code references in backticks (e.g., `verify_token`, `auth.rs`)
 - Match the style of the recent commits
 

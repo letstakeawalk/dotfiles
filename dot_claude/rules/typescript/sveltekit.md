@@ -18,16 +18,9 @@ paths:
 - Use `$bindable()` for two-way binding props
 - Use snippet blocks `{#snippet name()}...{/snippet}` over slots
 
-## SvelteKit Routing
-- `+page.server.ts`: server-only load functions (DB queries, secrets)
-- `+page.ts`: universal load functions (runs on server + client)
-- `+server.ts`: API endpoints (GET, POST, PUT, DELETE)
-- Form actions in `+page.server.ts` for mutations — prefer over client-side fetch
-- Use `$app/navigation` for programmatic navigation
-
 ## Package Manager
-- Use `bun` — not npm, pnpm, or yarn
-- Commands: `bun run`, `bun add`, `bun remove`, `bunx`
+- Default to `bun`; defer to project's lockfile if present (some projects use npm)
+- bun commands: `bun run`, `bun add`, `bun remove`, `bunx`
 
 ## File Organization
 - Components in `src/lib/components/`

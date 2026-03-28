@@ -1,4 +1,17 @@
 {
+  "permissions": {
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git branch:*)",
+      "Bash(pbcopy:*)",
+      "Bash(which:*)"
+    ]
+  },
   "hooks": {
     "PreToolUse": [
       {
@@ -100,33 +113,24 @@
     "context7@claude-plugins-official": true,
     "security-guidance@claude-plugins-official": true,
     "claude-md-management@claude-plugins-official": true,
-    "frontend-design@claude-plugins-official": true,
     "code-simplifier@claude-plugins-official": true,
-    "code-review@claude-plugins-official": false,
+    "frontend-design@claude-plugins-official": false,
     "rust-analyzer-lsp@claude-plugins-official": false,
     "typescript-lsp@claude-plugins-official": false,
     "pyright-lsp@claude-plugins-official": false,
     "lua-lsp@claude-plugins-official": false,
-    "feature-dev@claude-plugins-official": false,
+    "svelte@svelte": false,
     "hookify@claude-plugins-official": false,
-    "ralph-loop@claude-plugins-official": false,
-    "mgrep@Mixedbread-Grep": false,
-    "commit-commands@claude-plugins-official": false,
     "explanatory-output-style@claude-plugins-official": false,
     "learning-output-style@claude-plugins-official": false
   },
-  "permissions": {
-    "allow": [
-      "Read",
-      "Glob",
-      "Grep",
-      "Bash(git status:*)",
-      "Bash(git diff:*)",
-      "Bash(git log:*)",
-      "Bash(git branch:*)",
-      "Bash(pbcopy:*)",
-      "Bash(which:*)"
-    ]
+  "extraKnownMarketplaces": {
+    "svelte": {
+      "source": {
+        "source": "github",
+        "repo": "sveltejs/ai-tools"
+      }
+    }
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "medium"

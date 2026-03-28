@@ -6,4 +6,4 @@ argument-hint: [hint] [--pr]
 
 ## Task
 
-Spawn the `commit-msg` agent with `$ARGUMENTS` in the current working directory (`$CWD`). After the agent finishes, run `pbpaste` to retrieve the commit message and present it in a code block.
+Spawn the `commit-msg` agent with `$ARGUMENTS`. Do NOT mention the working directory in the prompt — the agent inherits it automatically. After the agent finishes, run `pbpaste` to retrieve the commit message and present it in a code block.

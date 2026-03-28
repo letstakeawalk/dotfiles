@@ -15,8 +15,33 @@ return {
     },
     workspace_required = true,
     root_dir = function(bufnr, on_dir)
-        local fname = vim.api.nvim_buf_get_name(bufnr)
-        local root_markers = util.insert_package_json({ ".oxfmtrc.json", ".oxfmtrc.jsonc" }, "oxfmt", fname)
-        on_dir(vim.fs.dirname(vim.fs.find(root_markers, { path = fname, upward = true })[1]))
+        local root_markers = {
+            "package-lock.json",
+            "yarn.lock",
+            "pnpm-lock.yaml",
+            "bun.lockb",
+            "bun.lock",
+            "deno.lock",
+        }
+        root_markers = vim.fn.has("nvim-0.11.3") == 1 and { root_markers, { ".git" } }
+            or vim.list_extend(root_markers, { ".git" })
+
+        local project_root = vim.fs.root(bufnr, root_markers) or vim.fn.getcwd()
+
+        local filename = vim.api.nvim_buf_get_name(bufnr)
+        local config_files = { ".oxfmtrc.json", ".oxfmtrc.jsonc" }
+        config_files = util.insert_package_json(config_files, "oxfmt", filename)
+        local has_config = vim.fs.find(config_files, {
+            path = filename,
+            type = "file",
+            limit = 1,
+            upward = true,
+            stop = vim.fs.dirname(project_root),
+        })[1]
+        if not has_config then
+            return
+        end
+
+        on_dir(project_root)
     end,
 }

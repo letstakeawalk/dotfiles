@@ -61,16 +61,16 @@ return {
         -- We know that the buffer is using Biome if it has a config file
         -- in its directory tree.
         local filename = vim.api.nvim_buf_get_name(bufnr)
-        local biome_config_files = { "biome.json", "biome.jsonc" }
-        biome_config_files = util.insert_package_json(biome_config_files, "biomejs", filename)
-        local is_buffer_using_biome = vim.fs.find(biome_config_files, {
+        local config_files = { "biome.json", "biome.jsonc" }
+        config_files = util.insert_package_json(config_files, "biomejs", filename)
+        local has_config = vim.fs.find(config_files, {
             path = filename,
             type = "file",
             limit = 1,
             upward = true,
             stop = vim.fs.dirname(project_root),
         })[1]
-        if not is_buffer_using_biome then
+        if not has_config then
             return
         end
 

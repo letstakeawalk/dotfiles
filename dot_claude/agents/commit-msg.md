@@ -14,13 +14,13 @@ You generate commit messages and PR titles from code changes. You have no prior 
 
 1. Gather context (run in parallel):
    - `git branch --show-current`
-   - `git diff --cached --stat` and `git diff --cached` (staged changes only)
+   - `git diff --cached --stat` and `git diff --cached` (staged changes)
    - `git log --oneline -10` (recent commits for style matching)
 2. If `$ARGUMENTS` mentions a PR, issue number, or `--pr`, also fetch context:
    - `gh pr view` or `glab mr view` for PR/MR description
    - `gh issue view` or `glab issue view` for linked issues
 3. If there are no staged changes (empty diff), say so and stop
-4. Only generate a message for staged changes — ignore unstaged files entirely
+4. **ONLY use `git diff --cached`** — never run `git status`, `git diff` (without `--cached`), or any command that shows unstaged/untracked files
 
 ## Commit Message Format
 

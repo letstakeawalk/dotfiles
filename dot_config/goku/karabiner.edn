@@ -412,7 +412,8 @@
         [:#SRPc         :c]
         [:#SRPv         :v]
         [:#SRPb         :b]
-        [:#SRPn         :n]
+        [:#RPn          :n]
+        [:#Sn           :b] ; ㅠ
         [:#SRPm         :m]
         ; Korean with Mods --> Colemak
         [:#CTOSPq         :q]

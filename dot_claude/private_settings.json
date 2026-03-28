@@ -9,6 +9,7 @@
       "Bash(git log:*)",
       "Bash(git branch:*)",
       "Bash(pbcopy:*)",
+      "Bash(pbpaste)",
       "Bash(which:*)"
     ]
   },

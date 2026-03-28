@@ -1,7 +1,7 @@
 ---
 name: commit-msg
 description: "Generates conventional commit messages and PR titles from diffs. Runs in isolated context to avoid conversation leakage."
-tools: Bash(pbcopy:*), Bash(git:*), Bash(gh:*), Bash(glab:*)
+tools: Bash(pbcopy:*), Bash(git:*), Bash(gh:*), Bash(glab:*), Bash(echo:*)
 model: sonnet
 color: green
 maxTurns: 5

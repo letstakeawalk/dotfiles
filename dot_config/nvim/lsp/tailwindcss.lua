@@ -115,8 +115,21 @@ return {
     end,
     workspace_required = true,
     root_dir = function(bufnr, on_dir)
-        local root_files = {
-            -- Generic
+        local root_markers = {
+            "package-lock.json",
+            "yarn.lock",
+            "pnpm-lock.yaml",
+            "bun.lockb",
+            "bun.lock",
+            "deno.lock",
+        }
+        root_markers = vim.fn.has("nvim-0.11.3") == 1 and { root_markers, { ".git" } }
+            or vim.list_extend(root_markers, { ".git" })
+
+        local project_root = vim.fs.root(bufnr, root_markers) or vim.fn.getcwd()
+
+        local fname = vim.api.nvim_buf_get_name(bufnr)
+        local config_files = {
             "tailwind.config.js",
             "tailwind.config.cjs",
             "tailwind.config.mjs",
@@ -131,12 +144,20 @@ return {
             "theme/static_src/tailwind.config.mjs",
             "theme/static_src/tailwind.config.ts",
             "theme/static_src/postcss.config.js",
-            -- Fallback for tailwind v4, where tailwind.config.* is not required anymore
-            ".git",
         }
-        local fname = vim.api.nvim_buf_get_name(bufnr)
-        root_files = util.insert_package_json(root_files, "tailwindcss", fname)
-        root_files = util.root_markers_with_field(root_files, { "mix.lock", "Gemfile.lock" }, "tailwind", fname)
-        on_dir(vim.fs.dirname(vim.fs.find(root_files, { path = fname, upward = true })[1]))
+        config_files = util.insert_package_json(config_files, "tailwindcss", fname)
+        config_files = util.root_markers_with_field(config_files, { "mix.lock", "Gemfile.lock" }, "tailwind", fname)
+        local has_config = vim.fs.find(config_files, {
+            path = fname,
+            type = "file",
+            limit = 1,
+            upward = true,
+            stop = vim.fs.dirname(project_root),
+        })[1]
+        if not has_config then
+            return
+        end
+
+        on_dir(project_root)
     end,
 }

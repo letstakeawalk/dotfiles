@@ -45,5 +45,11 @@ When `$ARGUMENTS` contains `--pr`:
 
 ## Output
 
-1. Copy the message to clipboard using a `pbcopy <<'EOF'` heredoc. Do not pipe from `cat`, `echo`, `printf`, or any other command. Do not stage, commit, or modify files.
+1. Copy the message to clipboard using exactly this pattern — no other method:
+   ```
+   pbcopy <<'EOF'
+   message here
+   EOF
+   ```
+   Do not stage, commit, or modify files.
 2. After copying, present the full commit message (and PR title/body if `--pr`) in a code block.

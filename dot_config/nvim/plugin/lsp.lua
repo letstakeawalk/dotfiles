@@ -156,9 +156,9 @@ local function vim_lsp_buf_references()
         end,
     })
 end
-local function toggle_signature_float()
-    require("lsp_signature").toggle_float_win()
-end
+---@diagnostic disable-next-line: unused-local
+local toggle_signature_float = require("lsp_signature").toggle_float_win
+
 local function diag_jump(count, severity)
     return function()
         local res = vim.diagnostic.jump({
@@ -197,8 +197,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         vim.keymap.set("n",          "<leader>dD", toggle_diagnostic,          { desc = "Diagnostic Toggle",           buffer = args.buf })
         vim.keymap.set("n",          "<leader>dd", toggle_diagnostic_virtual,  { desc = "Diagnostic (virtual) Toggle", buffer = args.buf })
         vim.keymap.set("n",          "<leader>dh", toggle_inlay_hint,          { desc = "InlayHint Toggle",            buffer = args.buf })
-        vim.keymap.set("i",          "<C-k>",      toggle_signature_float,     { desc = "Signature Toggle",            buffer = args.buf })
-        vim.keymap.set("i",          "<C-s>",      toggle_signature_float,     { desc = "Signature Toggle",            buffer = args.buf })
+        vim.keymap.set("i",          "<A-s>",      toggle_signature_float,     { desc = "Signature Toggle",            buffer = args.buf })
 
         vim.keymap.set("n", "gd", vim.lsp.buf.definition,      { desc = "Goto Definition",      buffer = args.buf })
         vim.keymap.set("n", "gD", vim.lsp.buf.declaration,     { desc = "Goto Declaration",     buffer = args.buf })

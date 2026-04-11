@@ -1,22 +1,19 @@
-local function escape()
-    return vim.api.nvim_win_get_cursor(0)[2] > 1 and "<right><esc>" or "<esc>"
+local escape = function()
+    require("utils").escape()
 end
-
 return {
     "max397574/better-escape.nvim",
     event = { "InsertEnter", "CmdlineEnter" },
-    config = function()
-        require("better_escape").setup({
-            timeout = 150,
-            default_mappings = false,
-            mappings = {
-                i = {
-                    k = { h = escape },
-                },
-                c = {
-                    k = { h = escape },
-                },
+    opts = {
+        timeout = 150,
+        default_mappings = false,
+        mappings = {
+            i = {
+                k = { h = escape },
             },
-        })
-    end,
+            c = {
+                k = { h = escape },
+            },
+        },
+    },
 }

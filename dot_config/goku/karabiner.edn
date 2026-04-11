@@ -10,11 +10,10 @@
         :held    250    ;; to_if_held_down_threshold_milliseconds (default: 500)
     }
   }
-  :simlayer-threshold 150 ;; default: 250 // 150 is best?
+  :simlayer-threshold 150 ;; default: 250
   :devices {:apple [{:vendor_id 1452}]}
   :applications {
-    :terminals ["^com\\.mitchellh\\.ghostty$" "^com\\.apple\\.Terminal$" "^io\\.alacritty$" "^net\\.kovidgoyal\\.kitty$"]
-    :browsers  ["^company\\.thebrowser\\.Browser$" "^org\\.mozilla\\.firefox$" "^org\\.mozilla\\.firefoxdeveloperedition$" "^com\\.google\\.Chrome$" "^org\\.chromium\\.Chromium$" "^com\\.google\\.Chrome\\.canary$" "^com\\.apple\\.Safari$"]
+    :term ["^com\\.mitchellh\\.ghostty$" "^com\\.apple\\.Terminal$" "^io\\.alacritty$" "^net\\.kovidgoyal\\.kitty$"]
   }
   :input-sources {
     :input_us {:input_source_id "com.apple.keylayout.US" :language "en"}
@@ -223,14 +222,14 @@
         [:##caps_lock ["ctrl" 0] ["ctrl" 1] {:alone :escape}]
         :ctrl
         [:##q                      :!Tq]
-        [:##w                      :!Odelete_or_backspace :!terminals] ;; ^w --> delete word
+        [:##w                      :!Odelete_or_backspace :!term] ;; ^w --> delete word
         [:##w                      :!Tw]
         [:##e                      :!Tf]
         [:##r                      :!Tp]
         [:##t                      :!Tb]
         [:##y                      :!Tj]
         [:##u                      :!Tl]
-        [:##i                      :!Cdelete_or_backspace :!terminals] ;; ^u --> delete BOL
+        [:##i                      :!Cdelete_or_backspace :!term] ;; ^u --> delete BOL
         [:##i                      :!Tu]
         [:##o                      :!Ty]
         [:##p                      :!Tsemicolon]
@@ -274,6 +273,7 @@
         [:##equal_sign             :!Tequal_sign]
         [:##delete_or_backspace    :delete_forward]
         [:##spacebar               :!Tspacebar]
+        [:##tab                    :!Ttab]
       ]
     } ;; end of caps lock
 
@@ -344,18 +344,24 @@
       ]
     }
 
+    {
+      :des "Misc"
+      :rules [
+        [:!Ti :!Cdelete_or_backspace :!term] ;; ^u --> delete BOL
+        [:!Tw :!Odelete_or_backspace :!term] ;; ^w --> delete word
+        ; [:!Th :vk_none]                         ;; ^h --> delete char           ;; default macos
+        ; [:!Tk :vk_none]                         ;; ^k --> delete EOL            ;; default macos
+        ; [:!Td :vk_none]                         ;; ^d --> delete char forward   ;; default macos
+
+        :apple
+        [:##open_bracket  :delete_or_backspace]   ;; [ --> delete char
+        [:##close_bracket :!Odelete_or_backspace] ;; ] --> delete word
+
+      ]
+    }
+
     { :des "Colemak-dhm - THIS MUST BE PLACED LAST"
       :rules [
-        [:##open_bracket  :delete_or_backspace :apple]   ;; [ --> delete char
-        [:##close_bracket :!Odelete_or_backspace :apple] ;; ] --> delete word
-
-        :!terminals
-        [:!Ti :!Cdelete_or_backspace] ;; ^u --> delete BOL
-        [:!Tw :!Odelete_or_backspace] ;; ^w --> delete word
-        ; [:!Th :vk_none]             ;; ^h --> delete char           ;; default macos
-        ; [:!Tk :vk_none]             ;; ^k --> delete EOL            ;; default macos
-        ; [:!Td :vk_none]             ;; ^d --> delete char forward   ;; default macos
-
         :input_us
         [:##q         :q]
         [:##w         :w]
@@ -385,7 +391,6 @@
         [:##n         :k]
         [:##m         :h]
 
-        ;; Korean
         :input_ko
         [:#SRPq         :q]
         [:#SRPw         :w]
@@ -413,7 +418,7 @@
         [:#SRPv         :v]
         [:#SRPb         :b]
         [:#RPn          :n]
-        [:#Sn           :b] ; ㅠ
+        [:!Sn           :b] ; Shift ㅜ -> ㅠ
         [:#SRPm         :m]
         ; Korean with Mods --> Colemak
         [:#CTOSPq         :q]

@@ -9,8 +9,8 @@ if echo "$COMMAND" | grep -qE '(rm\s+-rf\s+[/~]|git\s+push\s+--force|git\s+reset
   exit 2
 fi
 
-# Warn on git commit/push (should only happen when user explicitly asks)
-if echo "$COMMAND" | grep -qE '^git\s+(commit|push|tag)\b'; then
+# Warn on git push/tag (should only happen when user explicitly asks)
+if echo "$COMMAND" | grep -qE '^git\s+(push|tag)\b'; then
   echo '{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"ask","permissionDecisionReason":"Git mutation detected. Verify user explicitly requested this."}}' >&2
   exit 2
 fi

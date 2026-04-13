@@ -1,5 +1,5 @@
 ---
-name: commit
+name: commit-msg
 description: "Generate a conventional commit message from staged changes and copy to clipboard."
 allowed-tools: Bash(pbcopy:*), Bash(git diff:*), Bash(git log:*), Bash(git branch:*), Bash(gh:*), Bash(glab:*)
 argument-hint: [hint] [--pr]

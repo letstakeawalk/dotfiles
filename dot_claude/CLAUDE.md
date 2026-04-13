@@ -9,9 +9,26 @@
 - Language-specific conventions are in `~/.claude/rules/` — always follow them
 
 ## Git & Commits
-- NEVER commit, push, or create branches without explicit instruction
+- Only commit when I explicitly say "commit" or "make commit"
+- `/commit-msg` — clipboard-only (no git commands), use the /commit-msg skill
+- "make commit" — actually stage and commit changes, following the rules below
+- NEVER push to remote without explicit instruction
 - NEVER amend commits unless specifically asked
-- When I say "commit", I mean generate the message only (use /commit skill)
+- NEVER create branches without explicit instruction
+
+### "make commit" Rules
+1. Review all staged and unstaged changes (`git diff --cached` and `git diff`)
+2. If changes span unrelated concerns, split into multiple logical commits
+3. For each commit: stage the relevant files, then `git commit`
+4. Message format — same as /commit-msg skill:
+   - Conventional Commits: `type(scope): description`
+   - Types: feat, fix, refactor, chore, docs, style, test, perf, ci, build
+   - No emojis, no Co-Authored-By, no AI attribution
+   - Title max 72 characters; body (if needed) as bulleted list
+   - Match the style of recent commits on the branch
+5. After each commit, display the commit message and list of files included
+6. If multiple commits were made in a session, end with a summary: count, short hashes, and full commit messages
+7. Never commit files that contain secrets (`.env`, credentials, etc.)
 
 ## Before Modifying Code
 - Never assume intent — if requirements or goals are ambiguous, ask before proceeding

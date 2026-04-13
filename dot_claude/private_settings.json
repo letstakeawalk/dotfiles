@@ -8,6 +8,8 @@
       "Bash(git diff:*)",
       "Bash(git log:*)",
       "Bash(git branch:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
       "Bash(pbcopy:*)",
       "Bash(pbpaste)",
       "Bash(which:*)"

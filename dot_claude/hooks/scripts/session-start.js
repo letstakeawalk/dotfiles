@@ -10,6 +10,9 @@
  * learned skills.
  */
 
+const fs = require("fs");
+const path = require("path");
+
 const {
   getSessionsDir,
   getLearnedSkillsDir,
@@ -21,6 +24,13 @@ const {
 } = require("./lib/utils");
 
 async function main() {
+  // Clear stale freeze list from previous session
+  const freezeFile = path.join(process.env.HOME, ".claude", ".frozen-paths");
+  if (fs.existsSync(freezeFile)) {
+    fs.unlinkSync(freezeFile);
+    log("[SessionStart] Cleared stale freeze list");
+  }
+
   const sessionsDir = getSessionsDir();
   const learnedDir = getLearnedSkillsDir();
 

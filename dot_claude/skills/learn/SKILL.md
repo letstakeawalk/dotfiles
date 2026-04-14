@@ -11,43 +11,65 @@ Reflect on this session's conversation and extract patterns worth persisting to 
 
 This is NOT the same as `/remember` (which saves explicit user-stated facts). This skill is about **self-reflection** — analyzing what happened during the session to find implicit lessons.
 
-### What to Look For
+### Structured Retro
 
-Scan the conversation for:
+Work through these three questions:
 
-1. **User corrections** — where I was wrong and the user corrected me. What was the mistake? What's the right approach?
-2. **Error resolutions** — debugging that led to a fix. What was the root cause? How was it found?
-3. **Workarounds** — solutions to framework/library/tool quirks that aren't obvious
-4. **Over-engineering** — where I was told to simplify. What did I over-complicate?
-5. **Project conventions** — patterns established or reinforced during the session
-6. **Effective approaches** — techniques that worked well and should be repeated
+#### 1. What worked?
+- Approaches that solved problems efficiently
+- Techniques the user confirmed or accepted without pushback
+- Patterns that should be repeated
+
+#### 2. What broke?
+- Mistakes I made and user corrections
+- Debugging dead ends — what was tried and why it failed
+- Wrong assumptions about the codebase or requirements
+- Over-engineering or under-engineering
+
+#### 3. What to change?
+- Workarounds for framework/library/tool quirks
+- Project conventions established or reinforced
+- Process improvements (e.g., "check X before doing Y")
 
 If the user provided a focus area via `$ARGUMENTS`, prioritize that.
 
 ### Locate Memory Directory
 
 1. Check if inside a git repo: `git rev-parse --show-toplevel`
-2. The project key is the repo root path (or cwd if not in a repo) with `/` replaced by `-` and leading `-` stripped
+2. Project key: repo root path (or cwd if not in repo) with `/` replaced by `-`, leading `-` stripped
 3. Memory dir: `~/.claude/projects/<project>/memory/`
-4. If the directory doesn't exist, show the computed path and ask before creating
+4. If directory doesn't exist, show computed path and ask before creating
 
 ### Save Patterns
 
 1. Read existing MEMORY.md to avoid duplicates
 2. Add new patterns under a clear category heading
-3. If a pattern is detailed enough to warrant its own file, create a topic file and link from MEMORY.md
+3. If a pattern is detailed enough, create a topic file and link from MEMORY.md
 4. Keep MEMORY.md under 200 lines
 
 ### Output
 
-After saving, summarize:
-- How many patterns extracted
-- What was saved and where
-- Any patterns you considered but skipped (and why)
+After saving, present the retro:
+
+```
+### What worked
+- [list]
+
+### What broke
+- [list]
+
+### What to change
+- [list]
+
+### Saved
+- [count] patterns extracted
+- [where saved]
+- [patterns considered but skipped, and why]
+```
 
 ## Rules
 
-- Only extract patterns that are **reusable across sessions** — skip one-time fixes
+- Only extract patterns **reusable across sessions** — skip one-time fixes
 - Be honest about mistakes — the point is to learn, not save face
 - Keep each pattern to 1-3 lines — concise and actionable
 - Skip anything already covered in CLAUDE.md or rules files

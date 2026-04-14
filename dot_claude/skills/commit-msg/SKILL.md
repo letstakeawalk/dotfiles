@@ -17,16 +17,26 @@ argument-hint: [hint] [--pr]
 
 ## Commit Message Format
 
-- Conventional Commits: `type(scope): description`
+**Subject line:**
+- Conventional Commits: `type(scope): imperative summary`
 - Types: feat, fix, refactor, chore, docs, style, test, perf, ci, build
+- Imperative mood: "add", "fix", "remove" — not "added", "adds", "adding"
 - Use `!` before `:` for breaking changes
 - Scope: short identifier for the area affected
-- No emojis, no "Co-Authored-By" or AI attribution
-- Title max 72 characters
-- Add a body after a blank line only if changes are complex enough to warrant it
-- Body MUST be a bulleted list (`- ` per line) — never use prose paragraphs
-- Wrap function names, file names, types, and other code references in backticks (e.g., `verify_token`, `auth.rs`)
+- No trailing period, no emojis, no "Co-Authored-By" or AI attribution
+- Max 72 characters
 - Match the style of the recent commits shown above
+
+**Body (only if needed):**
+- Skip when subject is self-explanatory — why over what
+- Always include body for: breaking changes, security fixes, data migrations, reverts
+- Body MUST be a bulleted list (`- ` per line) — never prose paragraphs
+- Wrap code references in backticks (e.g., `verify_token`, `auth.rs`)
+- Reference issues at end: `Closes #42`, `Refs #17`
+
+**Never write:**
+- "This commit does X", "now", "currently" — the diff says what
+- Restating the file name when scope already says it
 
 ## PR Title Format
 

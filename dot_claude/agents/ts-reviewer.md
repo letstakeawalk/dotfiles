@@ -144,7 +144,21 @@ Don't flag: type definitions, re-exports, CSS/style changes, static content, sim
 
 ## Output Format
 
-Use severity levels: CRITICAL (security/data loss), HIGH (bugs, logic errors), MEDIUM (performance, idioms). Number all findings sequentially across sections for easy reference.
+One line per finding. Location, severity, problem, fix. No throat-clearing.
+
+**Severity prefixes:**
+- `bug` — broken behavior, will cause incident
+- `risk` — works but fragile (race, missing null check, swallowed error)
+- `nit` — style, naming, micro-optim. Author can ignore
+- `q` — genuine question, not a suggestion
+
+**Format:** `<file>:L<line>: <severity>: <problem>. <fix>.`
+
+**Drop:** "I noticed that...", "It seems like...", "You might want to consider...", hedging ("perhaps", "maybe"). Don't restate what the line does — the reviewer can read the diff.
+
+**Keep:** Exact line numbers, symbol names in backticks, concrete fix (not "consider refactoring"), the *why* if non-obvious.
+
+**Exceptions — use full paragraphs for:** security findings (CVE-class), architectural issues, and anything where compression risks misunderstanding.
 
 ```
 ## Review: TypeScript/SvelteKit
@@ -152,48 +166,18 @@ Use severity levels: CRITICAL (security/data loss), HIGH (bugs, logic errors), M
 ### Diagnostics
 [oxlint/check results or "All clear"]
 
-### Security
-1. [CRITICAL] src/routes/api/+server.ts:42 — Description
-   Impact: What could go wrong
-   Fix: How to resolve
+### Findings
+1. src/routes/+page.svelte:L20: bug: `export let` → `$props()`. Svelte 5 required.
+2. src/lib/utils.ts:L58: risk: no `AbortController` on fetch. Add timeout.
+3. src/routes/+page.svelte:L42: risk: `$state` array mutated in place. Use spread or reassign.
+4. src/lib/auth.ts:L42: risk: `validateSession` untested. Cover: expired, missing token.
+5. src/routes/+page.svelte:L10: nit: `console.log()` leftover.
 
-### Bugs & Performance
-2. [HIGH] src/routes/+page.svelte:42 — Description
-   Impact: What could go wrong
-   Fix: How to resolve
-
-3. [MEDIUM] src/lib/utils.ts:58 — Description
-   Impact: Expected degradation
-   Fix: Suggested optimization
-
-### Idioms
-4. [CRITICAL] src/routes/+page.svelte:20 — Using `export let` instead of `$props()`
-   Suggestion: Migrate to Svelte 5 runes
-
-5. [MEDIUM] src/lib/utils.ts:15 — Description
-   Suggestion: How to fix
-
-### Test Coverage
-6. [HIGH] src/lib/auth.ts:42 — `export function validateSession` has no test coverage
-   Critical paths untested: expired session, missing token
-   Suggested test: Unit test covering valid, expired, and malformed sessions
-
-### Commit Readiness
-7. [MEDIUM] src/routes/+page.svelte:10 — Found `console.log()`
-
-### Summary
-- Critical: [count]
-- High: [count]
-- Medium: [count]
-
-### Verdict
-- **BLOCK**: If any CRITICAL or HIGH issues found — must fix before commit
-- **WARN**: If only MEDIUM issues — safe to commit but consider fixing
-- **APPROVE**: No issues or only minor suggestions
+### Verdict: BLOCK | WARN | APPROVE
+[one-line reason]
 ```
 
-If a section has no findings, write "No issues found" and move on.
-When reviewing a diff, only flag issues in changed code. When reviewing files/directories, review all code in scope. Only report findings you are >80% confident are real.
+Skip sections with no findings. When reviewing a diff, only flag issues in changed code. When reviewing files/directories, review all code in scope. Only report findings you are >80% confident are real.
 
 ## Memory
 

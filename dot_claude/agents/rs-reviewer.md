@@ -145,7 +145,21 @@ Don't flag: trivial getters, `Display`/`Debug` impls, config structs, re-exports
 
 ## Output Format
 
-Use severity levels: CRITICAL (security/data loss), HIGH (bugs, logic errors), MEDIUM (performance, idioms). Number all findings sequentially across sections for easy reference.
+One line per finding. Location, severity, problem, fix. No throat-clearing.
+
+**Severity prefixes:**
+- `bug` — broken behavior, will cause incident
+- `risk` — works but fragile (race, missing null check, swallowed error)
+- `nit` — style, naming, micro-optim. Author can ignore
+- `q` — genuine question, not a suggestion
+
+**Format:** `<file>:L<line>: <severity>: <problem>. <fix>.`
+
+**Drop:** "I noticed that...", "It seems like...", "You might want to consider...", hedging ("perhaps", "maybe"). Don't restate what the line does — the reviewer can read the diff.
+
+**Keep:** Exact line numbers, symbol names in backticks, concrete fix (not "consider refactoring"), the *why* if non-obvious.
+
+**Exceptions — use full paragraphs for:** security findings (CVE-class), architectural issues, and anything where compression risks misunderstanding.
 
 ```
 ## Review: Rust
@@ -153,45 +167,18 @@ Use severity levels: CRITICAL (security/data loss), HIGH (bugs, logic errors), M
 ### Diagnostics
 [clippy/check/fmt results or "All clear"]
 
-### Security
-1. [CRITICAL] src/handlers/auth.rs:42 — Description
-   Impact: What could go wrong
-   Fix: How to resolve
+### Findings
+1. src/handlers/auth.rs:L42: bug: `.unwrap()` on user lookup. Use `?` or return 404.
+2. src/db/queries.rs:L58: risk: N+1 query in loop. Use `IN` clause or `find_with_related()`.
+3. src/routes/auth.rs:L15: nit: `&String` param → `&str`.
+4. src/services/auth.rs:L42: risk: `verify_token` untested. Cover: expired, invalid sig.
+5. src/handlers/debug.rs:L10: nit: `dbg!()` leftover.
 
-### Bugs & Performance
-2. [HIGH] src/services/user.rs:42 — Description
-   Impact: What could go wrong
-   Fix: How to resolve
-
-3. [MEDIUM] src/db/queries.rs:58 — Description
-   Impact: Expected degradation
-   Fix: Suggested optimization
-
-### Idioms
-4. [MEDIUM] src/routes/auth.rs:15 — Description
-   Suggestion: How to fix
-
-### Test Coverage
-5. [HIGH] src/services/auth.rs:42 — `pub fn verify_token` has no test coverage
-   Critical paths untested: expired token, invalid signature
-   Suggested test: Unit test covering valid, expired, and malformed tokens
-
-### Commit Readiness
-6. [MEDIUM] src/handlers/debug.rs:10 — Found `dbg!()` macro
-
-### Summary
-- Critical: [count]
-- High: [count]
-- Medium: [count]
-
-### Verdict
-- **BLOCK**: If any CRITICAL or HIGH issues found — must fix before commit
-- **WARN**: If only MEDIUM issues — safe to commit but consider fixing
-- **APPROVE**: No issues or only minor suggestions
+### Verdict: BLOCK | WARN | APPROVE
+[one-line reason]
 ```
 
-If a section has no findings, write "No issues found" and move on.
-When reviewing a diff, only flag issues in changed code. When reviewing files/directories, review all code in scope. Only report findings you are >80% confident are real.
+Skip sections with no findings. When reviewing a diff, only flag issues in changed code. When reviewing files/directories, review all code in scope. Only report findings you are >80% confident are real.
 
 ## Memory
 

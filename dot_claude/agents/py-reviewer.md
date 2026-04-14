@@ -125,7 +125,21 @@ Don't flag: constants, type aliases, `__repr__`/`__str__`, config dataclasses.
 
 ## Output Format
 
-Use severity levels: CRITICAL (security/data loss), HIGH (bugs, logic errors), MEDIUM (performance, idioms). Number all findings sequentially across sections for easy reference.
+One line per finding. Location, severity, problem, fix. No throat-clearing.
+
+**Severity prefixes:**
+- `bug` — broken behavior, will cause incident
+- `risk` — works but fragile (race, missing null check, swallowed error)
+- `nit` — style, naming, micro-optim. Author can ignore
+- `q` — genuine question, not a suggestion
+
+**Format:** `<file>:L<line>: <severity>: <problem>. <fix>.`
+
+**Drop:** "I noticed that...", "It seems like...", "You might want to consider...", hedging ("perhaps", "maybe"). Don't restate what the line does — the reviewer can read the diff.
+
+**Keep:** Exact line numbers, symbol names in backticks, concrete fix (not "consider refactoring"), the *why* if non-obvious.
+
+**Exceptions — use full paragraphs for:** security findings (CVE-class), architectural issues, and anything where compression risks misunderstanding.
 
 ```
 ## Review: Python
@@ -133,45 +147,18 @@ Use severity levels: CRITICAL (security/data loss), HIGH (bugs, logic errors), M
 ### Diagnostics
 [ruff/mypy/bandit results or "All clear"]
 
-### Security
-1. [CRITICAL] src/api/auth.py:42 — Description
-   Impact: What could go wrong
-   Fix: How to resolve
+### Findings
+1. src/api/auth.py:L42: bug: `user` can be None after `.find()`. Guard before `.email`.
+2. src/db/queries.py:L58: risk: N+1 query in loop. Use `selectinload()`.
+3. src/utils.py:L15: nit: `os.path` → `pathlib.Path`.
+4. src/auth.py:L42: risk: `verify_token` has no test coverage. Untested: expired, invalid sig.
+5. src/process.py:L10: nit: `print()` debug leftover.
 
-### Bugs & Performance
-2. [HIGH] src/auth.py:42 — Description
-   Impact: What could go wrong
-   Fix: How to resolve
-
-3. [MEDIUM] src/db/queries.py:58 — Description
-   Impact: Expected degradation
-   Fix: Suggested optimization
-
-### Idioms
-4. [MEDIUM] src/utils.py:15 — Description
-   Suggestion: How to fix
-
-### Test Coverage
-5. [HIGH] src/auth.py:42 — `def verify_token` has no test coverage
-   Critical paths untested: expired token, invalid signature
-   Suggested test: pytest test covering valid, expired, and malformed tokens
-
-### Commit Readiness
-6. [MEDIUM] src/process.py:10 — Found `print()` debug statement
-
-### Summary
-- Critical: [count]
-- High: [count]
-- Medium: [count]
-
-### Verdict
-- **BLOCK**: If any CRITICAL or HIGH issues found — must fix before commit
-- **WARN**: If only MEDIUM issues — safe to commit but consider fixing
-- **APPROVE**: No issues or only minor suggestions
+### Verdict: BLOCK | WARN | APPROVE
+[one-line reason]
 ```
 
-If a section has no findings, write "No issues found" and move on.
-When reviewing a diff, only flag issues in changed code. When reviewing files/directories, review all code in scope. Only report findings you are >80% confident are real.
+Skip sections with no findings. When reviewing a diff, only flag issues in changed code. When reviewing files/directories, review all code in scope. Only report findings you are >80% confident are real.
 
 ## Memory
 

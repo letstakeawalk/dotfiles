@@ -29,9 +29,9 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("BufWinEnter", {
     desc = "Smart window position: Open in vertical if screen is wide enough",
     group = utils.augroup("SmartWinPos", { clear = true }),
-    pattern = { "fugitive://*//", "*COMMIT_EDITMSG", "*/doc/*" },
+    pattern = { "fugitive://*//*", "*COMMIT_EDITMSG", "*/doc/*" },
     callback = function(ev)
-        local target_fts = { "fugitive", "help", "gitcommit" }
+        local target_fts = { "fugitive", "help", "gitcommit", "git" }
         local ft = vim.bo[ev.buf].filetype
         if not vim.list_contains(target_fts, ft) then
             return
@@ -97,6 +97,13 @@ vim.api.nvim_create_autocmd("BufWritePost", {
             return
         end
         local fname = args.match:gsub(home, "~")
+        local rel = args.match:gsub(home .. "/", "")
+        local ignored = vim.fn.system({ "chezmoi", "ignored" })
+        for line in ignored:gmatch("[^\n]+") do
+            if rel == line or rel:find("^" .. vim.pesc(line) .. "/") then
+                return
+            end
+        end
         local is_managed = #vim.fn.system({ "chezmoi", "managed", args.match }) ~= 0
 
         local function chezmoi_add()
@@ -132,6 +139,13 @@ vim.api.nvim_create_autocmd("BufWritePost", {
         local excluded_filetypes = { "gitcommit", "gitrebase" }
         if vim.tbl_contains(excluded_filetypes, vim.bo.filetype) then
             return
+        end
+        local rel = args.match:gsub(chezmoi_source .. "/", "")
+        local ignored = vim.fn.system({ "chezmoi", "ignored" })
+        for line in ignored:gmatch("[^\n]+") do
+            if rel == line or rel:find("^" .. vim.pesc(line) .. "/") then
+                return
+            end
         end
         local result = vim.fn.system({ "chezmoi", "apply", "--source-path", args.match })
         if vim.v.shell_error == 0 then

@@ -1,5 +1,5 @@
-local escape = function()
-    require("utils").escape()
+local function escape()
+    return require("utils").escape()
 end
 return {
     "max397574/better-escape.nvim",

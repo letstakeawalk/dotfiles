@@ -26,6 +26,26 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
+vim.api.nvim_create_autocmd("FileType", {
+    desc = "Close fugitive blob buffers with `q` (preserves window layout)",
+    group = utils.augroup("EasyCloseFugitiveBlob", { clear = true }),
+    pattern = "git",
+    callback = function(ev)
+        local has_fugitive_win = false
+        for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+            local buf = vim.api.nvim_win_get_buf(win)
+            if buf ~= ev.buf and vim.bo[buf].filetype == "fugitive" then
+                has_fugitive_win = true
+                break
+            end
+        end
+        if not has_fugitive_win then
+            return
+        end
+        vim.keymap.set("n", "q", "<cmd>BWipeout this<cr>", { buffer = ev.buf, silent = true })
+    end,
+})
+
 vim.api.nvim_create_autocmd("BufWinEnter", {
     desc = "Smart window position: Open in vertical if screen is wide enough",
     group = utils.augroup("SmartWinPos", { clear = true }),

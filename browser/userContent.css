@@ -1,0 +1,193 @@
+/*
+ * Firefox / Zen Browser — DevTools UI Theme
+ * ==========================================
+ * Place this file at: <Profile Folder>/chrome/userContent.css
+ *
+ * To find your profile folder:
+ *   → Type about:support in the address bar
+ *   → Click "Open Folder" next to "Profile Folder"
+ *   → Navigate into the "chrome" subfolder (create it if missing)
+ *
+ * Also required in `about:config`:
+ *   toolkit.legacyUserProfileCustomizations.stylesheets → true
+ *
+ * Restart Zen/Firefox fully after saving changes.
+ *
+ * ──────────────────────────────────────────
+ * THEMES INCLUDED
+ * ──────────────────────────────────────────
+ *   [ACTIVE]    Nord       — arctic, cool blue-grays
+ *   [COMMENTED] Gruvbox    — warm retro ambers and greens
+ *
+ * To switch to Gruvbox:
+ *   1. Comment out the Nord :root block below
+ *   2. Uncomment the Gruvbox :root block
+ * ──────────────────────────────────────────
+ */
+
+@-moz-document url-prefix("chrome://devtools/") {
+
+  /* ============================================================
+   * NORD THEME  [ACTIVE]
+   * ============================================================
+   *
+   * Palette reference (nord0–nord15):
+   *
+   * Polar Night (dark backgrounds):
+   *   nord0  #2e3440  — darkest background
+   *   nord1  #3b4252  — secondary background
+   *   nord2  #434c5e  — selection / hover
+   *   nord3  #4c566a  — subtle / comments
+   *
+   * Snow Storm (text):
+   *   nord4  #d8dee9  — subtle text
+   *   nord5  #e5e9f0  — secondary text
+   *   nord6  #eceff4  — primary text
+   *
+   * Frost (blues — UI accents):
+   *   nord7  #8fbcbb  — teal
+   *   nord8  #88c0d0  — primary accent (light blue)
+   *   nord9  #81a1c1  — mid blue
+   *   nord10 #5e81ac  — deep blue
+   *
+   * Aurora (semantic colors):
+   *   nord11 #bf616a  — red / errors
+   *   nord12 #d08770  — orange
+   *   nord13 #ebcb8b  — yellow / warnings
+   *   nord14 #a3be8c  — green / success
+   *   nord15 #b48ead  — purple
+   * ============================================================ */
+
+  :root {
+    /* --- Backgrounds --- */
+    --theme-body-background:              #2e3440 !important; /* nord0 */
+    --theme-sidebar-background:           #2e3440 !important; /* nord0 */
+    --theme-toolbar-background:           #3b4252 !important; /* nord1 */
+    --theme-tab-toolbar-background:       #3b4252 !important; /* nord1 */
+    --theme-splitter-color:               #3b4252 !important; /* nord1 */
+    --theme-selection-background:         #434c5e !important; /* nord2 */
+    --theme-selection-background-semitransparent: rgba(67,76,94,0.5) !important;
+
+    /* --- Text --- */
+    --theme-body-color:                   #eceff4 !important; /* nord6 */
+    --theme-body-color-alt:               #e5e9f0 !important; /* nord5 */
+    --theme-comment:                      #4c566a !important; /* nord3 */
+    --theme-selection-color:              #eceff4 !important; /* nord6 */
+
+    /* --- Borders & separators --- */
+    --theme-splitter-color:               #4c566a !important; /* nord3 */
+    --theme-tab-line-color:               #88c0d0 !important; /* nord8 — active tab underline */
+
+    /* --- Accent / highlight colors --- */
+    --theme-highlight-blue:               #88c0d0 !important; /* nord8  — tags, attributes */
+    --theme-highlight-bluegrey:           #81a1c1 !important; /* nord9  — keywords */
+    --theme-highlight-purple:             #b48ead !important; /* nord15 — replaced hot purple */
+    --theme-highlight-pink:               #bf616a !important; /* nord11 — replaced hot pink */
+    --theme-highlight-red:                #bf616a !important; /* nord11 */
+    --theme-highlight-orange:             #d08770 !important; /* nord12 */
+    --theme-highlight-lightorange:        #ebcb8b !important; /* nord13 */
+    --theme-highlight-green:              #a3be8c !important; /* nord14 */
+    --theme-highlight-gray:               #616e88 !important; /* nord3+ — brightened for readability */
+
+    /* --- Links --- */
+    --theme-link-color:                   #88c0d0 !important; /* nord8 */
+
+    /* --- Toolbar buttons & icons --- */
+    --theme-toolbar-color:                #d8dee9 !important; /* nord4 */
+    --theme-toolbar-hover:                #434c5e !important; /* nord2 */
+    --theme-toolbar-selected-color:       #88c0d0 !important; /* nord8 */
+
+    /* --- Console colors --- */
+    --theme-console-input-background:     #3b4252 !important; /* nord1 */
+    --theme-console-output-background:    #2e3440 !important; /* nord0 */
+    --theme-warning-background:          rgba(235,203,139,0.1) !important;
+    --theme-warning-color:                #ebcb8b !important; /* nord13 */
+    --theme-error-background:            rgba(191,97,106,0.1) !important;
+    --theme-error-color:                  #bf616a !important; /* nord11 */
+    --theme-info-color:                   #88c0d0 !important; /* nord8 */
+  }
+
+
+  /* ============================================================
+   * GRUVBOX DARK THEME  [COMMENTED — swap to activate]
+   * ============================================================
+   *
+   * Palette reference:
+   *
+   * Backgrounds (dark mode):
+   *   bg_h   #1d2021  — hard dark (darkest)
+   *   bg0    #282828  — default background
+   *   bg1    #3c3836  — statusline / toolbar
+   *   bg2    #504945  — selection
+   *   bg3    #665c54  — subtle
+   *   bg4    #7c6f64  — muted border
+   *
+   * Foregrounds:
+   *   fg0    #fbf1c7  — brightest text
+   *   fg1    #ebdbb2  — default text
+   *   fg2    #d5c4a1  — secondary text
+   *   fg4    #a89984  — comments / muted
+   *
+   * Accent colors (neutral variants):
+   *   red    #cc241d  /  bright: #fb4934
+   *   orange #d65d0e  /  bright: #fe8019
+   *   yellow #d79921  /  bright: #fabd2f
+   *   green  #98971a  /  bright: #b8bb26
+   *   aqua   #689d6a  /  bright: #8ec07c
+   *   blue   #458588  /  bright: #83a598
+   *   purple #b16286  /  bright: #d3869b
+   * ============================================================ */
+
+  /*
+  :root {
+    -- Backgrounds --
+    --theme-body-background:              #282828 !important;
+    --theme-sidebar-background:           #282828 !important;
+    --theme-toolbar-background:           #3c3836 !important;
+    --theme-tab-toolbar-background:       #3c3836 !important;
+    --theme-splitter-color:               #3c3836 !important;
+    --theme-selection-background:         #504945 !important;
+    --theme-selection-background-semitransparent: rgba(80,73,69,0.5) !important;
+
+    -- Text --
+    --theme-body-color:                   #ebdbb2 !important;
+    --theme-body-color-alt:               #d5c4a1 !important;
+    --theme-comment:                      #7c6f64 !important;
+    --theme-selection-color:              #fbf1c7 !important;
+
+    -- Borders & separators --
+    --theme-splitter-color:               #665c54 !important;
+    --theme-tab-line-color:               #fabd2f !important;
+
+    -- Accent / highlight colors --
+    --theme-highlight-blue:               #83a598 !important;
+    --theme-highlight-bluegrey:           #458588 !important;
+    --theme-highlight-purple:             #d3869b !important;
+    --theme-highlight-pink:               #fb4934 !important;
+    --theme-highlight-red:                #fb4934 !important;
+    --theme-highlight-orange:             #fe8019 !important;
+    --theme-highlight-lightorange:        #fabd2f !important;
+    --theme-highlight-green:              #b8bb26 !important;
+    --theme-highlight-gray:               #a89984 !important;
+
+    -- Links --
+    --theme-link-color:                   #83a598 !important;
+
+    -- Toolbar buttons & icons --
+    --theme-toolbar-color:                #d5c4a1 !important;
+    --theme-toolbar-hover:                #504945 !important;
+    --theme-toolbar-selected-color:       #fabd2f !important;
+
+    -- Console colors --
+    --theme-console-input-background:     #3c3836 !important;
+    --theme-console-output-background:    #282828 !important;
+    --theme-warning-background:          rgba(215,153,33,0.1) !important;
+    --theme-warning-color:                #fabd2f !important;
+    --theme-error-background:            rgba(251,73,52,0.1) !important;
+    --theme-error-color:                  #fb4934 !important;
+    --theme-info-color:                   #83a598 !important;
+  }
+  */
+
+}
+

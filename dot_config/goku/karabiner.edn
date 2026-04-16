@@ -14,6 +14,7 @@
   :devices {:apple [{:vendor_id 1452}]}
   :applications {
     :term ["^com\\.mitchellh\\.ghostty$" "^com\\.apple\\.Terminal$" "^io\\.alacritty$" "^net\\.kovidgoyal\\.kitty$"]
+    :zen ["^app\\.zen-browser\\.zen$"]
   }
   :input-sources {
     :input_us {:input_source_id "com.apple.keylayout.US" :language "en"}
@@ -217,7 +218,8 @@
 
     { :des "CapsLock - Hold: Control, Alone: Escape, With Cmd: Grave Accent"
       :rules [
-        [:!C##caps_lock :!Cgrave_accent_and_tilde]
+        [:!C##caps_lock ["ctrl" 1] ["ctrl" 0] {:alone :!Cgrave_accent_and_tilde :afterup ["ctrl" 0]}]
+        [:!C##caps_lock ["ctrl" 0] ["ctrl" 1] {:alone :!Cgrave_accent_and_tilde}]
         [:##caps_lock ["ctrl" 1] ["ctrl" 0] {:alone :escape :afterup ["ctrl" 0]}]
         [:##caps_lock ["ctrl" 0] ["ctrl" 1] {:alone :escape}]
         :ctrl
@@ -357,6 +359,8 @@
         [:##open_bracket  :delete_or_backspace]   ;; [ --> delete char
         [:##close_bracket :!Odelete_or_backspace] ;; ] --> delete word
 
+        :zen
+        [:!Cbackslash :!Cperiod]
       ]
     }
 

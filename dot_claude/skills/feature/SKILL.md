@@ -12,57 +12,48 @@ argument-hint: [feature description]
 
 ## Task
 
-Guide a feature implementation through structured phases. Each phase requires user approval before moving to the next.
+Guide feature implementation through structured phases. Each phase needs user approval before next.
 
 Feature request: $ARGUMENTS
 
-If `$ARGUMENTS` is empty, ask what the user wants to build.
-
----
+If empty, ask what to build.
 
 ### Phase 1: Scope
-
-1. Restate your understanding of the feature in 2-3 sentences
-2. Ask clarifying questions — identify ambiguities, edge cases, integration points, scope boundaries
-3. **Wait for answers before proceeding**
+1. Restate understanding in 2-3 sentences
+2. Ask clarifying questions — ambiguities, edge cases, scope boundaries
+3. **Wait for answers**
 
 ### Phase 2: Explore
-
-1. Use the Explore subagent (or read files directly) to understand relevant existing code
-2. Present findings: key files, patterns, integration points, constraints
-3. List 5-10 key files that will be touched or referenced
+1. Read relevant existing code (Explore subagent for broad search)
+2. Present: key files, patterns, integration points, constraints
+3. List 5-10 files that will be touched
 
 ### Phase 3: Design
-
-1. For complex features: spawn the `Plan` agent with the feature description and Explore findings — it returns a step-by-step implementation plan, critical files, and trade-offs
-2. For simple features: propose the approach inline with trade-offs
-3. If the user wants a formal design doc or ADR, spawn the `architect` agent
-4. **Wait for user approval before proceeding**
+- Complex features: spawn `Plan` agent with description + explore findings
+- Simple features: propose approach inline with trade-offs
+- If user wants formal doc/ADR: spawn `architect` agent
+- **Wait for approval**
 
 ### Phase 4: Implement
-
-1. Implement following the approved approach
-2. Follow existing codebase conventions
-3. After implementation, briefly list what was created/modified
+1. Implement following approved approach and codebase conventions
+2. List what was created/modified
 
 ### Phase 5: Verify
+Spawn in parallel:
+1. Matching `*-reviewer` agent(s) on changed files
+2. `doc-auditor` agent on changed files
+3. `test-analyzer` agent on changed files
 
-Run these in parallel where possible:
-1. Spawn the matching `*-reviewer` agent(s) on the changed files
-2. Spawn the `doc-auditor` agent on the changed files
-3. Spawn the `test-analyzer` agent on the changed files
-4. Present consolidated findings and **ask what to address**
+Present consolidated findings. **Ask what to address.**
 
 ### Phase 6: Wrap Up
-
 1. Summarize: what was built, key decisions, files modified
 2. Suggest next steps (if any)
 
----
-
 ## Rules
 
-- Never skip Phase 1 (Scope) — even if the request seems clear, confirm understanding
-- Never start Phase 4 (Implement) without explicit user approval
-- Keep phases lightweight — if the feature is small, phases 2-3 can be brief
-- Use existing agents and skills — don't duplicate their work inline
+- Never skip Phase 1 — confirm understanding even if request seems clear
+- Never start Phase 4 without explicit approval
+- Keep phases lightweight for small features
+- Use existing agents/skills — don't duplicate their work inline
+- `/design-critique` for UI/UX feedback, `/review` for code quality

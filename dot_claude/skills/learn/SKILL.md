@@ -9,7 +9,7 @@ argument-hint: [focus area to reflect on]
 
 Reflect on this session's conversation and extract patterns worth persisting to memory.
 
-This is NOT the same as `/remember` (which saves explicit user-stated facts). This skill is about **self-reflection** — analyzing what happened during the session to find implicit lessons.
+Not `/remember` (saves explicit user-stated facts). This is **self-reflection** — implicit lessons from what happened during the session.
 
 ### Structured Retro
 

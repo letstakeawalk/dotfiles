@@ -12,123 +12,65 @@ argument-hint: [file/dir|staged] [full|cleanup|simplify|structure|naming|dry]
 
 ## Task
 
-Analyze code for refactoring opportunities, present findings, and apply selected refactors with user approval.
+Analyze code for refactoring opportunities, present findings, apply with user approval.
 
 ### Parse Arguments
 
-`$ARGUMENTS` may contain a **target** and/or a **focus mode**.
+`$ARGUMENTS` may contain a **target** and/or **focus mode**.
 
-- **Target**: file path, directory, `staged`, or empty (defaults to changed files from context above)
-- **Focus mode**: `full`, `cleanup`, `simplify`, `structure`, `naming`, `dry`
+- **Target**: file path, directory, `staged`, or empty (defaults to changed files)
+- **Mode**: `full`, `cleanup`, `simplify`, `structure`, `naming`, `dry`
 
-If `$ARGUMENTS` is empty or contains only a target with no mode, use `AskUserQuestion` to ask which mode:
+If empty, ask which mode:
 
-| Mode | Description |
-|------|-------------|
-| `full` | All categories — thorough refactoring pass |
-| `cleanup` | Pre-commit tidying — dead code, unused imports, simplify recent changes |
-| `simplify` | Reduce over-engineering — unnecessary indirection, premature abstractions |
-| `structure` | Reorganize — extract/move functions/modules, split large files |
-| `naming` | Naming consistency — variables, functions, types aligned with conventions |
-| `dry` | Reduce duplication — within-file and cross-file shared patterns |
-
-If no target is given either, also ask what to refactor (suggest changed files if any exist).
-
----
+| Mode | What |
+|------|------|
+| `full` | All categories |
+| `cleanup` | Dead code, unused imports, debug artifacts, commented-out code |
+| `simplify` | Unnecessary indirection, premature abstractions, over-nested logic |
+| `structure` | Extract/split large functions (>50 lines) and files (>300 lines), move misplaced code |
+| `naming` | Inconsistent names, misleading names, missing `is_`/`has_` prefixes on booleans |
+| `dry` | Within-file and cross-file duplication, copy-pasted code with minor variations |
 
 ### Step 1: Read
 
-1. Read all target files fully
-2. Read surrounding code in the same module/directory for context
-3. Identify the project's existing patterns, naming conventions, and style
+Read all target files + surrounding module context. Identify existing patterns and conventions.
 
 ### Step 2: Analyze
 
-Based on the focus mode, identify opportunities. **Present findings only — do not change anything yet.**
-
-#### full (all of the below)
-
-#### cleanup
-- Unused imports and dead code
-- Variables/functions defined but never used
-- Overly verbose patterns that can be simplified
-- Debug artifacts (`dbg!`, `console.log`, `print`)
-- Commented-out code
-
-#### simplify
-- Unnecessary indirection (wrapper functions that just delegate)
-- Premature abstractions (generic over one type, trait with one impl)
-- Verbose patterns where idiomatic alternatives exist
-- Over-nested logic that can be flattened (early returns, guard clauses)
-
-#### structure
-- Functions longer than ~50 lines — extract candidates
-- Files longer than ~300 lines — split candidates
-- Code that belongs in a different module based on responsibility
-- Related functions scattered across files that should be co-located
-- Public API surface that could be narrowed
-
-#### naming
-- Inconsistent naming within the module (mixed conventions)
-- Names that don't match what the code does
-- Abbreviations where full words would be clearer
-- Boolean names missing `is_`/`has_`/`should_` prefixes
-
-#### dry
-- Duplicated logic within the target files
-- Cross-file duplication (search the broader codebase)
-- Patterns that could share a helper without premature abstraction
-- Copy-pasted code with minor variations
+Identify opportunities based on mode. **Present findings only — no changes yet.**
 
 ### Step 3: Present
 
-Use severity levels: HIGH (structural issues, large functions, significant duplication), MEDIUM (naming, minor duplication, verbose patterns), LOW (unused imports, dead code, cosmetic). Number all findings sequentially across sections for easy reference.
-
-Present findings grouped by category, ranked by impact:
-
 ```
-## Refactoring Opportunities
+### Refactoring Opportunities
 
-### Target
-[What was analyzed, which mode]
+**Target:** [what was analyzed, which mode]
 
 ### Findings
-1. [HIGH] src/auth.rs:42 — `validate_and_process_token` is 80 lines, does validation + processing + logging
-   Suggestion: Extract into `validate_token`, `process_token`, `log_auth_event`
+1. src/auth.rs:L42: bug: `validate_and_process_token` is 80 lines. Extract `validate_token`, `process_token`, `log_auth_event`.
+2. src/auth.rs:L15: nit: `fn helper` → `extract_bearer_token`.
+3. src/utils.rs:L30: nit: unused import `std::collections::BTreeMap`. Remove.
 
-2. [MEDIUM] src/auth.rs:15 — `fn helper` doesn't describe what it helps with
-   Suggestion: Rename to `extract_bearer_token`
-
-3. [LOW] src/utils.rs:30 — Unused import `std::collections::BTreeMap`
-   Suggestion: Remove
-
-### Summary
-- High: [count]
-- Medium: [count]
-- Low: [count]
+### Verdict: [count] bug / [count] risk / [count] nit
 ```
 
-**Ask the user which findings to apply** — they may want all, some, or none.
+Severity: `bug` (structural issues, large functions, significant duplication), `risk` (naming, minor duplication, verbose patterns), `nit` (unused imports, dead code, cosmetic).
+
+**Ask user which findings to apply.**
 
 ### Step 4: Apply
 
-For each approved refactor:
-1. State briefly what you're changing and why
-2. Make the edit
-3. Verify surrounding code still makes sense (imports, callers, etc.)
-
-After all refactors, summarize what changed.
+For each approved refactor: make edit, verify surrounding code (imports, callers).
 
 ### Step 5: Verify
 
-After applying refactors, spawn the matching `*-reviewer` agent(s) on the changed files to catch anything the refactoring may have broken. Present the reviewer's findings — if any issues are found, fix trivial ones and flag the rest.
-
----
+Spawn matching `*-reviewer` agent(s) on changed files. Fix trivial issues, flag the rest.
 
 ## Rules
 
 - Never refactor without presenting findings first
-- Never change code the user didn't approve
-- Match existing project patterns — don't impose new conventions
-- If a refactor would change public API, flag it explicitly before applying
-- Keep refactors atomic — one logical change at a time, don't bundle unrelated changes
+- Never change code user didn't approve
+- Match existing project patterns
+- Flag public API changes explicitly before applying
+- Atomic refactors — one logical change at a time

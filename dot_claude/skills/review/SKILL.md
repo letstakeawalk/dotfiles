@@ -16,62 +16,53 @@ Review code by spawning the appropriate language-specific reviewer agent.
 
 ### Target Detection
 
-1. If `$ARGUMENTS` specifies file paths or directories, use those to determine language and pass them to the agent
-2. If `$ARGUMENTS` is a language name or extension (e.g., `rs`, `rust`, `ts`, `python`), find the matching `*-reviewer` agent in `~/.claude/agents/`
-3. If `$ARGUMENTS` is `staged`, run `git diff --cached` and detect language from changed files
-4. If no arguments, default to `git diff HEAD` and detect language from changed files
-5. If multiple languages are present, spawn **each** matching reviewer in parallel
-6. If no changed files or no matching reviewer, say so and stop
+1. File paths/directories in `$ARGUMENTS` → determine language, pass to agent
+2. Language name/extension (`rs`, `ts`, `python`) → find matching `*-reviewer` in `~/.claude/agents/`
+3. `staged` → `git diff --cached`, detect language
+4. No arguments → `git diff HEAD`, detect language
+5. Multiple languages → spawn each reviewer in parallel
+6. No changes or no matching reviewer → stop
 
-### Language → Reviewer Mapping
+### Language → Reviewer
 
-Match files to reviewer agents by extension. Look for `*-reviewer` agents in `~/.claude/agents/` to discover available reviewers. Common mappings:
+Discover `*-reviewer` agents in `~/.claude/agents/`. Common mappings:
 - `.rs` → `rs-reviewer`
 - `.ts`, `.svelte`, `.js`, `.jsx`, `.tsx` → `ts-reviewer`
 - `.py` → `py-reviewer`
 
-If a new `*-reviewer` agent exists (e.g., `go-reviewer`), use it automatically for matching extensions.
+New `*-reviewer` agents auto-match by extension.
 
 ### Focus
 
-If `$ARGUMENTS` includes a focus keyword (`security`, `performance`, `idioms`, `bugs`, `tests`), pass it through to the agent. The agent will run all review sections but emphasize the focused area in its report.
+Focus keyword in `$ARGUMENTS` (`security`, `performance`, `idioms`, `bugs`, `tests`) → pass to agent. Agent emphasizes that area.
 
 ### Execution
 
-Spawn the matching reviewer agent(s):
-- Pass the full `$ARGUMENTS` through — the agent handles target, focus, and any other instructions
-- If no arguments, pass the output of `git diff HEAD`
-- If multiple reviewers ran, present each report under a language header
+- Pass full `$ARGUMENTS` to agent
+- No arguments → pass `git diff HEAD` output
+- Multiple reviewers → present each under language header
 
-### Fix Mode
+### `--fix`
 
-**Default (no `--fix`)**: present the report as-is, do not auto-fix anything.
-
-**With `--fix`**: after presenting the report, automatically fix trivial issues:
-- Debug artifacts: `console.log`, `dbg!()`, `print()`, `debugger`
+After report, auto-fix trivial issues only:
+- Debug artifacts (`console.log`, `dbg!()`, `print()`, `debugger`)
 - Unused imports, dead variables
 - Missing `await` on async calls
-- Obvious typos in strings/comments
-- Simple lint fixes (formatting, trailing whitespace, missing semicolons)
+- Simple lint fixes
 
-Leave anything requiring judgment (logic changes, security fixes, API changes, refactors) as remaining items for the user to address.
+Leave anything requiring judgment for user.
 
-### Thorough Mode
+### `--deep`
 
-**With `--deep`**: run a full quality gate. In addition to the code review, also spawn the `doc-auditor` and `test-analyzer` agents.
+Full quality gate. Two phases:
 
-Run in two phases:
+**Phase 1** (parallel):
+1. `doc-auditor` agent on target
+2. `test-analyzer` agent on target
 
-**Phase 1** — Spawn in parallel:
-1. **Doc audit**: Spawn the `doc-auditor` agent on the target
-2. **Test coverage**: Spawn the `test-analyzer` agent on the target
+**Phase 2** (after Phase 1):
+3. Matching `*-reviewer` agent(s)
 
-**Phase 2** — After Phase 1 completes:
-3. **Code review**: Spawn the matching `*-reviewer` agent(s)
+Verdict: `BLOCK` (any bug), `WARN` (risk only), `APPROVE` (clean).
 
-This ordering ensures the reviewer sees the final state if `--fix` was applied in Phase 1.
-
-Present each report under a clear header, ending with a verdict:
-`BLOCK` (any CRITICAL/HIGH), `WARN` (MEDIUM only), or `APPROVE` (no issues).
-
-`--deep` can be combined with `--fix`.
+`--deep` combinable with `--fix`.

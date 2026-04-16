@@ -77,3 +77,4 @@ Severity: `blocker` (will confuse users), `risk` (suboptimal UX), `nit` (minor p
 - Always mention what works well, not just problems
 - If reviewing code, focus on UX impact, not code quality (that's `/review`)
 - If no major issues, say so — don't manufacture problems
+- For code quality issues, use `/review` instead — this skill is UX-only

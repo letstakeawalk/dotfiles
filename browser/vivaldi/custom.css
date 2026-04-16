@@ -1,0 +1,43 @@
+/* Workspace button title — larger and bolder */
+.workspace-popup .button-title {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+}
+
+/* Separator between workspace toolbar and tabs */
+.toolbar-tabbar-before {
+  border-bottom: 3px solid rgba(255, 255, 255, 0.1) !important;
+  margin-bottom: 6px !important;
+  padding-bottom: 6px !important;
+}
+
+/* Active tab background */
+.tab.active {
+  background-color: #424242 !important;
+}
+
+/* Tab hover (non-active only) */
+.tab:not(.active):hover {
+  background-color: #212121 !important;
+}
+
+/* Active tab — bolder weight and full opacity text */
+.tab.active .title {
+  font-weight: 500 !important;
+  font-size: 13px !important;
+  /* opacity: 1; */
+  color: var(--colorFgIntense) !important;
+}
+
+/* Inactive tabs — lighter weight, slightly muted */
+.tab:not(.active) .title {
+  /* font-weight: 500 !important; */
+  font-size: 13px !important;
+  opacity: 0.7 !important;
+}
+
+/* Arc-style tab inset + rounded corners */
+.tab {
+  margin-left: 6px !important;
+  margin-right: 6px !important;
+}

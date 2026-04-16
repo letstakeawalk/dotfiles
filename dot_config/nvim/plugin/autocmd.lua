@@ -70,6 +70,15 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
     end,
 })
 
+vim.api.nvim_create_autocmd("BufEnter", {
+    desc = "Set foldmethod=indent for karabiner.edn (overrides Telescope's foldmethod=expr)",
+    group = utils.augroup("KarabinerFold", { clear = true }),
+    pattern = "*/goku/karabiner.edn",
+    callback = function()
+        vim.opt_local.foldmethod = "indent"
+    end,
+})
+
 vim.api.nvim_create_autocmd("BufWritePre", {
     desc = "Auto create dir when saving a file, in case some intermediate directory does not exist",
     group = utils.augroup("AutoCreateDir", { clear = true }),

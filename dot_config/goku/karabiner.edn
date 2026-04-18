@@ -241,6 +241,7 @@
         [:##a                      :!Ta]
         [:##s                      :!Tr]
         [:##d                      :!Ts]
+        [:##f                      :!Ttab :zen] ;; ^t -> ^tab for tab-switching
         [:##f                      :!Tt]
         [:##g                      :!Tg]
         [:##h                      :!Tm]

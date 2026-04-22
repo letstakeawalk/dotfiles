@@ -69,3 +69,8 @@
 
 [credential]
 	helper = osxkeychain
+
+[url "https://github.com/"]
+	insteadOf = gh:
+[url "https://codeberg.org/"]
+	insteadOf = cb:

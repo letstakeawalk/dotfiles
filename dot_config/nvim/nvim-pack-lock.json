@@ -1,0 +1,287 @@
+{
+  "plugins": {
+    "Comment.nvim": {
+      "rev": "e30b7f2008e52442154b66f7c519bfd2f1e32acb",
+      "src": "gh:numToStr/Comment.nvim"
+    },
+    "LuaSnip": {
+      "rev": "642b0c595e11608b4c18219e93b88d7637af27bc",
+      "src": "gh:L3MON4D3/LuaSnip",
+      "version": "2.0.0 - 3.0.0"
+    },
+    "aerial.nvim": {
+      "rev": "645d108a5242ec7b378cbe643eb6d04d4223f034",
+      "src": "gh:stevearc/aerial.nvim"
+    },
+    "better-escape.nvim": {
+      "rev": "11660bc303772d9a34861a3f2d06f473752b4f69",
+      "src": "gh:max397574/better-escape.nvim"
+    },
+    "blink-cmp-conventional-commits": {
+      "rev": "28f46593ef5e03ba7525bdf6075be0c56c6ceb55",
+      "src": "gh:disrupted/blink-cmp-conventional-commits"
+    },
+    "blink.cmp": {
+      "rev": "78336bc89ee5365633bcf754d93df01678b5c08f",
+      "src": "gh:saghen/blink.cmp",
+      "version": "1.0.0 - 2.0.0"
+    },
+    "blink.download": {
+      "rev": "b7c3a6cd97c9dd83e774308891643ae6f7ea2de8",
+      "src": "gh:saghen/blink.download"
+    },
+    "blink.indent": {
+      "rev": "9c80820ca77218a8d28e70075d6f44a1609911fe",
+      "src": "gh:saghen/blink.indent"
+    },
+    "blink.pairs": {
+      "rev": "4e43012356d33a26f69eae475f746fbe9f325f44",
+      "src": "gh:saghen/blink.pairs",
+      "version": ">=0.0.0"
+    },
+    "bufdel.nvim": {
+      "rev": "6008ccc0a5bf5b0ac165ae7ae5cc5485217bcfbd",
+      "src": "gh:wsdjeg/bufdel.nvim"
+    },
+    "capslock.nvim": {
+      "rev": "c921f67475748d786819bc1fbe002f0fd67b80e2",
+      "src": "gh:barklan/capslock.nvim"
+    },
+    "conflict.nvim": {
+      "rev": "f9a73830f91998656ba25352a23caa197e673154",
+      "src": "gh:niekdomi/conflict.nvim"
+    },
+    "crates.nvim": {
+      "rev": "afcd1cc3eeceb5783676fc8464389b9216a29d05",
+      "src": "gh:Saecki/crates.nvim",
+      "version": "'stable'"
+    },
+    "dial.nvim": {
+      "rev": "f2634758455cfa52a8acea6f142dcd6271a1bf57",
+      "src": "gh:monaqa/dial.nvim"
+    },
+    "fidget.nvim": {
+      "rev": "889e2e96edef4e144965571d46f7a77bcc4d0ddf",
+      "src": "gh:j-hui/fidget.nvim"
+    },
+    "focus.nvim": {
+      "rev": "36ebedeebe82ebea250c9d671769194caa033902",
+      "src": "gh:nvim-focus/focus.nvim"
+    },
+    "fugitive-ext.nvim": {
+      "rev": "83a6247bf3b13f0ee3093b4588e16ffd5993cf0a",
+      "src": "gh:letstakeawalk/fugitive-ext.nvim"
+    },
+    "gitsigns.nvim": {
+      "rev": "6d808f99bd63303646794406e270bd553ad7792e",
+      "src": "gh:lewis6991/gitsigns.nvim"
+    },
+    "gv.vim": {
+      "rev": "b6bb6664e2c95aa584059f195eb3a9f3cb133994",
+      "src": "gh:junegunn/gv.vim"
+    },
+    "harpoon": {
+      "rev": "87b1a3506211538f460786c23f98ec63ad9af4e5",
+      "src": "gh:ThePrimeagen/harpoon",
+      "version": "'harpoon2'"
+    },
+    "lazydev.nvim": {
+      "rev": "ff2cbcba459b637ec3fd165a2be59b7bbaeedf0d",
+      "src": "gh:folke/lazydev.nvim"
+    },
+    "leap.nvim": {
+      "rev": "ce3cf75200ae148d75563088f435389f9e4100fd",
+      "src": "cb:andyg/leap.nvim"
+    },
+    "lsp_signature.nvim": {
+      "rev": "a65b38f260cc3470a05b4afb84c8d868617d476d",
+      "src": "gh:ray-x/lsp_signature.nvim"
+    },
+    "lualine.nvim": {
+      "rev": "a905eeebc4e63fdc48b5135d3bf8aea5618fb21c",
+      "src": "gh:nvim-lualine/lualine.nvim"
+    },
+    "mason.nvim": {
+      "rev": "12ddd182d9efbdc848b540f16484a583d52da0fb",
+      "src": "gh:mason-org/mason.nvim"
+    },
+    "mini.ai": {
+      "rev": "43eb2074843950a3a25aae56a5f41362ec043bfa",
+      "src": "gh:nvim-mini/mini.ai"
+    },
+    "mini.clue": {
+      "rev": "43bd6cf1c3ccdea46d403c32dbc4629fa6afa09d",
+      "src": "gh:nvim-mini/mini.clue"
+    },
+    "mini.splitjoin": {
+      "rev": "8bd5a3d581b9f3dd3bc91fe495e210b8b0ee981d",
+      "src": "gh:nvim-mini/mini.splitjoin"
+    },
+    "neogen": {
+      "rev": "23e7e9f883d01289ebd90e98025acc860ea26366",
+      "src": "gh:danymat/neogen"
+    },
+    "none-ls-extras.nvim": {
+      "rev": "70ec8815cdf186223af04cc5a15bc8bdface0ef0",
+      "src": "gh:nvimtools/none-ls-extras.nvim"
+    },
+    "none-ls-shellcheck.nvim": {
+      "rev": "0f84461241e76e376a95fb7391deac82dc3efdbf",
+      "src": "gh:gbprod/none-ls-shellcheck.nvim"
+    },
+    "none-ls.nvim": {
+      "rev": "e135361b9c11755ef6c48f54a2c970c509b56239",
+      "src": "gh:nvimtools/none-ls.nvim"
+    },
+    "nvim-bqf": {
+      "rev": "c282a62bec6c0621a1ef5132aa3f4c9fc4dcc2c7",
+      "src": "gh:kevinhwang91/nvim-bqf"
+    },
+    "nvim-colorizer.lua": {
+      "rev": "5cfe7fffbd01e17b3c1e14af85d5febdef88bd8c",
+      "src": "gh:catgoose/nvim-colorizer.lua"
+    },
+    "nvim-dap": {
+      "rev": "45a69eba683a2c448dd9ecfc4de89511f0646b5f",
+      "src": "gh:mfussenegger/nvim-dap"
+    },
+    "nvim-dap-ui": {
+      "rev": "1a66cabaa4a4da0be107d5eda6d57242f0fe7e49",
+      "src": "gh:rcarriga/nvim-dap-ui"
+    },
+    "nvim-dap-virtual-text": {
+      "rev": "fbdb48c2ed45f4a8293d0d483f7730d24467ccb6",
+      "src": "gh:theHamsta/nvim-dap-virtual-text"
+    },
+    "nvim-hlslens": {
+      "rev": "be2d7b2be01860b5445a007ff2bc72b29896db6b",
+      "src": "gh:kevinhwang91/nvim-hlslens"
+    },
+    "nvim-lspconfig": {
+      "rev": "e146efacbafed3789ac568abcc5a981c5decaa58",
+      "src": "gh:neovim/nvim-lspconfig"
+    },
+    "nvim-nio": {
+      "rev": "21f5324bfac14e22ba26553caf69ec76ae8a7662",
+      "src": "gh:nvim-neotest/nvim-nio"
+    },
+    "nvim-origami": {
+      "rev": "67c15fd14037778644371487fc68855b530ccd7d",
+      "src": "gh:chrisgrieser/nvim-origami"
+    },
+    "nvim-spider": {
+      "rev": "4fdd56a4f45bca13a607632e15a6f9f8d1b1f99e",
+      "src": "gh:chrisgrieser/nvim-spider"
+    },
+    "nvim-surround": {
+      "rev": "61319d4bd1c5e336e197defa15bd104c51f0fb29",
+      "src": "gh:kylechui/nvim-surround",
+      "version": "4.0.0 - 5.0.0"
+    },
+    "nvim-treesitter": {
+      "rev": "4916d6592ede8c07973490d9322f187e07dfefac",
+      "src": "gh:nvim-treesitter/nvim-treesitter"
+    },
+    "nvim-treesitter-context": {
+      "rev": "b0c45cefe2c8f7b55fc46f34e563bc428ef99636",
+      "src": "gh:nvim-treesitter/nvim-treesitter-context"
+    },
+    "nvim-treesitter-textobjects": {
+      "rev": "851e865342e5a4cb1ae23d31caf6e991e1c99f1e",
+      "src": "gh:nvim-treesitter/nvim-treesitter-textobjects"
+    },
+    "nvim-ts-context-commentstring": {
+      "rev": "6141a40173c6efa98242dc951ed4b6f892c97027",
+      "src": "gh:JoosepAlviste/nvim-ts-context-commentstring"
+    },
+    "nvim-web-devicons": {
+      "rev": "c72328a5494b4502947a022fe69c0c47e53b6aa6",
+      "src": "gh:nvim-tree/nvim-web-devicons"
+    },
+    "oil.nvim": {
+      "rev": "0fcc83805ad11cf714a949c98c605ed717e0b83e",
+      "src": "gh:stevearc/oil.nvim"
+    },
+    "otter.nvim": {
+      "rev": "a455e68a99d395889ab30a25ac3846a135e93c46",
+      "src": "gh:jmbuhr/otter.nvim"
+    },
+    "plenary.nvim": {
+      "rev": "74b06c6c75e4eeb3108ec01852001636d85a932b",
+      "src": "gh:nvim-lua/plenary.nvim"
+    },
+    "quicker.nvim": {
+      "rev": "063cc44da1eef8681bbd653b29d3bc961780886a",
+      "src": "gh:stevearc/quicker.nvim"
+    },
+    "repeatable-move.nvim": {
+      "rev": "0c8d75dc04e2c149a9de1beff2e85dabb99990ef",
+      "src": "gh:kiyoon/repeatable-move.nvim"
+    },
+    "rustaceanvim": {
+      "rev": "2497c7b2a61d4eb5dad716371a64ea82fb068bee",
+      "src": "gh:mrcjkb/rustaceanvim",
+      "version": "9.0.0 - 10.0.0"
+    },
+    "sniprun": {
+      "rev": "6416f98924018385f7f5ebfe8dc773a4482426e4",
+      "src": "gh:michaelb/sniprun"
+    },
+    "telescope-fzf-native.nvim": {
+      "rev": "6fea601bd2b694c6f2ae08a6c6fab14930c60e2c",
+      "src": "gh:nvim-telescope/telescope-fzf-native.nvim"
+    },
+    "telescope-ui-select.nvim": {
+      "rev": "6e51d7da30bd139a6950adf2a47fda6df9fa06d2",
+      "src": "gh:nvim-telescope/telescope-ui-select.nvim"
+    },
+    "telescope.nvim": {
+      "rev": "506338434fec5ad19cb1f8d45bf92d66c4917393",
+      "src": "gh:nvim-telescope/telescope.nvim"
+    },
+    "tmux.nvim": {
+      "rev": "32ceaf2793582955ef9576809730878c4d2d9426",
+      "src": "gh:/aserowy/tmux.nvim"
+    },
+    "toggleterm.nvim": {
+      "rev": "9a88eae817ef395952e08650b3283726786fb5fb",
+      "src": "gh:akinsho/toggleterm.nvim"
+    },
+    "undotree": {
+      "rev": "6fa6b57cda8459e1e4b2ca34df702f55242f4e4d",
+      "src": "gh:mbbill/undotree"
+    },
+    "vim-abolish": {
+      "rev": "dcbfe065297d31823561ba787f51056c147aa682",
+      "src": "gh:tpope/vim-abolish"
+    },
+    "vim-easy-align": {
+      "rev": "9815a55dbcd817784458df7a18acacc6f82b1241",
+      "src": "gh:junegunn/vim-easy-align"
+    },
+    "vim-fugitive": {
+      "rev": "3b753cf8c6a4dcde6edee8827d464ba9b8c4a6f0",
+      "src": "gh:tpope/vim-fugitive"
+    },
+    "vim-illuminate": {
+      "rev": "0d1e93684da00ab7c057410fecfc24f434698898",
+      "src": "gh:RRethy/vim-illuminate"
+    },
+    "vim-repeat": {
+      "rev": "65846025c15494983dafe5e3b46c8f88ab2e9635",
+      "src": "gh:tpope/vim-repeat"
+    },
+    "vim-rhubarb": {
+      "rev": "5496d7c94581c4c9ad7430357449bb57fc59f501",
+      "src": "gh:tpope/vim-rhubarb"
+    },
+    "worktrees.nvim": {
+      "rev": "bd3bb6db01aee69775b8d237dcb50d66d96d2d68",
+      "src": "gh:afonsofrancof/worktrees.nvim"
+    },
+    "yanky.nvim": {
+      "rev": "784188e0a7363e762e53140f39124d786aec0832",
+      "src": "gh:gbprod/yanky.nvim"
+    }
+  }
+}

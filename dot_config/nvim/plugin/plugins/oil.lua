@@ -1,0 +1,85 @@
+
+vim.pack.add({
+    "gh:stevearc/oil.nvim",
+    "gh:nvim-tree/nvim-web-devicons"
+})
+
+vim.keymap.set("n", "<leader>e", ":Oil<cr>", { desc = "Oil" })
+
+vim.g.oil_columns = { "icon" }
+local function toggle_cols()
+    vim.g.oil_columns = #vim.g.oil_columns == 1 and { "icon", "size", "mtime" } or { "icon" }
+    require("oil").set_columns(vim.g.oil_columns)
+end
+
+require("oil").setup({
+    default_file_explorer = true,
+    columns = { "icon" },
+    -- Window-local options to use for oil buffers
+    win_options = {
+        cursorline = true,
+        signcolumn = "yes",
+    },
+    view_options = {
+        sort = {
+            { "type", "asc" },
+            { "name", "asc" },
+        },
+    },
+    -- Keymaps in oil buffer. Can be any value that `vim.keymap.set` accepts OR a table of keymap
+    -- options with a `callback` (e.g. { callback = function() ... end, desc = "", mode = "n" })
+    -- Additionally, if it is a string that matches "actions.<name>",
+    -- it will use the mapping at require("oil.actions").<name>
+    -- Set to `false` to remove a keymap
+    -- See :help oil-actions for a list of all available actions
+    use_default_keymaps = false,
+    keymaps = {
+        ["g?"] = "actions.show_help",
+        ["<CR>"] = "actions.select",
+        ["<C-v>"] = { "actions.select", opts = { close = true, vertical = true } },
+        ["<C-x>"] = { "actions.select", opts = { close = true, horizontal = true } },
+        ["<C-t>"] = { "actions.select", opts = { close = true, tab = true } },
+        ["<C-c>"] = "actions.close",
+        ["<C-q>"] = "actions.close",
+        ["<C-p>"] = "actions.preview",
+        ["<C-u>"] = "actions.preview_scroll_up",
+        ["<C-d>"] = "actions.preview_scroll_down",
+        ["<C-l>"] = "actions.refresh",
+        ["<c-g>"] = toggle_cols,
+        ["K"] = "actions.preview",
+        ["<leader>e"] = "actions.close",
+        ["<leader>o"] = "actions.close",
+        ["<BS>"] = "actions.parent",
+        ["-"] = "actions.parent",
+        ["_"] = "actions.open_cwd",
+        ["`"] = "actions.cd",
+        ["~"] = "actions.tcd",
+        ["gs"] = "actions.change_sort",
+        ["gx"] = "actions.open_external",
+        ["g."] = "actions.toggle_hidden",
+        ["+"] = false,
+        ["("] = false,
+        [")"] = false,
+        ["="] = false,
+        ['"'] = false,
+    },
+    -- Configuration for the floating window in oil.open_float
+    float = {
+        -- Padding around the floating window
+        padding = 0,
+        max_width = 80,
+        max_height = 30,
+        border = "rounded",
+        win_options = {
+            winblend = 0,
+        },
+        -- This is the config that will be passed to nvim_open_win.
+        -- Change values here to customize the layout
+        override = function(conf)
+            conf.height = math.max(conf.height, 10)
+            return conf
+        end,
+    },
+})
+
+

@@ -1,11 +1,11 @@
-vim.opt.bg = "dark"
-vim.cmd.highlight("clear")
+vim.cmd("highlight clear")
+if vim.fn.exists("syntax_on") then vim.cmd("syntax reset") end
+vim.o.background = "dark"
+vim.g.colors_name = "nord"
 vim.hl.priorities.semantic_tokens = 125
 
 -- stylua: ignore start
--- local nord = require("utils.nord")
 local nord = require("nord")
-
 local set = vim.api.nvim_set_hl
 
 -- Basic
@@ -56,7 +56,6 @@ set(0, "QuickFixHeaderSoft",      { link = "Comment" })
 set(0, "QuickFixLineNr",          { link = "Comment" })
 set(0, "QuickFixFilename",        { link = "Directory" })
 set(0, "QuickFixFilenameInvalid", { link = "Comment" })
--- DiagnosticSign* 
 
 -- Spell
 set(0, "SpellBad",   { fg = nord.error, undercurl = true })
@@ -97,7 +96,7 @@ set(0, "FoldColumn",   { fg = nord.c03_gray })
 set(0, "SignColumn",   { fg = nord.c01_gray })
 
 -- Diff
-set(0, "DiffAdd",     { bg = nord.diff.add_dk }) -- added line 
+set(0, "DiffAdd",     { bg = nord.diff.add_dk }) -- added line
 set(0, "DiffDelete",  { bg = nord.diff.del_dk }) -- deleted line
 set(0, "DiffChange",  {})                        -- changed line
 set(0, "DiffText",    { bg = nord.diff.change , bold = true }) -- changed text in changed line
@@ -183,7 +182,7 @@ set(0, "@markup.heading.6.markdown", { bold = true })
 set(0, "@markup.strikethrough.markdown_inline", { strikethrough = true })
 
 set(0, "@variable",      { link = "Variable" })
-set(0, "tag",            { fg = nord.c09_glacier })
+set(0, "@tag",            { fg = nord.c09_glacier })
 set(0, "@tag.delimiter", { fg = nord.c09_glacier })
 set(0, "@tag.attribute", { fg = nord.c08_cyan })
 
@@ -260,7 +259,7 @@ set(0, "BlinkCmpKindValue",                    { link = "Variable" })
 set(0, "BlinkCmpKindProperty",                 { link = "PmenuKind" })
 set(0, "BlinkCmpKindField",                    { link = "PmenuKind" })
 set(0, "BlinkCmpKindEnum",                     { link = "PmenuKind" })
-set(0, "BlinkCmpKindEnumMember",               { link = "BlinkCmpKindEnumMember" })
+set(0, "BlinkCmpKindEnumMember",               { link = "PmenuKind" })
 set(0, "BlinkCmpKindStruct",                   { fg = nord.c09_glacier })
 set(0, "BlinkCmpKindInterface",                { link = "PmenuKind" })
 set(0, "BlinkCmpKindReference",                { link = "PmenuKind" })
@@ -277,6 +276,10 @@ set(0, "BlinkCmpDocCursorLine",                { link = "CursorLine" })
 set(0, "BlinkCmpSignatureHelp",                { link = "NormalFloat" })
 set(0, "BlinkCmpSignatureHelpBorder",          { link = "FloatBorder" })
 set(0, "BlinkCmpSignatureHelpActiveParameter", { link = "LspSignatureActiveParameter" })
+
+-- blink.indent
+set(0, "BlinkIndent", { fg = nord.c01_gray })
+set(0, "BlinkIndentScope",  { fg = nord.c09_glacier })
 
 -- indent-blankline.nvim
 set(0, "IblIndent", { fg = nord.c01_gray })

@@ -46,7 +46,7 @@ vim.api.nvim_create_autocmd("FileType", {
             end
         end
         if not has_fugitive_win then return end
-        vim.keymap.set("n", "q", "<cmd>BWipe<cr>", { buf = ev.buf, silent = true })
+        vim.keymap.set("n", "q", "<cmd>Bwipeout<cr>", { buf = ev.buf, silent = true })
     end,
 })
 

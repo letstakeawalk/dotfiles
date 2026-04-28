@@ -18,6 +18,6 @@ local function del_all()
     bufdel.delete(function(buf) return true end, { wipe = true })
 end
 
-set("n", "<leader>qt", "<cmd>Bwipe<cr>", { desc = "Close this buffer" })
+set("n", "<leader>qt", "<cmd>Bwipeout<cr>", { desc = "Close this buffer" })
 set("n", "<leader>qo", del_others, { desc = "Close other buffers" })
 set("n", "<leader>qa", del_all, { desc = "Close all buffers" })

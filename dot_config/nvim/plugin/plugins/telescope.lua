@@ -105,5 +105,4 @@ set("n", "<leader>gtc", builtin.git_commits, { desc = "Git Commits" })
 set("n", "<leader>gtC", builtin.git_bcommits, { desc = "Git BufCommits" })
 set("n", "<leader>gtb", builtin.git_branches, { desc = "Git Branches" })
 -- extensions
--- set("n", "<leader>ta", "<cmd>Telescope aerial<cr>", { desc = "Aerial" } )
--- set("n", "<leader>tz", "<cmd>Telescope lazy<cr>",   { desc = "Lazy" } )
+set("n", "<leader>ta", "<cmd>Telescope aerial<cr>", { desc = "Aerial" })

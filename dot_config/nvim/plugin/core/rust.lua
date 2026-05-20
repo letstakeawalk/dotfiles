@@ -31,7 +31,7 @@ vim.g.rustaceanvim = {
             set("n", "<leader>rH", "<cmd>RustLsp moveItem up<cr>",      { desc = "Move item up",                    buf = bufnr})
             set("n", "<leader>rK", "<cmd>RustLsp moveItem down<cr>",    { desc = "Move item down",                  buf = bufnr})
             set("n", "gm",         "<cmd>RustLsp parentModule<cr>",     { desc = "Open parent module",              buf = bufnr})
-            set("n", "J",          "<cmd>RustLsp joinlines",            { desc = "Join lines (RustLsp)",            buf = bufnr})
+            set("n", "J",          "<cmd>RustLsp joinLines<cr>",        { desc = "Join lines (RustLsp)",            buf = bufnr})
             -- stylua: ignore end
             table.insert(
                 ---@diagnostic disable-next-line: undefined-field

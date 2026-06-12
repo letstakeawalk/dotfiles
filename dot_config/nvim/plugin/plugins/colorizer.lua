@@ -4,6 +4,10 @@ require("colorizer").setup({
     options = {
         parsers = {
             names = { enable = false },
+            hex = {
+                default = false,
+                rrggbb = true,
+            },
         },
     },
 })

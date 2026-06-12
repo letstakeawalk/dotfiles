@@ -1,7 +1,10 @@
 vim.pack.add({
+    "gh:saghen/blink.lib",
     { src = "gh:saghen/blink.pairs", version = vim.version.range("*") },
-    "gh:saghen/blink.download",
+    { src = "gh:saghen/blink.download", version = vim.version.range("*") },
 })
+
+require("blink.pairs").build():pwait(60000)
 
 --- @module 'blink.pairs'
 --- @type blink.pairs.Config

@@ -2,6 +2,9 @@
 -- See https://github.com/neovim/neovim/tree/master/runtime/ftplugin for built-in ftplugins.
 vim.g.no_plugin_maps = true
 local config = require("config")
+
+-- consider migrating to: https://github.com/romus204/tree-sitter-manager.nvim
+
 -- stylua: ignore
 config.ts_parsers = {
     "bash",
